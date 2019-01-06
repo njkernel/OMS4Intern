@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.connext.oms.mapper.TbGoodsOrderMapper">
+  <resultMap id="BaseResultMap" type="cn.com.connext.oms.entity.TbGoodsOrder">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="goods_order_id" jdbcType="INTEGER" property="goodsOrderId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
+  </resultMap>
+</mapper>

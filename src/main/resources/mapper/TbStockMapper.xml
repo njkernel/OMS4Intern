@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.connext.oms.mapper.TbStockMapper">
+  <resultMap id="BaseResultMap" type="cn.com.connext.oms.entity.TbStock">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="stock_id" jdbcType="INTEGER" property="stockId" />
+    <result column="available_stock" jdbcType="INTEGER" property="availableStock" />
+    <result column="locked_stock" jdbcType="INTEGER" property="lockedStock" />
+    <result column="total_stock" jdbcType="INTEGER" property="totalStock" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+  </resultMap>
+</mapper>
