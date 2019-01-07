@@ -1,6 +1,7 @@
 package cn.com.connext.oms.mapper;
 
 import cn.com.connext.oms.entity.TbOrder;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
 
@@ -15,5 +16,5 @@ public interface TbOrderMapper extends MyMapper<TbOrder> {
     * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
     * @Create: 2019/1/6 10:14
     */
-    List<TbOrder> getAllOrder();
+    List<TbOrder> getAllOrder(@Param("orderState") String orderState);
 }

@@ -31,7 +31,7 @@ public class TbOrderServiceImpl implements TbOrderService {
     * @Create: 2019/1/6 10:16
     */
     @Override
-    public List<TbOrder> getAllOrder() {
-        return tbOrderMapper.getAllOrder();
+    public List<TbOrder> getAllOrder(String orderState) {
+        return tbOrderMapper.getAllOrder(orderState);
     }
 }

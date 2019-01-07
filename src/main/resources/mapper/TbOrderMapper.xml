@@ -54,7 +54,7 @@
   </resultMap>
 
 
-  <select id="getAllOrder" resultMap="BaseResultMap">
+  <select id="getAllOrder" parameterType="string" resultMap="BaseResultMap">
   SELECT
       a.order_id,
       a.order_code,
@@ -102,9 +102,13 @@
       tb_receiver b,
       tb_goods c,
       tb_goods_order d
-  WHERE
+  <where>
       a.order_id = d.order_id
-  AND d.goods_id = c.goods_id
-  AND a.order_id = b.order_id
+      AND d.goods_id = c.goods_id
+      AND a.order_id = b.order_id
+      <if test="orderState != null and orderState != ''" >
+          AND a.order_state LIKE CONCAT ('%', #{orderState}, '%')
+      </if>
+  </where>
   </select>
 </mapper>
