@@ -42,6 +42,21 @@ public class TbAbnormal {
     private Date createtime;
 
     /**
+     * 修改人
+     */
+    @Column(name = "modified_user")
+    private String modifiedUser;
+
+    public String getModifiedUser() {
+        return modifiedUser;
+    }
+
+    public void setModifiedUser(String modifiedUser) {
+        this.modifiedUser = modifiedUser;
+    }
+
+
+    /**
      * 获取异常id
      *
      * @return abnormal_id - 异常id

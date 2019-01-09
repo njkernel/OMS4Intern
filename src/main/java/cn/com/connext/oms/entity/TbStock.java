@@ -1,5 +1,7 @@
 package cn.com.connext.oms.entity;
 
+import org.springframework.stereotype.Repository;
+
 import javax.persistence.*;
 
 @Table(name = "oms.tb_stock")

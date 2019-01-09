@@ -24,6 +24,7 @@
     <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
     <result column="sum_price" jdbcType="DOUBLE" property="sumPrice" />
     <result column="receiver_id" jdbcType="INTEGER" property="receiverId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
     <association property="tbReceiver" javaType="cn.com.connext.oms.entity.TbReceiver">
       <id column="receiver_id" jdbcType="INTEGER" property="receiverId" />
       <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
@@ -53,7 +54,7 @@
     </association>
   </resultMap>
 
-
+<!--caps 获取所有订单（带筛选）-->
   <select id="getAllOrder" parameterType="string" resultMap="BaseResultMap">
   SELECT
       a.order_id,

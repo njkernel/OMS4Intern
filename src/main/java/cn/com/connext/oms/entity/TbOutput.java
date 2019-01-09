@@ -49,8 +49,22 @@ public class TbOutput {
     /**
      * 备注
      */
-    @Column(name = "` remark`")
+    @Column(name = "remark")
     private String remark;
+
+    /**
+     * 修改人
+     */
+    @Column(name = "modified_user")
+    private String modifiedUser;
+
+    public String getModifiedUser() {
+        return modifiedUser;
+    }
+
+    public void setModifiedUser(String modifiedUser) {
+        this.modifiedUser = modifiedUser;
+    }
 
     /**
      * 获取出库id
@@ -60,6 +74,10 @@ public class TbOutput {
     public Integer getOutputId() {
         return outputId;
     }
+
+
+
+
 
     /**
      * 设置出库id
