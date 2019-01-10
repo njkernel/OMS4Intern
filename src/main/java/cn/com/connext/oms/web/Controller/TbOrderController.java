@@ -34,16 +34,13 @@ public class TbOrderController {
 
     @GetMapping("/getAllOrder")
     @ApiOperation(value = "订单数据接口")
-    public BaseResult getAllOrder(){
+    public BaseResult getAllOrder(String orderState){
         try {
-            List<TbOrder> allOrder = tbOrderService.getAllOrder();
+            List<TbOrder> allOrder = tbOrderService.getAllOrder(orderState);
             return BaseResult.success("成功",allOrder);
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResult.fail("服务器内部错误");
         }
     }
-
-
-
 }

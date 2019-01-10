@@ -18,18 +18,17 @@ import java.util.Map;
  */
 public class OrderAPI {
 
-/*    public static String post() throws HttpProcessException {
+    public static String post() throws HttpProcessException {
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("phone","13024535822");
         map.put("password","123456");
-        *//*   String s = HttpClientUtil.get(HttpConfig.custom().url("http://localhost:8502/allRoles"));*//*
         String s = HttpClientUtil.post(HttpConfig.custom().client(),
                 "http://localhost:8502/login",
                 HttpConfig.custom().headers(),
                 map, HttpConfig.custom().context(),
                 HttpConfig.custom().encoding());
         return s;
-    }*/
+    }
 
     /**
      * 测试调用订单接口
@@ -37,7 +36,7 @@ public class OrderAPI {
      * @throws Exception
      */
     public static Map<String, Object> getAllOrder() throws Exception {
-        String order = HttpClientUtil.get(HttpConfig.custom().url(API.API_ORDER));
+        String order = HttpClientUtil.get(HttpConfig.custom().url("http://localhost:8502/getAllOrder"));
         Map<String, Object> map = MapperUtils.json2map(order);
         return map;
     }

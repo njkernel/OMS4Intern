@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.connext.oms.mapper.TbRefundMapper">
+  <resultMap id="BaseResultMap" type="cn.com.connext.oms.entity.TbRefund">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="refund_id" jdbcType="INTEGER" property="refundId" />
+    <result column="refund_code" jdbcType="VARCHAR" property="refundCode" />
+    <result column="refund_price" jdbcType="DOUBLE" property="refundPrice" />
+    <result column="refund_state" jdbcType="VARCHAR" property="refundState" />
+    <result column="return_id" jdbcType="VARCHAR" property="returnId" />
+    <result column="createtd" jdbcType="TIMESTAMP" property="createtd" />
+    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+  </resultMap>
+</mapper>

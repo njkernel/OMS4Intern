@@ -119,7 +119,19 @@ public class TbOrder {
     @Column(name = "receiver_id")
     private Integer receiverId;
 
+    /**
+     * 备注
+     */
+    @Column(name="remark")
     private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     private TbReceiver tbReceiver;
 
@@ -491,13 +503,5 @@ public class TbOrder {
      */
     public void setReceiverId(Integer receiverId) {
         this.receiverId = receiverId;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 }

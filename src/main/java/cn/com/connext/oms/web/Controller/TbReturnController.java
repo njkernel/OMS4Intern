@@ -1,15 +1,16 @@
 package cn.com.connext.oms.web.Controller;
 
+import afu.org.checkerframework.checker.igj.qual.I;
 import cn.com.connext.oms.commons.dto.BaseResult;
+import cn.com.connext.oms.commons.utils.ListToArray;
 import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbReturn;
+import cn.com.connext.oms.service.TbExchangeService;
 import cn.com.connext.oms.service.TbOrderService;
 import cn.com.connext.oms.service.TbReturnService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,20 +35,20 @@ public class TbReturnController {
     private TbReturnService tbReturnService;
     @Autowired
     private TbOrderService tbOrderService;
+    @Autowired
+    private TbExchangeService tbExchangeService;
 
     /**
      * 根据订单id查询订单详情
-     * create by: Aaron
-     *
+     * @author: Aaron
      * @param orderId
      * @return BaseResult
      */
     @GetMapping("/getOrderByOrderId")
     @ApiOperation(value = "订单数据接口")
-    public BaseResult getOrderByOrderId(@RequestParam("orderId") int orderId) {
+    public BaseResult getOrderByOrderId (int orderId) {
         try {
             List<TbOrder> tbOrderList = tbOrderService.getOrderByOrderId(orderId);
-            //根据订单id查订单
             if (null != tbOrderList.get(0)) {
                 return BaseResult.success("查询成功", tbOrderList.get(0));
             }
@@ -60,32 +61,30 @@ public class TbReturnController {
 
     /**
      * 将前台的数据整合生成退货单
-     * create by: Aaron
-     *
      * @param orderId
+     * @author: Aaron
      * @param goodsIdsList
      * @param numberList
      * @return BaseResult
      */
     @GetMapping("/addReturnOrder")
     @ApiOperation(value = "生成退货单数据接口")
-    public BaseResult addReturnOrder(@RequestParam("orderId") int orderId, @RequestParam("goodsId") List<Integer> goodsIdsList, @RequestParam("number") List<Integer> numberList) {
+    public BaseResult addReturnOrder(@RequestParam("orderId") int orderId, @RequestParam("goodsId") List<Integer> goodsIdsList, @RequestParam("number")List<Integer> numberList){
         boolean flag = false;
         boolean flag1 = false;
 
-        try {
+        try{
 
-            flag = tbReturnService.addReturnOrderGoods(orderId, goodsIdsList, numberList);
-            TbReturn tbReturn = tbReturnService.createReturnOrder(orderId, goodsIdsList, numberList);
-            //生成退货单
-            flag1 = tbReturnService.addReturnOrder(tbReturn);
+                flag = tbReturnService.addReturnOrderGoods(orderId, goodsIdsList, numberList);
+                TbReturn tbReturn = tbReturnService.createReturnOrder(orderId, goodsIdsList, numberList);
+                flag1 = tbReturnService.addReturnOrder(tbReturn);
 
-            if (flag && flag1) {
-                return BaseResult.success("添加成功");
-            }
+                if (flag && flag1) {
+                    return BaseResult.success("添加成功");
+                }
 
-            return BaseResult.fail(500, "添加退货信息失败");
-        } catch (Exception e) {
+                return BaseResult.fail(500, "添加退货信息失败");
+        }catch (Exception e){
             System.out.println(e.getMessage());
             return BaseResult.fail("添加失败");
         }
@@ -94,90 +93,91 @@ public class TbReturnController {
 
     /**
      * 退货单的取消
-     * create by: Aaron
-     *
+     * @author: Aaron
      * @param returnId
      * @return BaseResult
      */
     @GetMapping("/returnOrderCancel")
     @ApiOperation(value = "退货取消数据接口")
-    public BaseResult returnOrderCancel(@RequestParam("returnId") int returnId) {
+    public BaseResult returnOrderCancel (@RequestParam("returnId") int returnId){
         Date updated = new Date();
         String oms = "oms";
-        try {
-            boolean flag = tbReturnService.returnOrderCancel(returnId, oms, updated);
-            //退货单取消
-            if (flag) {
+        try{
+            boolean flag  = tbReturnService.returnOrderCancel(returnId,oms,updated);
+            if (flag){
                 return BaseResult.success("取消成功");
             }
-            return BaseResult.fail(500, "取消失败");
-        } catch (Exception e) {
-
+            return BaseResult.fail(500,"取消失败");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
             return BaseResult.fail("内部数据出现错误，请稍后重试");
         }
     }
 
 
-    /**
-     * 退货单审核
-     * create by: Aaron
-     *
-     * @param returnIdsList
-     * @return BaseResult
-     */
-    @GetMapping("/returnOrdersAudit")
-    @ApiOperation(value = "退货审核数据接口")
-    public BaseResult returnOrdersAudit(@RequestParam("returnId") List<Integer> returnIdsList) {
-        try {
-            boolean flag = tbReturnService.returnOrdersAudit(returnIdsList);
-            //退货单审核
-            if (flag) {
-                TbInput tbInput = tbReturnService.createInputOrder(returnIdsList);
-                return BaseResult.success("审核通过,已生成入库单，退货单状态变为“等待收货”。");
-            }
-            return BaseResult.fail(500, "审核失败,时间已超出期限");
-        } catch (Exception e) {
-            return BaseResult.fail("内部数据出现错误,请稍后重试");
-        }
-
-    }
 
     /**
-     * 退货/换货审核数据接口
-     * create by: Aaron
-     * @param returnIdsList
-     * @return BaseResult
+     * @author: Aaron
+     * create by: yonyong
+     * description: 退货/换货审核分流接口
+     * create time: 2019/1/9 17:43
+     *  * @Param: returnIds
+     * @return cn.com.connext.oms.commons.dto.BaseResult
      */
+
     @GetMapping("/checkReturnOrExchange")
-    @ApiOperation(value = "退货/换货审核数据接口")
-    public BaseResult checkReturnOrExchange(@RequestParam("returnId") List<Integer> returnIdsList) {
-        boolean flag = false;
+    @ApiOperation(value = "退货/换货审核分流接口")
+    public BaseResult checkReturnOrExchange(@RequestParam("returnId") List<Integer> returnIds){
+
+        Boolean rsReturn=false;
+        int rsExchange=0;
         List<Integer> tbReturnList = new ArrayList<>();
         List<Integer> tbExchangeList = new ArrayList<>();
-        for (int i = 0; i < returnIdsList.size(); i++) {
-            TbReturn tbReturn = tbReturnService.getTbReturnById(returnIdsList.get(i));
+        Date date=new Date();
 
-            if ("退货".equals(tbReturn.getReturnType())) {
-                tbReturnList.add(tbReturn.getReturnId());
+
+        for (int i = 0;i<returnIds.size();i++){
+            TbReturn tbReturn = tbReturnService.getTbReturnById(returnIds.get(i));
+            if ("退货".equals(tbReturn.getReturnType())){
                 //将退货单生成单独的list交给退货部分处理
+                tbReturnList.add(tbReturn.getReturnId());
 
-            } else if ("换货".equals(tbReturn.getReturnType())) {
-
+            }else if ("换货".equals(tbReturn.getReturnType())){
+                //将换货单生成单独的list交给换货处理
                 tbExchangeList.add(tbReturn.getReturnId());
-                //将换货单生成单独的list交给换货出来
+
             }
         }
 
         try {
-            flag = tbReturnService.returnOrdersAudit(tbReturnList);
-            if (flag) {
-                TbInput tbInput = tbReturnService.createInputOrder(tbReturnList);
-                return BaseResult.success("审核通过,已生成入库单，退货单状态变为“等待收货”。");
+            //获取通过审核的订单，进行处理
+             List<Integer> returnOrdersList = tbReturnService.returnOrdersAudit(tbReturnList);
+            if (null != returnOrdersList) {
+                 tbReturnService.createInputOrder(returnOrdersList);
+                 BaseResult.success("生成入库单成功并成功发送");
+
             }
-            return BaseResult.fail(500, "审核失败,时间已超出期限");
+            BaseResult.fail("生成入库单失败");
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return BaseResult.fail("内部数据操作出现异常");
         }
-        return BaseResult.fail("内部数据出现错误,请稍后重试");
+
+
+        //updated by yonyong
+        int [] tids= ListToArray.listToArray(tbExchangeList);
+        try{
+
+                int rs = tbExchangeService.AuditTbReturn(tids, "oms", date);
+                if (1 != rs) {
+                    return BaseResult.fail("操作失败！");
+                }
+                int rt = tbExchangeService.generateInput(tids);
+                return BaseResult.success("入库单生成成功");
+
+        }catch (Exception e){
+            return BaseResult.fail("服务器内部错误！");
+        }
 
     }
 

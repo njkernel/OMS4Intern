@@ -15,6 +15,8 @@ import java.util.List;
  * @date: 2019/1/7
  * @time: 15:46
  **/
+
+
 public interface TbReturnService {
     /**
      *生成退货单对应的商品表
@@ -30,7 +32,7 @@ public interface TbReturnService {
      * @param orderId
      * @param goodsIdList
      * @param numberList
-     * @return TbReturn
+     * @return TbRetur
      */
     TbReturn createReturnOrder(int orderId, List<Integer> goodsIdList,List<Integer> numberList);
 
@@ -46,9 +48,9 @@ public interface TbReturnService {
     /**
      * 退货单审核
      * @param returnIds
-     * @return boolean
+     * @return
      */
-    boolean returnOrdersAudit (List<Integer> returnIds);
+    List<Integer> returnOrdersAudit (List<Integer> returnIds);
 
     /**
      *添加退货单
@@ -58,16 +60,16 @@ public interface TbReturnService {
     boolean addReturnOrder(TbReturn tbReturn);
 
     /**
-     * 生成出库单
+     * 生成出库单并发送
      * @param returnId
      * @return TbInput
      */
-    TbInput createInputOrder(List<Integer> returnId);
+    boolean createInputOrder(List<Integer> returnId);
 
     /**
      * 根据id查找相对应的退货/换货单
      * @param returnId
-     * @return TbReturn
+     * @return
      */
     TbReturn getTbReturnById(int returnId);
 }
