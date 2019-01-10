@@ -22,7 +22,7 @@ public interface TbOrderService {
      * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
      * @Create: 2019/1/6 10:14
      */
-    List<TbOrder> getAllOrder(String orderState);
+    PageInfo<TbOrder> getAllOrder(String orderState);
 
     /**
      * create by: yonyong

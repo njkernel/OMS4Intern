@@ -7,6 +7,8 @@ import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbReturn;
 import cn.com.connext.oms.mapper.TbOrderMapper;
 import cn.com.connext.oms.service.TbOrderService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,15 +31,19 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Autowired
     private TbOrderMapper tbOrderMapper;
     /**
-    * @Author: caps
-    * @Description: 获取所有订单
-    * @Param: []
-    * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
-    * @Create: 2019/1/6 10:16
-    */
+     * @Author: caps
+     * @Description: 获取所有订单
+     * @Param: []
+     * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
+     * @Create: 2019/1/6 10:16
+     */
     @Override
-    public List<TbOrder> getAllOrder(String orderState) {
-        return tbOrderMapper.getAllOrder(orderState);
+    public PageInfo<TbOrder> getAllOrder(String orderState) {
+        // 从第一页开始，每一页显示5条数据
+        PageHelper.startPage(1,5);
+        List<TbOrder> allOrder = tbOrderMapper.getAllOrder(orderState);
+        PageInfo<TbOrder> pageInfo =new PageInfo<>(allOrder);
+        return pageInfo;
     }
 
     /**

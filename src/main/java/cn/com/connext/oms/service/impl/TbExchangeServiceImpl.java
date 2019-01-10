@@ -6,6 +6,7 @@ import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDTO;
 import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDetailDTO;
 import cn.com.connext.oms.commons.utils.AES;
 import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
+import cn.com.connext.oms.commons.utils.ExchangeCheck;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.mapper.TbExchangeMapper;
 import cn.com.connext.oms.mapper.TbOrderMapper;
@@ -20,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.function.LongFunction;
 
 /**
  * @created with IDEA
@@ -202,14 +202,16 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     for (int t : ids) {
       TbReturn tbReturn = tbExchangeMapper.selectTbReturnById(t);
       // 判断数据库订单时间与当前时间相差是否超过15天，超过15天，审核不予通过
-      if (MISTIMING < date.getTime() - tbReturn.getCreated().getTime()) {
+      ExchangeCheck exchangeCheck =new ExchangeCheck();
+      int stockState= exchangeCheck.checkExchangeCheckStockByReturnId(t);
+      if (MISTIMING < date.getTime() - tbReturn.getCreated().getTime()&&stockState==1) {
         tbReturn.setReturnState("审核通过");
-
-        // 生成并发送入库单给WMS
 
         tbReturn.setModifiedUser(modifiedUser);
         tbReturn.setUpdated(update);
         list0.add(tbReturn);
+        exchangeCheck.updateExchangeCheckStockBefore(t);
+
       } else {
         tbReturn.setReturnState("审核失败");
         tbReturn.setModifiedUser(modifiedUser);
@@ -383,6 +385,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     tbOutput.setSynchronizeState("未同步");
     tbOutput.setModifiedUser(inputFeedback.getModifiedUser());
     try {
+      new ExchangeCheck().updateExchangeCheckStockAfter(inputFeedback.getOrderId(),inputFeedback.getGoodDetails());
       tbExchangeMapper.insertOutput(tbOutput);
       return 0;
     } catch (Exception e) {

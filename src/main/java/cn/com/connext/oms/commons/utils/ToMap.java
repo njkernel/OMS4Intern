@@ -1,4 +1,4 @@
-package cn.com.connext.oms.web.Api.exchange;
+package cn.com.connext.oms.commons.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.LinkedMultiValueMap;

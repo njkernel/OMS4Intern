@@ -1,12 +1,9 @@
 package cn.com.connext.oms.mapper;
 
-import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 import cn.com.connext.oms.entity.*;
-import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -192,12 +189,52 @@ public interface TbExchangeMapper {
 
     /**
      * create by: yonyong
-     * description: 根据商品id更新商品库存信息
-     * create time: 2019/1/10 17:29
+     * description: 更新商品库存信息
+     * create time: 2019/1/10 21:52
      *
-     *  * @Param: goodId
+     *  * @Param: tbStock
      * @return int
      */
     public int updateStock(@Param("tbStock")TbStock tbStock);
+
+    /**
+     * create by: yonyong
+     * description: 给换货单生成新订单
+     * create time: 2019/1/10 23:29
+     *
+     *  * @Param: tbOrder
+     * @return int
+     */
+    public int insertOrder(@Param("tbOrder")TbOrder tbOrder);
+
+    /**
+     * create by: yonyong
+     * description: 生成相应的订单商品表
+     * create time: 2019/1/10 23:46
+     *
+     *  * @Param: tbGoodsOrder
+     * @return int
+     */
+    public int insertGoodsOrder(@Param("tbGoodsOrder")TbGoodsOrder tbGoodsOrder);
+
+    /**
+     * create by: yonyong
+     * description: 建立换货单生成的新订单与原订单之间的联系
+     * create time: 2019/1/10 23:42
+     *
+     *  * @Param: tbExchangeOrderRelations
+     * @return int
+     */
+    public int insertExchangeOrderRelations(@Param("tbExchangeOrderRelations")TbExchangeOrderRelations tbExchangeOrderRelations);
+
+    /**
+     * create by: yonyong
+     * description: 查询一个订单是否是换货单
+     * create time: 2019/1/10 23:42
+     *
+     *  * @Param: oldOrderId
+     * @return cn.com.connext.oms.entity.TbExchangeOrderRelations
+     */
+    public TbExchangeOrderRelations selectExchangeOrderRelationsByOldOrderId(@Param("oldOrderId")int oldOrderId);
 
 }

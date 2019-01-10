@@ -1,6 +1,6 @@
 package cn.com.connext.oms.commons.dto.exchange.WMS;
 
-import cn.com.connext.oms.web.Api.exchange.ToMap;
+import cn.com.connext.oms.commons.utils.ToMap;
 
 import java.util.List;
 
