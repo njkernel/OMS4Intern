@@ -15,4 +15,46 @@
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
     <result column="order_id" jdbcType="INTEGER" property="orderId" />
   </resultMap>
+
+
+<insert id="batchAddRefund" parameterType="java.util.List">
+insert into tb_refund(refund_code,refund_price,refund_state,return_id,createtd,modified_user,updated,order_id)
+VALUES
+<foreach collection="list" item="item" index="index" separator=",">
+  (#{item.refundCode,jdbcType=VARCHAR},#{item.refundPrice,jdbcType=DOUBLE},
+   #{item.refundState,jdbcType=VARCHAR},#{item.returnId,jdbcType=INTEGER},#{item.createtd},
+   #{item.modifiedUser,jdbcType=VARCHAR},#{item.updated,jdbcType=DATE},#{item.orderId,jdbcType=INTEGER})
+</foreach>
+</insert>
+
+  <update id="updateRefundListStatue" parameterType="java.util.List">
+    UPDATE tb_refund
+    SET refund_state = CASE refund_id
+    <foreach collection="list" item="item">
+      WHEN #{item.refundId} THEN #{item.refundState}
+    </foreach>
+    END, modified_user = CASE refund_id
+    <foreach collection="list" item="item">
+      WHEN #{item.refundId} THEN #{item.modifiedUser}
+    </foreach>
+    END, updated = CASE refund_id
+    <foreach collection="list" item="item">
+      WHEN #{item.refundId} THEN #{item.updated}
+    </foreach>
+
+    END
+    WHERE
+    refund_id in
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+      #{item.refundId}
+    </foreach>
+  </update>
+
+  <select id="getAllRefund"  resultMap="BaseResultMap">
+        select * from tb_refund order by tb_refund.createtd DESC
+    </select>
+
+  <select id="getAllRefundIndex" parameterType="Object"  resultMap="BaseResultMap">
+         select * from tb_refund order by tb_refund.createtd DESC limit #{beginIndex},#{size}
+    </select>
 </mapper>

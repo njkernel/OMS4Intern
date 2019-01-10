@@ -11,7 +11,5 @@
     <result column="abnormal_reason" jdbcType="VARCHAR" property="abnormalReason" />
     <result column="abnormal_state" jdbcType="VARCHAR" property="abnormalState" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
   </resultMap>
-
 </mapper>

@@ -12,8 +12,35 @@
     <result column="created" jdbcType="TIMESTAMP" property="created" />
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
     <result column="synchronize_state" jdbcType="VARCHAR" property="synchronizeState" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="output_state" jdbcType="VARCHAR" property="outputState" />
-    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column=" remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+
+
+  <update id="updateOutputListStatue" parameterType="java.util.List">
+    UPDATE tb_output
+    SET output_state = CASE output_id
+    <foreach collection="list" item="item">
+      WHEN #{item.outputId} THEN #{item.outputState}
+    </foreach>
+    END
+    WHERE
+    output_id in
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+      #{item.outputId}
+    </foreach>
+  </update>
+
+  <select id="getOutputByOrderId" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_output where order_id=#{orderId}
+    </select>
+
+  <select id="getOutputByOutputId" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_output where output_id=#{outputId}
+    </select>
+
+  <select id="getOutputByOutputCode" parameterType="String" resultMap="BaseResultMap">
+        select * from tb_output where output_code=#{outputCode}
+    </select>
+
+
 </mapper>
