@@ -1,10 +1,13 @@
 package cn.com.connext.oms.web.Api.exchange.OMS;
 
 import cn.com.connext.oms.commons.dto.BaseResult;
+import cn.com.connext.oms.commons.dto.exchange.OMS.GoodDetails;
 import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.service.TbExchangeService;
 import cn.com.connext.oms.service.TbOrderService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +36,8 @@ public class inputStateFeedback {
     @Autowired
     private TbOrderService tbOrderService;
 
+    @Autowired
+    ObjectMapper objectMapper;
     /**
      * @Author: caps
      * @Description: 获取所有订单信息
@@ -39,7 +46,7 @@ public class inputStateFeedback {
      * @Create: 2019/1/6 10:24
      */
 
-    @GetMapping("/getAllOrder")
+    @GetMapping("/test")
     @ApiOperation(value = "订单数据接口")
     public BaseResult getAllOrder(String orderState){
         try {
@@ -60,8 +67,22 @@ public class inputStateFeedback {
      * @return cn.com.connext.oms.commons.dto.BaseResult
      */
     @RequestMapping("/getExchangeInputFeedback")
-    public BaseResult getExchangeInputFeedback(@RequestParam("inputFeedback")InputFeedback inputFeedback){
+    public BaseResult getExchangeInputFeedback(@RequestParam String tokens,
+                                               @RequestParam Integer orderId,
+                                               @RequestParam String inputState,
+                                               @RequestParam String goodDetails) {
+        List<GoodDetails> details= null;
 
+        //对订单id加密
+        if (tbExchangeService.checkToken(tokens,String.valueOf(orderId))==0){
+            return BaseResult.fail("tokens口令错误！");
+        }
+        try {
+            details = objectMapper.readValue(goodDetails,new TypeReference<List<GoodDetails>>() {});
+        } catch (IOException e) {
+            details=new ArrayList<>();
+        }
+        InputFeedback inputFeedback=new InputFeedback(tokens,orderId,inputState,"yonyong",details);
         int rs=tbExchangeService.generateOutput(inputFeedback);
         if (0 == rs){
             return BaseResult.success("操作成功！已生成新的出库单！");

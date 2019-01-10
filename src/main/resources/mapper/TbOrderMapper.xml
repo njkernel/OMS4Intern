@@ -208,7 +208,7 @@
       a.receiver_id,
       a.remark
       FROM tb_order as a
-      WHERE a.order_id = #{orderId}
+      WHERE a.order_id = #{id}
 
     </select>
 

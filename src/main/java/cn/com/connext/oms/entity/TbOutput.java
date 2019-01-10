@@ -49,7 +49,6 @@ public class TbOutput {
     /**
      * 备注
      */
-    @Column(name = "` remark`")
     private String remark;
 
     /**

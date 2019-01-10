@@ -5,6 +5,7 @@ import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.entity.TbReturn;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.License;
 
 import java.util.Date;
 import java.util.List;
@@ -146,4 +147,15 @@ public interface TbExchangeService {
      * @return cn.com.connext.oms.entity.TbReturn
      */
     public TbReturn selectTbReturnByReturnId(int returnId);
+
+    /**
+     * create by: yonyong
+     * description: 验证tokens
+     * create time: 2019/1/10 12:01
+     *
+     *  * @Param: token
+     *  * @Param: orderId
+     * @return int
+     */
+    public int checkToken(String token,String orderId);
 }
