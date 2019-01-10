@@ -32,10 +32,29 @@ public class TbRefundServiceImpl implements TbRefundService {
     * @Date: 2019/1/8
     */
     @Override
-    public boolean updateRefundListStatue(List<TbRefund> tbRefundList) {
+    public boolean updateRefundListStatue(Integer[] refundIdList) {
         List<TbRefund> refundList=new ArrayList<TbRefund>();//保存需要修改的退款单
-        int refundResult=0;
-        for(TbRefund refund:tbRefundList){
+        int refundResult=0;//保存修改退款单的条数
+        for(Integer refundId:refundIdList){
+            TbRefund refund=tbRefundMapper.getRefundById(refundId);
+            if(refund!=null){//如果存在这张退款单
+                if("待退款".equals(refund.getRefundState())){
+                    refund.setRefundState("退款成功");
+                    refundList.add(refund);
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }
+        if(!refundList.isEmpty()){
+            refundResult=tbRefundMapper.updateRefundListStatue(refundList);
+        }
+        if(refundResult==refundList.size()){
+            return true;
+        }
+       /* for(TbRefund refund:tbRefundList){
             if("待退款".equals(refund.getRefundState())){
                 refund.setRefundState("退款成功");
             }else{
@@ -47,7 +66,7 @@ public class TbRefundServiceImpl implements TbRefundService {
         }
         if(refundResult==refundList.size()){
             return true;
-        }
+        }*/
 
         return false;
     }
@@ -87,5 +106,17 @@ public class TbRefundServiceImpl implements TbRefundService {
             return map2;
         }
        return null;
+    }
+
+    /**
+    * @Description: 根据id查看退款单
+    * @Param: [refundId]
+    * @return: cn.com.connext.oms.entity.TbRefund
+    * @Author: Lili Chen
+    * @Date: 2019/1/10
+    */
+    @Override
+    public TbRefund getRefundById(Integer refundId) {
+        return tbRefundMapper.getRefundById(refundId);
     }
 }

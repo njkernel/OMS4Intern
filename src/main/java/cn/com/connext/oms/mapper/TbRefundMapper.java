@@ -46,4 +46,14 @@ public interface TbRefundMapper extends MyMapper<TbRefund> {
     * @Date: 2019/1/8
     */
     List<TbRefund> getAllRefundIndex(Map map);
+
+
+    /** 
+    * @Description: 根据id查看退款单 
+    * @Param: [refundId] 
+    * @return: cn.com.connext.oms.entity.TbRefund 
+    * @Author: Lili Chen 
+    * @Date: 2019/1/10 
+    */
+    TbRefund getRefundById(Integer refundId);
 }

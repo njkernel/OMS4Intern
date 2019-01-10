@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../../../assets/styles/search.css">
+    <link rel="stylesheet" href="/assets/styles/search.css">
     <style>
         .table-box {
-            border: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
         }
         .table tbody tr td{
             height: 30px;
@@ -33,21 +33,46 @@
         .table tbody tr:hover {
             background-color: #e6f7ff;
         }
+        /* 自定义checkbox样式 */
+        #checkOne + label::before {
+            content: "\a0";  /*不换行空格*/
+            display: inline-block;
+            vertical-align: .2em;
+            width: 1em;
+            height: 1em;
+            border-radius: .2em;
+            background-color: silver;
+            text-indent: .15em;
+            line-height: .65;  
+        }
+        #checkOne:checked + label::before {
+            content: "\2713";
+            background-color: #528dff;
+            color: #fff;
+        }
+        #checkOne {
+            position: absolute;
+            clip: rect(0, 0, 0, 0);
+        }
+        /* end-- */
     </style>
 </head>
 
 <body style="overflow-x:hidden;background:#f3f3f3;">
+<div id="abnormal">
     <div class="btn-div">
-        <button type="button" class="btn btn-primary">退款</button>       
+        <button type="button" class="btn btn-primary" @click="abnormalHandle">处理异常</button>
+        <button type="button" class="btn btn-primary" @click="refresh">刷新</button>
         <button type="button" class="btn btn-primary">查看订单</button>
         <div class="search-box">
             <form action="">
-                <select name="" id="">
-                    <option value=""></option>
-                    <option value=""></option>
+                <select v-model="selected">
+                    <option v-for="option in options" :value="option.value">
+                        {{ option.text }}
+                    </option>
                 </select>
-                <input type="text">
-                <button type="button" class="btn btn-success">搜索</button>
+                <input v-model.trim="searchInput" placeholder="编辑我……">
+                <button type="button" class="btn btn-success" @click="searchBtn">搜索</button>
             </form>
         </div>
     </div>
@@ -56,31 +81,33 @@
             <thead>
                 <tr>
                     <th>序号</th>
-                    <th>批量</th>
-                    <th>退货单号</th>
-                    <th>退货/换货</th>
-                    <th>退货状态</th>
+                    <th>选择</th>
+                    <th>异常单号</th>
                     <th>订单号</th>
-                    <th>退货金额</th>
+                    <th>异常类型</th>
+                    <th>异常原因</th>
+                    <th>异常状态</th>
                     <th>创建时间</th>
-                    <th>修改时间</th>
                     <th>修改人</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="TbRefund,iterStat : ${}">
+            <template v-for="list in abnormalDate" v-cloak>
+                <tr>
                     <td>1</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>
+                        <input type="radio" :value="list.abnormalId" v-model="checkedDate">
+                        <!--<label>{{checkedDate}}</label>-->
+                    </td>
+                    <td>{{list.abnormalId}}</td>
+                    <td>{{list.orderId}}</td>
+                    <td>{{list.abnormalType}}</td>
+                    <td>{{list.abnormalReason}}</td>
+                    <td>{{list.abnormalState}}</td>
+                    <td>{{list.createtime}}</td>
+                    <td>{{list.modifiedUser}}</td>
                 </tr>
-
+            </template>
             </tbody>
         </table>
     </div>
@@ -100,12 +127,19 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
+</div>
 </body>
-<script type="text/javascript">
-    $(function () {
-
-        
+<script>
+    $('.table tbody tr td input').click(function(){
+        $(this).addClass('checkbox-style');
     })
 </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript" src="/commons/plugins/iview/js/axios.min.js"></script>
+<script type="text/javascript" src="/commons/js/axiosUtils.js"></script>
+<script type="text/javascript" src="/page/js/abnormal.js"></script>
+
 
 </html>

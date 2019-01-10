@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +35,8 @@ public class TbRefundController {
 
     @PostMapping("/refund")
     @ApiOperation(value = "进行退款操作")
-    public String refund(List<TbRefund> tbRefundList){
-        boolean b=tbRefundService.updateRefundListStatue(tbRefundList);
+    public String refund(Integer[] refundIdList){
+        boolean b=tbRefundService.updateRefundListStatue(refundIdList);
         if(b){
             return "success";
         }

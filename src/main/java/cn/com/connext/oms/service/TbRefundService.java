@@ -16,7 +16,7 @@ public interface TbRefundService {
     * @Author: Lili Chen
     * @Date: 2019/1/8
     */
-   boolean updateRefundListStatue(List<TbRefund> tbRefundList);
+   boolean updateRefundListStatue(Integer[] refundIdList);
    
    /** 
    * @Description: 查看所有的退款单（分页操作）
@@ -26,4 +26,14 @@ public interface TbRefundService {
    * @Date: 2019/1/8 
    */
    Map<String,Object> getAllRefundIndex(Integer page, Integer size);
+
+
+   /**
+   * @Description: 根据id查找退款单
+   * @Param: [refundId]
+   * @return: cn.com.connext.oms.entity.TbRefund
+   * @Author: Lili Chen
+   * @Date: 2019/1/10
+   */
+   TbRefund getRefundById(Integer refundId);
 }

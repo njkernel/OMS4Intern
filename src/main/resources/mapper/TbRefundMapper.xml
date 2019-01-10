@@ -54,6 +54,10 @@ VALUES
         select * from tb_refund order by tb_refund.createtd DESC
     </select>
 
+  <select id="getRefundById"  resultMap="BaseResultMap" parameterType="Integer">
+        select * from tb_refund where refund_id=#{refundId}
+    </select>
+
   <select id="getAllRefundIndex" parameterType="Object"  resultMap="BaseResultMap">
          select * from tb_refund order by tb_refund.createtd DESC limit #{beginIndex},#{size}
     </select>

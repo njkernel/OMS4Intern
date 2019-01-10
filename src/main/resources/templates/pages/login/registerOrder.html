@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>联蔚注册页面</title>
+    <link rel="stylesheet" type="text/css" href="../../assets/styles/registerLoading/register.css">
+    <script type="text/javascript" src="../../assets/javascript/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+    <!-- 注册部分 -->
+    <div class="main">
+        <div class="top">
+            <a class="quickly">快速注册</a>
+        </div>
+        <!--<div class="error"></div>-->
+        <div class="address"> *用户名<input type="text" class="biao1" name="biao1" id="email1" style="outline:none;"></div>
+        <div class="p1" id="p1-show">6~18个字符，需以字母开头</div>
+        <div class="p1-01" id="address-01">用户名格式错误</div>
+        <!-- 密码的申请 -->
+        <div class="password"> *密码<input type="password" class="biao2" id="password1" style="outline:none;"></div>
+        <div class="p1" id="pass1">6~16个字符，区分大小写</div>
+        <div class="p1-01" id="pass1-01">密码长度应为6-18</div>
+        <!-- 再次确认密码 -->
+        <div class="confirm-password"> *确认密码<input type="password" class="biao2" id="password2" style="outline:none;"></div>
+        <div class="p1" id="pass2">请再次填写密码 </div>
+        <div class="p1-01" id="pass2-01">确认密码错误！ </div>
+        <!-- 手机号码的输入 -->
+        <div class="telephone"> *手机号码<input type="text" class="biao2" id="phone1" placeholder="+86" maxlength="11" style="outline:none;"></div>
+        <div class="p1" id="phone-1">可以通过该手机号码快速找回密码 </div>
+        <div class="p1-01" id="phone-1-01"> 请填写正确的手机号码 </div>
+        <!-- 图片验证码 -->
+        <div class="code">*验证码<input type="text" value="" class="biao3" id="code1" style="outline:none;">
+            <a href="#" id="changeImg">
+                <canvas class="show-captcha" id="canvas" width="120" height="30"></canvas>
+                <span class="code-refresh">看不清楚</span>
+            </a>
+        </div>
+        <div class="p-1" id="code-1"> 请填写表格中的字符，区分大小写</div>
+        <div class="p-1-01" id="code-1-01"> 验证码错误</div>
+
+        <!-- 同意部分 -->
+        <input class="p2" type="radio" name="contrue" value="0" id="s1" /><label for="s1" class="agree">
+        同意<a href="javascript:void(0)" title="*">"服务条款"</a>和<a href="javascript:void(0)" title="*">"隐私权相关政策"</a>
+    </label>
+        <!-- 立即注册部分 -->
+        <div class="last"><a href="loadingOrder.html" title="跳转登录页面">立即注册</a></div>
+
+    <!-- 网易登陆页面的最下面的部分 -->
+    <script type="text/javascript" src="../../assets/javascript/registerLoading/register.js"></script>
+    <script type="text/javascript" src="../../assets/javascript/registerLoading/code.js"></script>
+</body>
+</html>

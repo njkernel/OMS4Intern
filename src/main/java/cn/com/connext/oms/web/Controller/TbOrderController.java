@@ -49,7 +49,7 @@ public class TbOrderController {
 
     @PostMapping(value = "/cancelOrderOfWms",produces = "text/json;charset=UTF-8")
     @ApiOperation(value = "wms取消订单的接口")
-    public String  cancelOrderOfWms(@RequestBody @RequestParam(required = true) String outputCodeList){
+    public String  cancelOrderOfWms(@RequestBody  String outputCodeList){
         System.out.println(outputCodeList);
         boolean b=tbOrderService.cancelOrderOfWms(outputCodeList);
          if(b){
