@@ -173,6 +173,11 @@
 
         <!--shiro start-->
         <!--spring boot 整合shiro依赖-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
         <!--shiro依赖-->
         <dependency>
             <groupId>org.apache.shiro</groupId>

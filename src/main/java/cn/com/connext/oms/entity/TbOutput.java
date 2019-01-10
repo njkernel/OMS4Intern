@@ -49,7 +49,7 @@ public class TbOutput {
     /**
      * 备注
      */
-    @Column(name = "remark")
+    @Column(name = "` remark`")
     private String remark;
 
     /**
@@ -70,14 +70,11 @@ public class TbOutput {
      * 获取出库id
      *
      * @return output_id - 出库id
+
      */
     public Integer getOutputId() {
         return outputId;
     }
-
-
-
-
 
     /**
      * 设置出库id

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.connext.oms.mapper.TbExchangeMapper">
+    <resultMap id="returnGoodsMap" type="cn.com.connext.oms.entity.TbReturnGoods">
+        <id column="return_goods_id" jdbcType="INTEGER" property="returnGoodsId" />
+        <result column="order_id" jdbcType="INTEGER" property="orderId" />
+        <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+        <result column="number" jdbcType="INTEGER" property="number" />
+    </resultMap>
+
+    <resultMap id="returnsMap" type="cn.com.connext.oms.entity.TbReturn">
+        <id column="return_id" jdbcType="INTEGER" property="returnId" />
+        <result column="return_code" jdbcType="VARCHAR" property="returnCode" />
+        <result column="return_state" jdbcType="VARCHAR" property="returnState" />
+        <result column="order_id" jdbcType="INTEGER" property="orderId" />
+        <result column="return_price" jdbcType="DOUBLE" property="returnPrice" />
+        <result column="created" jdbcType="TIMESTAMP" property="created" />
+        <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+        <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+        <result column="return_type" jdbcType="VARCHAR" property="returnType" />
+    </resultMap>
+
+    <select id="selectAllExchangeOrders" parameterType="java.lang.String" resultMap="returnsMap">
+        SELECT return_id,return_code,return_state,order_id,return_price,created,modified_user,updated,return_type
+        FROM tb_return
+        <choose>
+            <when test="returnType !=null and returnType != ''">
+                WHERE return_type LIKE "%"#{returnType}"%"
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="toGenerateExchangeOrderGoods" parameterType="java.util.List">
+            insert into tb_return_goods (order_id,goods_id,number)
+            values
+            <foreach collection="list" item="temp" index= "index" separator=",">
+                (#{temp.orderId},#{temp.goodsId},#{temp.number})
+            </foreach>
+    </insert>
+
+    <insert id="toGenerateExchangeOrder">
+            insert into tb_return (return_code,return_state,order_id,return_price,created,modified_user,updated,return_type)
+            values (#{tbReturn.returnCode},#{tbReturn.returnState},#{tbReturn.orderId},#{tbReturn.returnPrice},
+                    #{tbReturn.created},#{tbReturn.modifiedUser},#{tbReturn.updated},#{tbReturn.returnType})
+    </insert>
+
+    <select id="toSelectGoodById" parameterType="int" resultType="cn.com.connext.oms.entity.TbGoods">
+            select t.goods_id,t.goods_code,t.goods_name,t.goods_price
+            from tb_goods t
+            where t.goods_id=#{goodId}
+    </select>
+
+    <update id="updateTbReturn" parameterType="java.util.List">
+            <foreach collection="list" item="bean" index="index" open="" close="" separator=";">
+                UPDATE tb_return
+                set return_state=#{bean.state},modified_user=#{bean.modifiedUser},updated=#{bean.updated}
+                where return_id = #{bean.id}
+            </foreach>
+    </update>
+
+    <select id="selectTbReturnById" parameterType="int" resultType="cn.com.connext.oms.entity.TbReturn">
+            SELECT t.return_id,t.return_code,t.return_state,t.order_id,t.return_price,t.created,t.modified_user,t.updated
+            FROM tb_return t
+            WHERE t.return_id=#{returnId}
+    </select>
+
+    <select id="selectTbReturnByOrderId" parameterType="int" resultType="cn.com.connext.oms.entity.TbReturn">
+        SELECT t.return_id,t.return_code,t.return_state,t.order_id,t.return_price,t.created,t.modified_user,t.updated
+        FROM tb_return t
+        WHERE t.order_id=#{orderId}
+    </select>
+
+    <select id="selectTbReturnGoodsByOrderId" parameterType="int" resultMap="returnGoodsMap">
+            select t.return_goods_id,t.order_id,t.goods_id,t.number
+            from tb_return_goods t
+            where t.order_id=#{orderId}
+    </select>
+
+    <insert id="insertInput">
+          INSERT into tb_input (input_code,order_id,input_state,created,updated,synchronize_state)
+          VALUES (#{tbInput.inputCode},#{tbInput.orderId},#{tbInput.inputState},#{tbInput.created},#{tbInput.updated},#{tbInput.synchronizeState})
+    </insert>
+
+    <insert id="insertOutput">
+            INSERT into tb_output (output_code,order_id,output_state,created,updated,synchronize_state,remark,modified_user)
+            VALUES (#{tbOutput.outputCode},#{tbOutput.orderId},#{tbOutput.outputState},#{tbOutput.created},
+                    #{tbOutput.updated},#{tbOutput.synchronizeState},#{tbOutput.remark},#{tbOutput.modifiedUser})
+    </insert>
+
+    <update id="updateTbInput">
+            UPDATE tb_input
+            SET input_state=#{tbInput.inputState},updated=#{tbInput.updated},synchronize_state=#{tbInput.synchronizeState}
+            WHERE order_id=#{tbInput.orderId}
+    </update>
+
+    <select id="selectTbInputByOrderId" parameterType="int" resultType="cn.com.connext.oms.entity.TbInput">
+            SELECT input_id,input_code,order_id,input_state,created,updated,synchronize_state
+            from tb_input
+            WHERE order_id=#{tbInput.orderId}
+    </select>
+</mapper>
