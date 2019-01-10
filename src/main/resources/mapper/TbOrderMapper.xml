@@ -24,7 +24,7 @@
     <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
     <result column="sum_price" jdbcType="DOUBLE" property="sumPrice" />
     <result column="receiver_id" jdbcType="INTEGER" property="receiverId" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
+      <result column="remark" jdbcType="VARCHAR" property="remark" />
     <association property="tbReceiver" javaType="cn.com.connext.oms.entity.TbReceiver">
       <id column="receiver_id" jdbcType="INTEGER" property="receiverId" />
       <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
@@ -54,10 +54,66 @@
     </association>
   </resultMap>
 
-<!--caps 获取所有订单（带筛选）-->
-  <select id="getAllOrder" parameterType="string" resultMap="BaseResultMap">
+
+  <select id="getAllOrder" resultMap="BaseResultMap">
   SELECT
-      a.order_id,
+          a.order_id,
+          a.order_code,
+          a.channel_code,
+          a.order_state,
+          a.order_source,
+          a.purchase_time,
+          a.basic_state,
+          a.modified_user,
+          a.customer_id,
+          a.updated,
+          a.payment_state,
+          a.payment_way,
+          a.payment_time,
+          a.delivery_warehouse,
+          a.delivery_company,
+          a.delivery_code,
+          a.delivery_time,
+          a.sum_price,
+          a.receiver_id,
+          a.remark,
+          b.created,
+          b.order_id,
+          b.receiver_address,
+          b.receiver_city,
+          b.receiver_district,
+          b.receiver_id,
+          b.receiver_mobile,
+          b.receiver_mobile,
+          b.receiver_name,
+          b.receiver_phone,
+          b.receiver_state,
+          b.receiver_zip,
+          b.updated,
+          c.goods_id,
+          c.goods_code,
+          c.goods_name,
+          c.goods_price,
+          d.goods_id,
+          d.goods_order_id,
+          d.order_id,
+          d.num,
+          d.total_price
+      FROM
+          tb_order a,
+          tb_receiver b,
+          tb_goods c,
+          tb_goods_order d
+      WHERE
+          a.order_id = d.order_id
+      AND d.goods_id = c.goods_id
+      AND a.order_id = b.order_id
+  </select>
+
+    <!--根据订单id查询订单-->
+    <select id="getOrderByOrderId" resultMap="BaseResultMap">
+        SELECT
+         a.order_id,
       a.order_code,
       a.channel_code,
       a.order_state,
@@ -76,40 +132,17 @@
       a.delivery_time,
       a.sum_price,
       a.receiver_id,
-      b.created,
-      b.order_id,
-      b.receiver_address,
-      b.receiver_city,
-      b.receiver_district,
-      b.receiver_id,
-      b.receiver_mobile,
-      b.receiver_mobile,
-      b.receiver_name,
-      b.receiver_phone,
-      b.receiver_state,
-      b.receiver_zip,
-      b.updated,
-      c.goods_id,
-      c.goods_code,
-      c.goods_name,
-      c.goods_price,
-      d.goods_id,
-      d.goods_order_id,
-      d.order_id,
-      d.num,
-      d.total_price
-  FROM
-      tb_order a,
-      tb_receiver b,
-      tb_goods c,
-      tb_goods_order d
-  <where>
-      a.order_id = d.order_id
-      AND d.goods_id = c.goods_id
-      AND a.order_id = b.order_id
-      <if test="orderState != null and orderState != ''" >
-          AND a.order_state LIKE CONCAT ('%', #{orderState}, '%')
-      </if>
-  </where>
-  </select>
+      a.remark
+      FROM tb_order as a
+      WHERE a.order_id = #{orderId}
+
+    </select>
+
+    <!--根据订单id查询订单生成时间-->
+    <select id="selectCreatedById" resultType="Date">
+        SELECT purchase_time
+        FROM tb_order
+        WHERE order_id = #{orderId}
+    </select>
+
 </mapper>

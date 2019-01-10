@@ -31,7 +31,21 @@ public class TbOrderServiceImpl implements TbOrderService {
     * @Create: 2019/1/6 10:16
     */
     @Override
-    public List<TbOrder> getAllOrder(String orderState) {
-        return tbOrderMapper.getAllOrder(orderState);
+    public List<TbOrder> getAllOrder() {
+        return tbOrderMapper.getAllOrder();
+    }
+
+    /**
+     * create by: Aaron
+     * description: 根据订单id查询的订单详情
+     * create time: 2019/1/7 15:32
+     *
+     *
+     * @return  * @Param: null
+     */
+
+    @Override
+    public List<TbOrder> getOrderByOrderId(int orderId) {
+        return tbOrderMapper.getOrderByOrderId(orderId);
     }
 }

@@ -12,8 +12,6 @@
     <result column="created" jdbcType="TIMESTAMP" property="created" />
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
     <result column="synchronize_state" jdbcType="VARCHAR" property="synchronizeState" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="output_state" jdbcType="VARCHAR" property="outputState" />
-    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column=" remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 </mapper>

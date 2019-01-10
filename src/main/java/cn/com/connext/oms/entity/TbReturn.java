@@ -48,6 +48,12 @@ public class TbReturn {
     private String modifiedUser;
 
     /**
+     * 退货/换货
+     */
+    @Column(name = "return_type")
+    private String returnType;
+
+    /**
      * 修改时间
      */
     private Date updated;
@@ -194,5 +200,14 @@ public class TbReturn {
      */
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+
+    public String getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(String returnType) {
+        this.returnType = returnType;
     }
 }

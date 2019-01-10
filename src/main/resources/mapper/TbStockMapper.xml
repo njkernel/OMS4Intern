@@ -11,15 +11,4 @@
     <result column="total_stock" jdbcType="INTEGER" property="totalStock" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
   </resultMap>
-
-  <select id="selectStockByGoodsId" resultMap="BaseResultMap">
-  SELECT
-      a.locked_stock,
-      a.total_stock,
-      a.available_stock
-  FROM
-      tb_stock AS a
-  WHERE
-      a.goods_id=#{goodsId}
-  </select>
 </mapper>
