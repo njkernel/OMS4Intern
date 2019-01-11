@@ -1,6 +1,6 @@
 package cn.com.connext.oms.web.Api;
 
-import cn.com.connext.oms.commons.dto.OutRepoOrderDetailDto;
+import cn.com.connext.oms.commons.dto.output.OutRepoOrderDetailDto;
 import cn.com.connext.oms.commons.dto.OutputDTO;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOutput;
