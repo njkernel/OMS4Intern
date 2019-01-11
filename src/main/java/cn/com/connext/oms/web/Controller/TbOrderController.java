@@ -3,6 +3,7 @@ package cn.com.connext.oms.web.Controller;
 import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.service.TbOrderService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class TbOrderController {
     @ApiOperation(value = "订单数据接口")
     public BaseResult getAllOrder(String orderState){
         try {
-            List<TbOrder> allOrder = tbOrderService.getAllOrder(orderState);
+            PageInfo<TbOrder> allOrder = tbOrderService.getAllOrder(orderState);
             return BaseResult.success("成功",allOrder);
         } catch (Exception e) {
             e.printStackTrace();
