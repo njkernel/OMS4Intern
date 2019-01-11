@@ -38,7 +38,8 @@ public interface TbOutputMapper extends MyMapper<TbOutput> {
     TbOutput getOutputByOutputId(Integer outputId);
 
 
-    TbOutput getOutputByOutputCode(String outputCode);     *
+    TbOutput getOutputByOutputCode(String outputCode);
+    /*
      * 功能描述: 根据订单id查询出所有出库单的详情
      *
      * @param: 订单id

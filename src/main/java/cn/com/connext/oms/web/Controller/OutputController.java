@@ -65,7 +65,7 @@ public class OutputController {
      */
     @GetMapping("OutputDetails")
     public BaseResult OutputDetails() {
-        PageInfo<TbOrder> allOrder = tbOrderService.getAllOrder(STATUS4);
+        List<TbOrder> allOrder = tbOrderService.getAllOrder();
         // 需要和前端页面绑定
         return BaseResult.success("成功", allOrder);
     }

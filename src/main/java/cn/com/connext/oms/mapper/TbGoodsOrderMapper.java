@@ -16,4 +16,14 @@ public interface TbGoodsOrderMapper extends MyMapper<TbGoodsOrder> {
     * @Author: Lili Chen
     * @Date: 2019/1/11
     */
-   List<TbGoodsOrder> getStockByOrderId(Integer orderId);}
+   List<TbGoodsOrder> getStockByOrderId(Integer orderId);
+
+    /**
+     * @Author: zhaojun
+     * @Description: 根据订单编号查询该订单下所有的商品编号
+     * @Param: []
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2019/1/7 11:42
+     */
+    public List<Integer> getGoodOrderById(int orderId);
+}

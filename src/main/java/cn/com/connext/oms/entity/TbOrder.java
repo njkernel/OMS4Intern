@@ -136,8 +136,6 @@ public class TbOrder implements Serializable {
         this.remark = remark;
     }
 
-    private TbReceiver tbReceiver;
-
     private  TbGoods tbGoods;
 
     private TbGoodsOrder tbGoodsOrder;

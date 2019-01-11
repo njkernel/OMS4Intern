@@ -21,6 +21,7 @@ public interface TbOrderService {
      * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
      * @Create: 2019/1/6 10:14
      */
+    List<TbOrder> getAllOrder();
 
     /**
      * create by: yonyong

@@ -50,7 +50,7 @@ public class inputStateFeedback {
     @ApiOperation(value = "订单数据接口")
     public BaseResult getAllOrder(String orderState){
         try {
-            List<TbOrder> allOrder = tbOrderService.getAllOrder(orderState);
+            List<TbOrder> allOrder = tbOrderService.getAllOrder();
             return BaseResult.success("成功",allOrder);
         } catch (Exception e) {
             e.printStackTrace();

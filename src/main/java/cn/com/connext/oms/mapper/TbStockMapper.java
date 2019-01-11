@@ -7,6 +7,17 @@ import tk.mybatis.mapper.MyMapper;
 import java.util.List;
 @Repository
 public interface TbStockMapper extends MyMapper<TbStock> {
+
+    /**
+     * @Author: zhaojun
+     * @Description: 更新商品的库存信息
+     * @Param:
+     * @Return:
+     * @Create: 2019/1/8 11:14
+     */
+    /*List<TbStock> updateStock(int goodsId);*/
+    public void updateStock(int goodsId,int totalStock);
+
  /** 
     * @Description: 更新库存 
     * @Param: [tbStock] 

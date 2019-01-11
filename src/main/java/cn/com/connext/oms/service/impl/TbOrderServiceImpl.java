@@ -40,15 +40,21 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Autowired
     private TbStockMapper tbStockMapper;
 
-
     /**
-    */
+     * @Author: caps
+     * @Description: 获取所有订单
+     * @Param: []
+     * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
+     * @Create: 2019/1/6 10:16
+     */
     @Override
+    public List<TbOrder> getAllOrder() {
         // 从第一页开始，每一页显示5条数据
         PageHelper.startPage(1,5);
-        List<TbOrder> allOrder = tbOrderMapper.getAllOrder(orderState);
+        List<TbOrder> allOrder = tbOrderMapper.getAllOrder();
         PageInfo<TbOrder> pageInfo =new PageInfo<>(allOrder);
-        return pageInfo;    }
+        return allOrder;
+    }
 
     /**
      * create by: yonyong

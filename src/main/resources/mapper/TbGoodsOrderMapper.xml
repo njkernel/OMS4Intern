@@ -12,9 +12,10 @@
     <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
   </resultMap>
 
-  <!--¸ù¾Ý¶©µ¥±àºÅ²éÑ¯¸Ã¶©µ¥ÏÂËùÓÐµÄÉÌÆ·±àºÅ-->
+  <!--ï¿½ï¿½ï¿½Ý¶ï¿½ï¿½ï¿½ï¿½ï¿½Å²ï¿½Ñ¯ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½-->
   <select id="getGoodOrderById" parameterType="Integer" resultType="Integer">
     SELECT GOODS_ID FROM tb_goods_order WHERE order_id=#{orderId}
-  </select>  <select id="getStockByOrderId" parameterType="Integer" resultMap="BaseResultMap">
-        select * from tb_goods_order where order_id=#{orderId}
-    </select></mapper>
+  </select>
+  <select id="getStockByOrderId" parameterType="Integer" resultMap="BaseResultMap">
+      select * from tb_goods_order where order_id=#{orderId}
+  </select></mapper>
