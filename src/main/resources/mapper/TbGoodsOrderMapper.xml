@@ -11,4 +11,9 @@
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
   </resultMap>
+
+
+  <select id="getStockByOrderId" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_goods_order where order_id=#{orderId}
+    </select>
 </mapper>

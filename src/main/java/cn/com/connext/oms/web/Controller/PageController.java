@@ -1,8 +1,12 @@
 package cn.com.connext.oms.web.Controller;
 
+import cn.com.connext.oms.service.TbRefundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Map;
 
 /**
  * <p>Title: PageController</p>
@@ -14,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class PageController {
+
+    @Autowired
+    private TbRefundService tbRefundService;
 
     /**
     * @Author: caps
@@ -36,6 +43,21 @@ public class PageController {
     @RequestMapping("/index")
     public String indexPage(){
         return "pages/index/index";
+    }
+
+
+    /** 
+    * @Description: 查看退款单页面
+    * @Param: [] 
+    * @return: java.lang.String 
+    * @Author: Lili Chen 
+    * @Date: 2019/1/10 
+    */
+    @RequestMapping("/refund")
+    public String refundPage(Model model){
+        Map<String,Object> map=tbRefundService.getAllRefundIndex(1,4);
+        model.addAttribute("map",map);
+        return "pages/details/orders/refund-list";
     }
 
 }

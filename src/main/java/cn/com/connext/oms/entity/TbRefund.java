@@ -1,10 +1,11 @@
 package cn.com.connext.oms.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "oms.tb_refund")
-public class TbRefund {
+public class TbRefund implements Serializable {
     /**
      * 退款id
      */
