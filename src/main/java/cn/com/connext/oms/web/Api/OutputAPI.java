@@ -3,7 +3,10 @@ package cn.com.connext.oms.web.Api;
 import cn.com.connext.oms.commons.utils.HttpClientUtils.HttpClientUtil;
 import cn.com.connext.oms.commons.utils.HttpClientUtils.common.HttpConfig;
 import cn.com.connext.oms.commons.utils.HttpClientUtils.exception.HttpProcessException;
-
+import cn.com.connext.oms.entity.TbOrder;
+import cn.com.connext.oms.entity.TbOutput;
+import cn.com.connext.oms.entity.TbReceiver;
+import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +16,7 @@ import java.util.Map;
  * @author: Lili.Chen
  * @create: 2019-01-09 12:48
  **/
-public class OutputAPI {
+public class OutputApi {
 
     /**
     * @Description: 从wms获取出库单的状态（用出库单编码）
@@ -46,24 +49,5 @@ public class OutputAPI {
         return s;
     }
 
-
-
-    public static String post() throws HttpProcessException {
-        Map<String,Object> map=new HashMap<String, Object>();
-        String[] a=new String[2];
-        a[0]=1+"";
-        a[1]=2+"";
-      /*  String a="1,2";*/
-        for(String s:a){
-            System.out.println(s);
-        }
-
-        map.put("outRepoOrderIdArray",a);
-        String s = HttpClientUtil.post(HttpConfig.custom().client(),
-                "http://10.129.100.39:8080/api/cancelResult",
-                HttpConfig.custom().headers(),
-                map, HttpConfig.custom().context(),
-                HttpConfig.custom().encoding());
-        return s;
-    }
+    
 }
