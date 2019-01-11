@@ -35,7 +35,7 @@ public class TbRefund implements Serializable {
      * 退货id
      */
     @Column(name = "return_id")
-    private Integer returnId;
+    private String returnId;
 
     /**
      * 创建时间
@@ -136,7 +136,7 @@ public class TbRefund implements Serializable {
      *
      * @return return_id - 退货id
      */
-    public Integer getReturnId() {
+    public String getReturnId() {
         return returnId;
     }
 
@@ -145,7 +145,7 @@ public class TbRefund implements Serializable {
      *
      * @param returnId 退货id
      */
-    public void setReturnId(Integer returnId) {
+    public void setReturnId(String returnId) {
         this.returnId = returnId;
     }
 

@@ -50,8 +50,7 @@ public class TbOutput implements Serializable {
     /**
      * 备注
      */
-    @Column(name = "` remark`")
-    private String remark;
+    @Column(name = "remark")    private String remark;
 
 
     /**
@@ -73,6 +72,7 @@ public class TbOutput implements Serializable {
      * 获取出库id
      *
      * @return output_id - 出库id
+
      */
     public Integer getOutputId() {
         return outputId;

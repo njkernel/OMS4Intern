@@ -12,9 +12,7 @@
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
   </resultMap>
 
-
-
-  <update id="updateStock" parameterType="tbStock">
+ <update id="updateStock" parameterType="tbStock">
          update tb_stock set available_stock=#{availableStock},locked_stock=#{lockedStock},totalStock=#{totalStock}
         where stock_id=#{stockId}
     </update>
@@ -48,5 +46,12 @@
     <foreach collection="list" item="item" open="(" separator="," close=")">
       #{item.stockId}
     </foreach>
+  </update> <!--������Ʒ����޸���Ʒ�ܿ��-->
+  <update id="updateStock1" parameterType="cn.com.connext.oms.entity.TbStock">
+    update tb_stock set total_stock=#{totalStock} where goods_id=#{goodsId}
   </update>
-</mapper>
+
+  <!--������Ʒ�����޸���Ʒ��������棬���ÿ��-->
+  <update id="updateLockdAndAvailable" parameterType="cn.com.connext.oms.entity.TbStock">
+    update tb_stock set available_stock=available_stock+#{num},locked_stock=locked_stock+#{num2}    where goods_id=#{goodsId}
+  </update></mapper>

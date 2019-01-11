@@ -10,4 +10,11 @@
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
     <result column="number" jdbcType="INTEGER" property="number" />
   </resultMap>
+
+  <!--生成退货单对应的商品单-->
+  <insert id="addReturnOrderGoods">
+    INSERT INTO tb_return_goods
+     (order_id,goods_id,number) VALUES (#{orderId},#{goodsId},#{number})
+
+  </insert>
 </mapper>

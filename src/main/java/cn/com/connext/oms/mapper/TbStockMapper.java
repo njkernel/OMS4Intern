@@ -5,11 +5,20 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
 
 import java.util.List;
-
 @Repository
 public interface TbStockMapper extends MyMapper<TbStock> {
 
-    /** 
+    /**
+     * @Author: zhaojun
+     * @Description: 更新商品的库存信息
+     * @Param:
+     * @Return:
+     * @Create: 2019/1/8 11:14
+     */
+    /*List<TbStock> updateStock(int goodsId);*/
+    public void updateStock(int goodsId,int totalStock);
+
+ /** 
     * @Description: 更新库存 
     * @Param: [tbStock] 
     * @return: int 
@@ -36,5 +45,21 @@ public interface TbStockMapper extends MyMapper<TbStock> {
    * @Author: Lili Chen 
    * @Date: 2019/1/11 
    */
-   int updateStockList(List<TbStock> stockList);
+   int updateStockList(List<TbStock> stockList); /**
+     * @Author: zhaojun
+     * @Description: 更新商品的库存信息
+     * @Param:
+     * @Return:
+     * @Create: 2019/1/8 11:14
+     */
+    /*List<TbStock> updateStock(int goodsId);*/
+    public void updateStock1(int goodsId,int totalStock);
+    /**
+     * @Author: zhaojun
+     * @Description:
+     * @Param: []
+     * @Return:
+     * @Create: ${DATE}
+     */
+    public void updateLockdAndAvailable(int goodsId,int num,int num2);
 }

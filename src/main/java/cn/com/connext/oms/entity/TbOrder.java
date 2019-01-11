@@ -120,14 +120,13 @@ public class TbOrder implements Serializable {
     @Column(name = "receiver_id")
     private Integer receiverId;
 
+    /**
+     * 备注
+     */
     @Column(name="remark")
     private String remark;
 
     private TbReceiver tbReceiver;
-
-    private  TbGoods tbGoods;
-
-    private TbGoodsOrder tbGoodsOrder;
 
     public String getRemark() {
         return remark;
@@ -136,6 +135,10 @@ public class TbOrder implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    private  TbGoods tbGoods;
+
+    private TbGoodsOrder tbGoodsOrder;
 
     public TbReceiver getTbReceiver() {
         return tbReceiver;

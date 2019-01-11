@@ -74,7 +74,7 @@ public class ShiroConfig {
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置realm.
-        securityManager.setRealm(myRealm());
+//        securityManager.setRealm(myRealm());
         return securityManager;
     }
 
@@ -83,11 +83,11 @@ public class ShiroConfig {
      *
      * @return
      */
-    @Bean
-    public MyRealm myRealm() {
-        MyRealm myRealm = new MyRealm();
-        return myRealm;
-    }
+//    @Bean
+//    public MyRealm myRealm() {
+//        MyRealm myRealm = new MyRealm();
+//        return myRealm;
+//    }
     /**
      * @描述：ShiroDialect，为了在thymeleaf里使用shiro的标签的bean
      * @return
