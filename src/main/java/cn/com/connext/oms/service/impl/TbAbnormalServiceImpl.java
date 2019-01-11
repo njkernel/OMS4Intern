@@ -76,7 +76,7 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         }
         //判断库存
         for (Integer goodId:goodsIdByOrder){
-            TbStock tbStock = tbStockMapper.selectStockByGoodsId(goodId);
+            TbStock tbStock = tbAbnormalMapper.selectStockByGoodsId(goodId);
             if(tbStock.getAvailableStock()<=0){
                 creatAbnormal(orderId,"库存异常","库存不足","待处理");
                 list.add("库存异常");

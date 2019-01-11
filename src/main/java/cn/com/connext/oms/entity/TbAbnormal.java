@@ -51,6 +51,20 @@ public class TbAbnormal {
     }
 
     /**
+     * 修改人
+     */
+    @Column(name = "modified_user")
+    private String modifiedUser;
+
+    public String getModifiedUser() {
+        return modifiedUser;
+    }
+
+    public void setModifiedUser(String modifiedUser) {
+        this.modifiedUser = modifiedUser;
+    }
+
+    /**
      * 设置异常id
      *
      * @param abnormalId 异常id
