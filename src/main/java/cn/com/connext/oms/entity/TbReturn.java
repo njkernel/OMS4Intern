@@ -53,20 +53,6 @@ public class TbReturn {
     private Date updated;
 
     /**
-     * 单号类型（退货单/换货单）
-     */
-    @Column(name = "return_type")
-    private String returnType;
-
-    public String getReturnType() {
-        return returnType;
-    }
-
-    public void setReturnType(String returnType) {
-        this.returnType = returnType;
-    }
-
-    /**
      * 获取退货id
      *
      * @return return_id - 退货id

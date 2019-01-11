@@ -1,10 +1,11 @@
 package cn.com.connext.oms.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "oms.tb_output")
-public class TbOutput {
+public class TbOutput implements Serializable {
     /**
      * 出库id
      */
@@ -49,13 +50,16 @@ public class TbOutput {
     /**
      * 备注
      */
+    @Column(name = "` remark`")
     private String remark;
 
+
     /**
-     * 修改人
+     * 备注
      */
     @Column(name = "modified_user")
-    private String modifiedUser;
+    private String  modifiedUser;
+
 
     public String getModifiedUser() {
         return modifiedUser;
@@ -69,7 +73,6 @@ public class TbOutput {
      * 获取出库id
      *
      * @return output_id - 出库id
-
      */
     public Integer getOutputId() {
         return outputId;

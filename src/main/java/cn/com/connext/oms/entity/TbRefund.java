@@ -1,10 +1,11 @@
 package cn.com.connext.oms.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "oms.tb_refund")
-public class TbRefund {
+public class TbRefund implements Serializable {
     /**
      * 退款id
      */
@@ -34,7 +35,7 @@ public class TbRefund {
      * 退货id
      */
     @Column(name = "return_id")
-    private String returnId;
+    private Integer returnId;
 
     /**
      * 创建时间
@@ -135,7 +136,7 @@ public class TbRefund {
      *
      * @return return_id - 退货id
      */
-    public String getReturnId() {
+    public Integer getReturnId() {
         return returnId;
     }
 
@@ -144,7 +145,7 @@ public class TbRefund {
      *
      * @param returnId 退货id
      */
-    public void setReturnId(String returnId) {
+    public void setReturnId(Integer returnId) {
         this.returnId = returnId;
     }
 
