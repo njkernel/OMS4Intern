@@ -1,6 +1,7 @@
 package cn.com.connext.oms.mapper;
 
-import cn.com.connext.oms.commons.dto.output.OutRepoOrderDetailDto;
+import cn.com.connext.oms.commons.dto.OutRepoOrderDetailDto;
+import cn.com.connext.oms.entity.TbOrderDetails;
 import cn.com.connext.oms.entity.TbOrderDetails;
 import cn.com.connext.oms.entity.TbOutput;
 import org.springframework.stereotype.Repository;

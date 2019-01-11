@@ -10,7 +10,10 @@ import cn.com.connext.oms.mapper.TbOrderMapper;
 import cn.com.connext.oms.mapper.TbOutputMapper;
 import cn.com.connext.oms.mapper.TbReceiverMapper;
 import cn.com.connext.oms.service.OutputService;
-import cn.com.connext.oms.web.Api.output.OutputApi;
+import cn.com.connext.oms.web.Api.OutputApi;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

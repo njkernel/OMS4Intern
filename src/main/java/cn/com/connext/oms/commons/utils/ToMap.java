@@ -7,17 +7,18 @@ import org.springframework.util.MultiValueMap;
 import java.util.Map;
 
 /**
- * @Author: Marcus
- * @Date: 2019/1/3 11:07
- * @Version 1.0 */
+ * @author xiamingxing
+ * @date 2019/1/10 12:00
+ */
 public class ToMap {
-  public MultiValueMap<String, Object> toMap() {
-    MultiValueMap<String, Object> result = new LinkedMultiValueMap<>();
-    ObjectMapper oMapper = new ObjectMapper();
-    Map map = oMapper.convertValue(this, Map.class);
-    for (Object key : map.keySet()) {
-      result.add((String) key, map.get(key));
+    public MultiValueMap<String, Object> toMap() {
+        MultiValueMap<String, Object> result = new LinkedMultiValueMap<>();
+        ObjectMapper oMapper = new ObjectMapper();
+        Map map = oMapper.convertValue(this, Map.class);
+        for (Object key : map.keySet()) {
+            result.add((String) key, map.get(key));
+        }
+        return result;
+
     }
-    return result;
-  }
 }
