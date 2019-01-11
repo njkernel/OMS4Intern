@@ -153,7 +153,7 @@ public interface TbExchangeMapper {
      *  * @Param: tbOutput
      * @return int
      */
-    public int insertOutput(@Param("tbOutput")TbOutput tbOutput);
+//    public int insertOutput(@Param("tbOutput")TbOutput tbOutput);
 
     /**
      * create by: yonyong
@@ -167,35 +167,6 @@ public interface TbExchangeMapper {
 
     public TbInput selectTbInputByOrderId(@Param("orderId") int orderId);
 
-    /**
-     * create by: yonyong
-     * description: 根据商品id查询商品库存信息
-     * create time: 2019/1/10 17:11
-     *
-     *  * @Param: goodId
-     * @return cn.com.connext.oms.entity.TbStock
-     */
-    public TbStock selectStockByGoodId(@Param("goodId")int goodId);
-
-    /**
-     * create by: yonyong
-     * description: 根据商品code查询商品库存信息
-     * create time: 2019/1/10 17:26
-     *
-     *  * @Param: goodCode
-     * @return cn.com.connext.oms.entity.TbStock
-     */
-    public TbStock selectStockByGoodCode(@Param("goodCode")int goodCode);
-
-    /**
-     * create by: yonyong
-     * description: 更新商品库存信息
-     * create time: 2019/1/10 21:52
-     *
-     *  * @Param: tbStock
-     * @return int
-     */
-    public int updateStock(@Param("tbStock")TbStock tbStock);
 
     /**
      * create by: yonyong
@@ -215,7 +186,7 @@ public interface TbExchangeMapper {
      *  * @Param: tbGoodsOrder
      * @return int
      */
-    public int insertGoodsOrder(@Param("tbGoodsOrder")TbGoodsOrder tbGoodsOrder);
+    public int insertGoodsOrders(@Param("tbGoodsOrders")List<TbGoodsOrder> tbGoodsOrders);
 
     /**
      * create by: yonyong

@@ -11,11 +11,14 @@ import java.util.UUID;
  * @describe:
  **/
 public class CodeGenerateUtils {
- 
+ 	public static int ID=1901060005;
 	public static String creatUUID() {
 		return UUID.randomUUID().toString().replace("-", "");
 	}
- 
+
+	public static int creatId(){
+		return ID+1;
+	}
 	public static void main(String[] args) {
 		String str = CodeGenerateUtils.creatUUID();
 		System.out.println(str);

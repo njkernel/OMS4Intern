@@ -8,6 +8,7 @@ import cn.com.connext.oms.service.TbExchangeService;
 import cn.com.connext.oms.service.TbOrderService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,7 +51,7 @@ public class inputStateFeedback {
     @ApiOperation(value = "订单数据接口")
     public BaseResult getAllOrder(String orderState){
         try {
-            List<TbOrder> allOrder = tbOrderService.getAllOrder(orderState);
+            PageInfo<TbOrder> allOrder = tbOrderService.getAllOrder(orderState);
             return BaseResult.success("成功",allOrder);
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +84,7 @@ public class inputStateFeedback {
             details=new ArrayList<>();
         }
         InputFeedback inputFeedback=new InputFeedback(tokens,orderId,inputState,"yonyong",details);
-        int rs=tbExchangeService.generateOutput(inputFeedback);
+        int rs=tbExchangeService.inputFeedback(inputFeedback);
         if (0 == rs){
             return BaseResult.success("操作成功！已生成新的出库单！");
         }

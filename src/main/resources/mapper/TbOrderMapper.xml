@@ -171,6 +171,8 @@
   and a.order_id=#{id}
     </select>
 
+
+
     <!--根据订单ID查询订单所有信息 -->
     <select id="getOrderById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT * FROM tb_order WHERE order_id=#{orderId}

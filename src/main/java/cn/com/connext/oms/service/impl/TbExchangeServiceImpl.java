@@ -6,7 +6,7 @@ import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDTO;
 import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDetailDTO;
 import cn.com.connext.oms.commons.utils.AES;
 import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
-import cn.com.connext.oms.commons.utils.ExchangeCheck;
+import cn.com.connext.oms.commons.utils.ExchangeUtils;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.mapper.TbExchangeMapper;
 import cn.com.connext.oms.mapper.TbOrderMapper;
@@ -202,15 +202,13 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     for (int t : ids) {
       TbReturn tbReturn = tbExchangeMapper.selectTbReturnById(t);
       // 判断数据库订单时间与当前时间相差是否超过15天，超过15天，审核不予通过
-      ExchangeCheck exchangeCheck =new ExchangeCheck();
-      int stockState= exchangeCheck.checkExchangeCheckStockByReturnId(t);
-      if (MISTIMING < date.getTime() - tbReturn.getCreated().getTime()&&stockState==1) {
+      ExchangeUtils exchangeUtils =new ExchangeUtils();
+      if (MISTIMING < date.getTime() - tbReturn.getUpdated().getTime()) {
         tbReturn.setReturnState("审核通过");
 
         tbReturn.setModifiedUser(modifiedUser);
         tbReturn.setUpdated(update);
         list0.add(tbReturn);
-        exchangeCheck.updateExchangeCheckStockBefore(t);
 
       } else {
         tbReturn.setReturnState("审核失败");
@@ -288,7 +286,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
 //      } catch (Exception e) {
         try {
           restTemplate.postForEntity(
-              "http://10.129.100.22:8080/api/inRepertoryOrder",
+              "http://192.168.43.115:8080/api/inRepertoryOrder",
               inRepertoryDTO.toMap(),
               String.class);
           TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
@@ -318,7 +316,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
    * @return int
    */
   @Override
-  public int generateOutput(InputFeedback inputFeedback) {
+  public int inputFeedback(InputFeedback inputFeedback) {
     TbReturn tbReturn = new TbReturn();
     TbInput tbInput = new TbInput();
     List<TbReturn> tbReturns = new ArrayList<>();
@@ -375,20 +373,10 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       return 3;
     }
 
-    // 生成出库单
-    TbOutput tbOutput = new TbOutput();
-    tbOutput.setOutputCode(CodeGenerateUtils.creatUUID());
-    tbOutput.setOrderId(inputFeedback.getOrderId());
-    tbOutput.setOutputState("处理中");
-    tbOutput.setCreated(new Date());
-    tbOutput.setUpdated(new Date());
-    tbOutput.setSynchronizeState("未同步");
-    tbOutput.setModifiedUser(inputFeedback.getModifiedUser());
     try {
-      new ExchangeCheck().updateExchangeCheckStockAfter(inputFeedback.getOrderId(),inputFeedback.getGoodDetails());
-      tbExchangeMapper.insertOutput(tbOutput);
+      new ExchangeUtils().newOrder(inputFeedback.getGoodDetails(),inputFeedback.getOrderId());
       return 0;
-    } catch (Exception e) {
+    }catch (Exception e){
       return 1;
     }
 
