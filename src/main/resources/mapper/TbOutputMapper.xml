@@ -53,7 +53,6 @@
   <select id="getOutputByOutputCode" parameterType="String" resultMap="BaseResultMap">
         select * from tb_output where output_code=#{outputCode}
     </select>
-<!--根据订单id查询出所有出库单的详情-->
   <select id="orderDetails" parameterType="integer" resultType="cn.com.connext.oms.entity.TbOrderDetails">
     SELECT
     c.output_id,

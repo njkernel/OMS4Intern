@@ -166,7 +166,6 @@
   and a.order_id=#{id}
     </select>
 
-    <!--���ݶ���ID��ѯ�����Ϳ����Ϣ-->
     <select id="getAllById" parameterType="Integer" resultType="cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto">
         select * from tb_order o
        /* inner join tb_goods_order go on go.order_id=o.order_id
@@ -175,7 +174,6 @@
         WHERE o.order_id=#{orderId}
     </select>
 
-    <!--���ݶ���id��ѯ����-->
     <select id="getOrderByOrderId" resultMap="BaseResultMap">
         SELECT
          a.order_id,
@@ -203,7 +201,6 @@
 
     </select>
 
-    <!--���ݶ���id��ѯ��������ʱ��-->
     <select id="selectCreatedById" resultType="Date">
         SELECT purchase_time
         FROM tb_order
