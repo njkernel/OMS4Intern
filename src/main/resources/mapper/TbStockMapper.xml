@@ -12,14 +12,46 @@
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
   </resultMap>
 
+ <update id="updateStock" parameterType="tbStock">
+         update tb_stock set available_stock=#{availableStock},locked_stock=#{lockedStock},totalStock=#{totalStock}
+        where stock_id=#{stockId}
+    </update>
 
-  <!--根据商品编号修改商品总库存-->
-  <update id="updateStock" parameterType="cn.com.connext.oms.entity.TbStock">
+  <select id="getStockById" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_stock where stock_id=#{stockId}
+    </select>
+
+  <select id="getStockByGoodsId" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_stock where goods_id=#{goodsId}
+    </select>
+
+
+  <update id="updateStockList" parameterType="java.util.List">
+    UPDATE tb_stock
+    SET available_stock = CASE stock_id
+    <foreach collection="list" item="item">
+      WHEN #{item.stockId} THEN #{item.availableStock}
+    </foreach>
+    END, locked_stock = CASE stock_id
+    <foreach collection="list" item="item">
+      WHEN #{item.stockId} THEN #{item.lockedStock}
+    </foreach>
+    END, total_stock = CASE stock_id
+    <foreach collection="list" item="item">
+      WHEN #{item.stockId} THEN #{item.totalStock}
+    </foreach>
+    END
+    WHERE
+    stock_id in
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+      #{item.stockId}
+    </foreach>
+  </update> <!--������Ʒ����޸���Ʒ�ܿ��-->
+  <update id="updateStock1" parameterType="cn.com.connext.oms.entity.TbStock">
     update tb_stock set total_stock=#{totalStock} where goods_id=#{goodsId}
   </update>
 
-  <!--根据商品编码修改商品的锁定库存，可用库存-->
+  <!--������Ʒ�����޸���Ʒ��������棬���ÿ��-->
   <update id="updateLockdAndAvailable" parameterType="cn.com.connext.oms.entity.TbStock">
     update tb_stock set available_stock=available_stock+#{num},locked_stock=locked_stock+#{num2}    where goods_id=#{goodsId}
-  </update>
-</mapper>
+  </update></mapper>

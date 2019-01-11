@@ -12,8 +12,6 @@
     <result column="created" jdbcType="TIMESTAMP" property="created" />
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
     <result column="synchronize_state" jdbcType="VARCHAR" property="synchronizeState" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
     <association property="tbGoodsOrder" javaType="cn.com.connext.oms.entity.TbGoodsOrder">
       <id column="goods_order_id" jdbcType="INTEGER" property="goodsOrderId" />
       <result column="order_id" jdbcType="INTEGER" property="orderId" />
@@ -28,7 +26,34 @@
       <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
     </association>
   </resultMap>
-  <!--æ ¹æ®è®¢å•idæŸ¥è¯¢å‡ºæ‰€æœ‰å‡ºåº“å•çš„è¯¦æƒ…-->
+
+
+  <update id="updateOutputListStatue" parameterType="java.util.List">
+    UPDATE tb_output
+    SET output_state = CASE output_id
+    <foreach collection="list" item="item">
+      WHEN #{item.outputId} THEN #{item.outputState}
+    </foreach>
+    END
+    WHERE
+    output_id in
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+      #{item.outputId}
+    </foreach>
+  </update>
+
+  <select id="getOutputByOrderId" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_output where order_id=#{orderId}
+    </select>
+
+  <select id="getOutputByOutputId" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_output where output_id=#{outputId}
+    </select>
+
+  <select id="getOutputByOutputCode" parameterType="String" resultMap="BaseResultMap">
+        select * from tb_output where output_code=#{outputCode}
+    </select>
+<!--¸ù¾Ý¶©µ¥id²éÑ¯³öËùÓÐ³ö¿âµ¥µÄÏêÇé-->
   <select id="orderDetails" parameterType="integer" resultType="cn.com.connext.oms.entity.TbOrderDetails">
     SELECT
     c.output_id,
@@ -62,5 +87,4 @@
   <select id="getOutRepoOrderDetailDto" resultType="cn.com.connext.oms.commons.dto.output.OutRepoOrderDetailDto">
     select tb_goods.goods_code,tb_goods_order.num from tb_goods, tb_goods_order
     where tb_goods.goods_id=tb_goods_order.goods_id and tb_goods_order.order_id = #{id}
-  </select>
-</mapper>
+  </select></mapper>
