@@ -296,3 +296,66 @@
 .2019-01-11 [Thread-2]  INFO   o.s.context.support.DefaultLifecycleProcessor  Stopping beans in phase 2147483647
 .2019-01-11 [Thread-2]  INFO   o.s.context.support.DefaultLifecycleProcessor  Stopping beans in phase 0
 .2019-01-11 [Thread-2]  INFO   com.alibaba.druid.pool.DruidDataSource  {dataSource-1} closed
+.2019-01-11 [main]  INFO   cn.com.connext.oms.OmsApplication  Starting OmsApplication on nkgw10nh2005 with PID 14016 (E:\gitCode\OMS4Intern\target\classes started by Lili.Chen in E:\gitCode\OMS4Intern)
+.2019-01-11 [main]  INFO   cn.com.connext.oms.OmsApplication  No active profile set, falling back to default profiles: default
+.2019-01-11 [main]  INFO   o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext  Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@58a9760d: startup date [Fri Jan 11 18:24:39 CST 2019]; root of context hierarchy
+.2019-01-11 [main]  WARN   tk.mybatis.spring.mapper.ClassPathMapperScanner  No MyBatis mapper was found in '[cn.com.connext.oms]' package. Please check your configuration.
+.2019-01-11 [main]  WARN   org.mybatis.spring.mapper.ClassPathMapperScanner  No MyBatis mapper was found in '[cn.com.connext.oms]' package. Please check your configuration.
+.2019-01-11 [main]  INFO   o.s.d.r.config.RepositoryConfigurationDelegate  Multiple Spring Data modules found, entering strict repository configuration mode!
+.2019-01-11 [main]  INFO   o.s.b.f.a.AutowiredAnnotationBeanPostProcessor  JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+.2019-01-11 [main]  INFO   o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker  Bean 'org.springframework.amqp.rabbit.annotation.RabbitBootstrapConfiguration' of type [org.springframework.amqp.rabbit.annotation.RabbitBootstrapConfiguration$$EnhancerBySpringCGLIB$$1478f0b5] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+.2019-01-11 [main]  INFO   o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker  Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$4e0d3287] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+.2019-01-11 [main]  INFO   o.s.boot.web.embedded.tomcat.TomcatWebServer  Tomcat initialized with port(s): 8502 (http)
+.2019-01-11 [main]  INFO   org.apache.catalina.core.StandardService  Starting service [Tomcat]
+.2019-01-11 [main]  INFO   org.apache.catalina.core.StandardEngine  Starting Servlet Engine: Apache Tomcat/8.5.34
+.2019-01-11 [localhost-startStop-1]  INFO   org.apache.catalina.core.AprLifecycleListener  The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_162\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;D:\maven\apache-maven-3.1.0\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Java\jdk1.8.0_162\bin;D:\mysql-5.7.21-winx64\bin;D:\apache-tomcat-7.0.70\bin;D:\Git\cmd;C:\Program Files\TortoiseGit\bin;C:\Users\lili.chen\AppData\Local\Microsoft\WindowsApps;;.]
+.2019-01-11 [localhost-startStop-1]  INFO   o.a.c.core.ContainerBase.[Tomcat].[localhost].[/]  Initializing Spring embedded WebApplicationContext
+.2019-01-11 [localhost-startStop-1]  INFO   org.springframework.web.context.ContextLoader  Root WebApplicationContext: initialization completed in 2793 ms
+.2019-01-11 [localhost-startStop-1]  INFO   o.s.boot.web.servlet.ServletRegistrationBean  Servlet dispatcherServlet mapped to [/]
+.2019-01-11 [localhost-startStop-1]  INFO   o.s.boot.web.servlet.ServletRegistrationBean  Servlet statViewServlet mapped to [/druid/*]
+.2019-01-11 [localhost-startStop-1]  INFO   o.s.boot.web.servlet.FilterRegistrationBean  Mapping filter: 'characterEncodingFilter' to: [/*]
+.2019-01-11 [localhost-startStop-1]  INFO   o.s.boot.web.servlet.FilterRegistrationBean  Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+.2019-01-11 [localhost-startStop-1]  INFO   o.s.boot.web.servlet.FilterRegistrationBean  Mapping filter: 'httpPutFormContentFilter' to: [/*]
+.2019-01-11 [localhost-startStop-1]  INFO   o.s.boot.web.servlet.FilterRegistrationBean  Mapping filter: 'requestContextFilter' to: [/*]
+.2019-01-11 [localhost-startStop-1]  INFO   o.s.boot.web.servlet.FilterRegistrationBean  Mapping filter: 'webStatFilter' to urls: [/*]
+.2019-01-11 [main]  INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure  Init DruidDataSource
+.2019-01-11 [main]  INFO   com.alibaba.druid.pool.DruidDataSource  {dataSource-1} inited
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/abnormal]}" onto public java.lang.String cn.com.connext.oms.web.Controller.PageController.abnormal()
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/index]}" onto public java.lang.String cn.com.connext.oms.web.Controller.PageController.indexPage()
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/refund]}" onto public java.lang.String cn.com.connext.oms.web.Controller.PageController.refundPage(org.springframework.ui.Model)
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/cancelOrder],methods=[POST]}" onto public java.lang.String cn.com.connext.oms.web.Controller.TbOrderController.cancelOrder(java.util.List<cn.com.connext.oms.entity.TbOrder>)
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/getAllOrder],methods=[GET]}" onto public cn.com.connext.oms.commons.dto.BaseResult cn.com.connext.oms.web.Controller.TbOrderController.getAllOrder()
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/cancelOrderOfWms],methods=[POST],produces=[text/json;charset=UTF-8]}" onto public java.lang.String cn.com.connext.oms.web.Controller.TbOrderController.cancelOrderOfWms(java.lang.String)
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/editReceiverInformation],methods=[POST]}" onto public java.lang.String cn.com.connext.oms.web.Controller.TbReceiverController.editReceiverInformation(cn.com.connext.oms.entity.TbReceiver)
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/getAllRefundIndex],methods=[POST]}" onto public java.util.Map<java.lang.String, java.lang.Object> cn.com.connext.oms.web.Controller.TbRefundController.getAllRefundIndex(java.lang.Integer,java.lang.Integer)
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/refund],methods=[POST]}" onto public java.lang.String cn.com.connext.oms.web.Controller.TbRefundController.refund(java.lang.Integer[])
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/test],methods=[GET]}" onto public java.util.Map<java.lang.String, java.lang.Object> cn.com.connext.oms.web.Controller.TestController.test() throws cn.com.connext.oms.commons.utils.HttpClientUtils.exception.HttpProcessException
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/swagger-resources/configuration/security]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.SecurityConfiguration> springfox.documentation.swagger.web.ApiResourceController.securityConfiguration()
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/swagger-resources]}" onto public org.springframework.http.ResponseEntity<java.util.List<springfox.documentation.swagger.web.SwaggerResource>> springfox.documentation.swagger.web.ApiResourceController.swaggerResources()
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/swagger-resources/configuration/ui]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.UiConfiguration> springfox.documentation.swagger.web.ApiResourceController.uiConfiguration()
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerMapping  Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+.2019-01-11 [main]  INFO   s.d.s.w.PropertySourcedRequestMappingHandlerMapping  Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+.2019-01-11 [main]  INFO   o.s.web.servlet.handler.SimpleUrlHandlerMapping  Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+.2019-01-11 [main]  INFO   o.s.w.s.m.m.a.RequestMappingHandlerAdapter  Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@58a9760d: startup date [Fri Jan 11 18:24:39 CST 2019]; root of context hierarchy
+.2019-01-11 [main]  INFO   o.s.web.servlet.handler.SimpleUrlHandlerMapping  Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+.2019-01-11 [main]  INFO   o.s.web.servlet.handler.SimpleUrlHandlerMapping  Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+.2019-01-11 [main]  WARN   org.thymeleaf.templatemode.TemplateMode  [THYMELEAF][main] Template Mode 'LEGACYHTML5' is deprecated. Using Template Mode 'HTML' instead.
+.2019-01-11 [main]  INFO   o.s.jmx.export.annotation.AnnotationMBeanExporter  Registering beans for JMX exposure on startup
+.2019-01-11 [main]  INFO   o.s.jmx.export.annotation.AnnotationMBeanExporter  Bean with name 'statFilter' has been autodetected for JMX exposure
+.2019-01-11 [main]  INFO   o.s.jmx.export.annotation.AnnotationMBeanExporter  Bean with name 'dataSource' has been autodetected for JMX exposure
+.2019-01-11 [main]  INFO   o.s.jmx.export.annotation.AnnotationMBeanExporter  Bean with name 'rabbitConnectionFactory' has been autodetected for JMX exposure
+.2019-01-11 [main]  INFO   o.s.jmx.export.annotation.AnnotationMBeanExporter  Located MBean 'dataSource': registering with JMX server as MBean [com.alibaba.druid.spring.boot.autoconfigure:name=dataSource,type=DruidDataSourceWrapper]
+.2019-01-11 [main]  INFO   o.s.jmx.export.annotation.AnnotationMBeanExporter  Located managed bean 'rabbitConnectionFactory': registering with JMX server as MBean [org.springframework.amqp.rabbit.connection:name=rabbitConnectionFactory,type=CachingConnectionFactory]
+.2019-01-11 [main]  INFO   o.s.jmx.export.annotation.AnnotationMBeanExporter  Located MBean 'statFilter': registering with JMX server as MBean [com.alibaba.druid.filter.stat:name=statFilter,type=StatFilter]
+.2019-01-11 [main]  INFO   o.s.context.support.DefaultLifecycleProcessor  Starting beans in phase 2147483647
+.2019-01-11 [main]  INFO   s.d.s.web.plugins.DocumentationPluginsBootstrapper  Context refreshed
+.2019-01-11 [main]  INFO   s.d.s.web.plugins.DocumentationPluginsBootstrapper  Found 1 custom documentation plugin(s)
+.2019-01-11 [main]  INFO   s.d.spring.web.scanners.ApiListingReferenceScanner  Scanning for api listing references
+.2019-01-11 [main]  WARN   s.d.s.w.readers.parameter.ParameterDataTypeReader  Trying to infer dataType java.util.List<cn.com.connext.oms.entity.TbOrder>
+.2019-01-11 [main]  WARN   s.d.s.w.readers.parameter.ParameterDataTypeReader  Trying to infer dataType java.lang.Integer[]
+.2019-01-11 [main]  INFO   o.s.boot.web.embedded.tomcat.TomcatWebServer  Tomcat started on port(s): 8502 (http) with context path ''
+.2019-01-11 [main]  INFO   cn.com.connext.oms.OmsApplication  Started OmsApplication in 10.347 seconds (JVM running for 11.781)
+.2019-01-11 [http-nio-8502-exec-1]  INFO   o.a.c.core.ContainerBase.[Tomcat].[localhost].[/]  Initializing Spring FrameworkServlet 'dispatcherServlet'
+.2019-01-11 [http-nio-8502-exec-1]  INFO   org.springframework.web.servlet.DispatcherServlet  FrameworkServlet 'dispatcherServlet': initialization started
+.2019-01-11 [http-nio-8502-exec-1]  INFO   org.springframework.web.servlet.DispatcherServlet  FrameworkServlet 'dispatcherServlet': initialization completed in 23 ms
