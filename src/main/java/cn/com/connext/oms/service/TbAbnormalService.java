@@ -53,6 +53,7 @@ public interface TbAbnormalService {
     * @Create: 2019/1/8 13:31
     */
     BaseResult abnormalHandle(int abnormalId);
+	
 
 }
 

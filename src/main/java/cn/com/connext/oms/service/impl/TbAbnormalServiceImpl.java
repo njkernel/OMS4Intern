@@ -219,6 +219,5 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         return BaseResult.fail("当前异常已处理");
     }
 
-
 }
 
