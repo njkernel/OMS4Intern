@@ -48,9 +48,9 @@ public class ExchangeUtils {
             TbGoodsOrder tbGoodsOrder=new TbGoodsOrder();
             TbGoods tbGoods=new TbGoods();
             try {
-                tbGoods=tbExchangeMapper.toSelectGoodByCode(Integer.valueOf(goodDetails1.getGoodsSku()));
+                 tbGoods=tbExchangeMapper.toSelectGoodByCode(Integer.valueOf(goodDetails1.getGoodsSku()));
             }catch (Exception e){
-                return 0;
+             return 0;
             }
             tbGoodsOrder.setGoodsId(tbGoods.getGoodsId());
             tbGoodsOrder.setOrderId(orderId);

@@ -85,3 +85,4 @@ public class InRepertoryDTO extends ToMap {
         this.detailDTOS = detailDTOS;
     }
 }
+

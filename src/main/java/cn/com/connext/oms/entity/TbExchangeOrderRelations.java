@@ -82,4 +82,3 @@ public class TbExchangeOrderRelations {
         this.exchangeId = exchangeId;
     }
 }
-

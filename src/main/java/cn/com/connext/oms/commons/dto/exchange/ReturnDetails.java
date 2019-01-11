@@ -7,13 +7,11 @@ import java.util.List;
 
 /**
  * @created with IDEA
- * @author: Aaron
+ * @author: yonyong
  * @version: 1.0.0
- * @date: 2019/1/11
- * @time: 10:56
+ * @date: 2019/1/8
+ * @time: 23:52
  **/
-
-
 public class ReturnDetails {
     private Integer returnId;
 

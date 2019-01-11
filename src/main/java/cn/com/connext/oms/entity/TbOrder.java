@@ -66,11 +66,6 @@ public class TbOrder {
     private Date updated;
 
     /**
-     * 评论
-     */
-    private String remark;
-
-    /**
      * 支付状态
      */
     @Column(name = "payment_state")
@@ -124,11 +119,11 @@ public class TbOrder {
     @Column(name = "receiver_id")
     private Integer receiverId;
 
-    private TbReceiver tbReceiver;
-
-    private  TbGoods tbGoods;
-
-    private TbGoodsOrder tbGoodsOrder;
+    /**
+     * 备注
+     */
+    @Column(name="remark")
+    private String remark;
 
     public String getRemark() {
         return remark;
@@ -137,6 +132,12 @@ public class TbOrder {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    private TbReceiver tbReceiver;
+
+    private  TbGoods tbGoods;
+
+    private TbGoodsOrder tbGoodsOrder;
 
     public TbReceiver getTbReceiver() {
         return tbReceiver;

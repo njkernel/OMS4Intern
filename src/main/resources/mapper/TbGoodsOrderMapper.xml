@@ -11,4 +11,9 @@
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
   </resultMap>
+
+  <!--根据订单编号查询该订单下所有的商品编号-->
+  <select id="getGoodOrderById" parameterType="Integer" resultType="Integer">
+    SELECT GOODS_ID FROM tb_goods_order WHERE order_id=#{orderId}
+  </select>
 </mapper>

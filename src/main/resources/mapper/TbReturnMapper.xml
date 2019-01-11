@@ -14,4 +14,78 @@
     <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
   </resultMap>
+
+  <!--生成退货单-->
+  <insert id="addReturnOrder">
+    INSERT INTO tb_return
+    (return_code,return_state,order_id,return_price,created,modified_user,updated) VALUES (#{returnCode},#{returnState},#{orderId},#{returnPrice},#{created},#{modifiedUser},#{updated})
+  </insert>
+
+  <!--根据id查找退货单状态-->
+  <select id="selectReturnOrderStateById" resultType="String">
+    SELECT return_state
+    FROM tb_return
+    WHERE return_id = #{returnId}
+  </select>
+
+  <!--更改退货单状态为“已取消”-->
+  <update id="returnOrderCancel">
+    UPDATE tb_return
+    SET return_state = '已取消',modified_user = #{modifiedUser},updated = #{updated}
+    WHERE return_id = #{returnId}
+  </update>
+
+  <!--查找所有待审核的退货单-->
+  <select id="selectAllUnauditOrder" resultType="TbReturn">
+
+  </select>
+
+
+  <!--根据订单id查找订单生成时间-->
+  <select id="selectCreatedById">
+    SELECT created
+    FROM tb_return
+    WHERE return_id = #{returnId}
+  </select>
+
+  <!--审核过后更改退货单的状态-->
+  <update id="updateReturnOrderStateById">
+    UPDATE tb_return
+    SET return_state = #{state},modified_user = #{user},updated = #{updated}
+    WHERE return_id = #{returnId}
+  </update>
+
+
+  <!--根据商品id查看商品单价-->
+  <select id="getPriceByGoodId" resultType="double">
+    SELECT goods_price
+    FROM tb_goods
+    WHERE goods_id = #{goodId}
+  </select>
+
+  <!--添加退货单对应的商品表-->
+  <insert id="addReturnOrderGoods">
+    INSERT tb_return_goods
+    (order_id,goods_id,number)VALUES (#{orderId},#{goodsId},#{number})
+  </insert>
+
+  <!--根据退货单号查询订单号-->
+  <select id="selectOrderIdByReturnId" resultType="Integer">
+    SELECT order_id
+    FROM tb_return
+    WHERE return_id = #{returnId}
+  </select>
+
+  <!--生成入库单-->
+  <insert id="createInputOrder">
+    INSERT tb_input
+    (input_code,order_id,input_state,created,updated,synchronize_state)VALUES (#{inputCode},#{orderId},#{inputState},#{created},#{updated},#{synchronizeState})
+  </insert>
+
+  <select id="getTbReturnByiId">
+    SELECT *
+    FROM tb_return
+    WHERE return_id = #{returnId}
+  </select>
+
 </mapper>

@@ -7,9 +7,9 @@ import org.springframework.util.MultiValueMap;
 import java.util.Map;
 
 /**
- * @Author: Marcus
- * @Date: 2019/1/3 11:07
- * @Version 1.0 */
+ * @author xiamingxing
+ * @date 2019/1/10 12:00
+ */
 public class ToMap {
     public MultiValueMap<String, Object> toMap() {
         MultiValueMap<String, Object> result = new LinkedMultiValueMap<>();
@@ -19,5 +19,6 @@ public class ToMap {
             result.add((String) key, map.get(key));
         }
         return result;
+
     }
 }

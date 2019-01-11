@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.connext.oms.mapper.TbGoodsMapper">
-  <resultMap id="BaseResultMap" type="cn.com.connext.oms.entity.TbGoods">
+  <resultMap id="BaseResultMap" type="cn.com.connext.oms.commons.dto.GoodsStockDto">
     <!--
       WARNING - @mbg.generated
     -->
@@ -9,5 +9,38 @@
     <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
+    <association property="tbStock" javaType="cn.com.connext.oms.entity.TbStock">
+      <id column="stock_id" jdbcType="INTEGER" property="stockId" />
+      <result column="available_stock" jdbcType="INTEGER" property="availableStock" />
+      <result column="locked_stock" jdbcType="INTEGER" property="lockedStock" />
+      <result column="total_stock" jdbcType="INTEGER" property="totalStock" />
+      <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    </association>
   </resultMap>
+  <!--根据商品编号查询对应商品的信息-->
+  <select id="getGoodsImformation" parameterType="Integer" resultMap="BaseResultMap">
+    SELECT * FROM tb_goods WHERE goods_id=#{goodsId}
+  </select>
+
+  <select id="getAllGoods" resultType="cn.com.connext.oms.commons.dto.GoodsStockDto">
+  SELECT
+         a.goods_id,
+         a.goods_code,
+         a.goods_name,
+         a.goods_price,
+         b.stock_id,
+         b.available_stock,
+         b.locked_stock,
+         b.total_stock,
+         b.goods_id
+  FROM
+       tb_goods a,
+       tb_stock b
+  WHERE
+    a.goods_id = b.goods_id
+  </select>
+  <!--根据GoodId查询GoodCode-->
+  <select id="findIdByCode" parameterType="String" resultType="integer">
+        SELECT goods_id FROM tb_goods WHERE goods_code=#{goodsCode}
+    </select>
 </mapper>
