@@ -1,32 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.connext.oms.mapper.TbOutputMapper">
-  <resultMap id="BaseResultMap" type="cn.com.connext.oms.entity.TbOrderDetails">
+  <resultMap id="BaseResultMap" type="cn.com.connext.oms.entity.TbOutput">
     <!--
       WARNING - @mbg.generated
     -->
-      <id column="output_id" jdbcType="INTEGER" property="outputId" />
-      <result column="output_code" jdbcType="VARCHAR" property="outputCode" />
-      <result column="order_id" jdbcType="INTEGER" property="orderId" />
-      <result column="output_state" jdbcType="VARCHAR" property="outputState" />
-      <result column="created" jdbcType="TIMESTAMP" property="created" />
-      <result column="updated" jdbcType="TIMESTAMP" property="updated" />
-      <result column="synchronize_state" jdbcType="VARCHAR" property="synchronizeState" />
-      <result column="remark" jdbcType="VARCHAR" property="remark" />
-      <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
-      <association property="tbGoodsOrder" javaType="cn.com.connext.oms.entity.TbGoodsOrder">
-      <id column="goods_order_id" jdbcType="INTEGER" property="goodsOrderId" />
-      <result column="order_id" jdbcType="INTEGER" property="orderId" />
-      <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
-      <result column="num" jdbcType="INTEGER" property="num" />
-      <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
-    </association>
-    <association property="tbGoods" javaType="cn.com.connext.oms.entity.TbGoods">
-      <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
-      <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
-      <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
-      <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
-    </association>
     <id column="output_id" jdbcType="INTEGER" property="outputId" />
     <result column="output_code" jdbcType="VARCHAR" property="outputCode" />
     <result column="order_id" jdbcType="INTEGER" property="orderId" />
@@ -34,90 +12,35 @@
     <result column="created" jdbcType="TIMESTAMP" property="created" />
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
     <result column="synchronize_state" jdbcType="VARCHAR" property="synchronizeState" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
-    <association property="tbGoodsOrder" javaType="cn.com.connext.oms.entity.TbGoodsOrder">
-      <id column="goods_order_id" jdbcType="INTEGER" property="goodsOrderId" />
-      <result column="order_id" jdbcType="INTEGER" property="orderId" />
-      <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
-      <result column="num" jdbcType="INTEGER" property="num" />
-      <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
-    </association>
-    <association property="tbGoods" javaType="cn.com.connext.oms.entity.TbGoods">
-      <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
-      <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
-      <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
-      <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
-    </association>
+    <result column=" remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-  <!--根据订单id查询出所有出库单的详情-->
-  <select id="orderDetails" parameterType="integer" resultType="cn.com.connext.oms.entity.TbOrderDetails">
-    SELECT
-    c.output_id,
-    c.output_code,
-    c.order_id,
-    c.output_state,
-    c.created,
-    c.updated,
-    c.synchronize_state,
-    a.goods_id,
-    a.goods_code,
-    a.goods_name,
-    a.goods_price,
-    b.goods_order_id,
-    b.order_id,
-    b.goods_id,
-    b.num,
-    b.total_price
-    FROM
-    tb_goods a,
-    tb_goods_order b,
-    tb_output c
+
+
+  <update id="updateOutputListStatue" parameterType="java.util.List">
+    UPDATE tb_output
+    SET output_state = CASE output_id
+    <foreach collection="list" item="item">
+      WHEN #{item.outputId} THEN #{item.outputState}
+    </foreach>
+    END
     WHERE
-    c.order_id = b.order_id
-    AND a.goods_id = b.goods_id
-    AND c.order_id =#{orderId}
-  </select>
-  <select id="getOutputOrderById" resultType="cn.com.connext.oms.entity.TbOutput">
-    select * from tb_output where order_id = #{orderId}
-  </select>
-  <select id="getOutRepoOrderDetailDto" resultType="cn.com.connext.oms.commons.dto.output.OutRepoOrderDetailDto">
-    select tb_goods.goods_code,tb_goods_order.num from tb_goods, tb_goods_order
-    where tb_goods.goods_id=tb_goods_order.goods_id and tb_goods_order.order_id = #{id}
-  </select>
-    <!--根据订单id查询出所有出库单的详情-->
-    <select id="orderDetails" parameterType="integer" resultType="cn.com.connext.oms.entity.TbOrderDetails">
-        SELECT
-             c.output_id,
-             c.output_code,
-             c.order_id,
-             c.output_state,
-             c.created,
-             c.updated,
-             c.synchronize_state,
-             a.goods_id,
-             a.goods_code,
-             a.goods_name,
-             a.goods_price,
-             b.goods_order_id,
-             b.order_id,
-             b.goods_id,
-             b.num,
-             b.total_price
-        FROM
-            tb_goods a,
-            tb_goods_order b,
-            tb_output c
-        WHERE
-            c.order_id = b.order_id
-            AND a.goods_id = b.goods_id
-            AND c.order_id =#{orderId}
+    output_id in
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+      #{item.outputId}
+    </foreach>
+  </update>
+
+  <select id="getOutputByOrderId" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_output where order_id=#{orderId}
     </select>
-    <select id="getOutputOrderById" resultType="cn.com.connext.oms.entity.TbOutput">
-        select * from tb_output where order_id = #{orderId}
+
+  <select id="getOutputByOutputId" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_output where output_id=#{outputId}
     </select>
-    <select id="getOutRepoOrderDetailDto" resultType="cn.com.connext.oms.commons.dto.OutRepoOrderDetailDto">
-        select tb_goods.goods_code,tb_goods_order.num from tb_goods, tb_goods_order
-        where tb_goods.goods_id=tb_goods_order.goods_id and tb_goods_order.order_id = #{id}
+
+  <select id="getOutputByOutputCode" parameterType="String" resultMap="BaseResultMap">
+        select * from tb_output where output_code=#{outputCode}
     </select>
+
+
 </mapper>
