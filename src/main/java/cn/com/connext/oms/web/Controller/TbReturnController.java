@@ -138,6 +138,7 @@ public class TbReturnController {
 
         for (int i = 0;i<returnIds.size();i++){
             TbReturn tbReturn = tbReturnService.getTbReturnById(returnIds.get(i));
+            //log
             if ("退货".equals(tbReturn.getReturnType())){
                 //将退货单生成单独的list交给退货部分处理
                 tbReturnList.add(tbReturn.getReturnId());
@@ -176,6 +177,7 @@ public class TbReturnController {
                 return BaseResult.success("入库单生成成功");
 
         }catch (Exception e){
+            //TODO
             return BaseResult.fail("服务器内部错误！");
         }
 
