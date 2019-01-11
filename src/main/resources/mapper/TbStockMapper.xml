@@ -11,4 +11,42 @@
     <result column="total_stock" jdbcType="INTEGER" property="totalStock" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
   </resultMap>
+
+
+
+  <update id="updateStock" parameterType="tbStock">
+         update tb_stock set available_stock=#{availableStock},locked_stock=#{lockedStock},totalStock=#{totalStock}
+        where stock_id=#{stockId}
+    </update>
+
+  <select id="getStockById" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_stock where stock_id=#{stockId}
+    </select>
+
+  <select id="getStockByGoodsId" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_stock where goods_id=#{goodsId}
+    </select>
+
+
+  <update id="updateStockList" parameterType="java.util.List">
+    UPDATE tb_stock
+    SET available_stock = CASE stock_id
+    <foreach collection="list" item="item">
+      WHEN #{item.stockId} THEN #{item.availableStock}
+    </foreach>
+    END, locked_stock = CASE stock_id
+    <foreach collection="list" item="item">
+      WHEN #{item.stockId} THEN #{item.lockedStock}
+    </foreach>
+    END, total_stock = CASE stock_id
+    <foreach collection="list" item="item">
+      WHEN #{item.stockId} THEN #{item.totalStock}
+    </foreach>
+    END
+    WHERE
+    stock_id in
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+      #{item.stockId}
+    </foreach>
+  </update>
 </mapper>

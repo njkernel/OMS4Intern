@@ -1,12 +1,8 @@
 package cn.com.connext.oms.service.impl;
 
 import cn.com.connext.oms.commons.utils.HttpClientUtils.exception.HttpProcessException;
-import cn.com.connext.oms.entity.TbOrder;
-import cn.com.connext.oms.entity.TbOutput;
-import cn.com.connext.oms.entity.TbRefund;
-import cn.com.connext.oms.mapper.TbOrderMapper;
-import cn.com.connext.oms.mapper.TbOutputMapper;
-import cn.com.connext.oms.mapper.TbRefundMapper;
+import cn.com.connext.oms.entity.*;
+import cn.com.connext.oms.mapper.*;
 import cn.com.connext.oms.service.TbOrderService;
 import cn.com.connext.oms.web.Api.OutputAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +35,12 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Autowired
     private TbRefundMapper tbRefundMapper;
 
+    @Autowired
+    private TbGoodsOrderMapper tbGoodsOrderMapper;
+
+    @Autowired
+    private TbStockMapper tbStockMapper;
+
 
     /**
     * @Author: caps
@@ -63,7 +65,8 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Override
     public boolean cancelOrder(List<TbOrder> tbOrderList) {
         Date date=new Date();
-        //List<TbOutput> outputList=new ArrayList<TbOutput>();//WMS需要更新的出库单
+        List<TbStock> stockList=new ArrayList<>();//保存需要更新的库存
+        List<TbGoodsOrder> goodsOrderList=new ArrayList<>();//保存需要更新订单的相应商品订单关系表
         StringBuffer outputBuffer=new StringBuffer();
         List<TbOutput> outputs=new ArrayList<TbOutput>();//OMS需要更新的出库单
         List<TbRefund> tbRefundList=new ArrayList<TbRefund>();//存即将生成的退款单
@@ -72,14 +75,41 @@ public class TbOrderServiceImpl implements TbOrderService {
         int orderResult=0;//订单状态更新返回结果
         int outputResult=0;//出库单更新返回结果
         int refundResult=0;//退款单更新返回结果
+        int stockResult=0;//库存更新条数
         String number="";//取消WMS出库单返回的状态码
         if(!tbOrderList.isEmpty()){//集合不为空
             for(TbOrder tbOrder:tbOrderList){
-              if(tbOrder.getOrderState().equals("待预检")||tbOrder.getOrderState().equals("待路由")||tbOrder.getOrderState().equals("待出库")||"wms请求取消".equals(tbOrder.getBasicState())){
-                    count++;//进行记录
-                }else if(tbOrder.getOrderState().equals("已出库")&& !"wms请求取消".equals(tbOrder.getBasicState())){
-                       TbOutput tbOutput=tbOutputMapper.getOutputByOrderId(tbOrder.getOrderId());
-                      String statusNumber="";//保存从WMS获取的出库单状态
+                goodsOrderList=tbGoodsOrderMapper.getStockByOrderId(tbOrder.getOrderId());//根据订单id查看到相应的订单商品关系表
+
+              if(tbOrder.getOrderState().equals("待预检")||tbOrder.getOrderState().equals("待路由")||tbOrder.getOrderState().equals("待出库")){
+                    count++;//进行订单需要更新条数的记录
+                  for(TbGoodsOrder goodsOrder:goodsOrderList) {//遍历关系表
+                      TbStock stock = tbStockMapper.getStockByGoodsId(goodsOrder.getGoodsId());//根据商品id查看到相应的库存
+                      stock.setAvailableStock(stock.getAvailableStock() + goodsOrder.getNum());//保存新的可用库存
+                      stock.setLockedStock(stock.getLockedStock() - goodsOrder.getNum());//保存新的锁定库存
+                      stockList.add(stock);
+                  }
+                }
+                else if("wms请求取消".equals(tbOrder.getBasicState())){
+                  count++;//进行订单需要更新条数的记录
+                  for(TbGoodsOrder goodsOrder:goodsOrderList) {
+                      TbStock stock = tbStockMapper.getStockByGoodsId(goodsOrder.getGoodsId());//根据商品id查看到相应的库存
+                      stock.setTotalStock(stock.getTotalStock()+goodsOrder.getNum());//保存新的可用总库存
+                      stock.setAvailableStock(stock.getAvailableStock()+goodsOrder.getNum());//保存新的可用库存
+                      stockList.add(stock);
+                  }
+
+              }
+                else if(tbOrder.getOrderState().equals("已出库")&& !"wms请求取消".equals(tbOrder.getBasicState())){
+                  for(TbGoodsOrder goodsOrder:goodsOrderList) {
+                      TbStock stock = tbStockMapper.getStockByGoodsId(goodsOrder.getGoodsId());//根据商品id查看到相应的库存
+                      stock.setTotalStock(stock.getTotalStock()+goodsOrder.getNum());//保存新的可用总库存
+                      stock.setAvailableStock(stock.getAvailableStock()+goodsOrder.getNum());//保存新的可用库存
+                      stockList.add(stock);
+                  }
+
+                  TbOutput tbOutput=tbOutputMapper.getOutputByOrderId(tbOrder.getOrderId());//根据订单id查看出库单
+                  String statusNumber="";//保存从WMS获取的出库单状态
                   try {
                       statusNumber=OutputAPI.getOutPutState(tbOutput.getOutputCode()); //从调用WMS接口获取出库单的状态（根据出库单编号）
                       System.out.println(statusNumber);
@@ -92,11 +122,12 @@ public class TbOrderServiceImpl implements TbOrderService {
                     }
                     else {//出库单未发货
                         TbOutput output=tbOutputMapper.getOutputByOrderId(tbOrder.getOrderId());
-                        outputBuffer.append(output.getOutputCode()+",");
-                        //output.setOutputState("已取消");
-                        //outputList.add(output);  //把需要在WMS取消的出库单保存起来
+                        outputBuffer.append(output.getOutputCode()+",");//把需要在WMS取消的出库单编码保存起来
                         count++;
                     }
+
+
+
                 }
 
                 refund.setCreatetd(date);
@@ -160,9 +191,9 @@ public class TbOrderServiceImpl implements TbOrderService {
             }
         }
          if(orderResult==tbOrderList.size()&&outputResult==outputs.size()){//数据是否全部更新
-               //生成相应退款单
-               refundResult=tbRefundMapper.batchAddRefund(tbRefundList);
-               if(refundResult==tbRefundList.size()){
+               stockResult=tbStockMapper.updateStockList(stockList);//更新库存
+               refundResult=tbRefundMapper.batchAddRefund(tbRefundList); //生成相应退款单
+               if(refundResult==tbRefundList.size()&&stockResult==stockList.size()){
                    return true;
                }
          }
