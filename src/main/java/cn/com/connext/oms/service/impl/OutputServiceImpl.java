@@ -78,7 +78,7 @@ public class OutputServiceImpl implements OutputService {
      *
      * 功能描述: 根据传入的数组id生成出库单，并根据WMS返回值修改订单状态为已出库或者出库异常
      *
-     * @param: 订单id
+     * @param: 订单id\
      * @return: 返回修改结果
      * @auther: Jay
      * @date: 2019/1/7
