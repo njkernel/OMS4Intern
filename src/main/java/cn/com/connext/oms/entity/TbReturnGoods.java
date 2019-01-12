@@ -26,6 +26,7 @@ public class TbReturnGoods {
     /**
      * 数量
      */
+    @Column(name = "number")
     private Integer number;
 
     /**

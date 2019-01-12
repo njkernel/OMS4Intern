@@ -1,7 +1,8 @@
 package cn.com.connext.oms.service;
 
+import cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto;
 import cn.com.connext.oms.entity.TbOrder;
-
+import com.github.pagehelper.PageInfo;import cn.com.connext.oms.entity.TbOutput;
 import java.util.List;
 
 /**
@@ -20,5 +21,63 @@ public interface TbOrderService {
      * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
      * @Create: 2019/1/6 10:14
      */
-    List<TbOrder> getAllOrder(String orderState);
+    List<TbOrder> getAllOrder();
+
+    /**
+     * create by: yonyong
+     * description: 根据订单id查询订单所有信息
+     * create time: 2019/1/7 13:52
+     *
+     *  * @Param: id
+     * @return cn.com.connext.oms.entity.TbOrder
+     */
+    List<TbOrder> getOrderDetailsByOrderId(int id);
+
+    /**
+     * @Author: zhaojun
+     * @Description: 根据订单编号查询订单的详情
+     * @Param: []
+     * @Create: 2019/1/7 10:59
+     */
+    public TbOrder getOrderById(int orderId);
+    /**
+     * @Author: zhaojun
+     * @Description: 根据订单ID查询订单所有信息
+     * @Param: []
+     * @Return:
+     * @Create: 2019/1/7 19:19
+     */
+    public OrderGoodsReceiverDto getAllById(int orderId);
+
+
+    /**
+     * create by: Aaron
+     * description: 根据订单id查询订单详情
+     * create time: 2019/1/7 15:31
+     *
+     *
+     * @return  * @Param: null
+     */
+
+    List<TbOrder> getOrderByOrderId(int orderId);
+
+   /** 
+   * @Description: 主动批量取消订单 
+   * @Param: [orderList] 
+   * @return: boolean 
+   * @Author: Lili Chen 
+   * @Date: 2019/1/8 
+   */
+    boolean cancelOrder(List<TbOrder> orderList);
+    
+    
+    /** 
+    * @Description: WMS取消订单 
+    * @Param: [outputList] 
+    * @return: boolean 
+    * @Author: Lili Chen 
+    * @Date: 2019/1/8 
+    */
+    boolean cancelOrderOfWms(String outputs);
+
 }

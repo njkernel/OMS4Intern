@@ -43,10 +43,11 @@ public class BaseResult implements Serializable {
     public static BaseResult fail(int status, String message) {
         return BaseResult.createResult(status, message, null);
     }
-
     public static BaseResult fail(String message, Object data) {
-        return BaseResult.createResult(STATUS_FAIL, message, data);
+        return BaseResult.createResult(STATUS_SUCCESS, message, data);
     }
+
+
     public int getStatus() {
         return status;
     }

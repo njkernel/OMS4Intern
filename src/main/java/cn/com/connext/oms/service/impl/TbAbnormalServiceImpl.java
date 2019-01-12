@@ -41,12 +41,12 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
 
 
     /**
-    * @Author: caps
-    * @Description:订单预检
-    * @Param: [orderId]
-    * @Return: cn.com.connext.oms.commons.dto.BaseResult
-    * @Create: 2019/1/7 17:51
-    */
+     * @Author: caps
+     * @Description:订单预检
+     * @Param: [orderId]
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2019/1/7 17:51
+     */
 
     public BaseResult checkGoods(int orderId){
 
@@ -76,7 +76,7 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         }
         //判断库存
         for (Integer goodId:goodsIdByOrder){
-            TbStock tbStock = tbStockMapper.selectStockByGoodsId(goodId);
+            TbStock tbStock = tbAbnormalMapper.selectStockByGoodsId(goodId);
             if(tbStock.getAvailableStock()<=0){
                 creatAbnormal(orderId,"库存异常","库存不足","待处理");
                 list.add("库存异常");
@@ -98,12 +98,12 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
     }
 
     /**
-    * @Author: caps
-    * @Description:根据订单id获取商品id
-    * @Param: [orderId]
-    * @Return: java.util.List<java.lang.Integer>
-    * @Create: 2019/1/7 17:51
-    */
+     * @Author: caps
+     * @Description:根据订单id获取商品id
+     * @Param: [orderId]
+     * @Return: java.util.List<java.lang.Integer>
+     * @Create: 2019/1/7 17:51
+     */
 
     public List<Integer> getGoodsIdByOrder(int orderId){
         List<Integer> list=new LinkedList();
@@ -118,12 +118,12 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
 
 
     /**
-    * @Author: caps
-    * @Description:生成异常订单
-    * @Param: [orderId, setAbnormalType, setAbnormalReason, setAbnormalState]
-    * @Return: void
-    * @Create: 2019/1/7 17:51
-    */
+     * @Author: caps
+     * @Description:生成异常订单
+     * @Param: [orderId, setAbnormalType, setAbnormalReason, setAbnormalState]
+     * @Return: void
+     * @Create: 2019/1/7 17:51
+     */
 
     public void creatAbnormal(Integer orderId,String setAbnormalType,String setAbnormalReason,String setAbnormalState){
         TbAbnormal tbAbnormal=new TbAbnormal();
@@ -136,12 +136,12 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
     }
 
     /**
-    * @Author: caps
-    * @Description:异常订单列表加模糊查询
-    * @Param: [currentPage, pageSize, tbAbnormal]
-    * @Return: com.github.pagehelper.PageInfo<cn.com.connext.oms.entity.TbAbnormal>
-    * @Create: 2019/1/7 17:50
-    */
+     * @Author: caps
+     * @Description:异常订单列表加模糊查询
+     * @Param: [currentPage, pageSize, tbAbnormal]
+     * @Return: com.github.pagehelper.PageInfo<cn.com.connext.oms.entity.TbAbnormal>
+     * @Create: 2019/1/7 17:50
+     */
     @Transactional(readOnly = true)
     public PageInfo<TbAbnormal> checkList(Integer currentPage, Integer pageSize, TbAbnormal tbAbnormal){
         String abnormalState = tbAbnormal.getAbnormalState();
@@ -162,7 +162,7 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         return pageInfo;
     }
 
-     /**
+    /**
      * @Author: caps
      * @Description:异常订单详情
      * @Param: [abnormalId]
@@ -190,12 +190,12 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
     }
 
     /**
-    * @Author: caps
-    * @Description: 异常处理
-    * @Param: [abnormalId]
-    * @Return: cn.com.connext.oms.commons.dto.BaseResult
-    * @Create: 2019/1/8 13:09
-    */
+     * @Author: caps
+     * @Description: 异常处理
+     * @Param: [abnormalId]
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2019/1/8 13:09
+     */
 
     public BaseResult abnormalHandle(int abnormalId){
         TbAbnormal tbAbnormal = tbAbnormalMapper.selectByPrimaryKey(abnormalId);

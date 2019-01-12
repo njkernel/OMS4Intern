@@ -11,7 +11,7 @@ import javax.persistence.Id;
  * @version 1.0.0
  * @Date 2019/1/8
  */
-public class TbOrderDetails extends TbOutput{
+public class TbOrderDetails extends TbOutput {
     private TbGoods tbGoods;
     private TbGoodsOrder tbGoodsOrder;
 

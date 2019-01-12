@@ -1,8 +1,7 @@
 package cn.com.connext.oms.service.impl;
 
 import cn.com.connext.oms.commons.dto.BaseResult;
-import cn.com.connext.oms.commons.dto.OutRepoOrderDetailDto;
-import cn.com.connext.oms.commons.utils.HttpClientUtils.exception.HttpProcessException;
+import cn.com.connext.oms.commons.dto.output.OutRepoOrderDetailDto;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOrderDetails;
 import cn.com.connext.oms.entity.TbOutput;
@@ -11,10 +10,9 @@ import cn.com.connext.oms.mapper.TbOrderMapper;
 import cn.com.connext.oms.mapper.TbOutputMapper;
 import cn.com.connext.oms.mapper.TbReceiverMapper;
 import cn.com.connext.oms.service.OutputService;
-import cn.com.connext.oms.web.Api.OutputApi;
+import cn.com.connext.oms.web.Api.output.OutputApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;

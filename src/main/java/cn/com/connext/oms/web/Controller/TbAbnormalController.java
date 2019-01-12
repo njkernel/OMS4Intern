@@ -91,4 +91,5 @@ public class TbAbnormalController {
             return BaseResult.fail("服务器内部错误");
         }
     }
+	
 }

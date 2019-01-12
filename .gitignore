@@ -22,5 +22,6 @@ rebel.xml
 .DS_Store
 
 ### Other ###
-logs/
+log/
 temp/
+log

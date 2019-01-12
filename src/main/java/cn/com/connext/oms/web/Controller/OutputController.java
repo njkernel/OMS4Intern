@@ -7,12 +7,9 @@ import cn.com.connext.oms.entity.TbOutput;
 import cn.com.connext.oms.service.OutputService;
 import cn.com.connext.oms.service.TbOrderService;
 import com.github.pagehelper.PageInfo;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +65,7 @@ public class OutputController {
      */
     @GetMapping("OutputDetails")
     public BaseResult OutputDetails() {
-        PageInfo<TbOrder> allOrder = (PageInfo<TbOrder>) tbOrderService.getAllOrder(STATUS4);
+        List<TbOrder> allOrder = tbOrderService.getAllOrder();
         // 需要和前端页面绑定
         return BaseResult.success("成功", allOrder);
     }

@@ -16,12 +16,12 @@ import java.util.Map;
  */
 public interface TbAbnormalService {
     /**
-    * @Author: caps
-    * @Description:订单预检
-    * @Param: [orderId]
-    * @Return: cn.com.connext.oms.commons.dto.BaseResult
-    * @Create: 2019/1/7 17:50
-    */
+     * @Author: caps
+     * @Description:订单预检
+     * @Param: [orderId]
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2019/1/7 17:50
+     */
 
     BaseResult checkGoods(int orderId);
 
@@ -36,23 +36,24 @@ public interface TbAbnormalService {
     PageInfo<TbAbnormal> checkList(Integer currentPage, Integer pageSize, TbAbnormal tbAbnormal);
 
     /**
-    * @Author: caps
-    * @Description:异常订单详情
-    * @Param: [abnormalId]
-    * @Return: java.util.Map<java.lang.String,java.lang.Object>
-    * @Create: 2019/1/8 11:55
-    */
+     * @Author: caps
+     * @Description:异常订单详情
+     * @Param: [abnormalId]
+     * @Return: java.util.Map<java.lang.String,java.lang.Object>
+     * @Create: 2019/1/8 11:55
+     */
 
     Map<String,Object> abnormalDetail(int abnormalId);
 
     /**
-    * @Author: caps
-    * @Description: 异常处理
-    * @Param: [abnormalId]
-    * @Return: cn.com.connext.oms.commons.dto.BaseResult
-    * @Create: 2019/1/8 13:31
-    */
+     * @Author: caps
+     * @Description: 异常处理
+     * @Param: [abnormalId]
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2019/1/8 13:31
+     */
     BaseResult abnormalHandle(int abnormalId);
+
 
 }
 

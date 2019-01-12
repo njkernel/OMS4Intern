@@ -11,4 +11,11 @@
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
   </resultMap>
-</mapper>
+
+  <!--���ݶ�����Ų�ѯ�ö��������е���Ʒ���-->
+  <select id="getGoodOrderById" parameterType="Integer" resultType="Integer">
+    SELECT GOODS_ID FROM tb_goods_order WHERE order_id=#{orderId}
+  </select>
+  <select id="getStockByOrderId" parameterType="Integer" resultMap="BaseResultMap">
+      select * from tb_goods_order where order_id=#{orderId}
+  </select></mapper>
