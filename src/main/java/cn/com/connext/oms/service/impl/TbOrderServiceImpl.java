@@ -3,9 +3,8 @@ package cn.com.connext.oms.service.impl;
 import cn.com.connext.oms.commons.utils.HttpClientUtils.exception.HttpProcessException;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.mapper.*;import cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto;
-import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
 import cn.com.connext.oms.service.TbOrderService;
-import cn.com.connext.oms.web.Api.OutputAPI;import com.github.pagehelper.PageHelper;
+import cn.com.connext.oms.web.Api.OutputApi;import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -168,7 +167,7 @@ public class TbOrderServiceImpl implements TbOrderService {
                   TbOutput tbOutput=tbOutputMapper.getOutputByOrderId(tbOrder.getOrderId());//根据订单id查看出库单
                   String statusNumber="";//保存从WMS获取的出库单状态
                   try {
-                      statusNumber=OutputAPI.getOutPutState(tbOutput.getOutputCode()); //从调用WMS接口获取出库单的状态（根据出库单编号）
+                      statusNumber= OutputApi.getOutPutState(tbOutput.getOutputCode()); //从调用WMS接口获取出库单的状态（根据出库单编号）
                       System.out.println(statusNumber);
                   } catch (HttpProcessException e) {
                       e.printStackTrace();
@@ -204,7 +203,7 @@ public class TbOrderServiceImpl implements TbOrderService {
                     String outputList=outputBuffer.toString();//转换成String类型
                     outputList = outputList.substring(0,outputList.length()-1);//去除逗号
                     try {
-                        number=OutputAPI.updateOutputStateOfWMS(outputList);//调用WMS接口取消WMS的出库单,并从WMS获取取消出库单的状态码
+                        number= OutputApi.updateOutputStateOfWMS(outputList);//调用WMS接口取消WMS的出库单,并从WMS获取取消出库单的状态码
                     } catch (HttpProcessException e) {
                         e.printStackTrace();
                     }
