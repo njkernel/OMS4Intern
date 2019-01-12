@@ -13,7 +13,7 @@ import java.util.Map;
  * @author: Lili.Chen
  * @create: 2019-01-09 12:48
  **/
-public class OutputApi {
+public class OutputApI {
 
     /**
     * @Description: 从wms获取出库单的状态（用出库单编码）
