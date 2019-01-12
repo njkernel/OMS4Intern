@@ -10,10 +10,7 @@ import cn.com.connext.oms.mapper.TbOrderMapper;
 import cn.com.connext.oms.mapper.TbOutputMapper;
 import cn.com.connext.oms.mapper.TbReceiverMapper;
 import cn.com.connext.oms.service.OutputService;
-import cn.com.connext.oms.web.Api.OutputApi;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
+import cn.com.connext.oms.web.Api.output.OutputApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +75,7 @@ public class OutputServiceImpl implements OutputService {
      *
      * 功能描述: 根据传入的数组id生成出库单，并根据WMS返回值修改订单状态为已出库或者出库异常
      *
-     * @param: 订单id\
+     * @param: 订单id
      * @return: 返回修改结果
      * @auther: Jay
      * @date: 2019/1/7

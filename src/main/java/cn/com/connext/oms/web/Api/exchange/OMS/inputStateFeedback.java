@@ -8,7 +8,6 @@ import cn.com.connext.oms.service.TbExchangeService;
 import cn.com.connext.oms.service.TbOrderService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +50,7 @@ public class inputStateFeedback {
     @ApiOperation(value = "订单数据接口")
     public BaseResult getAllOrder(String orderState){
         try {
-            PageInfo<TbOrder> allOrder = tbOrderService.getAllOrder(orderState);
+            List<TbOrder> allOrder = tbOrderService.getAllOrder();
             return BaseResult.success("成功",allOrder);
         } catch (Exception e) {
             e.printStackTrace();

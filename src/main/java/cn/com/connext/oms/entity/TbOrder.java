@@ -1,10 +1,11 @@
 package cn.com.connext.oms.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "oms.tb_order")
-public class TbOrder {
+public class TbOrder implements Serializable {
     /**
      * 订单id
      */
@@ -125,6 +126,8 @@ public class TbOrder {
     @Column(name="remark")
     private String remark;
 
+    private TbReceiver tbReceiver;
+
     public String getRemark() {
         return remark;
     }
@@ -132,8 +135,6 @@ public class TbOrder {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
-    private TbReceiver tbReceiver;
 
     private  TbGoods tbGoods;
 

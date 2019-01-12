@@ -4,7 +4,7 @@ spring:
     time-zone: GMT+8
   datasource:
     druid:
-      url: jdbc:mysql://139.224.119.184:3306/yonyong?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+      url: jdbc:mysql://139.224.119.184:3306/omslocal?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: root
       password: 123456
       initial-size: 1
@@ -13,8 +13,8 @@ spring:
       test-on-borrow: true
       driver-class-name: com.mysql.jdbc.Driver
   thymeleaf:
-    cache: false # ����ʱ�رջ���,��Ȼû������ʵʱҳ��
-    mode: LEGACYHTML5 # �÷��ϸ�� HTML
+    cache: false # 开发时关闭缓存,不然没法看到实时页面
+    mode: LEGACYHTML5 # 用非严格的 HTML
     encoding: UTF-8
     servlet:
       content-type: text/html
@@ -43,15 +43,15 @@ server:
 mybatis:
   type-aliases-package: cn.com.connext.oms.entity
   mapper-locations: classpath:mapper/*.xml
-  # �շ�
+  # 驼峰
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: true
-#logging:
-#  level:
-#    org.caps.website: trace
-#  file: log/springboot.log
-#  pattern:
-#    file: .%d{yyyy-MM-dd} [%thread]  %-5level  %logger{50}  %msg%n
-#    console: .%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} ==== %msg%n
+logging:
+  level:
+    org.caps.website: trace
+  file: log/springboot.log
+  pattern:
+    file: .%d{yyyy-MM-dd} [%thread]  %-5level  %logger{50}  %msg%n
+    console: .%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} ==== %msg%n
 

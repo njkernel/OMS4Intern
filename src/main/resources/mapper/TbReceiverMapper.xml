@@ -18,4 +18,17 @@
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
     <result column="order_id" jdbcType="INTEGER" property="orderId" />
   </resultMap>
+
+
+
+  <update id="updateReceiver" parameterType="tbReceiver">
+         update tb_receiver set receiver_name=#{receiverName},receiver_phone=#{receiverPhone},receiver_mobile=#{receiverMobile},
+         receiver_state=#{receiverState},receiver_city=#{receiverCity},receiver_district=#{receiverDistrict},receiver_address=#{receiverAddress},
+         receiver_zip=#{receiverZip},updated=#{updated}
+        where receiver_id=#{receiverId}
+    </update>
+
+  <select id="getReceiverById" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_receiver where receiver_id=#{receiverId}
+    </select>
 </mapper>
