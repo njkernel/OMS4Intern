@@ -4,8 +4,6 @@ body{
     top: -1px;
 }
 .container{
-    width: 966px;
-    height: 1400px;
     /* border: 1px solid rgb(191, 191, 191); */
     margin: 0 auto;
     /* box-shadow: grey 10px 10px 15px 15px; */
@@ -28,18 +26,17 @@ body{
     background-color: rgb(255,255,255);
     height: 850px;
     position: relative;
-    margin-top: 40px;
 }
 .main-content1{
     /* background-color: aquamarine; */
-    height: 200px;
+    height: 172px;
     /* border: 1px solid #000; */
 }
 .title{
     height: 30px;
     /* background-color: goldenrod; */
     font-size: 18px;
-    margin-left: 20px;
+    font-weight: 600;
 }
 .title-content{
     height: 170px;

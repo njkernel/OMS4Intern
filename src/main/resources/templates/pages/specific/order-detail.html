@@ -6,39 +6,32 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>订单详情</title>
     <link rel="stylesheet" type="text/css" href="../../assets/styles/specific/order-detail.css"/>
-    <script type="text/javascript" src="../js/order-detail.js"></script>
 </head>
 <body style="overflow-x:hidden;">
         <div class="container">
                 <!-- 上面部分 -->
-                <div class="top">  
-                    <!-- <text class="text1" style="color: grey;font-size: 12px;">首页&nbsp;/</text> 
-                    <text class="text2" style="color: grey;font-size: 12px;">详情页&nbsp;/</text> 
-                    <text class="text3" style="font-size:15px;">订单详情&nbsp;</text> 
-                    <br>
-                    <br> -->
+                <!-- <div class="top">  
                     <span style="color:black;position:absolute;margin-left:25px;font-size: 20px;margin-top: 20px">订单详情</span>
-                </div>
+                </div> -->
                 <!-- 下面部分 -->
-                <div class="main">
                     <div class="main-body">
                         <div class="main-content1">
                             <div class="title"><text>基本信息</text></div>
                             <div class="title-content">
                                 <div class="title-content1">
-                                    <div class="title-content1-top1">订单号：<input></div>
-                                    <div class="title-content1-top2">渠道订单号：<input></div>
-                                    <div class="title-content1-top3">订单状态：<input></div>
+                                    <div class="title-content1-top1">订单号：<input disabled="disabled"></div>
+                                    <div class="title-content1-top2">渠道订单号：<input disabled="disabled"></div>
+                                    <div class="title-content1-top3">订单状态：<input disabled="disabled"></div>
                                 </div>
                                 <div class="title-content2">
-                                    <div class="title-content1-top1">订单来源：<input></div>
-                                    <div class="title-content1-top2">买家ID：<input></div>
-                                    <div class="title-content1-top3">下单时间：<input></div>
+                                    <div class="title-content1-top1">订单来源：<input disabled="disabled"></div>
+                                    <div class="title-content1-top2">买家ID：<input disabled="disabled"></div>
+                                    <div class="title-content1-top3">下单时间：<input disabled="disabled"></div>
                                 </div>
                                 <div class="title-content3">
-                                    <div class="title-content1-top1">基本状态：<input></div>
-                                    <div class="title-content1-top2">修改人：<input></div>
-                                    <div class="title-content1-top3">修改时间：<input></div>
+                                    <div class="title-content1-top1">基本状态：<input disabled="disabled"></div>
+                                    <div class="title-content1-top2">修改人：<input disabled="disabled"></div>
+                                    <div class="title-content1-top3">修改时间：<input disabled="disabled"></div>
                                 </div>
                             </div>
                         </div>
@@ -47,14 +40,14 @@
                                 <div class="title"><text>支付信息</text></div>
                                 <div class="title-content">
                                     <div class="title-content1">
-                                        <div class="title-content1-top1">支付状态：</div>
-                                        <div class="title-content1-top2">付款方式：</div>
-                                        <div class="title-content1-top3">付款时间：</div>
+                                        <div class="title-content1-top1">支付状态：<span></span></div>
+                                        <div class="title-content1-top2">付款方式：<span></span></div>
+                                        <div class="title-content1-top3">付款时间：<span></span></div>
                                     </div>
                                     <div class="title-content2">
-                                        <div class="title-content1-top1">商品总价：</div>
-                                        <div class="title-content1-top2">订单折扣：</div>
-                                        <div class="title-content1-top3">订单总价：</div>
+                                        <div class="title-content1-top1">商品总价：<span></span></div>
+                                        <div class="title-content1-top2">订单折扣：<span></span></div>
+                                        <div class="title-content1-top3">订单总价：<span></span></div>
                                     </div>
                                 </div>
                         </div>
@@ -63,12 +56,12 @@
                                 <div class="title"><text>配送信息</text></div>
                                 <div class="title-content">
                                     <div class="title-content1">
-                                        <div class="title-content1-top1">发货仓库：</div>
-                                        <div class="title-content1-top2">物流信息：</div>
-                                        <div class="title-content1-top3">物流单号：</div>
+                                        <div class="title-content1-top1">发货仓库：<span></span></div>
+                                        <div class="title-content1-top2">物流信息：<span></span></div>
+                                        <div class="title-content1-top3">物流单号：<span></span></div>
                                     </div>
                                     <div class="title-content2">
-                                        <div class="title-content1-top1">配送时间：</div>
+                                        <div class="title-content1-top1">配送时间：<span></span></div>
                                     </div>
                                 </div>
                         </div>
@@ -81,9 +74,9 @@
                             <div class="address-information">  
                                 <div class="address-tel">
                                     <text>收货人:</text>
-                                    <input type="text"/>
+                                    <input type="text" disabled="disabled"/>
                                     <text>&nbsp;&nbsp;&nbsp;&nbsp;联系电话:</text>
-                                    <input type="text"/>
+                                    <input type="text" disabled="disabled"/>
                                 </div>
                                 <br>
                                 <div class="address-city">
@@ -118,13 +111,13 @@
                                 <br>
                                 <div class="address-detail">
                                     <text>详细地址</text>
-                                    <input type="text" class="input4" id="detail-input"/>
+                                    <input type="text" class="input4" id="detail-input" disabled="disabled"/>
                                 </div>
                             </div>
                         </div>
   
                          <div class="main-content5">
-                            <div class="main-content5-title"><text style="font-size:20px;margin-left: 20px;">商品信息</text></div>
+                            <div class="main-content5-title"><text style="font-size:20px;">商品信息</text></div>
                             <table border="0" cellspacing="0" cellpadding="0" class="tab">
                                 <tr class="tr-title">
                                     <th>商品编码</th>
@@ -233,7 +226,6 @@
                             </table>
                         </div> 
                     </div>
-                </div>
             </div>
 </body>
 </html>

@@ -1,44 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>表格</title>
+    <title>退款</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../../../assets/javascript/popup/popup.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../../../assets/styles/search.css">
-    <style>
-        .table-box {
-            border: 1px solid #ddd;
-        }
-        .table tbody tr td{
-            height: 30px;
-        }
-        .table thead tr th {
-            border-bottom: 1px;
-            text-align: center;
-        }
-        .table input[type=checkbox] {
-            margin: 0;
-        }
-        .btn-div {
-            padding: 10px;
-        }
-        .table tbody td {
-            text-align: center;
-        }
-        .table tbody tr:hover {
-            background-color: #e6f7ff;
-        }
-    </style>
 </head>
-
 <body style="overflow-x:hidden;background:#f3f3f3;">
+    <div id="mask_shadow"></div>
     <div class="btn-div">
-        <button type="button" class="btn btn-primary" onclick="refund()">退款</button>
+        <button type="button" class="btn btn-primary">退款</button>
         <button type="button" class="btn btn-primary">查看订单</button>
         <div class="search-box">
             <form action="">
@@ -57,31 +33,178 @@
                 <tr>
                     <th>序号</th>
                     <th>批量</th>
-                    <th>退款单号</th>
-                    <th>退款金额</th>
-                    <th>退款状态</th>
-                    <th>退货id</th>
-                    <th>订单id</th>
+                    <th>退货单号</th>
+                    <th>退货/换货</th>
+                    <th>退货状态</th>
+                    <th>订单号</th>
+                    <th>退货金额</th>
                     <th>创建时间</th>
                     <th>修改时间</th>
                     <th>修改人</th>
+                    <th>操作</th>
                 </tr>
             </thead>
-            <tbody id="tbody" th:each="refund,iterStat : ${map.get('refundList')}">
-            <tr>
-                <td th:text="${iterStat.index}"></td>
-                <td><input type='checkbox' name='checkid' th:value='${refund.refundId}'></td>
-                <td th:text="${refund.refundCode}"></td>
-                <td th:text="${refund.refundPrice}"></td>
-                <td th:text="${refund.refundState}"></td>
-                <td th:text="${refund.returnId}"></td>
-                <td th:text="${refund.orderId}"></td>
-                <td th:text="${#dates.format(refund.createtd, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                <td th:text="${#dates.format(refund.updated, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                <td th:text="${refund.modifiedUser}"></td>
-
-            </tr>
-
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -102,122 +225,31 @@
         </div><!-- /.modal -->
     </div>
     <div class="footer-pager">
-        <span>共<span id="pageCount" th:text="${map.get('pagecount')}"></span>页，当前第<span id="page" th:text="${map.get('page')}">1</span>页</span>
+        <span>共<span>5</span>页，当前第<span>1</span>页</span>
         <ul class="pagination">
             <li><a href="#">&laquo;</a></li>
-            <li class="active"><a href="#" onclick="paging(1)">1</a></li>
-            <li><a href="#" onclick="paging(2)">2</a></li>
-            <li class="disabled"><a href="#">3</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li class="disabled"><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
             <li><a href="#">4</a></li>
             <li><a href="#">5</a></li>
             <li><a href="#">&raquo;</a></li>
         </ul>
     </div>
-</body>
-<script>
-  /*    $(function () {
-          $.ajax({
-              ContentType:"application/json;charset=UTF-8",
-              type:"post",
-              url:"/getAllRefundIndex",
-              data:{"page":1,"size":4},
-              success:function (msg) {
-                  var refundList=msg["refundList"];
-                  var page=msg["page"];
-                  var pageCount=msg["pageCount"];
-                  $("#page").html(page);
-                  $("#pageCount").html(pageCount);
-                  for(var refund in refundList){
-                      var a=refundList[refund].returnId;
-                      if(a==null){
-                          var a="无";
-                      }
-                      document.getElementById("tbody").innerHTML+="<tr>" +
-                          "<td>"+refundList[refund].refundId+"</td>" +
-                          "<td><input type='checkbox' name='' id=''></td>" +
-                          "<td>"+refundList[refund].refundCode+"</td>" +
-                          "<td>"+refundList[refund].refundPrice+"</td>" +
-                          "<td>"+refundList[refund].refundState+"</td>" +
-                          "<td>"+a+"</td>" +
-                          "<td>"+refundList[refund].orderId+"</td>" +
-                          "<td>"+refundList[refund].createtd+"</td>" +
-                          "<td>"+refundList[refund].updated+"</td>" +
-                          "<td>"+refundList[refund].modifiedUser+"</td>" +
-                          "</tr>";
-                  }
-
-              }
-          })
-
-      })*/
-
-      function paging(page) {
-          $("#tbody").html("");
-          $.ajax({
-              ContentType:"application/json;charset=UTF-8",
-              type:"post",
-              url:"/getAllRefundIndex",
-              data:{"page":page,"size":4},
-              success:function (msg) {
-                  var refundList=msg["refundList"];
-                  var page=msg["page"];
-                  var pageCount=msg["pageCount"];
-                  $("#page").html(page);
-                  $("#pageCount").html(pageCount);
-                  for(var refund in refundList){
-                      var a=refundList[refund].returnId;
-                      if(a==null){
-                          var a="无";
-                      }
-                      document.getElementById("tbody").innerHTML+="<tr>" +
-                          "<td>"+refundList[refund].refundId+"</td>" +
-                          "<td><input type='checkbox' name='' id=''></td>" +
-                          "<td>"+refundList[refund].refundCode+"</td>" +
-                          "<td>"+refundList[refund].refundPrice+"</td>" +
-                          "<td>"+refundList[refund].refundState+"</td>" +
-                          "<td>"+a+"</td>" +
-                          "<td>"+refundList[refund].orderId+"</td>" +
-                          "<td>"+refundList[refund].createtd+"</td>" +
-                          "<td>"+refundList[refund].updated+"</td>" +
-                          "<td>"+refundList[refund].modifiedUser+"</td>" +
-                          "</tr>";
-                  }
-
-              }
-          })
-
-      }
-    function refund() {
-        var confirm_ = confirm('确认？');
-        var arr=[];//定义一个数组
-        var a=$('input[name="checkid"]:checked');
-        $('input[name="checkid"]:checked').each(function(){
-            arr.push($(this).val());
+    <div id="popup" class="popup" style="top: -555px;">
+        <div class="title">
+            <p>退款单详情</p>
+            <span></span>
+            <span>x</span>
+        </div>
+        <div class="cont">
+            <iframe src="../../specific/refund.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
+    </div>
+    <script>
+        $(function () {
+            $('#popup').popup();
+            $("body").css("overflow-y", "hidden");
         });
-        alert(arr);
-        if(arr.length>0){
-        if(confirm_){
-            $.ajax({
-                ContentType:"application/json;charset=UTF-8",
-                type:"post",
-                url:"/refund",
-                data:{"refundIdList":arr.join(",")},
-                success:function (msg) {
-                    alert(msg);
-                    if(msg=="success"){
-                        alert("退款成功")
-                    }else {
-                        alert("退款失败");
-                    }
-                }
-            })
-        }
-        }else {
-            alert("你还没进行选择");
-        }
-
-
-    }
-</script>
-
+    </script>
+</body>
 </html>

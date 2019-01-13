@@ -8,12 +8,13 @@ let Abnormal = new Vue({
                 currentPage:1,
                 abnormalState:'', orderId:'', abnormalType:'', modifiedUser:''
             },
-            //选中行的记录id数组
-            checkedDate:[],
+            //选中行的记录id
+            checkedDate:"",
             //搜索输入框
             searchInput:"",
             //异常单数据
             abnormalDate:[],
+            goodsInfo:[],
             //默认选中
             selected: 'orderId',
             //下拉框选项
@@ -29,19 +30,26 @@ let Abnormal = new Vue({
                 orderId:'',
                 abnormalType:'',
                 modifiedUser:''
-            }
+            },
 
+            //模态框数据
+            modalData:{
+                goodsInfo:[],
+                abnormalInfo:[],
+            },
         }
     },
-    mounted: function () {
+    created: function () {
         this.initTable();
-
     },
+
+
+
     methods: {
-        //初始化
+        //初始化表格
         initTable(){
             let url='/abnormalList';
-            callAxiosGet(url,this.page,this.getListSuc,this.getListFail)
+            callAxiosGet(url,this.page,this.getListSuc,this.Fail)
         },
         //初始化
         refresh(){
@@ -65,6 +73,19 @@ let Abnormal = new Vue({
             /*console.log(this.checkedDate);*/
             callAxiosGet(url,{abnormalId:this.checkedDate},this.Suc,this.Fail)
         },
+/*        //把当前行id存在缓存中
+        toPageStorage(){
+            sessionStorage.setItem("id", this.checkedDate);
+            /!*console.log(sessionStorage.getItem("id"))*!/
+        },*/
+
+        //异常订单详情
+        checkOrder(){
+            let url='/abnormalDetail';
+            callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)
+        },
+
+
         //查询事件
         searchBtn(){
             if(this.selected==='orderId'){
@@ -98,18 +119,34 @@ let Abnormal = new Vue({
             //初始化表格
             this.initTable();
         },
-        getListSuc(res){
-            console.log(res)
+
+        detailSuc(res){
             let that=this;
             if(res.status===200){
-                that.abnormalDate=res.data.list;
+                that.goodsInfo=res.data.goodsInfo;
+                console.log("goodsInfo"+JSON.stringify(that.goodsInfo));
+                console.log("abnormalDate"+JSON.stringify(that.abnormalDate));
             }else{
                 alert(res.message);
             }
         },
-        getListFail(err){
-            console.log(err)
+
+        //异常订单列表接口反馈
+        getListSuc(res){
+            console.log(res);
+            let that=this;
+            if(res.status===200){
+                that.abnormalDate=res.data.list;
+                //默认选中第一条数据
+                that.checkedDate=res.data.list[0].abnormalId;
+                let url='/abnormalDetail';
+                callAxiosGet(url,{abnormalId:res.data.list[0].abnormalId},that.detailSuc,that.Fail)
+            }else{
+                alert(res.message);
+            }
         },
+
+        //异常处理接口反馈
         //接口连通
         Suc(res){
             alert(res.message);

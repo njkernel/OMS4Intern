@@ -152,10 +152,10 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         PageHelper.startPage(currentPage,pageSize);
         Example example=new Example(TbAbnormal.class);
         example.createCriteria()
-                .andLike("abnormalState",abnormalState!=null?abnormalState+"%":null)
-                .andLike("orderId",orderId!=null?orderId+"%":null)
-                .andLike("abnormalType",abnormalType!=null?abnormalType+"%":null)
-                .andLike("modifiedUser",modifiedUser!=null?modifiedUser+"%":null);
+                .andLike("abnormalState",abnormalState!=null?"%"+abnormalState+"%":null)
+                .andLike("orderId",orderId!=null?"%"+orderId+"%":null)
+                .andLike("abnormalType",abnormalType!=null?"%"+abnormalType+"%":null)
+                .andLike("modifiedUser",modifiedUser!=null?"%"+modifiedUser+"%":null);
         List<TbAbnormal> tbAbnormals = tbAbnormalMapper.selectByExample(example);
 
         PageInfo<TbAbnormal> pageInfo=new PageInfo<>(tbAbnormals);
@@ -184,8 +184,8 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
             goods.add(tbGoods);
         }
         Map<String,Object> map=new HashMap<>();
-        map.put("异常信息",abnormals);
-        map.put("商品信息",goods);
+        map.put("abnormalInfo",abnormals);
+        map.put("goodsInfo",goods);
         return map;
     }
 
