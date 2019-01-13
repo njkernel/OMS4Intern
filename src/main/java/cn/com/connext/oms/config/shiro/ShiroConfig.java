@@ -52,11 +52,9 @@ public class ShiroConfig {
         Map<String, String> filterMap = new LinkedHashMap<String, String>();
 
         //添加过滤的资源
-        //filterChainDefinitionMap.put("/topics/*", "authc");
-        /*filterMap.put("/details/**","authc");
         filterMap.put("/index/**","authc");
-        filterMap.put("/specific/**","authc");*/
-
+        // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
+        filterMap.put("/logout", "logout");
         //修改调整的登录页面
         shiroFilterFactoryBean.setLoginUrl("/login");
         // 未授权时跳转的界面;
@@ -64,8 +62,7 @@ public class ShiroConfig {
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
 
-        // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
-        filterMap.put("/logout", "logout");
+
 
         return shiroFilterFactoryBean;
     }
@@ -74,7 +71,7 @@ public class ShiroConfig {
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置realm.
-//        securityManager.setRealm(myRealm());
+        securityManager.setRealm(myRealm());
         return securityManager;
     }
 
@@ -83,11 +80,11 @@ public class ShiroConfig {
      *
      * @return
      */
-//    @Bean
-//    public MyRealm myRealm() {
-//        MyRealm myRealm = new MyRealm();
-//        return myRealm;
-//    }
+    @Bean
+    public MyRealm myRealm() {
+        MyRealm myRealm = new MyRealm();
+        return myRealm;
+    }
     /**
      * @描述：ShiroDialect，为了在thymeleaf里使用shiro的标签的bean
      * @return

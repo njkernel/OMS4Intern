@@ -1,4 +1,5 @@
 jQuery(document).ready(function () {
+    // 弹窗验证逻辑
     $(".list_dt").on("click", function () {
         // $('.list_li').removeClass("selected");
         $('.list_dd').stop();
@@ -24,7 +25,6 @@ jQuery(document).ready(function () {
             i=0;
         }
     });
-    $(function () {
         //计算内容区域高度
         var calcHeight = function () {
             // // 浏览器的高度
@@ -43,16 +43,16 @@ jQuery(document).ready(function () {
             e.stopPropagation();
             $('.list_dd_ul a').css({'background':'','color':''});
             $(this).css({'background':'#4285f4','color':'#fff'});
-            var li = $(this).closest('li');
-            var menuId = $(li).attr('mid');
-            var url = $(li).attr('funurl');
-            var title = $(this).text();
+            var li = $(this).closest('li'),
+                menuId = $(li).attr('mid'),
+                url = $(li).attr('funurl'),
+                title = $(this).text();
             $('#mainFrameTabs').bTabsAdd(menuId, title, url);
             //计算Tab可用区域高度
             calcHeight();
         });
         //初始化
+        // 默认第一个被点击
+        $("#default").trigger("click");
         $('#mainFrameTabs').bTabs();
-    });
-    
 });
