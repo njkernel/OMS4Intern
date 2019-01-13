@@ -36,7 +36,7 @@ public class PageController {
         return "pages/specific/abnormal-order";
     }
 
-    @RequiresPermissions({"checked"})//没有的话 AuthorizationException
+    /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
     @RequestMapping("/abnormal")
     public String abnormal(){
         return "pages/details/orders/error-order-list";
