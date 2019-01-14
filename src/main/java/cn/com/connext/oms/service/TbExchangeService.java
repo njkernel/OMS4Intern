@@ -136,7 +136,7 @@ public interface TbExchangeService {
       * @Param: num
      * @return int
      */
-    public int generateOutput(InputFeedback inputFeedback);
+    public int inputFeedback(InputFeedback inputFeedback);
 
     /**
      * create by: yonyong

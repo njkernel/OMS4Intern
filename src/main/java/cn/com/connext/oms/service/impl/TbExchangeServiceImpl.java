@@ -6,7 +6,7 @@ import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDTO;
 import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDetailDTO;
 import cn.com.connext.oms.commons.utils.AES;
 import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
-import cn.com.connext.oms.commons.utils.ExchangeCheck;
+import cn.com.connext.oms.commons.utils.ExchangeUtils;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.mapper.TbExchangeMapper;
 import cn.com.connext.oms.mapper.TbOrderMapper;
@@ -35,6 +35,8 @@ import java.util.List;
 public class TbExchangeServiceImpl implements TbExchangeService {
   private final String TOKENS = "yonyong";
   private static long MISTIMING;
+  public static String IP="10.129.100.51";
+  public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
 
   @Autowired RestTemplate restTemplate;
 
@@ -42,6 +44,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
 
   @Autowired private TbOrderMapper tbOrderMapper;
 
+  @Autowired private ExchangeUtils exchangeUtils;
   /**
    * create by: yonyong description: 分页查询所有退换货信息列表 create time: 2019/1/8 23:14
    *
@@ -51,7 +54,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
    */
   @Override
   public PageInfo<TbReturn> showAllReturns(
-      Integer currentPage, Integer pageSize, String returnType) {
+          Integer currentPage, Integer pageSize, String returnType) {
     PageHelper.startPage(currentPage, pageSize);
     List<TbReturn> tbReturns = tbExchangeMapper.selectAllExchangeOrders(returnType);
     PageInfo<TbReturn> pageInfo = new PageInfo<>(tbReturns);
@@ -202,15 +205,14 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     for (int t : ids) {
       TbReturn tbReturn = tbExchangeMapper.selectTbReturnById(t);
       // 判断数据库订单时间与当前时间相差是否超过15天，超过15天，审核不予通过
-      ExchangeCheck exchangeCheck =new ExchangeCheck();
-      int stockState= exchangeCheck.checkExchangeCheckStockByReturnId(t);
-      if (MISTIMING < date.getTime() - tbReturn.getCreated().getTime()&&stockState==1) {
+      int orderId=tbReturn.getOrderId();
+      ExchangeUtils exchangeUtils =new ExchangeUtils();
+      if (MISTIMING < date.getTime() - tbReturn.getUpdated().getTime()&&!exchangeUtils.checkOrderIsExchange(orderId)) {
         tbReturn.setReturnState("审核通过");
 
         tbReturn.setModifiedUser(modifiedUser);
         tbReturn.setUpdated(update);
         list0.add(tbReturn);
-        exchangeCheck.updateExchangeCheckStockBefore(t);
 
       } else {
         tbReturn.setReturnState("审核失败");
@@ -220,8 +222,12 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       }
     }
     try {
-      tbExchangeMapper.updateTbReturn(list0);
-      tbExchangeMapper.updateTbReturn(list1);
+      if (list0.size()>0){
+        tbExchangeMapper.updateTbReturn(list0);
+      }
+      if (list1.size()>0){
+        tbExchangeMapper.updateTbReturn(list1);
+      }
       return 1;
     } catch (Exception e) {
       return 0;
@@ -273,40 +279,40 @@ public class TbExchangeServiceImpl implements TbExchangeService {
 
       String token = AES.AESEncode(TOKENS, String.valueOf(tbInput1.getInputId()));
       InRepertoryDTO inRepertoryDTO =
-          new InRepertoryDTO(
-              token,
-              String.valueOf(tbInput1.getInputId()),
-              String.valueOf(orderId),
-              tbOrder.get(0).getChannelCode(),
-              tbOrder.get(0).getDeliveryCompany(),
-              tbOrder.get(0).getDeliveryCode(),
-              detailDTOS);
+              new InRepertoryDTO(
+                      token,
+                      String.valueOf(tbInput1.getInputId()),
+                      String.valueOf(orderId),
+                      tbOrder.get(0).getChannelCode(),
+                      tbOrder.get(0).getDeliveryCompany(),
+                      tbOrder.get(0).getDeliveryCode(),
+                      detailDTOS);
 
 //      try {
 //        restTemplate.postForEntity(
 //            "http://10.129.100.22:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
 //      } catch (Exception e) {
-        try {
-          restTemplate.postForEntity(
-              "http://10.129.100.22:8080/api/inRepertoryOrder",
-              inRepertoryDTO.toMap(),
-              String.class);
-          TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
-          List<TbReturn> tbReturns = new ArrayList<>();
-          tbReturn.setOrderId(orderId);
-          tbReturn.setReturnState("等待收货");
-          tbReturn.setUpdated(new Date());
-          tbReturns.add(tbReturn);
-          tbInput.setInputState("接收成功");
-          tbInput.setUpdated(new Date());
-          tbInput.setSynchronizeState("已同步");
-          tbExchangeMapper.updateTbInput(tbInput);
-          tbExchangeMapper.updateTbReturn(tbReturns);
-        } catch (Exception e1) {
-          return -1;
-        }
+      try {
+        restTemplate.postForEntity(
+                URL,
+                inRepertoryDTO.toMap(),
+                String.class);
+        TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
+        List<TbReturn> tbReturns = new ArrayList<>();
+        tbReturn.setOrderId(orderId);
+        tbReturn.setReturnState("等待收货");
+        tbReturn.setUpdated(new Date());
+        tbReturns.add(tbReturn);
+        tbInput.setInputState("接收成功");
+        tbInput.setUpdated(new Date());
+        tbInput.setSynchronizeState("已同步");
+        tbExchangeMapper.updateTbInput(tbInput);
+        tbExchangeMapper.updateTbReturn(tbReturns);
+      } catch (Exception e1) {
+        return -1;
       }
-   // }
+    }
+    // }
     return -1;
   }
 
@@ -318,14 +324,19 @@ public class TbExchangeServiceImpl implements TbExchangeService {
    * @return int
    */
   @Override
-  public int generateOutput(InputFeedback inputFeedback) {
+  public int inputFeedback(InputFeedback inputFeedback) {
     TbReturn tbReturn = new TbReturn();
     TbInput tbInput = new TbInput();
     List<TbReturn> tbReturns = new ArrayList<>();
 
     int orderId = inputFeedback.getOrderId();
 
+    //定义一个布尔值，判断接受的订单已经存在于订单换货单关系表里，在则表明WMS可能之前发错状态或需要紧急调整状态
+    //需要再次向我方系统发送回馈信息
+    boolean rs=exchangeUtils.checkOrderIsExchange(inputFeedback.getOrderId());
+
     try {
+
       tbReturn = tbExchangeMapper.selectTbReturnByOrderId(inputFeedback.getOrderId());
       tbInput = tbExchangeMapper.selectTbInputByOrderId(inputFeedback.getOrderId());
     } catch (Exception e) {
@@ -333,6 +344,10 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     }
 
     if ("收货失败".equals(inputFeedback.getInputState())) {
+      //如果WMS上一次操作失误，进行回滚操作并及时更新
+      if (rs){
+        exchangeUtils.delOrder(inputFeedback.getGoodDetails(),inputFeedback.getOrderId());
+      }
       tbInput.setInputState("收货失败");
       tbInput.setUpdated(new Date());
       tbInput.setSynchronizeState("已同步");
@@ -342,6 +357,10 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       tbReturn.setUpdated(new Date());
       tbReturns.add(tbReturn);
     } else if ("超15天未收货".equals(inputFeedback.getInputState())) {
+      //如果WMS上一次操作失误，进行回滚操作并及时更新
+      if (rs){
+        exchangeUtils.delOrder(inputFeedback.getGoodDetails(),inputFeedback.getOrderId());
+      }
       tbInput.setInputState("超15天未收货");
       tbInput.setUpdated(new Date());
       tbInput.setSynchronizeState("已同步");
@@ -366,6 +385,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       tbExchangeMapper.updateTbReturn(tbReturns);
 
     } catch (Exception e) {
+      e.printStackTrace();
       return 1;
     }
 
@@ -375,20 +395,10 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       return 3;
     }
 
-    // 生成出库单
-    TbOutput tbOutput = new TbOutput();
-    tbOutput.setOutputCode(CodeGenerateUtils.creatUUID());
-    tbOutput.setOrderId(inputFeedback.getOrderId());
-    tbOutput.setOutputState("处理中");
-    tbOutput.setCreated(new Date());
-    tbOutput.setUpdated(new Date());
-    tbOutput.setSynchronizeState("未同步");
-    tbOutput.setModifiedUser(inputFeedback.getModifiedUser());
     try {
-      new ExchangeCheck().updateExchangeCheckStockAfter(inputFeedback.getOrderId(),inputFeedback.getGoodDetails());
-      tbExchangeMapper.insertOutput(tbOutput);
+      exchangeUtils.newOrder(inputFeedback.getGoodDetails(),inputFeedback.getOrderId());
       return 0;
-    } catch (Exception e) {
+    }catch (Exception e){
       return 1;
     }
 
