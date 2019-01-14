@@ -1,5 +1,6 @@
 package cn.com.connext.oms.service;
 
+import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
 import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbReturn;
 import io.swagger.models.auth.In;
@@ -38,19 +39,19 @@ public interface TbReturnService {
 
     /**
      * 退货单取消
-     * @param returnId
+     * @param returnList
      * @param modifiedUser
      * @param updated
      * @return boolean
      */
-    boolean returnOrderCancel( int returnId, String modifiedUser, Date updated);
+    boolean returnOrderCancel( List<Integer> returnList, String modifiedUser, Date updated);
 
     /**
      * 退货单审核
      * @param returnIds
      * @return
      */
-    boolean returnOrdersAudit (List<Integer> returnIds);
+    List<Integer> returnOrdersAudit (List<Integer> returnIds);
 
     /**
      *添加退货单
@@ -60,11 +61,11 @@ public interface TbReturnService {
     boolean addReturnOrder(TbReturn tbReturn);
 
     /**
-     * 生成出库单
-     * @param returnId
+     * 生成出库单并发送
+     * @param returnIdList
      * @return TbInput
      */
-    TbInput createInputOrder(List<Integer> returnId);
+    boolean createInputOrder(List<Integer> returnIdList);
 
     /**
      * 根据id查找相对应的退货/换货单
@@ -72,4 +73,11 @@ public interface TbReturnService {
      * @return
      */
     TbReturn getTbReturnById(int returnId);
+
+    /**
+     * 根据wms反馈更新入库单及退货单状态
+     * @param inputFeedback
+     * @return
+     */
+    int updateStateByFeedback(InputFeedback inputFeedback);
 }
