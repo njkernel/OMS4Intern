@@ -121,7 +121,7 @@ public class TbReturnController {
             }
         }
 
-
+        //换货部分的取消 Update BY yonyong
         int [] ids = ListToArray.listToArray(exchangeList);
         int t=tbExchangeService.updateTbReturn(ids,"换货取消","yonyong",new Date());
         if (-1 == t){
@@ -139,7 +139,7 @@ public class TbReturnController {
         try{
             boolean flag  = tbReturnService.returnOrderCancel(returnList,oms,updated);
             if (flag){
-               return BaseResult.success("取消成功");
+               return BaseResult.success("退货取消");
             }
             return BaseResult.fail(500,"取消失败");
         }catch (Exception e){

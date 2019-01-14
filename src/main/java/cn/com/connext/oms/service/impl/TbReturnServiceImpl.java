@@ -118,7 +118,7 @@ public class TbReturnServiceImpl implements TbReturnService {
             Date updated = new Date();
             if (unchecked.equals(state)){
                 if (MISTIMING > time ) {
-                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "等待收货", user, updated);
+//                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "等待收货", user, updated);
                     returnOrderList.add(returnIdsList.get(i));
                 }else {
                     tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "审核失败", user, updated);
@@ -166,6 +166,7 @@ public class TbReturnServiceImpl implements TbReturnService {
         TbInput tbInput1 = new TbInput();
         boolean flag = false;
         for (int i = 0; i < returnIdsList.size(); i++) {
+            tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i),getSuccess,"oms",time );
             int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(i));
 
             String inputCode = CodeGenerateUtils.creatUUID();
