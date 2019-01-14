@@ -146,6 +146,17 @@ public class PageController {
         return "pages/details/orders/refund-list";
     }
 
-
+    /**
+     * create by: yonyong
+     * description: 进入退换货界面
+     * create time: 2019/1/14 17:14
+     *
+     *  * @Param:
+     * @return java.lang.String
+     */
+    @RequestMapping("/index/return")
+    public String returnPage(){
+        return "pages/details/orders/sales-return-list";
+    }
 
 }
