@@ -35,7 +35,7 @@ public interface TbGoodsListService {
      * @Param: []
      * @Create: 2019/1/9 14:34
      */
-    public int findIdByCode(String goodsCode);
+    public Integer findIdByCode(String goodsCode);
     /**
      * @Author: zhaojun
      * @Description:

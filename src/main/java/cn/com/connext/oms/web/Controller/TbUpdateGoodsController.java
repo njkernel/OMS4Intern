@@ -33,7 +33,11 @@ public class TbUpdateGoodsController {
     public BaseResult updateGoods(@RequestBody  List<GoodsDTO> tbGoods){
         try {
             for (int i=0;i<tbGoods.size();i++) {
-                this.tbGoodsListService.updateGoods(tbGoods.get(i).getSku(), tbGoods.get(i).getGoodsName(), tbGoods.get(i).getGoodsPrice());
+                if(tbGoods.get(i).getSku()==null||tbGoods.get(i).getGoodsName()==null||tbGoods.get(i).getGoodsPrice()==null) {
+                    return BaseResult.fail("商品信息有缺失");
+                }else{
+                    this.tbGoodsListService.updateGoods(tbGoods.get(i).getSku(), tbGoods.get(i).getGoodsName(), tbGoods.get(i).getGoodsPrice());
+                }
             }
             return BaseResult.success("成功");
         } catch (Exception e) {

@@ -28,9 +28,9 @@ public class TbUpdateStockController {
     @Autowired
     private TbGoodsListService tbGoodsListService;
     /**
-        * @Author: zhaojun
+        * @Author: ZhaoJun
         * @Description: 将商品的sku与商品的库存封装在一个dto中进行接收，并更新库存信息
-        * @Param: []
+        * @Param:
         * @Return:
         * @Create: 2019/1/09 9:35
         */
@@ -39,8 +39,12 @@ public class TbUpdateStockController {
     public BaseResult updateTotalStock(@RequestBody List<CodeTotalStockDTO> codeTotalStockDtos){
         try {
             for (int i=0;i<codeTotalStockDtos.size();i++){
-                int id =this.tbGoodsListService.findIdByCode(codeTotalStockDtos.get(i).getGoodsCode());
-                this.tbUpdateStockService.updateStock(id,codeTotalStockDtos.get(i).getTotalStock());
+                Integer id =this.tbGoodsListService.findIdByCode(codeTotalStockDtos.get(i).getGoodsCode());
+                if (null == id)
+                { return BaseResult.fail(codeTotalStockDtos.get(i).getGoodsCode()+"不存在");
+                }else {
+                    this.tbUpdateStockService.updateStock(id, codeTotalStockDtos.get(i).getTotalStock());
+                }
             }
             return BaseResult.success("成功");
         } catch (Exception e) {

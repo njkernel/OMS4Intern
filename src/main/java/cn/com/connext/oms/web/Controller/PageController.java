@@ -79,4 +79,17 @@ public class PageController {
         return "pages/login/loadingOrder";
     }
 
+
+    /**
+     * 功能描述:订单列表界面
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/14 18:48
+     */
+    @GetMapping("/orderList")
+    public String orderList(){
+        return "pages/details/orders/order-list.html";
+    }
+
 }
