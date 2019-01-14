@@ -1,5 +1,6 @@
 package cn.com.connext.oms.service.impl;
 
+import cn.com.connext.oms.commons.dto.GoodsGoodsOrderDto;
 import cn.com.connext.oms.commons.dto.GoodsStockDto;
 import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.mapper.TbGoodsMapper;
@@ -7,7 +8,6 @@ import cn.com.connext.oms.mapper.TbGoodsOrderMapper;
 import cn.com.connext.oms.service.TbGoodsListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class TbGoodsListServiceImpl implements TbGoodsListService {
      */
     @Override
     public List<TbGoods> getGoodsImformation(Integer orderId) {
-        List<Integer> list = tbGoodsOrderMapper.getGoodOrderById(orderId);
+        List<Integer> list = tbGoodsOrderMapper.getGoodsOrderById(orderId);
         List tbGoods=new LinkedList<>();
         for (Integer integer:list){
             List<TbGoods> goods = tbGoodsMapper.getGoodsImformation(integer);
@@ -44,11 +44,11 @@ public class TbGoodsListServiceImpl implements TbGoodsListService {
         return tbGoods;
     }
     /**
-        * @Author: zhaojun
-        * @Description: 查询库存所有商品
-        * @Param: []
-        * @Create: 2019/1/8 16:54
-        */
+     * @Author: zhaojun
+     * @Description: 查询库存所有商品
+     * @Param: []
+     * @Create: 2019/1/8 16:54
+     */
 
     @Override
     public List<GoodsStockDto> getAllGoods() {
@@ -56,13 +56,43 @@ public class TbGoodsListServiceImpl implements TbGoodsListService {
     }
 
     /**
-        * @Author: zhaojun
-        * @Description: 根据商品的code查询商品的ID
-        * @Param: []
-        * @Create: 2019/1/7 17:54
-        */
+     * @Author: zhaojun
+     * @Description: 根据商品的code查询商品的ID
+     * @Param: []
+     * @Create: 2019/1/7 17:54
+     */
     @Override
     public int findIdByCode(String goodsCode) {
         return this.tbGoodsMapper.findIdByCode(goodsCode);
+    }
+
+
+
+    @Override
+    public List<GoodsGoodsOrderDto> goodsListFromOrder(int orderId) {
+        return this.tbGoodsOrderMapper.goodsListFromOrder(orderId);
+    }
+    /**
+     * @Author: zhaojun
+     * @Description: 模糊查询商品信息
+     * @Param: []
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create:
+     */
+    @Override
+    public List<TbGoods> fuzzySearch(String mark) {
+        return this.tbGoodsMapper.fuzzySearch(mark);
+    }
+
+    /**
+     * @Author: zhaojun
+     * @Description:
+     * @Param: []
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2018/1/10 16:03
+     */
+    @Override
+    public void updateGoods(String goodsCode, String goodsName, Double goodsPrice) {
+        this.tbGoodsMapper.updateGoods(goodsCode,goodsName,goodsPrice);
     }
 }

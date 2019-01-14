@@ -2,9 +2,12 @@ package cn.com.connext.oms.mapper;
 
 import cn.com.connext.oms.commons.dto.GoodsStockDto;
 import cn.com.connext.oms.entity.TbGoods;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
+
 import java.util.List;
 
+@Repository
 public interface TbGoodsMapper extends MyMapper<TbGoods> {
     /**
      * @Author: zhaojun
@@ -27,7 +30,24 @@ public interface TbGoodsMapper extends MyMapper<TbGoods> {
      * @Description: 根据商品id查询商品code
      * @Param: []
      * @Return: cn.com.connext.oms.commons.dto.BaseResult
-     * @Create: ${DATE}
+     * @Create: 2018/1/19 13:03
      */
     public int findIdByCode(String goodsCode);
+    /**
+     * @Author: zhaojun
+     * @Description: 根据商品id修改商品的信息
+     * @Param: []
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2018/1/9 16:03
+     */
+    public void updateGoods(String goodsCode,String goodsName,Double goodsPrice);
+    /**
+     * @Author: zhaojun
+     * @Description: 商品列表的模糊查询
+     * @Param: []
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2018/1/10 15:40
+     */
+    public List<TbGoods> fuzzySearch(String mark);
+
 }

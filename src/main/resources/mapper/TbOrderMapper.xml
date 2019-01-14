@@ -166,13 +166,6 @@
   and a.order_id=#{id}
     </select>
 
-    <select id="getAllById" parameterType="Integer" resultType="cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto">
-        select * from tb_order o
-       /* inner join tb_goods_order go on go.order_id=o.order_id
-        inner join tb_goods g on g.goods_id=go.goods_id*/
-        INNER JOIN tb_receiver r on r.receiver_id=o.receiver_id
-        WHERE o.order_id=#{orderId}
-    </select>
 
     <select id="getOrderByOrderId" resultMap="BaseResultMap">
         SELECT
@@ -260,4 +253,14 @@
         <foreach collection="list" item="item" open="(" separator="," close=")">
             #{item.orderId}
         </foreach>
-    </update></mapper>
+    </update>
+
+    <!--根据订单ID查询订单和快递信息-->
+    <select id="getAllById" parameterType="Integer" resultType="cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto">
+        select * from tb_order o
+
+                          INNER JOIN tb_receiver r on r.receiver_id=o.receiver_id
+        WHERE o.order_id=#{orderId}
+    </select>
+
+</mapper>
