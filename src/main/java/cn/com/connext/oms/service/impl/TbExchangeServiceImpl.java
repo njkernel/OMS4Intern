@@ -166,7 +166,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
    * @return int
    */
   @Override
-  public int updateTbReturn(Integer[] ids, String state, String modifiedUser, Date update) {
+  public int updateTbReturn(int[] ids, String state, String modifiedUser, Date update) {
     List<TbReturn> tbReturns = new ArrayList<>();
     TbReturn tbReturn = new TbReturn();
     for (int i = 0; i < ids.length; i++) {

@@ -130,7 +130,7 @@ public class TbExchangeController {
      * @return cn.com.connext.oms.commons.dto.BaseResult
      */
     @RequestMapping("/toCancel")
-    public BaseResult toCancel(@RequestParam("ids")Integer [] ids){
+    public BaseResult toCancel(@RequestParam("ids")int [] ids){
         int t=tbExchangeService.updateTbReturn(ids,"换货取消","yonyong",new Date());
         if (t==-1){
             return BaseResult.fail("系统错误！");

@@ -18,7 +18,7 @@
   <!--生成退货单-->
   <insert id="addReturnOrder">
     INSERT INTO tb_return
-    (return_code,return_state,order_id,return_price,created,modified_user,updated) VALUES (#{returnCode},#{returnState},#{orderId},#{returnPrice},#{created},#{modifiedUser},#{updated})
+    (return_code,return_state,order_id,return_price,created,modified_user,updated,return_type) VALUES (#{returnCode},#{returnState},#{orderId},#{returnPrice},#{created},#{modifiedUser},#{updated},#{returnType})
   </insert>
 
   <!--根据id查找退货单状态-->
@@ -82,7 +82,7 @@
     (input_code,order_id,input_state,created,updated,synchronize_state)VALUES (#{inputCode},#{orderId},#{inputState},#{created},#{updated},#{synchronizeState})
   </insert>
 
-  <select id="getTbReturnByiId">
+  <select id="getTbReturnById" resultType="TbReturn">
     SELECT *
     FROM tb_return
     WHERE return_id = #{returnId}
