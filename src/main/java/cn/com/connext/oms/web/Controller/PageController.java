@@ -78,5 +78,17 @@ public class PageController {
     public String login(){
         return "pages/login/loadingOrder";
     }
-
+//    /**
+//     *
+//     * 功能描述: 跳转到出库单详情页面
+//     *
+//     * @param:
+//     * @return:
+//     * @auther: Jay
+//     * @date: 2019/1/13
+//     */
+//    @RequestMapping("/outputList")
+//    public String outputList(){
+//        return "pages/details/orders/warehouse-out-list";
+//    }
 }

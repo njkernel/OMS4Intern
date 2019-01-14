@@ -200,4 +200,17 @@ public class OutputServiceImpl implements OutputService {
         }
         return "error";
     }
+    /**
+     *
+     * 功能描述: 根据订单id查询找收货人信息
+     *
+     * @param: 订单id
+     * @return: 收货人信息
+     * @auther: Jay
+     * @date: 2019/1/13
+     */
+    @Override
+    public TbReceiver getReceiver(int orderId) {
+        return tbOutputMapper.getReceiver(orderId);
+    }
 }
