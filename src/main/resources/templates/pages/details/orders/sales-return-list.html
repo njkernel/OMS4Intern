@@ -52,7 +52,7 @@
             <template v-for="tbReturn in returnOrderInfo">
                 <tr>
                     <td>{{tbReturn.returnId}}</td>
-                    <td><input type="checkbox" :value="tbReturn.returnId" v-model="ids"></td>
+                    <td><input type="checkbox" class="checkbox" :value="tbReturn.returnId" v-model="ids"></td>
                     <td>{{tbReturn.returnId}}</td>
                     <td>{{tbReturn.returnType}}</td>
                     <td>{{tbReturn.returnState}}</td>

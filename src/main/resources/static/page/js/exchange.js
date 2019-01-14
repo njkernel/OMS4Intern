@@ -35,10 +35,11 @@ var Exchange = new Vue({
             });
         },
 
-        // 刷新
+        // 刷新当前页面
         refresh(){
-            this.initialize();
             this.initInfo();
+            location.reload();
+            alert("刷新成功！");
         },
 
         //审核，分流
@@ -67,7 +68,7 @@ var Exchange = new Vue({
             }
             //根据checkbox绑定的returnId获取对应的orderId
             if (exchangeDetails.ids.length>1){
-                alert("只能选择单条信息进行查看详情！");
+                alert("只能选择单条信息进行查看！");
                 return false;
             }
             for (var temp in exchangeDetails.returnOrderInfo) {
