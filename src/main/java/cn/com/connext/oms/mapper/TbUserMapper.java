@@ -1,0 +1,69 @@
+package cn.com.connext.oms.mapper;
+
+import cn.com.connext.oms.entity.TbUser;
+import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.MyMapper;
+
+import java.util.List;
+
+
+@Repository
+public interface TbUserMapper extends MyMapper<TbUser> {
+    /** 
+    * @Description: 增加用户
+    * @Param: [tbUser] 
+    * @return: int 
+    * @Author: Lili Chen 
+    * @Date: 2019/1/13 
+    */
+    int addUser(TbUser tbUser);
+
+    /**
+    * @Description: 删除用户
+    * @Param: [userId]
+    * @return: int
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    int deleteUser(Integer userId);
+
+
+    /**
+    * @Description: 更新用户
+    * @Param: [tbUser]
+    * @return: int
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    int updateUser(TbUser tbUser );
+
+
+    /**
+    * @Description: 根据id查看用户
+    * @Param:
+    * @return:
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    TbUser getUserById(Integer userId);
+
+
+
+    /**
+    * @Description: 查看全部的用户
+    * @Param:
+    * @return:
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    List<TbUser> getAllUserList();
+    
+    /** 
+    * @Description: 根据用户名查看用户 
+    * @Param: [userName] 
+    * @return: cn.com.connext.oms.entity.TbUser 
+    * @Author: Lili Chen 
+    * @Date: 2019/1/13 
+    */
+    TbUser getUserByName(String userName);
+}

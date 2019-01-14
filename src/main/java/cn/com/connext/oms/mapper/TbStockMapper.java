@@ -45,7 +45,11 @@ public interface TbStockMapper extends MyMapper<TbStock> {
    * @Author: Lili Chen 
    * @Date: 2019/1/11 
    */
-   int updateStockList(List<TbStock> stockList); /**
+    int updateStockList(List<TbStock> stockList);
+
+
+
+    /**
      * @Author: zhaojun
      * @Description: 更新商品的库存信息
      * @Param:

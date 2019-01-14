@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,71 +7,24 @@
     <title>表格</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../../../assets/javascript/popup/popup.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/assets/styles/search.css">
-    <style>
-        .table-box {
-            border-bottom: 1px solid #ddd;
-        }
-        .table tbody tr td{
-            height: 30px;
-        }
-        .table thead tr th {
-            border-bottom: 1px;
-            text-align: center;
-        }
-        .table input[type=checkbox] {
-            margin: 0;
-        }
-        .btn-div {
-            padding: 10px;
-        }
-        .table tbody td {
-            text-align: center;
-        }
-        .table tbody tr:hover {
-            background-color: #e6f7ff;
-        }
-        /* 自定义checkbox样式 */
-        #checkOne + label::before {
-            content: "\a0";  /*不换行空格*/
-            display: inline-block;
-            vertical-align: .2em;
-            width: 1em;
-            height: 1em;
-            border-radius: .2em;
-            background-color: silver;
-            text-indent: .15em;
-            line-height: .65;  
-        }
-        #checkOne:checked + label::before {
-            content: "\2713";
-            background-color: #528dff;
-            color: #fff;
-        }
-        #checkOne {
-            position: absolute;
-            clip: rect(0, 0, 0, 0);
-        }
-        /* end-- */
-    </style>
+    <link rel="stylesheet" href="../../../assets/styles/search.css">
 </head>
-
 <body style="overflow-x:hidden;background:#f3f3f3;">
-<div id="abnormal">
+    <div id="mask_shadow"></div>
     <div class="btn-div">
-        <button type="button" class="btn btn-primary" @click="abnormalHandle">处理异常</button>
-        <button type="button" class="btn btn-primary" @click="refresh">刷新</button>
+        <button type="button" class="btn btn-primary">处理异常</button>
+        <button type="button" class="btn btn-primary">取消</button>
         <button type="button" class="btn btn-primary">查看订单</button>
         <div class="search-box">
             <form action="">
-                <select v-model="selected">
-                    <option v-for="option in options" :value="option.value">
-                        {{ option.text }}
-                    </option>
+                <select name="" id="">
+                    <option value=""></option>
+                    <option value=""></option>
                 </select>
-                <input v-model.trim="searchInput" placeholder="编辑我……">
-                <button type="button" class="btn btn-success" @click="searchBtn">搜索</button>
+                <input type="text">
+                <button type="button" class="btn btn-success">搜索</button>
             </form>
         </div>
     </div>
@@ -81,33 +33,193 @@
             <thead>
                 <tr>
                     <th>序号</th>
-                    <th>选择</th>
-                    <th>异常单号</th>
+                    <th>批量</th>
                     <th>订单号</th>
+                    <th>订单状态</th>
+                    <th>订单来源</th>
                     <th>异常类型</th>
                     <th>异常原因</th>
                     <th>异常状态</th>
                     <th>创建时间</th>
+                    <th>修改时间</th>
                     <th>修改人</th>
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody>
-            <template v-for="list in abnormalDate" v-cloak>
                 <tr>
                     <td>1</td>
                     <td>
-                        <input type="radio" :value="list.abnormalId" v-model="checkedDate">
-                        <!--<label>{{checkedDate}}</label>-->
+                        <input type="checkbox" name="">
+                        <!-- <label for="checkOne"></label> -->
                     </td>
-                    <td>{{list.abnormalId}}</td>
-                    <td>{{list.orderId}}</td>
-                    <td>{{list.abnormalType}}</td>
-                    <td>{{list.abnormalReason}}</td>
-                    <td>{{list.abnormalState}}</td>
-                    <td>{{list.createtime}}</td>
-                    <td>{{list.modifiedUser}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
                 </tr>
-            </template>
+                <tr>
+                    <td>2</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -127,19 +239,47 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
-</div>
+    <div class="footer-pager">
+        <span>共<span>5</span>页，当前第<span>1</span>页</span>
+        <ul class="pagination">
+            <li><a href="#">&laquo;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li class="disabled"><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+    </div>
 </body>
 <script>
-    $('.table tbody tr td input').click(function(){
+    $('.table tbody tr td input').click(function () {
         $(this).addClass('checkbox-style');
     })
 </script>
+    <div id="popup" class="popup" style="top: -555px;">
+        <div class="title">
+            <p>异常订单详情</p>
+            <span></span>
+            <span>x</span>
+        </div>
+        <div class="cont">
+            <iframe src="../../specific/abnormal-order.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
+    </div>
+    <script>
+        $('.table tbody tr td input').click(function () {
 
 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script type="text/javascript" src="/commons/plugins/iview/js/axios.min.js"></script>
-<script type="text/javascript" src="/commons/js/axiosUtils.js"></script>
-<script type="text/javascript" src="/page/js/abnormal.js"></script>
-
-
+            $(this).addClass('checkbox-style');
+        });
+        $(function () {
+            $('#popup').popup();
+            $("body").css("overflow-y", "hidden");
+        });
+        // $(function () {
+        //     $('#orderpopup').orderpopup();
+        //     $("body").css("overflow-y", "hidden");
+        // });
+    </script>
+</body>
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,86 +10,14 @@
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="../../../assets/javascript/popup/popup.js"></script>
+    <script src="../../../assets/javascript/popup/orderpopup.js"></script>
     <link rel="stylesheet" href="../../../assets/styles/search.css">
-    <style>
-        * { margin: 0; padding: 0; }
-        .table-box {
-            border: 1px solid #ddd;
-        }
-        .table tbody tr td{
-            height: 30px;
-        }
-        .table thead tr th {
-            border-bottom: 1px;
-            text-align: center;
-        }
-        .table input[type=checkbox] {
-            margin: 0;
-        }
-        .btn-div {
-            padding: 10px;
-        }
-        .table tbody td {
-            text-align: center;
-        }
-        .table tbody tr:hover {
-            background-color: #e6f7ff;
-        }
-     #mask_shadow {
-      display: none;
-      opacity: 0;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-    #popup {
-      display: none;
-      opacity: 0; 
-      position: relative;
-      margin: 0 auto;
-      z-index: 2;
-      top: -377px;
-      width: 966px;
-      height: 530px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    }
-    #popup .title {
-      position: relative;
-      width: 100%;
-      height: 45px;
-      background-color:#4285F4;
-    }
-    #popup .title p {
-      padding-left: 14px;
-      line-height: 55px;
-      color:#fff;
-    }
-    #popup .title span {
-      position: absolute;
-      top: 12px;
-      right:  8px;
-      width: 30px;
-      height: 30px;
-      color: #fff;
-      font-size: 21px;
-      cursor: pointer;
-      text-align: center;
-      /* border: 1px solid #333; */
-    }
-  
-    #popup .cont { width: 100%; height:100%; background-color: #fff;    }
-    </style>
 </head>
-
 <body style="overflow-x:hidden;background:#f3f3f3;">
     <div id="mask_shadow"></div>
     <div class="btn-div">
         <button type="button" class="btn btn-primary">预检</button>
-        <button type="button" class="btn btn-primary">取消</button>
+        <button type="button" class="btn btn-primary" onclick="">取消</button>
         <button type="button" class="btn btn-primary">出库</button>
         <button type="button" class="btn btn-primary">退货</button>
         <button type="button" class="btn btn-primary">换货</button>
@@ -98,7 +26,7 @@
             <form action="">
                 <select name="" id="select">
                     <option value="orderId">订单号</option>
-                    <option value=""></option>
+                    <option value="">物流状态</option>
                 </select>
                 <input type="text"   id="search-input">
                 <button type="button" class="btn btn-success" id="search-btn">搜索</button>
@@ -139,9 +67,12 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal"
-                            id="btn1">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
+                            <div class="order-watch-btn">查看</div>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs">
+                            <div class="order-operation-btn">操作</div>
+                        </button>
                     </td>
                 </tr>
                 <tr>
@@ -158,8 +89,12 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
+                            <div class="order-watch-btn">查看</div>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs">
+                            <div class="order-operation-btn">操作</div>
+                        </button>
                     </td>
                 </tr>
                 <tr>
@@ -176,8 +111,12 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
+                            <div class="order-watch-btn">查看</div>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs">
+                            <div class="order-operation-btn">操作</div>
+                        </button>
                     </td>
                 </tr>
                 <tr>
@@ -194,8 +133,12 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
+                            <div class="order-watch-btn">查看</div>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs">
+                            <div class="order-operation-btn">操作</div>
+                        </button>
                     </td>
                 </tr>
                 <tr>
@@ -212,8 +155,12 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
+                            <div class="order-watch-btn">查看</div>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs">
+                            <div class="order-operation-btn">操作</div>
+                        </button>
                     </td>
                 </tr>
                 <tr>
@@ -230,8 +177,12 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
+                            <div class="order-watch-btn">查看</div>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs">
+                            <div class="order-operation-btn">操作</div>
+                        </button>
                     </td>
                 </tr>
                 <tr>
@@ -248,8 +199,12 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
+                            <div class="order-watch-btn">查看</div>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs">
+                            <div class="order-operation-btn">操作</div>
+                        </button>
                     </td>
                 </tr>
                 <tr>
@@ -266,11 +221,14 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
+                            <div class="order-watch-btn">查看</div>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs">
+                            <div class="order-watch-btn">操作</div>
+                        </button>
                     </td>
                 </tr>
-
             </tbody>
         </table>
     </div>
@@ -286,52 +244,68 @@
             <li><a href="#">&raquo;</a></li>
         </ul>
     </div>
-    <div id="popup">
+    <div id="popup" class="popup">
         <div class="title">
-            <p></p>
+            <p>订单详情</p>
             <span></span>
             <span>x</span>
         </div>
-        <div class="cont"><iframe src="../../specific/order-detail.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
+        <div class="cont">
+            <iframe id="orderframe" src="../../specific/order-detail.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
     </div>
-    <!-- 弹出框 -->
-    <!-- <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">title</h4>
-                </div>
-                <div class="modal-body">提示内容</div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">提交更改</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-</body>
-<script th:inline="javascript">
-
-    $(function () {
-        $('#popup').popup({ ifDrag: true, dragLimit: true });
-        $("body").css("overflow-y", "hidden");
-        $("#search-btn").click(function (){
-            var valSelect=$("#select option:selected").val();
-            var valInput=$("#search-input").val();
-            var reg = /^\d{1,11}$/;
-            if (valSelect=="orderId"){
-                if (reg.test(valInput)){
-                    return true;
-                }else {
-                    alert("输入错误");
+    <script>
+        $(function () {
+            $('#popup').popup();
+            $("body").css("overflow-y", "hidden");
+        });
+  
+            $('#orderpopup').orderpopup();
+            $("body").css("overflow-y", "hidden");
+            $("#search-btn").click(function (){
+                var valSelect=$("#select option:selected").val();
+                var valInput=$("#search-input").val();
+                var reg = /^\d{1,11}$/;
+                if (valSelect=="orderId"){
+                    if (reg.test(valInput)){
+                        return true;
+                    }else {
+                        alert("输入错误");
+                    }
                 }
+            });
+    </script>
+</body>
+
+<script th:type="text/javascript">
+    function refund() {
+        var confirm_ = confirm('确认？');
+        var arr=[];//定义一个数组
+        var a=$('input[name="checkid"]:checked');
+        a.each(function(){
+            arr.push($(this).val());
+        });
+        if(arr.length>0){
+            if(confirm_){
+                $.ajax({
+                    ContentType:"application/json;charset=UTF-8",
+                    type:"post",
+                    url:"/cancelOrder",
+                    data:{"refundIdList":arr.join(",")},
+                    success:function (msg) {
+                        if(msg=="success"){
+                            alert("取消成功")
+                            location.reload() ;
+                        }else {
+                            alert("取消失败");
+                        }
+                    }
+                })
             }
-        })
-    });
+        }else {
+            alert("你还没进行选择");
+        }
 
 
+    }
 </script>
-
 </html>

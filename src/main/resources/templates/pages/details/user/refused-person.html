@@ -7,18 +7,11 @@
     <title>表格</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="../../../assets/javascript/popup/popup.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../../../assets/styles/search.css">
-
 </head>
 <body style="overflow-x:hidden;background:#f3f3f3;">
-    <div id="mask_shadow"></div>
-    <div class="btn-div">
-        <button type="button" class="btn btn-primary">查看订单</button>
-        <button type="button" class="btn btn-primary">功能一</button>
-        <button type="button" class="btn btn-primary">功能一</button>
-        <button type="button" class="btn btn-primary">功能一</button>
+    <div class="btn-div clearfix">
         <div class="search-box">
             <form action="">
                 <select name="" id="">
@@ -36,15 +29,12 @@
                 <tr>
                     <th>序号</th>
                     <th>批量</th>
-                    <th>订单号</th>
-                    <th>退货单号</th>
-                    <th>入库单号</th>
-                    <th>入库单状态</th>
-                    <th>同步状态</th>
-                    <th>收货仓库</th>
-                    <th>创建时间</th>
-                    <th>修改时间</th>
-                    <th>修改人</th>
+                    <th>收货人姓名</th>
+                    <th>收货人地址</th>
+                    <th>联系方式</th>
+                    <th>购买方式</th>
+                    <th>快递详情</th>
+                    <th>收货状态</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -52,9 +42,6 @@
                 <tr>
                     <td>1</td>
                     <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -75,9 +62,6 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td>
                         <button type="button" class="btn btn-default btn-xs">操作</button>
                         <button type="button" class="btn btn-danger btn-xs">操作</button>
@@ -86,9 +70,6 @@
                 <tr>
                     <td>3</td>
                     <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -109,9 +90,6 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td>
                         <button type="button" class="btn btn-default btn-xs">操作</button>
                         <button type="button" class="btn btn-danger btn-xs">操作</button>
@@ -120,9 +98,6 @@
                 <tr>
                     <td>5</td>
                     <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -143,9 +118,6 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td>
                         <button type="button" class="btn btn-default btn-xs">操作</button>
                         <button type="button" class="btn btn-danger btn-xs">操作</button>
@@ -160,11 +132,10 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
                 </tr>
                 <tr>
                     <td>8</td>
@@ -172,6 +143,31 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs">操作</button>
+                        <button type="button" class="btn btn-danger btn-xs">操作</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td><input type="checkbox" name="" id=""></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -214,20 +210,7 @@
             <li><a href="#">&raquo;</a></li>
         </ul>
     </div>
-    <div id="popup" class="popup">
-        <div class="title">
-            <p>入库单详情</p>
-            <span></span>
-            <span>x</span>
-        </div>
-        <div class="cont">
-            <iframe src="../../specific/addstock.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
-    </div>
-    <script>
-        $(function () {
-            $('#popup').popup();
-            $("body").css("overflow-y", "hidden");
-        });
-    </script>
 </body>
+<script>
+</script>
 </html>

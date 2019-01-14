@@ -37,156 +37,145 @@
 </head>
 
 <body style="overflow-x:hidden;background:#f3f3f3;">
-    <div class="btn-div">
-        <button type="button" class="btn btn-primary" onclick="refund()">退款</button>
-        <button type="button" class="btn btn-primary">查看订单</button>
-        <div class="search-box">
-            <form action="">
-                <select name="" id="">
-                    <option value=""></option>
-                    <option value=""></option>
-                </select>
-                <input type="text">
-                <button type="button" class="btn btn-success">搜索</button>
-            </form>
-        </div>
+<div class="btn-div">
+    <button type="button" class="btn btn-primary" onclick="refund()">退款</button>
+    <button type="button" class="btn btn-primary">查看订单</button>
+    <div class="search-box">
+        <form id="frm" action="/getSearchRefund">
+            <input hidden name='page' value="1">
+            <select name="select" id="select">
+                <option value="">--请选择--</option>
+                <option value="orderCode">订单编码</option>
+                <option value="refundState">退款状态</option>
+            </select>
+            <input type="text" id="mySelect" name="mySelect">
+            <button type="button" class="btn btn-success" onclick="mySearch()">搜索</button>
+        </form>
     </div>
-    <div>
-        <table class="table table-condensed">
-            <thead>
-                <tr>
-                    <th>序号</th>
-                    <th>批量</th>
-                    <th>退款单号</th>
-                    <th>退款金额</th>
-                    <th>退款状态</th>
-                    <th>退货id</th>
-                    <th>订单id</th>
-                    <th>创建时间</th>
-                    <th>修改时间</th>
-                    <th>修改人</th>
-                </tr>
-            </thead>
-            <tbody id="tbody" th:each="refund,iterStat : ${map.get('refundList')}">
-            <tr>
-                <td th:text="${iterStat.index}"></td>
-                <td><input type='checkbox' name='checkid' th:value='${refund.refundId}'></td>
-                <td th:text="${refund.refundCode}"></td>
-                <td th:text="${refund.refundPrice}"></td>
-                <td th:text="${refund.refundState}"></td>
-                <td th:text="${refund.returnId}"></td>
-                <td th:text="${refund.orderId}"></td>
-                <td th:text="${#dates.format(refund.createtd, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                <td th:text="${#dates.format(refund.updated, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                <td th:text="${refund.modifiedUser}"></td>
+</div>
+<div>
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>批量</th>
+            <th>退款单号</th>
+            <th>退款金额</th>
+            <th>退款状态</th>
+            <th>退货id</th>
+            <th>订单id</th>
+            <th>创建时间</th>
+            <th>修改时间</th>
+            <th>修改人</th>
+        </tr>
+        </thead>
+        <tbody id="tbody" th:each="refund,iterStat : ${map.get('refundList')}">
+        <tr>
+            <td th:text="${iterStat.index}"></td>
+            <td><input type='checkbox' name='checkid' th:value='${refund.refundId}'></td>
+            <td th:text="${refund.refundCode}"></td>
+            <td th:text="${refund.refundPrice}"></td>
+            <td th:text="${refund.refundState}"></td>
+            <td th:text="${refund.returnId}"></td>
+            <td th:text="${refund.orderId}"></td>
+            <td th:text="${#dates.format(refund.createtd, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${#dates.format(refund.updated, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${refund.modifiedUser}"></td>
 
-            </tr>
+        </tr>
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
+</div>
+<!-- 弹出框 -->
+<div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">title</h4>
+            </div>
+            <div class="modal-body">提示内容</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">提交更改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<div class="footer-pager">
+    <span>共<span id="pageCount" th:text="${map.get('pageCount')}"></span>页，当前第<span id="page" th:text="${map.get('page')}"></span>页</span>
+    <ul class="pagination">
+        <li><a th:href="@{/getRefundIndex(page=1,size=4)}">首页</a></li>
+        <li><a th:href="@{/getRefundIndex(page=${map.get('page')-1},size=4)}">上一页</a></li>
+        <li><a th:href="@{/getRefundIndex(page=${map.get('page')+1},size=4)}">下一页</a></li>
+        <li><a th:href="@{/getRefundIndex(page=${map.get('pageCount')},size=4)}">末页</a></li>
+    </ul>
+</div>
+<div id="popup" class="popup" style="top: -555px;">
+    <div class="title">
+        <p>退款单详情</p>
+        <span></span>
+        <span>x</span>
     </div>
-    <!-- 弹出框 -->
-    <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">title</h4>
-                </div>
-                <div class="modal-body">提示内容</div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">提交更改</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-    <div class="footer-pager">
-        <span>共<span id="pageCount" th:text="${map.get('pagecount')}"></span>页，当前第<span id="page" th:text="${map.get('page')}">1</span>页</span>
-        <ul class="pagination">
-            <li><a href="#">&laquo;</a></li>
-            <li class="active"><a href="#" onclick="paging(1)">1</a></li>
-            <li><a href="#" onclick="paging(2)">2</a></li>
-            <li class="disabled"><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
-        </ul>
-    </div>
+    <div class="cont">
+        <iframe src="../../specific/refund.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
+</div>
+<script>
+    $(function () {
+        $('#popup').popup();
+        $("body").css("overflow-y", "hidden");
+    });
+</script>
 </body>
 <script>
-  /*    $(function () {
-          $.ajax({
-              ContentType:"application/json;charset=UTF-8",
-              type:"post",
-              url:"/getAllRefundIndex",
-              data:{"page":1,"size":4},
-              success:function (msg) {
-                  var refundList=msg["refundList"];
-                  var page=msg["page"];
-                  var pageCount=msg["pageCount"];
-                  $("#page").html(page);
-                  $("#pageCount").html(pageCount);
-                  for(var refund in refundList){
-                      var a=refundList[refund].returnId;
-                      if(a==null){
-                          var a="无";
-                      }
-                      document.getElementById("tbody").innerHTML+="<tr>" +
-                          "<td>"+refundList[refund].refundId+"</td>" +
-                          "<td><input type='checkbox' name='' id=''></td>" +
-                          "<td>"+refundList[refund].refundCode+"</td>" +
-                          "<td>"+refundList[refund].refundPrice+"</td>" +
-                          "<td>"+refundList[refund].refundState+"</td>" +
-                          "<td>"+a+"</td>" +
-                          "<td>"+refundList[refund].orderId+"</td>" +
-                          "<td>"+refundList[refund].createtd+"</td>" +
-                          "<td>"+refundList[refund].updated+"</td>" +
-                          "<td>"+refundList[refund].modifiedUser+"</td>" +
-                          "</tr>";
-                  }
+    /*function paging(page) {
+        $("#tbody").html("");
+        $.ajax({
+            ContentType:"application/json;charset=UTF-8",
+            type:"post",
+            url:"/getAllRefundIndex",
+            data:{"page":page,"size":4},
+            success:function (msg) {
+                var refundList=msg["refundList"];
+                var page=msg["page"];
+                var pageCount=msg["pageCount"];
+                $("#page").html(page);
+                $("#pageCount").html(pageCount);
+                for(var refund in refundList){
+                    var a=refundList[refund].returnId;
+                    if(a==null){
+                        var a="无";
+                    }
+                    document.getElementById("tbody").innerHTML+="<tr>" +
+                        "<td>"+refundList[refund].refundId+"</td>" +
+                        "<td><input type='checkbox' name='' id=''></td>" +
+                        "<td>"+refundList[refund].refundCode+"</td>" +
+                        "<td>"+refundList[refund].refundPrice+"</td>" +
+                        "<td>"+refundList[refund].refundState+"</td>" +
+                        "<td>"+a+"</td>" +
+                        "<td>"+refundList[refund].orderId+"</td>" +
+                        "<td>"+refundList[refund].createtd+"</td>" +
+                        "<td>"+refundList[refund].updated+"</td>" +
+                        "<td>"+refundList[refund].modifiedUser+"</td>" +
+                        "</tr>";
+                }
 
-              }
-          })
+            }
+        })
 
-      })*/
+    }*/
+    function mySearch() {
+        var select=$("#select").val();
+        var mySelect=$("#mySelect").val();
+        alert(select)
+        if(select=="--请选择--"||select==""||mySelect==null||mySelect==""){
+            alert("选择条件不可为空")
+        }else{
+             $("#frm").submit();
+        }
 
-      function paging(page) {
-          $("#tbody").html("");
-          $.ajax({
-              ContentType:"application/json;charset=UTF-8",
-              type:"post",
-              url:"/getAllRefundIndex",
-              data:{"page":page,"size":4},
-              success:function (msg) {
-                  var refundList=msg["refundList"];
-                  var page=msg["page"];
-                  var pageCount=msg["pageCount"];
-                  $("#page").html(page);
-                  $("#pageCount").html(pageCount);
-                  for(var refund in refundList){
-                      var a=refundList[refund].returnId;
-                      if(a==null){
-                          var a="无";
-                      }
-                      document.getElementById("tbody").innerHTML+="<tr>" +
-                          "<td>"+refundList[refund].refundId+"</td>" +
-                          "<td><input type='checkbox' name='' id=''></td>" +
-                          "<td>"+refundList[refund].refundCode+"</td>" +
-                          "<td>"+refundList[refund].refundPrice+"</td>" +
-                          "<td>"+refundList[refund].refundState+"</td>" +
-                          "<td>"+a+"</td>" +
-                          "<td>"+refundList[refund].orderId+"</td>" +
-                          "<td>"+refundList[refund].createtd+"</td>" +
-                          "<td>"+refundList[refund].updated+"</td>" +
-                          "<td>"+refundList[refund].modifiedUser+"</td>" +
-                          "</tr>";
-                  }
-
-              }
-          })
-
-      }
+    }
     function refund() {
         var confirm_ = confirm('确认？');
         var arr=[];//定义一个数组
@@ -196,27 +185,57 @@
         });
         alert(arr);
         if(arr.length>0){
-        if(confirm_){
-            $.ajax({
-                ContentType:"application/json;charset=UTF-8",
-                type:"post",
-                url:"/refund",
-                data:{"refundIdList":arr.join(",")},
-                success:function (msg) {
-                    alert(msg);
-                    if(msg=="success"){
-                        alert("退款成功")
-                    }else {
-                        alert("退款失败");
+            if(confirm_){
+                $.ajax({
+                    ContentType:"application/json;charset=UTF-8",
+                    type:"post",
+                    url:"/refund",
+                    data:{"refundIdList":arr.join(",")},
+                    success:function (msg) {
+                        alert(msg);
+                        if(msg=="success"){
+                            alert("退款成功")
+                            location.reload() ;
+                        }else {
+                            alert("退款失败");
+                        }
                     }
-                }
-            })
-        }
+                })
+            }
         }else {
             alert("你还没进行选择");
         }
+    }
+
+    function queryRefund() {
+        var confirm_ = confirm('确认？');
+        var select=$("#select").val();
+        var mySelect=$("#mySelect").val();
+        if(confirm_){
+            if(select==null||select==""){
+                alert("搜索的必要条件不可为空");
+            }else if(mySelect==null||mySelect==""){
+                alert("搜索的必要条件不可为空");
+            }else{
+                $.ajax({
+                    ContentType:"application/json;charset=UTF-8",
+                    type:"post",
+                    url:"",
+                    data:{"selectFirst":select,"selectSecond":mySelect},
+                    success:function (msg) {
+                        alert(msg);
+                        if(msg=="success"){
+                            alert("退款成功")
+                            window.location.href="/getRefund";
+                        }else {
+                            alert("退款失败");
+                        }
+                    }
+                })
+            }
 
 
+            }
     }
 </script>
 

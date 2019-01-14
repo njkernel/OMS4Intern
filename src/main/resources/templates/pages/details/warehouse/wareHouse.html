@@ -9,59 +9,13 @@
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../../../assets/styles/search.css">
-    <style>
-         .table-box {
-            border-bottom: 1px solid #ddd;
-        }
-        .table tbody tr td{
-            height: 30px;
-        }
-        .table thead tr th {
-            border-bottom: 1px;
-            text-align: center;
-        }
-        .table input[type=checkbox] {
-            margin: 0;
-        }
-        .btn-div {
-            padding: 10px;
-        }
-        .table tbody td {
-            text-align: center;
-        }
-        .table tbody tr:hover {
-            background-color: #e6f7ff;
-        }
-        /* 自定义checkbox样式 */
-        #checkOne + label::before {
-            content: "\a0";  /*不换行空格*/
-            display: inline-block;
-            vertical-align: .2em;
-            width: 1em;
-            height: 1em;
-            border-radius: .2em;
-            background-color: silver;
-            text-indent: .15em;
-            line-height: .65;  
-        }
-        #checkOne:checked + label::before {
-            content: "\2713";
-            background-color: #528dff;
-            color: #fff;
-        }
-        #checkOne {
-            position: absolute;
-            clip: rect(0, 0, 0, 0);
-        }
-        /* end-- */
-    </style>
+    <link rel="stylesheet" href="../../../assets/styles/details/warehouse/warehouse.css">
 </head>
-
 <body style="overflow-x:hidden;background:#f3f3f3;">
     <div class="btn-div">
-        <button type="button" class="btn btn-primary">新增</button>
-        <button type="button" class="btn btn-primary">编辑</button>
-        <button type="button" class="btn btn-primary">删除</button>
+        <!-- <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#demoModal">新增</button> -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#demoModal-1">编辑</button>
+        <!-- <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#demoModal-2">删除</button> -->
         <div class="search-box">
             <form action="">
                 <select name="" id="">
@@ -78,95 +32,114 @@
         <table class="table table-condensed">
             <thead>
                 <tr>
-                    <th>序号</th>
-                    <th>批量</th>
-                    <th>仓库编号</th>
-                    <th>仓库名称</th>
+                    <th class="number">序号</th>
+                    <th class="batch">批量</th>
+                    <th>商品编号</th>
+                    <th>商品名称</th>
+                    <th>可用库存</th>
+                    <th>锁定库存</th>
+                    <th>总库存</th>
                     <th class="operation">操作</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>1</td>
-                   <td>
+                    <td class="number">1</td>
+                    <td class="batch">
                         <input type="checkbox" name="">
                         <!-- <label for="checkOne"></label> -->
                     </td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td class="operation">
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
+                        <button type="button" class="btn btn-success btn-xs" >补货</button>
                     </td>
                 </tr>
                 <tr>
-                    <td>2</td>
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td class="number">2</td>
+                    <td class="batch"><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td class="operation">
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
+                        <button type="button" class="btn btn-success btn-xs" >补货</button>
                     </td>
                 </tr>
                 <tr>
-                    <td>3</td>
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td class="number">3</td>
+                    <td class="batch"><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td class="operation">
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
+                        <button type="button" class="btn btn-success btn-xs" >补货</button>
                     </td>
                 </tr>
                 <tr>
-                    <td>4</td>
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td class="number">4</td>
+                    <td class="batch"><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td class="operation">
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
+                        <button type="button" class="btn btn-success btn-xs" >补货</button>
                     </td>
                 </tr>
                 <tr>
-                    <td>5</td>
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td class="number">5</td>
+                    <td class="batch"><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td class="operation">
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
+                        <button type="button" class="btn btn-success btn-xs" >补货</button>
                     </td>
                 </tr>
                 <tr>
-                    <td>6</td>
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td class="number">6</td>
+                    <td class="batch"><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td class="operation">
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
+                        <button type="button" class="btn btn-success btn-xs" >补货</button>
                     </td>
                 </tr>
                 <tr>
-                    <td>7</td>
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td class="number">7</td>
+                    <td class="batch"><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td class="operation">
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
+                        <button type="button" class="btn btn-success btn-xs" >补货</button>
                     </td>
                 </tr>
                 <tr>
-                    <td>8</td>
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td class="number">8</td>
+                    <td class="batch"><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td class="operation">
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
+                        <button type="button" class="btn btn-success btn-xs" >补货</button>
                     </td>
                     </tr>
                     <tr>
@@ -174,11 +147,26 @@
                         <td><input type="checkbox" name="" id=""></td>
                         <td></td>
                         <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td class="operation">
-                            <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
-                            <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal">操作</button>
+                            <button type="button" class="btn btn-success btn-xs" >补货</button>
                         </td>
                         </tr>
+                </tr>
+                <tr>
+                    <td class="number">9</td>
+                    <td class="batch"><input type="checkbox" name="" id=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="operation">
+                        <button type="button" class="btn btn-success btn-xs" >补货</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -195,27 +183,14 @@
             <li><a href="#">&raquo;</a></li>
         </ul>
     </div>
-    <!-- 弹出框 -->
-    <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">title</h4>
-                </div>
-                <div class="modal-body">提示内容</div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">提交更改</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
+
 </body>
 <script>
     $('.table tbody tr td input').click(function(){
-        
         $(this).addClass('checkbox-style');
-    })
+    });
+    // 弹窗验证
+    // 传入表单对象
+
 </script>
 </html>

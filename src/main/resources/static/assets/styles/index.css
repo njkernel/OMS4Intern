@@ -24,7 +24,8 @@
       height: 64px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       font-weight: 600;
-      font-size: 20px; }
+      font-size: 20px; 
+      cursor: default;}
   .index .main .left .list_dl {
     color: rgba(255, 255, 255, 0.65);
     font-size: 14px;
@@ -73,6 +74,7 @@
             display: block;
             height: 40px;
             width: 256px;
+            line-height: 31px;
             outline: 0;
             color: rgba(255, 255, 255, 0.65);
             text-decoration: none; }
@@ -140,6 +142,8 @@
 .bTabs .nav-tabs > li > a {
   padding-top: 5px;
   padding-bottom: 5px;
+  font-size: 15px;
+  font-weight: bold;
   color: #666666; }
 
 .bTabs .nav-tabs li.active a {

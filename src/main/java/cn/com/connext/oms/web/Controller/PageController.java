@@ -6,6 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -53,11 +56,61 @@ public class PageController {
     * @Author: Lili Chen 
     * @Date: 2019/1/10 
     */
-    @RequestMapping("/refund")
-    public String refundPage(Model model){
+    @RequestMapping("/getRefund")
+    public String refundPage(Model model, HttpServletRequest request){
         Map<String,Object> map=tbRefundService.getAllRefundIndex(1,4);
+        model.addAttribute("map",map);
+        HttpSession session=request.getSession();
+        session.setAttribute("basic","我的");
+        return "pages/details/orders/refund-list";
+    }
+
+    @RequestMapping("/getRefundIndex")
+    public String getAllRefundIndex(Integer page,Model model,Integer size,HttpServletRequest request){
+        HttpSession session=request.getSession();
+        String basic=session.getAttribute("basic").toString();
+        String mySelect="";
+        if(session.getAttribute("basic2")!=null){
+          mySelect=session.getAttribute("basic2").toString();
+        }
+
+        Map<String,Object> map=new HashMap<>();
+        if(basic.equals("orderCode")){
+            map=tbRefundService.getListRefundByOrderCode(mySelect,page,4);
+        }else if(basic.equals("refundState")){
+            map=tbRefundService.getListRefundByState(mySelect,page,4);
+
+        }else{
+            map=tbRefundService.getAllRefundIndex(page,size);
+        }
+        if(map==null){
+            map=new HashMap<>();
+            map.put("refundList",null);
+            map.put("page",1);
+            map.put("pageCount",1);
+
+        }
+
         model.addAttribute("map",map);
         return "pages/details/orders/refund-list";
     }
+
+    @RequestMapping("/getSearchRefund")
+    public String getSearchRefund(Model model,String select,String mySelect,Integer page,HttpServletRequest request){
+        Map<String,Object> map=new HashMap<>();
+        HttpSession session=request.getSession();
+        session.setAttribute("basic2",mySelect);
+        if(select.equals("orderCode")){
+          map=tbRefundService.getListRefundByOrderCode(mySelect,page,4);
+          session.setAttribute("basic","orderCode");
+        }else if(select.equals("refundState")){
+            session.setAttribute("basic","refundState");
+          map=tbRefundService.getListRefundByState(mySelect,page,4);
+        }
+        model.addAttribute("map",map);
+        return "pages/details/orders/refund-list";
+    }
+
+
 
 }

@@ -1,42 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>表格</title>
+    <title>退货</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../../../assets/javascript/popup/popup.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../../../assets/styles/search.css">
-    <style>
-        .table-box {
-            border: 1px solid #ddd;
-        }
-        .table tbody tr td{
-            height: 30px;
-        }
-        .table thead tr th {
-            border-bottom: 1px;
-            text-align: center;
-        }
-        .table input[type=checkbox] {
-            margin: 0;
-        }
-        .btn-div {
-            padding: 10px;
-        }
-        .table tbody td {
-            text-align: center;
-        }
-        .table tbody tr:hover {
-            background-color: #e6f7ff;
-        }
-    </style>
 </head>
-
 <body style="overflow-x:hidden;background:#f3f3f3;">
+    <div id="mask_shadow"></div>
     <div class="btn-div">
         <button type="button" class="btn btn-primary">创建退货单</button>
         <button type="button" class="btn btn-primary">换货发货</button>
@@ -263,9 +239,20 @@
             <li><a href="#">&raquo;</a></li>
         </ul>
     </div>
+    <div id="popup" class="popup" style="top: -555px;">
+        <div class="title">
+            <p>退货单详情</p>
+            <span></span>
+            <span>x</span>
+        </div>
+        <div class="cont">
+            <iframe src="../../specific/return-goods.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
+    </div>
+    <script>
+        $(function () {
+            $('#popup').popup();
+            $("body").css("overflow-y", "hidden");
+        });
+    </script>
 </body>
-<script>
-
-</script>
-
 </html>
