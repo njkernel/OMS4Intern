@@ -2,6 +2,7 @@ package cn.com.connext.oms.service;
 
 
 import cn.com.connext.oms.entity.TbRefund;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,4 +37,30 @@ public interface TbRefundService {
    * @Date: 2019/1/10
    */
    TbRefund getRefundById(Integer refundId);
+   
+   
+  
+   /** 
+   * @Description: 根据退款单状态查看退款单 
+   * @Param: [refundState, page, size] 
+   * @return: java.util.Map 
+   * @Author: Lili Chen 
+   * @Date: 2019/1/13 
+   */
+   Map getListRefundByState(String refundState,Integer page, Integer size);
+
+
+
+   /** 
+   * @Description: 根据退款单的订单id查看退款单
+    * @Param: [orderId, page, size] 
+   * @return: java.util.Map 
+   * @Author: Lili Chen 
+   * @Date: 2019/1/13 
+   */
+   Map getListRefundByOrderCode(String orderCode,Integer page, Integer size);
+   
+   
+   
+   
 }
