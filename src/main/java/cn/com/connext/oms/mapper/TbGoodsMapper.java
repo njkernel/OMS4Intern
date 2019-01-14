@@ -2,13 +2,16 @@ package cn.com.connext.oms.mapper;
 
 import cn.com.connext.oms.commons.dto.GoodsStockDto;
 import cn.com.connext.oms.entity.TbGoods;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
+
 import java.util.List;
 
+@Repository
 public interface TbGoodsMapper extends MyMapper<TbGoods> {
     /**
      * @Author: zhaojun
-     * @Description: ¸ù¾İÉÌÆ·±àºÅ²éÑ¯¸ÃÉÌÆ·ÏêÏ¸ĞÅÏ¢
+     * @Description: æ ¹æ®å•†å“ç¼–å·æŸ¥è¯¢è¯¥å•†å“è¯¦ç»†ä¿¡æ¯
      * @Param: []
      * @Return: cn.com.connext.oms.commons.dto.BaseResult
      * @Create: 2019/1/7 13:30
@@ -16,7 +19,7 @@ public interface TbGoodsMapper extends MyMapper<TbGoods> {
     List<TbGoods> getGoodsImformation(int goodId);
     /**
      * @Author: zhaojun
-     * @Description: ²éÑ¯ËùÓĞÉÌÆ·
+     * @Description: æŸ¥è¯¢æ‰€æœ‰å•†å“
      * @Param: []
      * @Return: cn.com.connext.oms.commons.dto.BaseResult
      * @Create: 2019/1/7 16:30
@@ -24,10 +27,27 @@ public interface TbGoodsMapper extends MyMapper<TbGoods> {
     List<GoodsStockDto>getAllGoods();
     /**
      * @Author: zhaojun
-     * @Description: ¸ù¾İÉÌÆ·id²éÑ¯ÉÌÆ·code
+     * @Description: æ ¹æ®å•†å“idæŸ¥è¯¢å•†å“code
      * @Param: []
      * @Return: cn.com.connext.oms.commons.dto.BaseResult
-     * @Create: ${DATE}
+     * @Create: 2018/1/19 13:03
      */
     public int findIdByCode(String goodsCode);
+    /**
+     * @Author: zhaojun
+     * @Description: æ ¹æ®å•†å“idä¿®æ”¹å•†å“çš„ä¿¡æ¯
+     * @Param: []
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2018/1/9 16:03
+     */
+    public void updateGoods(String goodsCode,String goodsName,Double goodsPrice);
+    /**
+     * @Author: zhaojun
+     * @Description: å•†å“åˆ—è¡¨çš„æ¨¡ç³ŠæŸ¥è¯¢
+     * @Param: []
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2018/1/10 15:40
+     */
+    public List<TbGoods> fuzzySearch(String mark);
+
 }

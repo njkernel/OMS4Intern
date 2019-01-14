@@ -1,5 +1,6 @@
 package cn.com.connext.oms.mapper;
 
+import cn.com.connext.oms.commons.dto.GoodsGoodsOrderDto;
 import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.entity.TbGoodsOrder;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,6 @@ public interface TbGoodsOrderMapper extends MyMapper<TbGoodsOrder> {
     * @Date: 2019/1/11
     */
    List<TbGoodsOrder> getStockByOrderId(Integer orderId);
-
     /**
      * @Author: zhaojun
      * @Description: 根据订单编号查询该订单下所有的商品编号
@@ -25,5 +25,16 @@ public interface TbGoodsOrderMapper extends MyMapper<TbGoodsOrder> {
      * @Return: cn.com.connext.oms.commons.dto.BaseResult
      * @Create: 2019/1/7 11:42
      */
-    public List<Integer> getGoodOrderById(int orderId);
+    public List<Integer> getGoodsOrderById(int orderId);
+    /**
+     * @Author: zhaojun
+     * @Description: 根据订单编号查询当前订单的商品信息
+     * @Param: []
+     * @Return: cn.com.connext.oms.commons.dto.BaseResult
+     * @Create: 2018/1/8 16:03
+     */
+    public List<GoodsGoodsOrderDto> goodsListFromOrder(int orderId);
+
+
+
 }

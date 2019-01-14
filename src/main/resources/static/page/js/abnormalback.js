@@ -14,7 +14,7 @@ let Abnormal = new Vue({
             searchInput:"",
             //异常单数据
             abnormalDate:[],
-            goodsInfo:[],
+            goodsInfo:[{goodsCode:'1',goodsId:'1',goodsName:'1',goodsPrice:'1'}],
             //默认选中
             selected: 'orderId',
             //下拉框选项

@@ -83,22 +83,7 @@ public interface TbOrderMapper extends MyMapper<TbOrder> {
      */
     List<TbOrder> getOrderByOrderId(@Param("id")int id);
 
-    /**
-     * @Author: zhaojun
-     * @Description: 根据订单编号查询订单详情
-     * @Param: []
-     * @Return: cn.com.connext.oms.commons.dto.BaseResult
-     * @Create: 2019/1/7 10:54
-     */
-    public TbOrder getOrderById(int orderId);
-    /**
-     * @Author: zhaojun
-     * @Description:
-     * @Param: []
-     * @Return:
-     * @Create: 2019/1/7 19:16z
-     */
-    public OrderGoodsReceiverDto getAllById(int orderId);
+
 
     /**
      * create by: Aaron
@@ -117,4 +102,12 @@ public interface TbOrderMapper extends MyMapper<TbOrder> {
      * @return  * @Param: null
      */
     Date selectCreatedById(int orderId);
+    /**
+     * @Author: zhaojun
+     * @Description:
+     * @Param: []
+     * @Return:
+     * @Create: 2019/1/7 19:16z
+     */
+    public  OrderGoodsReceiverDto getAllById(int orderId);
 }

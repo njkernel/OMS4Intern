@@ -1,9 +1,11 @@
 package cn.com.connext.oms.web.Controller;
 
 import cn.com.connext.oms.service.TbRefundService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,11 +29,17 @@ public class PageController {
 
     /**
     * @Author: caps
-    * @Description:异常订单列表
+    * @Description:异常订单列表详情页面
     * @Param: []
     * @Return: java.lang.String
-    * @Create: 2019/1/8 15:37
+    * @Create: 2019/1/12 16:01
     */
+    @RequestMapping("/abnormalModel")
+    public String abnormalDetail(){
+        return "pages/specific/abnormal-order";
+    }
+
+    /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
     @RequestMapping("/abnormal")
     public String abnormal(){
         return "pages/details/orders/error-order-list";
@@ -64,7 +72,26 @@ public class PageController {
         session.setAttribute("basic","我的");
         return "pages/details/orders/refund-list";
     }
+    /**
+     * @Description: 登录页面
+     * @Param: []
+     * @return: java.lang.String
+     * @Author: Lili Chen
+     * @Date: 2019/1/10
+     */
+    @GetMapping({"/","/login"})
+    public String login(){
+        return "pages/login/loadingOrder";
+    }
 
+    
+    /** 
+    * @Description: 退款单的分页 
+    * @Param: [page, model, size, request] 
+    * @return: java.lang.String 
+    * @Author: Lili Chen 
+    * @Date: 2019/1/14 
+    */
     @RequestMapping("/getRefundIndex")
     public String getAllRefundIndex(Integer page,Model model,Integer size,HttpServletRequest request){
         HttpSession session=request.getSession();
@@ -95,6 +122,14 @@ public class PageController {
         return "pages/details/orders/refund-list";
     }
 
+    
+    /** 
+    * @Description: 根据条件查看退款单 
+    * @Param: [model, select, mySelect, page, request] 
+    * @return: java.lang.String 
+    * @Author: Lili Chen 
+    * @Date: 2019/1/14 
+    */
     @RequestMapping("/getSearchRefund")
     public String getSearchRefund(Model model,String select,String mySelect,Integer page,HttpServletRequest request){
         Map<String,Object> map=new HashMap<>();

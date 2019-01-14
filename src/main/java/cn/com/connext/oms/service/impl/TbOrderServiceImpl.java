@@ -77,27 +77,8 @@ public class TbOrderServiceImpl implements TbOrderService {
         }
     }
 
-    /**
-     * @Author: zhaojun
-     * @Description:
-     * @Param: []
-     * @Create: 2019/1/7 11:01
-     */
-    @Override
-    public TbOrder getOrderById(int orderId) {
-        return tbOrderMapper.getOrderById(orderId);
-    }
 
-    /**
-     * @Author: zhaojun
-     * @Description: 根据订单ID查询订单所有信息
-     * @Param: []
-     * @Create: 2019/1/7 19:24
-     */
-    @Override
-    public OrderGoodsReceiverDto getAllById(int orderId) {
-        return tbOrderMapper.getAllById(orderId);
-    }
+
 
     /**
      * create by: Aaron
@@ -310,5 +291,15 @@ public class TbOrderServiceImpl implements TbOrderService {
            }
         }
         return false;
+    }
+    /**
+     * @Author: zhaojun
+     * @Description: 根据订单ID查询订单所有信息
+     * @Param: []
+     * @Create: 2019/1/7 19:24
+     */
+    @Override
+    public OrderGoodsReceiverDto getAllById(int orderId) {
+        return tbOrderMapper.getAllById(orderId);
     }
 }

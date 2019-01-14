@@ -1,13 +1,14 @@
 <!doctype html>
-<html lang="zh">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>OMS订单管理系统</title>
-    <link rel="stylesheet" type="text/css" href="../../assets/styles/web/sfont.css">
-    <link rel="stylesheet" href="../../assets/styles/index.css">
-    <link rel="stylesheet" href="../../assets/styles/reset.css">
+    <link rel="stylesheet" type="text/css" href="/assets/styles/web/sfont.css">
+    <link rel="stylesheet" href="/assets/styles/index.css">
+    <link rel="stylesheet" href="/assets/styles/reset.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
 </head>
@@ -16,12 +17,12 @@
     <!--左侧手风琴开始-->
     <div class="left">
         <div class="left-h2">
-            <img src="../../assets/images/OMS.png" alt="">
+            <img src="/assets/images/OMS.png" alt="">
             <h2>Manage System</h2>
         </div>
         <dl class="list_dl">
             <!--加上id="open"默认打开-->
-            <dt class="list_dt" id="open">
+            <dt class="list_dt" id="open" shiro:hasPermission="order">
                 <!--<span class="_after"></span>-->
                 <i class="i_orders left-i"></i>
                 <p>订单管理</p>
@@ -32,7 +33,7 @@
                     <li class="list_li" mid="tab1"  funurl=".././details/orders/order-list.html">
                         <a tabindex="-1" href="javascript:void(0);" id="default">订单列表</a>
                     </li>
-                    <li class="list_li" mid="tab2" funurl=".././details/orders/error-order-list.html">
+                    <li class="list_li" mid="tab2" funurl="/abnormal">
                         <a tabindex="-1" href="javascript:void(0);">异常订单列表</a>
                     </li>
                     <li class="list_li" mid="tab3" funurl=".././details/orders/warehouse-out-list.html">
@@ -68,7 +69,7 @@
                     </li> -->
                 </ul>
             </dd>
-            <dt class="list_dt">
+            <dt class="list_dt" shiro:hasPermission="goods">
                 <!--<span class="_after"></span>-->
                 <i class="i_goods left-i"></i>
                 <p>商品管理</p>
@@ -81,7 +82,7 @@
                     </li>
                 </ul>
             </dd>
-            <dt class="list_dt">
+            <dt class="list_dt" shiro:hasPermission="admin">
                 <!--<span class="_after"></span>-->
                 <i class="i_user left-i"></i>
                 <p>用户</p>
@@ -108,6 +109,7 @@
            <span class="shrink">
                 <i class="fa fa-arrow-left" ></i>
            </span>
+            <a href="/logout">注销</a>
             <ul class="user-list">
             <!--<li><i class="i_seach"></i></li>-->
             <!--<li><i class="i_user"></i></li>-->
@@ -129,10 +131,10 @@
         </div>
     </div>
 </div>
-<script src="../../assets/javascript/jquery-2.1.1.min.js"></script>
-<script src="../../assets/javascript/tabs/tabs.js"></script>
-<!-- <script src="../../assets/javascript/popup/popup.js"></script> -->
-<script src="../../assets/javascript/index.js"></script>
+<script src="/assets/javascript/jquery-2.1.1.min.js"></script>
+<script src="/assets/javascript/tabs/tabs.js"></script>
+<!-- <script src="/assets/javascript/popup/popup.js"></script> -->
+<script src="/assets/javascript/index.js"></script>
 <script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
 </body>
 </html>

@@ -10,12 +10,37 @@
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
+    <association property="tbGoods" javaType="cn.com.connext.oms.entity.TbGoods">
+      <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+      <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+      <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+      <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
+    </association>
   </resultMap>
 
-  <!--���ݶ�����Ų�ѯ�ö��������е���Ʒ���-->
-  <select id="getGoodOrderById" parameterType="Integer" resultType="Integer">
+  <!--根据订单编号查询该订单下所有的商品编号-->
+  <select id="getGoodsOrderById" parameterType="Integer" resultType="Integer">
     SELECT GOODS_ID FROM tb_goods_order WHERE order_id=#{orderId}
   </select>
-  <select id="getStockByOrderId" parameterType="Integer" resultMap="BaseResultMap">
-      select * from tb_goods_order where order_id=#{orderId}
-  </select></mapper>
+  <!--根据订单ID查询商品的名称单价个数总价：-->
+  <select id="goodsListFromOrder" parameterType="integer" resultType="cn.com.connext.oms.commons.dto.GoodsGoodsOrderDto">
+    SELECT
+      a.goods_id,
+      a.goods_code,
+      a.goods_name,
+      a.goods_price,
+      b.order_id,
+      b.num,
+      b.total_price,
+      b.goods_id
+    FROM
+      tb_goods a,
+      tb_goods_order b
+    WHERE
+      a.goods_id = b.goods_id
+      AND
+      order_id=#{orderId}
+  </select>
+
+
+</mapper>
