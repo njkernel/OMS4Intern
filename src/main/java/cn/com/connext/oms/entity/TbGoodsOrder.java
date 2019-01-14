@@ -34,6 +34,16 @@ public class TbGoodsOrder {
     @Column(name = "total_price")
     private Double totalPrice;
 
+    private TbGoods tbGoods;
+
+    public TbGoods getTbGoods() {
+        return tbGoods;
+    }
+
+    public void setTbGoods(TbGoods tbGoods) {
+        this.tbGoods = tbGoods;
+    }
+
     /**
      * 获取订单商品关系表id
      *

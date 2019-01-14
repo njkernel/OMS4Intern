@@ -33,21 +33,8 @@ public interface TbOrderService {
      */
     List<TbOrder> getOrderDetailsByOrderId(int id);
 
-    /**
-     * @Author: zhaojun
-     * @Description: 根据订单编号查询订单的详情
-     * @Param: []
-     * @Create: 2019/1/7 10:59
-     */
-    public TbOrder getOrderById(int orderId);
-    /**
-     * @Author: zhaojun
-     * @Description: 根据订单ID查询订单所有信息
-     * @Param: []
-     * @Return:
-     * @Create: 2019/1/7 19:19
-     */
-    public OrderGoodsReceiverDto getAllById(int orderId);
+
+
 
 
     /**
@@ -79,5 +66,13 @@ public interface TbOrderService {
     * @Date: 2019/1/8 
     */
     boolean cancelOrderOfWms(String outputs);
+    /**
+     * @Author: zhaojun
+     * @Description: 根据订单ID查询订单所有信息
+     * @Param: []
+     * @Return:
+     * @Create: 2019/1/7 19:19
+     */
+    public OrderGoodsReceiverDto getAllById(int orderId);
 
 }
