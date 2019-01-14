@@ -55,7 +55,7 @@ public interface TbOrderService {
    * @Author: Lili Chen 
    * @Date: 2019/1/8 
    */
-    boolean cancelOrder(List<TbOrder> orderList);
+    boolean cancelOrder(Integer[] orderIdList);
     
     
     /** 

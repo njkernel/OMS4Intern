@@ -60,6 +60,17 @@ public interface TbOrderMapper extends MyMapper<TbOrder> {
     */
     int updateOrderListBasicRemark(List<TbOrder> tbOrderList);
 
+
+
+    /**
+    * @Description: 根据订单编码查看订单
+    * @Param: [orderCode]
+    * @return: cn.com.connext.oms.entity.TbOrder
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    TbOrder getOrderByCode(String orderCode);
+
     List<TbOrder> getAllOrder();
 
     /**
