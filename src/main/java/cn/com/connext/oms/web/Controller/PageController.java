@@ -6,6 +6,7 @@ import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbReturn;
 import cn.com.connext.oms.entity.TbReturnGoods;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
+import cn.com.connext.oms.service.TbAbnormalService;
 import cn.com.connext.oms.service.TbExchangeService;
 
 
@@ -43,7 +44,8 @@ public class PageController {
 
 
     @Autowired
-    private TbReturnService tbReturnService;    /**
+    private TbReturnService tbReturnService;
+    /**
     * @Author: caps
     * @Description:异常订单列表详情页面
     * @Param: []
@@ -54,6 +56,13 @@ public class PageController {
     public String abnormalDetail(){
         return "pages/specific/abnormal-order";
     }
+
+    @Autowired
+    private TbAbnormalService tbAbnormalService;
+
+    @Autowired
+    private TbExchangeService tbExchangeService;
+
 
 
     /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/

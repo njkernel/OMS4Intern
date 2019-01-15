@@ -176,6 +176,7 @@ public class TbReturnController {
 
                 return BaseResult.fail("内部数据出现错误，请稍后重试");            }
         }
+        return BaseResult.fail(500,"取消失败");
     }
 
         /**
@@ -186,21 +187,42 @@ public class TbReturnController {
          * @return cn.com.connext.oms.commons.dto.BaseResult
          */
 
+        @GetMapping("/checkReturnOrExchange")
+        @ApiOperation(value = "退货/换货审核分流接口")
+        public BaseResult checkReturnOrExchange (@RequestParam("returnId") List < Integer > returnIds) {
+
+            Boolean rsReturn = false;
+            int rsExchange = 0;
+            List<Integer> tbReturnList = new ArrayList<>();
+            List<Integer> tbExchangeList = new ArrayList<>();
+            Date date = new Date();
 
 
+            for (int i = 0; i < returnIds.size(); i++) {
+                TbReturn tbReturn = tbReturnService.getTbReturnById(returnIds.get(i));
+                if (null != tbReturn) {
+                    //log
+                    if (RETURN_TYPE.equals(tbReturn.getReturnType())) {
+                        //将退货单生成单独的list交给退货部分处理
 
+                        tbReturnList.add(tbReturn.getReturnId());
 
+                    } else if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
+                        //将换货单生成单独的list交给换货处理
+                        tbExchangeList.add(tbReturn.getReturnId());
 
+                    }
+                }
+            }
 
+            try {
+                //获取通过审核的订单，进行处理
+                List<Integer> returnOrdersList = tbReturnService.returnOrdersAudit(tbReturnList);
+                if (null != returnOrdersList) {
+                    tbReturnService.createInputOrder(returnOrdersList);
+                    BaseResult.success("生成入库单成功并成功发送");
 
                 }
-        }
- 				try {
-                //获取通过审核的订单，进行处理
-                	List<Integer> returnOrdersList = tbReturnService.returnOrdersAudit(tbReturnList);
-               		if (null != returnOrdersList) {
-                    	tbReturnService.createInputOrder(returnOrdersList);
-                    	BaseResult.success("生成入库单成功并成功发送");                }
 
             } catch (Exception e) {
                 return BaseResult.fail("内部数据操作出现异常");
@@ -225,6 +247,8 @@ public class TbReturnController {
             }
 
         }
+
+    }
 
 
 
