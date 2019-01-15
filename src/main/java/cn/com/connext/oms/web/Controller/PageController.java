@@ -1,6 +1,8 @@
 package cn.com.connext.oms.web.Controller;
 
+import cn.com.connext.oms.service.TbAbnormalService;
 import cn.com.connext.oms.service.TbRefundService;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,9 @@ public class PageController {
     @Autowired
     private TbRefundService tbRefundService;
 
+    @Autowired
+    private TbAbnormalService tbAbnormalService;
+
     /**
     * @Author: caps
     * @Description:异常订单列表详情页面
@@ -31,12 +36,23 @@ public class PageController {
     * @Return: java.lang.String
     * @Create: 2019/1/12 16:01
     */
-    @RequestMapping("/abnormalModel")
+ /*   @RequestMapping("/abnormalModel")
     public String abnormalDetail(){
         return "pages/specific/abnormal-order";
-    }
+    }*/
 
     /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
+    @GetMapping("/abnormalDetail")
+    @ApiOperation(value = "异常订单详情接口")
+    public String abnormalDetail(int abnormalId,Model model){
+        try {
+            Map<String, Object> map = tbAbnormalService.abnormalDetail(abnormalId);
+            model.addAttribute("map",map);
+            return "pages/specific/abnormal-order";
+        } catch (Exception e) {
+            return null;
+        }
+    }
     @RequestMapping("/abnormal")
     public String abnormal(){
         return "pages/details/orders/error-order-list";

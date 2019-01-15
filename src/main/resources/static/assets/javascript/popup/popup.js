@@ -3,6 +3,7 @@ $(function () {
   var Plugin = function (elem, options) {
     this.$elem = elem;
     this.$btn = $('.btn.btn-xs');
+    this.$MyAbnormalModel = $('#MyAbnormalModel');
     this.$oMask = $('#mask_shadow');
     this.$oTitle = this.$elem.find('.title');
     this.$close = this.$oTitle.find('span');
@@ -16,7 +17,14 @@ $(function () {
       this.$elem.on('click', function () {
         return false;
       });
-      this.$btn.on('click', function () {  
+      this.$MyAbnormalModel.on('click', function () {
+        self.popbox();
+
+        self.b_stop = false;
+
+        return false;
+      });
+      this.$btn.on('click', function () {
         self.popbox();
 
         self.b_stop = false;

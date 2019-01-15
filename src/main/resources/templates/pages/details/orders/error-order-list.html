@@ -44,7 +44,7 @@
             border-radius: .2em;
             background-color: silver;
             text-indent: .15em;
-            line-height: .65;  
+            line-height: .65;
         }
         #checkOne:checked + label::before {
             content: "\2713";
@@ -60,11 +60,11 @@
 </head>
 
 <body style="overflow-x:hidden;background:#f3f3f3;">
-<div id="abnormal">
+<div id="abnormal" style="height: 600px">
     <div class="btn-div">
         <button type="button" class="btn btn-primary" @click="abnormalHandle">处理异常</button>
         <button type="button" class="btn btn-primary" @click="refresh">刷新</button>
-        <button type="button" class="btn btn-primary btn-xs" @click="checkOrder">查看订单</button>
+        <button type="button" class="btn btn-primary" id="MyAbnormalModel" @click="checkOrder">查看订单</button>
         <div class="search-box">
             <form action="">
                 <select v-model="selected">
@@ -80,20 +80,19 @@
     <div>
         <table class="table table-condensed">
             <thead>
-                <tr>
-                    <th>选择</th>
-                    <th>异常单号</th>
-                    <th>订单号</th>
-                    <th>异常类型</th>
-                    <th>异常原因</th>
-                    <th>异常状态</th>
-                    <th>创建时间</th>
-                    <th>修改人</th>
-                    <th>操作</th>
-                </tr>
+            <tr>
+                <th>选择</th>
+                <th>异常单号</th>
+                <th>订单号</th>
+                <th>异常类型</th>
+                <th>异常原因</th>
+                <th>异常状态</th>
+                <th>创建时间</th>
+                <th>修改人</th>
+            </tr>
             </thead>
             <tbody>
-            <template v-for="list in abnormalDate" v-cloak>
+            <template v-for="list in abnormalDate.list" v-cloak>
                 <tr>
                     <td>
                         <input type="radio" :value="list.abnormalId" v-model="checkedDate" >
@@ -112,15 +111,43 @@
         </table>
     </div>
     <div class="footer-pager">
-        <span>共<span>5</span>页，当前第<span>1</span>页</span>
+        <!--解析显示分页信息-->
+        <!--分页文字信息-->
+        <span>共<span>{{abnormalDate.pages}}</span>页，当前第<span>{{abnormalDate.pageNums}}，总{{abnormalDate.total}}条数据</span>页</span>
+        <!--分页条信息-->
         <ul class="pagination">
-            <li><a href="#">&laquo;</a></li>
-            <li class="active"><a href="#">1</a></li>
-            <li class="disabled"><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
+            <!--如果无上一页，不可点-->
+            <template v-if="abnormalDate.hasPreviousPage==false">
+                <li><a href="#">&laquo;</a></li>
+            </template>
+            <!--如果有上一页，可点-->
+            <template v-if="abnormalDate.hasPreviousPage==true">
+                <!--点前一页，跳到当前页码前一页-->
+                <li @click="to_page(abnormalDate.pageNum-1)"><a href="#">&laquo;</a></li>
+            </template>
+
+            <!--遍历连续显示的页码-->
+            <template v-for="pagenum in abnormalDate.navigatepageNums">
+                <!--如果是当前页码，高亮显示-->
+                <template v-if="pagenum==abnormalDate.pageNum">
+                    <li class="active"><a href="#">{{pagenum}}</a></li>
+                </template>
+                <!--如果不是当前页码，正常显示-->
+                <template v-if="pagenum!=abnormalDate.pageNum">
+                    <!--点击后把当前页码传送给axios-->
+                    <li class @click="to_page(pagenum)"><a href="#">{{pagenum}}</a></li>
+                </template>
+            </template>
+
+            <!--如果无下一页，不可点-->
+            <template v-if="abnormalDate.hasNextPage==false">
+                <li><a href="#">&raquo;</a></li>
+            </template>
+            <!--如果有下一页，可点-->
+            <template v-if="abnormalDate.hasNextPage==true">
+                <!--把当前页码的下一页传送给axios-->
+                <li @click="to_page(abnormalDate.pageNum+1)"><a href="#">&raquo;</a></li>
+            </template>
         </ul>
     </div>
     <!-- 弹出框 -->
@@ -139,15 +166,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
-    <div id="popup" class="popup" style="top: -555px;">
-        <div class="title">
-            <p>异常订单详情</p>
-            <span></span>
-            <span>x</span>
-        </div>
-        <div class="cont">
-            <iframe src="/abnormalModel" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
-    </div>
+
 </div>
 </body>
 <script>
@@ -155,13 +174,27 @@
         $(this).addClass('checkbox-style');
     })
 </script>
-
+<div id="popup" class="popup" style="top: -555px;">
+    <div class="title">
+        <p>异常订单详情</p>
+        <span></span>
+        <span>x</span>
+    </div>
+    <div class="cont">
+        <iframe src="" scrolling="auto" id="iframeId" style="width:100%;height:100%;border:0px;"></iframe></div>
+</div>
 <script>
     $('.table tbody tr td input').click(function () {
 
-
         $(this).addClass('checkbox-style');
     });
+  /*  $('.MyAbnormalModel').on('click', function () {
+        self.popbox();
+
+        self.b_stop = false;
+
+        return false;
+    });*/
     $(function () {
         $('#popup').popup();
         $("body").css("overflow-y", "hidden");
