@@ -1,8 +1,10 @@
 package cn.com.connext.oms.service;
 
+import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
 import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbReturn;
+import com.github.pagehelper.PageInfo;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 
@@ -80,4 +82,10 @@ public interface TbReturnService {
      * @return
      */
     int updateStateByFeedback(InputFeedback inputFeedback);
+
+    /**
+     * 查找所有的入库单详情
+     * @return
+     */
+    PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize);
 }

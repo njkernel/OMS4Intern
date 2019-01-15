@@ -2,6 +2,7 @@ package cn.com.connext.oms.service.impl;
 
 import afu.org.checkerframework.checker.igj.qual.I;
 import cn.com.connext.oms.commons.dto.BaseResult;
+import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
 import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDTO;
 import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDetailDTO;
@@ -9,9 +10,12 @@ import cn.com.connext.oms.commons.utils.AES;
 import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.mapper.TbExchangeMapper;
+import cn.com.connext.oms.mapper.TbInputMapper;
 import cn.com.connext.oms.mapper.TbOrderMapper;
 import cn.com.connext.oms.mapper.TbReturnMapper;
 import cn.com.connext.oms.service.TbReturnService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +45,9 @@ public class TbReturnServiceImpl implements TbReturnService {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    private TbInputMapper tbInputMapper;
 
     @Autowired
     private TbReturnMapper tbReturnMapper;
@@ -118,8 +125,9 @@ public class TbReturnServiceImpl implements TbReturnService {
             Date updated = new Date();
             if (unchecked.equals(state)){
                 if (MISTIMING > time ) {
-                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "等待收货", user, updated);
+//                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "等待收货", user, updated);
                     returnOrderList.add(returnIdsList.get(i));
+                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i),"审核通过",user,updated);
                 }else {
                     tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "审核失败", user, updated);
                     BaseResult.fail("审核失败，退货单状态已变为审核失败");
@@ -166,13 +174,14 @@ public class TbReturnServiceImpl implements TbReturnService {
         TbInput tbInput1 = new TbInput();
         boolean flag = false;
         for (int i = 0; i < returnIdsList.size(); i++) {
+
             int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(i));
 
             String inputCode = CodeGenerateUtils.creatUUID();
             Date created = time;
             Date updated = time;
 
-            boolean flag1 = tbReturnMapper.createInputOrder(inputCode, orderId,inputState,created, updated, synchronizeState);
+            tbReturnMapper.createInputOrder(inputCode, orderId,inputState,created, updated, synchronizeState);
 
 
             tbInput1 = tbExchangeMapper.selectTbInputByOrderId(orderId);
@@ -193,7 +202,7 @@ public class TbReturnServiceImpl implements TbReturnService {
 
 
                 try {
-                    restTemplate.postForEntity("http://10.129.100.51:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
+                    restTemplate.postForEntity("http://10.129.100.38:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
                     TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
                     List<TbReturn> tbReturnsList = new ArrayList<>();
                     tbReturn.setOrderId(orderId);
@@ -290,6 +299,20 @@ public class TbReturnServiceImpl implements TbReturnService {
             return 3;
         }
         return  0;
+    }
+
+    /**
+     * 查找所有入库单详情
+     * @return PageInfo
+     */
+    @Override
+    public PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize) {
+        PageHelper.startPage(currentPage,pageSize);
+
+        List<InputDTO> tbReturnList = tbReturnMapper.getAllInputOrders();
+        PageInfo<InputDTO> pageInfo = new PageInfo<InputDTO>(tbReturnList);
+
+        return pageInfo;
     }
 
 

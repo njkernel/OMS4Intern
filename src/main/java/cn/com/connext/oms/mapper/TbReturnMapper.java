@@ -1,5 +1,6 @@
 package cn.com.connext.oms.mapper;
 
+import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbReturn;
 import org.apache.ibatis.annotations.Param;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
 
 import java.util.Date;
+import java.util.List;
+
 /**
  * create by: Aaron
  * description: 退货相关的dao
@@ -107,5 +110,9 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      */
     String getTypeByorderId (@Param("orderId") int orderId);
 
-
+    /**
+     * 查找所有的入库单详情
+     * @return
+     */
+    List<InputDTO> getAllInputOrders();
 }
