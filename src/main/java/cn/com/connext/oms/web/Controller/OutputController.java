@@ -9,6 +9,7 @@ import cn.com.connext.oms.service.TbOrderService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
@@ -64,10 +65,13 @@ public class OutputController {
      * @date: 2019/1/8
      */
     @GetMapping("OutputDetails")
-    public BaseResult OutputDetails() {
-        List<TbOrder> allOrder = tbOrderService.getAllOrder();
+    public ModelAndView OutputDetails() {
+        ModelAndView mv = new ModelAndView("pages/details/orders/warehouse-out-list");
+        List<TbOrder> allOrder = tbOrderService.getAllOrderByStatus(STATUS4);
+        mv.addObject("OutputDetails",allOrder);
+        mv.addObject("outputService",outputService);
         // 需要和前端页面绑定
-        return BaseResult.success("成功", allOrder);
+        return mv;
     }
 
     /**

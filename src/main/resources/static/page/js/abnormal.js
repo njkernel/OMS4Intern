@@ -34,8 +34,8 @@ let Abnormal = new Vue({
 
             //模态框数据
             modalData:{
-                goodsInfo:[],
-                abnormalInfo:[],
+                // goodsInfo:[],
+                // abnormalInfo:[],
             },
         }
     },
@@ -49,7 +49,7 @@ let Abnormal = new Vue({
         //初始化表格
         initTable(){
             let url='/abnormalList';
-            callAxiosGet(url,this.page,this.getListSuc,this.Fail)
+            callAxiosGet(url,this.page,this.getListSuc,this.Fail);
         },
         //初始化
         refresh(){
@@ -73,19 +73,36 @@ let Abnormal = new Vue({
             /*console.log(this.checkedDate);*/
             callAxiosGet(url,{abnormalId:this.checkedDate},this.Suc,this.Fail)
         },
-/*        //把当前行id存在缓存中
-        toPageStorage(){
-            sessionStorage.setItem("id", this.checkedDate);
-            /!*console.log(sessionStorage.getItem("id"))*!/
-        },*/
+        //把当前行id存在缓存中
+        /*     toPageStorage(){
+                 localStorage.setItem("goodsId", this.checkedDate);
+                 /!*console.log(sessionStorage.getItem("id"))*!/
+             },*/
 
         //异常订单详情
         checkOrder(){
-            let url='/abnormalDetail';
-            callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)
+            /* let url='/abnormalDetail';
+             callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)*/
+            console.log(this.checkedDate);
+            document.getElementById('iframeId').src="/abnormalDetail?abnormalId="+this.checkedDate;
         },
 
-
+        /*根据页码，查询到要显示的数据*/
+        to_page(pn) {
+            let that=this;
+            axios.get('/abnormalList', {
+                params: {
+                    currentPage:pn,
+                    pageSize: that.page.pageSize
+                }
+            }).then(res => {
+                console.log(res);
+                that.abnormalDate = res.data.data;
+                console.log(that.abnormalDate)
+            }, err => {
+                console(err);
+            })
+        },
         //查询事件
         searchBtn(){
             if(this.selected==='orderId'){
@@ -110,7 +127,7 @@ let Abnormal = new Vue({
                 this.searchDate.modifiedUser=this.searchInput;
             }
 
-           //查询条件
+            //查询条件
             this.page.currentPage=1;
             this.page.orderId=this.searchDate.orderId;
             this.page.abnormalState=this.searchDate.abnormalState;
@@ -133,14 +150,15 @@ let Abnormal = new Vue({
 
         //异常订单列表接口反馈
         getListSuc(res){
-            console.log(res);
+
             let that=this;
             if(res.status===200){
-                that.abnormalDate=res.data.list;
+                that.abnormalDate=res.data;
+                console.log(that.abnormalDate);
                 //默认选中第一条数据
                 that.checkedDate=res.data.list[0].abnormalId;
                 let url='/abnormalDetail';
-                callAxiosGet(url,{abnormalId:res.data.list[0].abnormalId},that.detailSuc,that.Fail)
+                // callAxiosGet(url,{abnormalId:res.data.list[0].abnormalId},that.detailSuc,that.Fail)
             }else{
                 alert(res.message);
             }
@@ -158,5 +176,7 @@ let Abnormal = new Vue({
         },
     }
 });
+
+
 
 

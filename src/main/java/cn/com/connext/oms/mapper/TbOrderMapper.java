@@ -13,13 +13,12 @@ import java.util.List;
 @Repository
 public interface TbOrderMapper extends MyMapper<TbOrder> {
     /**
-    * @Author: caps
-    * @Description:
-    * @Param: []
+    * @Author: Jay
+    * @Param: 订单状态
     * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
-    * @Create: 2019/1/6 10:14
+    * @Create: 2019/1/13
     */
-    List<TbOrder> getAllOrder(String state);
+    List<TbOrder> getAllOrderByStatus(String state);
 
 
     /**
@@ -59,6 +58,17 @@ public interface TbOrderMapper extends MyMapper<TbOrder> {
     * @Date: 2019/1/8
     */
     int updateOrderListBasicRemark(List<TbOrder> tbOrderList);
+
+
+
+    /**
+    * @Description: 根据订单编码查看订单
+    * @Param: [orderCode]
+    * @return: cn.com.connext.oms.entity.TbOrder
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    TbOrder getOrderByCode(String orderCode);
 
     List<TbOrder> getAllOrder();
 

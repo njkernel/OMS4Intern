@@ -8,6 +8,7 @@ import cn.com.connext.oms.service.TbExchangeService;
 import cn.com.connext.oms.service.TbOrderService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,13 +78,14 @@ public class inputStateFeedback {
         if (tbExchangeService.checkToken(tokens,String.valueOf(orderId))==0){
             return BaseResult.fail("tokens口令错误！");
         }
+
         try {
             details = objectMapper.readValue(goodDetails,new TypeReference<List<GoodDetails>>() {});
         } catch (IOException e) {
             details=new ArrayList<>();
         }
         InputFeedback inputFeedback=new InputFeedback(tokens,orderId,inputState,"yonyong",details);
-        int rs=tbExchangeService.generateOutput(inputFeedback);
+        int rs=tbExchangeService.inputFeedback(inputFeedback);
         if (0 == rs){
             return BaseResult.success("操作成功！已生成新的出库单！");
         }
