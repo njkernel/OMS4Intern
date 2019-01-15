@@ -8,25 +8,26 @@
     <link rel="stylesheet" type="text/css" href="../../assets/styles/specific/outstock.css"/>
 </head>
 <body style="overflow-x:hidden;">
-    <div class="container">
+    <div class="container"  style="top: -380px;">
             <div class="main-body">
                 <div class="main-content1">
                     <div class="title"><text>商品信息</text></div>
                     <div class="title-content">
                         <div class="title-content1">
-                            <div class="title-content1-top1">订单号：<input disabled="disabled"></div>
-                            <div class="title-content1-top2">渠道订单号：<input disabled="disabled"></div>
-                            <div class="title-content1-top3">订单状态：<input disabled="disabled"></div>
+                            <div class="title-content1-top1">订单号：<input disabled="disabled" th:text="${outStockDetails[0].orderId}"></div>
+                            <div class="title-content1-top2">渠道订单号：<input disabled="disabled" th:text="${outStockDetails[0].channelCode}"></div>
+                            <div class="title-content1-top3">订单状态：<input disabled="disabled" th:text="${outStockDetails[0].orderState}"></div>
                         </div>
                         <div class="title-content2">
-                            <div class="title-content1-top1">收货人：<input disabled="disabled"></div>
-                            <div class="title-content1-top2">快递公司：<input disabled="disabled"></div>
-                            <div class="title-content1-top3">快递单号：<input disabled="disabled"></div>
+                            <div class="title-content1-top1">收货人：<input disabled="disabled" th:text="${outStockDetails[0].receiverName}"></div>
+                            <div class="title-content1-top2">快递公司：<input disabled="disabled" th:text="${outStockDetails[0].deliveryCompany}"></div>
+                            <div class="title-content1-top3">快递单号：<input disabled="disabled" th:text="${outStockDetails[0].deliveryCode}"></div>
                         </div>
                         <div class="title-content3">
-                            <div class="title-content1-top1">出库单状态：<input disabled="disabled"></div>
-                            <div class="title-content1-top2">收货地址：<input disabled="disabled"></div>
-                            <div class="title-content1-top3">创建时间：<input disabled="disabled"></div>
+                            <div class="title-content1-top1">出库单状态：<input disabled="disabled" th:text="${outStockDetails[0].outputState}"></div>
+                            <div class="title-content1-top2">收货地址：<input disabled="disabled" th:text="${outStockDetails[0].receiverDistrict
+                            +'省'+outStockDetails[0].receiverCity+'市'+outStockDetails[0].receiverAddress}"></div>
+                            <div class="title-content1-top3">创建时间：<input disabled="disabled" th:text="${#dates.format(outStockDetails[0].created,'yyyy-MM-dd HH:mm:ss')}"></div>
                         </div>
                     </div>
                 </div>
@@ -36,22 +37,19 @@
                     <table border="0" cellspacing="0" cellpadding="0" class="tab">
                         <tr class="tr-title">
                             <th>出库单号</th>
-                            <th>仓库出库单号</th>
                             <th>商品编码</th>
                             <th>商品名称</th>
                             <th>单价</th>
                             <th>数量</th>
                             <th>金额</th>
                         </tr>
-                        <!--th:each="list:${}"-->
-                        <tr >
-                            <td class="ttdd">12345</td>
-                            <td>11</td>
-                            <td>12344556</td>
-                            <td>矿泉水</td>
-                            <td>2</td>
-                            <td>200</td>
-                            <td>400</td>
+                        <tr  th:each="list:${outStockDetails}">
+                            <td class="ttdd" th:text="${list.outputCode}"></td>
+                            <td th:text="${list.goodsCode}"></td>
+                            <td th:text="${list.goodsName}"></td>
+                            <td th:text="${list.goodsPrice}"></td>
+                            <td th:text="${list.num}"></td>
+                            <td th:text="${list.totalPrice}"></td>
                         </tr>
                     </table>
                 </div>

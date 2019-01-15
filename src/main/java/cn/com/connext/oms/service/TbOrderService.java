@@ -2,6 +2,7 @@ package cn.com.connext.oms.service;
 
 import cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto;
 import cn.com.connext.oms.entity.TbOrder;
+import cn.com.connext.oms.entity.TbOrderDetails;
 import com.github.pagehelper.PageInfo;import cn.com.connext.oms.entity.TbOutput;
 import java.util.List;
 
@@ -22,16 +23,6 @@ public interface TbOrderService {
      * @Create: 2019/1/6 10:14
      */
     List<TbOrder> getAllOrder();
-    /**
-     *
-     * 功能描述: 根据订单状态查询所需要的订单
-     *
-     * @param: 订单状态
-     * @return: 返回根据订单状态查询的订单
-     * @auther: Jay
-     * @date: 2019/1/13
-     */
-    List<TbOrder> getAllOrderByStatus(String status);
 
     /**
      * create by: yonyong
