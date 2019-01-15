@@ -10,8 +10,11 @@ import cn.com.connext.oms.entity.TbReturn;
 import cn.com.connext.oms.service.TbExchangeService;
 import cn.com.connext.oms.service.TbOrderService;
 import cn.com.connext.oms.service.TbReturnService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
+import jdk.internal.util.xml.impl.Input;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +44,19 @@ public class TbReturnController {
 
     String RETURN_TYPE = "退货";
     String EXCHANGE_TYPE = "换货";
+
+    /**
+     *  入库单页面
+     * @return
+     */
+    @GetMapping("/toInput")
+    public BaseResult allInputOrders(Integer currentPage,Integer pageSize){
+
+        PageInfo<TbInput> tbInputList = tbReturnService.getAllInputOrders( currentPage, pageSize);
+        return BaseResult.success("查询成功",tbInputList);
+
+    }
+
 
     /**
      * 根据订单id查询订单详情
@@ -116,7 +132,7 @@ public class TbReturnController {
 
             }
 
-            if (RETURN_TYPE == tbReturn.getReturnType()){
+            if (EXCHANGE_TYPE == tbReturn.getReturnType()){
                 exchangeList.add(returnIdsList.get(i));
             }
         }

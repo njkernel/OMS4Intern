@@ -83,4 +83,10 @@
     WHERE return_id = #{returnId}
   </select>
 
+  <!--查找所有的入库单-->
+  <select id="getAllInputOrders" resultType="TbInput">
+    SELECT *
+    FROM tb_input
+  </select>
+
 </mapper>

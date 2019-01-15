@@ -9,9 +9,12 @@ import cn.com.connext.oms.commons.utils.AES;
 import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.mapper.TbExchangeMapper;
+import cn.com.connext.oms.mapper.TbInputMapper;
 import cn.com.connext.oms.mapper.TbOrderMapper;
 import cn.com.connext.oms.mapper.TbReturnMapper;
 import cn.com.connext.oms.service.TbReturnService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +44,9 @@ public class TbReturnServiceImpl implements TbReturnService {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    private TbInputMapper tbInputMapper;
 
     @Autowired
     private TbReturnMapper tbReturnMapper;
@@ -291,6 +297,20 @@ public class TbReturnServiceImpl implements TbReturnService {
             return 3;
         }
         return  0;
+    }
+
+    /**
+     * 查找所有入库单详情
+     * @return PageInfo
+     */
+    @Override
+    public PageInfo<TbInput> getAllInputOrders(Integer currentPage,Integer pageSize) {
+        PageHelper.startPage(currentPage,pageSize);
+
+        List<TbInput> tbReturnList = tbInputMapper.selectAll();
+        PageInfo<TbInput> pageInfo = new PageInfo<TbInput>(tbReturnList);
+
+        return pageInfo;
     }
 
 
