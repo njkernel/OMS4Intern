@@ -46,9 +46,9 @@ public class TbExchangeController {
      */
     @RequestMapping("/showAllExchanges")
     @ApiOperation(value = "显示所有换货单接口")
-    public  BaseResult showAllReturns(Integer currentPage,Integer pageSize,String returnType){
+    public  BaseResult showAllReturns(Integer currentPage,Integer pageSize,TbReturn tbReturn){
         try {
-            PageInfo<TbReturn> pageInfo=tbExchangeService.showAllReturns(currentPage,pageSize,returnType);
+            PageInfo<TbReturn> pageInfo=tbExchangeService.showAllReturns(currentPage,pageSize,tbReturn);
             return BaseResult.success("查询成功！",pageInfo);
         }catch (Exception e){
             e.printStackTrace();

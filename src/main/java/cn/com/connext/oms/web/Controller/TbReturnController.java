@@ -116,7 +116,7 @@ public class TbReturnController {
 
             }
 
-            if (EXCHANGE_TYPE == tbReturn.getReturnType()){
+            if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())){
                 exchangeList.add(returnIdsList.get(i));
             }
         }

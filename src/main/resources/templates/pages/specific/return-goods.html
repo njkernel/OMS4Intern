@@ -14,19 +14,20 @@
                             <div class="title"><text>基本信息</text></div>
                             <div class="title-content">
                                 <div class="title-content1">
-                                    <div class="title-content1-top1">退货单号：<input th:value="${test.returnCode}"></div>
-                                    <div class="title-content1-top2">退货/换货：<input th:value="${test.returnType}"></div>
-                                    <div class="title-content1-top3">退货状态：<input th:value="${test.returnState}"></div>
+                                    <div class="title-content1-top1">退货单号：<input th:text="${test.returnCode}"></div>
+                                    <div class="title-content1-top2">退货/换货：<input th:text="${test.returnType}"></div>
+                                    <div class="title-content1-top3">退货状态：<input th:text="${test.returnState}"></div>
                                 </div>
                                 <div class="title-content2">
-                                    <div class="title-content1-top1">订单号：<input th:value="${test.orderId}"></div>
-                                    <div class="title-content1-top2">渠道订单号：<input th:value="${test.channelCode}"></div>
-                                    <div class="title-content1-top3">退货金额：<input th:value="${test.returnPrice}"></div>
+                                    <div class="title-content1-top1">订单号：<input th:text="${test.orderId}"></div>
+                                    <div class="title-content1-top2">渠道订单号：<input th:text="${test.channelCode}"></div>
+                                    <div class="title-content1-top3">退货金额：<input th:text="${test.returnPrice}"></div>
                                 </div>
                                 <div class="title-content3">
-                                    <div class="title-content1-top1">创建时间：<time th:text="${#dates.format(test.created,'yyyy-MM-dd HH:mm:ss')}"></time></div>
+                                    <div class="title-content1-top1">创建时间：<input th:text="${#dates.format(test.created,'yyyy-MM-dd')}"></div>
                                     <div class="title-content1-top2">修改人：<input th:text="${test.modifiedUser}"></div>
-                                    <div class="title-content1-top3">修改时间：<time th:text="${#dates.format(test.updated,'yyyy-MM-dd HH:mm:ss')}"></time></div>
+                                    <div class="title-content1-top3">修改时间：<input th:text="${#dates.format(test.updated,'yyyy-MM-dd')}"></div>
+                                    <!--<div class="title-content1-top3">修改时间：<input th:text="${#dates.format(test.updated,'yyyy-MM-dd HH:mm:ss')}"></div>-->
                                 </div>
                             </div>
                         </div>
@@ -40,12 +41,18 @@
                                     <th>退货数量</th>
                                     <th>退货金额</th>
                                 </tr>
-                                <!--<tr th:each="temp:${test.tbReturnGoods}">-->
-                                    <!--<td class="ttdd" th:value="${temp.}"></td>-->
-                                    <!--<td>矿泉水</td>-->
-                                    <!--<td>2</td>-->
-                                    <!--<td>200</td>-->
-                                <!--</tr>-->
+                                <tr th:each="temp:${returnGoods}">
+                                    <td class="ttdd" th:text="${temp.goodCode}"></td>
+                                    <td th:text="${temp.goodName}">矿泉水</td>
+                                    <td th:text="${temp.returnNum}">2</td>
+                                    <td th:text="${temp.returnPrice}">200</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 15px;"><strong>总计</strong></td>
+                                    <td></td>
+                                    <td th:text="${num}">2000</td>
+                                    <td th:text="${sum}">4005</td>
+                                </tr>
 
                             </table>
                         </div>
