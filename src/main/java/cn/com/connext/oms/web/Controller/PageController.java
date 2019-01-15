@@ -1,11 +1,15 @@
 package cn.com.connext.oms.web.Controller;
 
 
+import cn.com.connext.oms.entity.TbInput;
+import cn.com.connext.oms.entity.TbReturn;
+import cn.com.connext.oms.entity.TbReturnGoods;
 import cn.com.connext.oms.service.TbAbnormalService;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 import cn.com.connext.oms.service.TbExchangeService;
 
 import cn.com.connext.oms.service.TbRefundService;
+import cn.com.connext.oms.service.TbReturnService;
 import io.swagger.annotations.ApiOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +41,9 @@ public class PageController {
 
     @Autowired
     private TbExchangeService tbExchangeService;
+
+    @Autowired
+    private TbReturnService tbReturnService;
     /**
     * @Author: caps
     * @Description:异常订单列表详情页面
@@ -129,13 +137,17 @@ public class PageController {
     @GetMapping({"/inputDetails"})
     public String inputDetails(@RequestParam("orderId") int orderId,Model model){
         try {
-            System.out.println(orderId);
+
             ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
+            TbInput tbInput = tbReturnService.getInputByOrderId(orderId);
+            List<TbReturnGoods> tbReturnGoodsList = tbReturnService.getTbReturnGoodsById(orderId);
             model.addAttribute("returnDetails",returnDetails);
+            model.addAttribute("tbInput",tbInput);
+            model.addAttribute("tbReturnGoodsList",tbReturnGoodsList);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "pages/specific/addstock";
+            return "pages/specific/addstock";
     }
 
 

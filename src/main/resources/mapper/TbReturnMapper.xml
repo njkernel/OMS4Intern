@@ -102,5 +102,21 @@
   WHERE
       a.order_id = b.order_id
   </select>
+<!--根据订单id查找退货单信息-->
+  <select id="getInputByOrderId" resultType="TbInput">
+    SELECT *
+    FROM tb_input
+    WHERE order_id = #{orderId}
+  </select>
+
+
+
+<!--根据订单id查找退货单商品信息-->
+  <select id="getTbReturnGoodsById" resultType="TbReturnGoods">
+    SELECT *
+    FROM tb_return_goods
+    WHERE order_id = #{orderId}
+
+  </select>
 
 </mapper>

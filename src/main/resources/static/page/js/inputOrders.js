@@ -79,6 +79,7 @@ var inputOrders = new Vue({
              callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)*/
             console.log(this.checkedDate);
             document.getElementById('iframeId1').src="/inputDetails?orderId="+this.checkedDate;
+            console.log($("#iframeId1").attr("src"));
         },
 
         //入库单单列表接口反馈
