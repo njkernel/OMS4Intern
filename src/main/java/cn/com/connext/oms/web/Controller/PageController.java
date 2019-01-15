@@ -1,5 +1,12 @@
 package cn.com.connext.oms.web.Controller;
 
+import cn.com.connext.oms.entity.TbGoods;
+import cn.com.connext.oms.entity.TbGoodsOrder;
+import cn.com.connext.oms.entity.TbOrder;
+import cn.com.connext.oms.entity.TbRefund;
+import cn.com.connext.oms.service.TbGoodsListService;
+import cn.com.connext.oms.service.TbGoodsOrderService;
+import cn.com.connext.oms.service.TbOrderService;
 import cn.com.connext.oms.service.TbRefundService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +34,12 @@ public class PageController {
 
     @Autowired
     private TbRefundService tbRefundService;
+
+    @Autowired
+    private TbOrderService tbOrderService;
+
+    @Autowired
+    private TbGoodsOrderService tbGoodsOrderService;
 
     /**
     * @Author: caps
@@ -105,19 +119,11 @@ public class PageController {
         if(basic.equals("orderCode")){
             map=tbRefundService.getListRefundByOrderCode(mySelect,page,4);
         }else if(basic.equals("refundState")){
-            map=tbRefundService.getListRefundByState(mySelect,page,4);
+           map=tbRefundService.getListRefundByState(mySelect,page,4);
 
         }else{
             map=tbRefundService.getAllRefundIndex(page,size);
         }
-        if(map==null){
-            map=new HashMap<>();
-            map.put("refundList",null);
-            map.put("page",1);
-            map.put("pageCount",1);
-
-        }
-
         model.addAttribute("map",map);
         return "pages/details/orders/refund-list";
     }
@@ -140,10 +146,19 @@ public class PageController {
           session.setAttribute("basic","orderCode");
         }else if(select.equals("refundState")){
             session.setAttribute("basic","refundState");
-          map=tbRefundService.getListRefundByState(mySelect,page,4);
+            map=tbRefundService.getListRefundByState(mySelect,page,4);
         }
         model.addAttribute("map",map);
         return "pages/details/orders/refund-list";
+    }
+
+    @RequestMapping("/refundDetail")
+    public String refundDetail(Integer refundId,Model model){
+        TbRefund refund=tbRefundService.getRefundById(refundId);
+        List<TbGoodsOrder> tbGoodsOrderList=tbGoodsOrderService.getListGoodsOrderById(refund.getOrderId());
+        model.addAttribute("GoodsOrderList",tbGoodsOrderList);
+        model.addAttribute("refund",refund);
+        return "pages/specific/refund";
     }
 
     /**
@@ -159,4 +174,14 @@ public class PageController {
         return "pages/details/orders/sales-return-list";
     }
 
+
+    @RequestMapping("/orderDetail")
+    public String orderDetail(){
+        return "pages/specific/order-detail";
+    }
+
+    @RequestMapping("/orderList")
+    public String orderList(){
+        return "pages/details/orders/order-list";
+    }
 }
