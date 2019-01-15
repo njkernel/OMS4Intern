@@ -22,6 +22,16 @@ public interface TbOrderService {
      * @Create: 2019/1/6 10:14
      */
     List<TbOrder> getAllOrder();
+    /**
+     *
+     * 功能描述: 根据订单状态查询所需要的订单
+     *
+     * @param: 订单状态
+     * @return: 返回根据订单状态查询的订单
+     * @auther: Jay
+     * @date: 2019/1/13
+     */
+    List<TbOrder> getAllOrderByStatus(String status);
 
     /**
      * create by: yonyong
@@ -74,5 +84,6 @@ public interface TbOrderService {
      * @Create: 2019/1/7 19:19
      */
     public OrderGoodsReceiverDto getAllById(int orderId);
+
 
 }

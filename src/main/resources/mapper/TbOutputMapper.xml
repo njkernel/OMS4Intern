@@ -86,4 +86,8 @@
   <select id="getOutRepoOrderDetailDto" resultType="cn.com.connext.oms.commons.dto.output.OutRepoOrderDetailDto">
     select tb_goods.goods_code,tb_goods_order.num from tb_goods, tb_goods_order
     where tb_goods.goods_id=tb_goods_order.goods_id and tb_goods_order.order_id = #{id}
-  </select></mapper>
+  </select>
+    <select id="getReceiver" resultType="cn.com.connext.oms.entity.TbReceiver">
+      select * from tb_receiver where order_id=#{orderId}
+    </select>
+</mapper>

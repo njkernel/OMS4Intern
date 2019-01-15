@@ -39,7 +39,7 @@ public class TbAbnormalController {
 
     /**
     * @Author: caps
-    * @Description:异常订单列表加模糊查询
+    * @Description: 异常订单列表加模糊查询
     * @Param: [currentPage, pageSize, tbAbnormal]
     * @Return: cn.com.connext.oms.commons.dto.BaseResult
     * @Create: 2019/1/7 17:53
@@ -60,7 +60,7 @@ public class TbAbnormalController {
 
     /**
     * @Author: caps
-    * @Description:异常订单详情
+    * @Description: 异常订单详情
     * @Param: [abnormalId]
     * @Return: cn.com.connext.oms.commons.dto.BaseResult
     * @Create: 2019/1/8 11:53
