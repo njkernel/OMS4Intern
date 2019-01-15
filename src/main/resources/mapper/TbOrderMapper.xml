@@ -201,7 +201,7 @@
 
     </select>
 
-    <select id="selectCreatedById" resultType="Date">
+    <select id="selectCreatedById" resultType="java.util.Date">
         SELECT purchase_time
         FROM tb_order
         WHERE order_id = #{orderId}
@@ -319,13 +319,5 @@
             #{item.orderId}
         </foreach>
     </update>
-
-    <!--根据订单ID查询订单和快递信息-->
-    <select id="getAllById" parameterType="Integer" resultType="cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto">
-        select * from tb_order o
-
-                          INNER JOIN tb_receiver r on r.receiver_id=o.receiver_id
-        WHERE o.order_id=#{orderId}
-    </select>
 
 </mapper>
