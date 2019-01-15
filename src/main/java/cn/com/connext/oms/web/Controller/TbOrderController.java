@@ -60,8 +60,8 @@ public class TbOrderController {
 
     @PostMapping("/cancelOrder")
     @ApiOperation(value = "主动取消订单接口")
-    public String cancelOrder(List<TbOrder> tbOrderList){
-        boolean b=tbOrderService.cancelOrder(tbOrderList);
+    public String cancelOrder(Integer[] orderIdList){
+        boolean b=tbOrderService.cancelOrder(orderIdList);
         if(b){
             return "success";
         }else{

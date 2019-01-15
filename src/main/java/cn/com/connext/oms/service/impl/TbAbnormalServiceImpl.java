@@ -1,5 +1,6 @@
 package cn.com.connext.oms.service.impl;
 
+import cn.com.connext.oms.commons.dto.AbnormalGoodsOrderDTO;
 import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.commons.utils.StringUtils;
 import cn.com.connext.oms.entity.*;
@@ -176,12 +177,11 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         TbAbnormal tbAbnormal = tbAbnormalMapper.selectByPrimaryKey(abnormalId);
         abnormals.add(tbAbnormal);
         //获取异常订单对应商品详情
-        List<TbGoods> goods=new LinkedList<>();
+        List<AbnormalGoodsOrderDTO> goods=null;
         Integer orderId = tbAbnormal.getOrderId();
         List<Integer> goodsIdByOrder = getGoodsIdByOrder(orderId);
         for (Integer id:goodsIdByOrder){
-            TbGoods tbGoods = tbGoodsMapper.selectByPrimaryKey(id);
-            goods.add(tbGoods);
+            goods = tbAbnormalMapper.getAbnormalGoodsOrderDTOByOrderId(orderId);
         }
         Map<String,Object> map=new HashMap<>();
         map.put("abnormalInfo",abnormals);

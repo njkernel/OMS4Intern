@@ -92,27 +92,29 @@ public class ReturnInputStateFeedback {
         //换货部分的状态反馈及更新  crated by yonyong
         if (EXCHANGE_TYPE == type) {
             try {
-                details = objectMapper.readValue(goodDetails, new TypeReference<List<GoodDetails>>() {
-                });
+                details = objectMapper.readValue(goodDetails,new TypeReference<List<GoodDetails>>() {});
             } catch (IOException e) {
-                details = new ArrayList<>();
+                details=new ArrayList<>();
             }
-            InputFeedback inputFeedback = new InputFeedback(tokens, orderId, inputState, "yonyong", details);
-            int rs = tbExchangeService.generateOutput(inputFeedback);
-            if (0 == rs) {
-                return BaseResult.success("操作成功！已生成新的出库单！");
-            } else if (1 == rs) {
-                return BaseResult.fail("操作错误或服务器内部错误！");
-            } else if (2 == rs) {
-                return BaseResult.success("收货失败!");
-            } else {
-                return BaseResult.success("超15天未收货!");
+            InputFeedback inputFeedback=new InputFeedback(tokens,orderId,inputState,"yonyong",details);
+            int rs=tbExchangeService.inputFeedback(inputFeedback);
+            if (0 == rs){
+                return BaseResult.success("操作成功！");
+            }
+            else if (1 == rs){
+                return BaseResult.fail(500,"操作错误或服务器内部错误！");
+            }
+            else if (2 == rs){
+                return BaseResult.fail(401,"收货失败!");
+            }
+            else {
+                return BaseResult.fail(402,"超15天未收货!");
             }
 
 
         }
 
-        return BaseResult.fail("请检查订单");
+        return BaseResult.fail(403,"请检查订单");
     }
 }
 

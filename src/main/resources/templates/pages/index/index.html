@@ -21,7 +21,9 @@
         </div>
         <dl class="list_dl">
             <!--加上id="open"默认打开-->
-            <dt class="list_dt">
+
+            <dt class="list_dt" shiro:hasPermission="order">
+
                 <!--<span class="_after"></span>-->
                 <i class="i_orders left-i"></i>
                 <p>订单管理</p>
@@ -35,13 +37,18 @@
                     <li class="list_li" mid="tab2" funurl=".././details/orders/errorOrderList.html">
                         <a tabindex="-1" href="javascript:void(0);">异常订单列表</a>
                     </li>
-                    <li class="list_li" mid="tab3" funurl=".././details/orders/warehouseOutList.html">
+
+                    <li class="list_li" mid="tab3" funurl="/OutputDetails">
+
                         <a tabindex="-1" href="javascript:void(0);">出库单列表</a>
                     </li>
                     <li class="list_li" mid="tab4" funurl="/tbInput">
                         <a tabindex="-1" href="javascript:void(0);">入库单列表</a>
                     </li>
-                    <li class="list_li" mid="tab5" funurl=".././details/orders/salesReturnList.html">
+           
+
+                    <li class="list_li" mid="tab5" funurl="/index/return">
+
                         <a tabindex="-1" href="javascript:void(0);">退货单列表</a>
                     </li>
                     <li class="list_li" mid="tab6" funurl=".././details/orders/refundList.html">

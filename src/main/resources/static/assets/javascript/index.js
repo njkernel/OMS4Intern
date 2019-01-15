@@ -53,6 +53,6 @@ jQuery(document).ready(function () {
         });
         //初始化
         // 默认第一个被点击
-        $("#default").trigger("click");
+        // $("#default").trigger("click");
         $('#mainFrameTabs').bTabs();
 });

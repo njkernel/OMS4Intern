@@ -1,6 +1,7 @@
 package cn.com.connext.oms.mapper;
 
 import cn.com.connext.oms.entity.TbRefund;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
 
@@ -56,4 +57,24 @@ public interface TbRefundMapper extends MyMapper<TbRefund> {
     * @Date: 2019/1/10 
     */
     TbRefund getRefundById(Integer refundId);
+
+
+    /**
+    * @Description: 根据退款单状态查看退款单
+    * @Param: [refundState]
+    * @return: com.github.pagehelper.PageInfo<cn.com.connext.oms.entity.TbRefund>
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    List<TbRefund> getListRefundByState(String refundState);
+
+
+    /**
+    * @Description: 根据订单编码查看退款单
+    * @Param: [orderId]
+    * @return: com.github.pagehelper.PageInfo<cn.com.connext.oms.entity.TbRefund>
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    List<TbRefund> getListRefundByOrderId(Integer orderId);
 }

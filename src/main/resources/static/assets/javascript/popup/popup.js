@@ -1,24 +1,34 @@
 $(function () {
 
-    var Plugin = function (elem, options) {
-        this.$elem = elem;
-        this.$btn = $('.btn.btn-xs');
-        this.$MyAbnormalModel = $('#MyAbnormalModel');
-        this.$oMask = $('#mask_shadow');
-        this.$oTitle = this.$elem.find('.title');
-        this.$close = this.$oTitle.find('span');
-        this.b_stop = true; // 防止重复点击
-        this.opts = $.extend({}, this.defaults, options);
-    };
 
-    Plugin.prototype = {
-        inital: function () { // 初始化
-            var self = this;
-            this.$elem.on('click', function () {
-                return false;
-            });
-            this.$MyAbnormalModel.on('click', function () {
-                self.popbox();
+
+  var Plugin = function (elem, options) {
+    this.$elem = elem;
+    this.$btn = $('.btn.btn-xs');
+    this.$MyAbnormalModel = $('#MyAbnormalModel');
+    this.$oMask = $('#mask_shadow');
+    this.$oTitle = this.$elem.find('.title');
+    this.$close = this.$oTitle.find('span');
+    this.b_stop = true; // 防止重复点击
+    this.opts = $.extend({}, this.defaults, options);
+  };
+
+  Plugin.prototype = {
+    inital: function () { // 初始化
+      var self = this;
+      this.$elem.on('click', function () {
+        return false;
+      });
+      this.$MyAbnormalModel.on('click', function () {
+        self.popbox();
+
+        self.b_stop = false;
+
+        return false;
+      });
+      this.$btn.on('click', function () {
+        self.popbox();
+
 
                 self.b_stop = false;
 

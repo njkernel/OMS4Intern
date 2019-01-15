@@ -144,9 +144,10 @@ public class TbReturnController {
 
                 }
 
-                if (EXCHANGE_TYPE == tbReturn.getReturnType()) {
-                    exchangeList.add(returnIdsList.get(i));
-                }
+
+            if (EXCHANGE_TYPE == tbReturn.getReturnType()){
+                exchangeList.add(returnIdsList.get(i));
+
             }
         }
 

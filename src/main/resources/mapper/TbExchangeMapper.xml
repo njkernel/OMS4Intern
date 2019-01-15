@@ -3,6 +3,60 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.connext.oms.mapper.TbExchangeMapper">
+
+    <resultMap id="BaseResultMap" type="cn.com.connext.oms.entity.TbOrder">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="order_id" jdbcType="INTEGER" property="orderId" />
+        <result column="order_code" jdbcType="VARCHAR" property="orderCode" />
+        <result column="channel_code" jdbcType="VARCHAR" property="channelCode" />
+        <result column="order_state" jdbcType="VARCHAR" property="orderState" />
+        <result column="order_source" jdbcType="VARCHAR" property="orderSource" />
+        <result column="purchase_time" jdbcType="VARCHAR" property="purchaseTime" />
+        <result column="basic_state" jdbcType="VARCHAR" property="basicState" />
+        <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+        <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+        <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+        <result column="payment_state" jdbcType="VARCHAR" property="paymentState" />
+        <result column="payment_way" jdbcType="VARCHAR" property="paymentWay" />
+        <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+        <result column="delivery_warehouse" jdbcType="VARCHAR" property="deliveryWarehouse" />
+        <result column="delivery_company" jdbcType="VARCHAR" property="deliveryCompany" />
+        <result column="delivery_code" jdbcType="VARCHAR" property="deliveryCode" />
+        <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
+        <result column="sum_price" jdbcType="DOUBLE" property="sumPrice" />
+        <result column="receiver_id" jdbcType="INTEGER" property="receiverId" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <association property="tbReceiver" javaType="cn.com.connext.oms.entity.TbReceiver">
+            <id column="receiver_id" jdbcType="INTEGER" property="receiverId" />
+            <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+            <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone" />
+            <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile" />
+            <result column="receiver_state" jdbcType="VARCHAR" property="receiverState" />
+            <result column="receiver_city" jdbcType="VARCHAR" property="receiverCity" />
+            <result column="receiver_district" jdbcType="VARCHAR" property="receiverDistrict" />
+            <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress" />
+            <result column="receiver_zip" jdbcType="VARCHAR" property="receiverZip" />
+            <result column="created" jdbcType="TIMESTAMP" property="created" />
+            <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+            <result column="order_id" jdbcType="INTEGER" property="orderId" />
+        </association>
+        <association property="tbGoodsOrder" javaType="cn.com.connext.oms.entity.TbGoodsOrder">
+            <id column="goods_order_id" jdbcType="INTEGER" property="goodsOrderId" />
+            <result column="order_id" jdbcType="INTEGER" property="orderId" />
+            <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+            <result column="num" jdbcType="INTEGER" property="num" />
+            <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
+        </association>
+        <association property="tbGoods" javaType="cn.com.connext.oms.entity.TbGoods">
+            <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+            <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+            <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+            <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
+        </association>
+    </resultMap>
+
     <resultMap id="returnGoodsMap" type="cn.com.connext.oms.entity.TbReturnGoods">
         <id column="return_goods_id" jdbcType="INTEGER" property="returnGoodsId" />
         <result column="order_id" jdbcType="INTEGER" property="orderId" />
@@ -22,6 +76,57 @@
         <result column="return_type" jdbcType="VARCHAR" property="returnType" />
     </resultMap>
 
+    <!-- yonyong换货生成新订单-->
+    <insert id="insertOrder" parameterType="cn.com.connext.oms.entity.TbOrder">
+        insert into tb_order (order_id,order_code,channel_code,order_state,
+                      order_source,purchase_time,basic_state,modified_user,
+                      customer_id,updated,payment_state,payment_way,payment_time,
+                      delivery_warehouse,delivery_company,delivery_code,delivery_time,
+                      sum_price,receiver_id,remark)
+        values (#{tbOrder.orderId},#{tbOrder.orderCode},#{tbOrder.channelCode},#{tbOrder.orderState},
+                #{tbOrder.orderSource},#{tbOrder.purchaseTime},#{tbOrder.basicState},#{tbOrder.modifiedUser},
+                #{tbOrder.customerId},#{tbOrder.updated},#{tbOrder.paymentState},#{tbOrder.paymentWay},#{tbOrder.paymentTime},
+                #{tbOrder.deliveryWarehouse},#{tbOrder.deliveryCompany},#{tbOrder.deliveryCode},#{tbOrder.deliveryTime},
+                #{tbOrder.sumPrice},#{tbOrder.receiverId},#{tbOrder.remark})
+    </insert>
+
+    <!-- yonyong 换货生成相应的订单商品表-->
+    <insert id="insertGoodsOrders" parameterType="java.util.List">
+        insert into tb_goods_order(order_id,goods_id,num,total_price)
+        values
+        <foreach collection="list" item="temp" index= "index" separator=",">
+            (#{temp.orderId},#{temp.goodsId},#{temp.num},#{temp.totalPrice})
+        </foreach>
+    </insert>
+
+    <!--yonyong建立换货单生成的新订单与原订单之间的联系-->
+    <insert id="insertExchangeOrderRelations" parameterType="cn.com.connext.oms.entity.TbExchangeOrderRelations">
+        insert into tb_exchange_order_relations(old_orderId,new_orderId,exchange_id)
+        values (#{tbExchangeOrderRelations.oldOrderId},#{tbExchangeOrderRelations.newOrderId},
+                #{tbExchangeOrderRelations.exchangeId})
+    </insert>
+
+    <delete id="deleteGoodsOrders">
+        delete from tb_goods_order
+        where order_id=#{orderId}
+    </delete>
+
+    <delete id="deleteOrder">
+        delete from tb_order
+        where order_id=#{orderId}
+    </delete>
+
+    <delete id="deleteExchangeOrderRelations">
+        delete from tb_exchange_order_relations
+        where old_orderId=#{orderId}
+    </delete>
+
+    <select id="selectExchangeOrderRelationsByOldOrderId" parameterType="int" resultType="cn.com.connext.oms.entity.TbExchangeOrderRelations">
+            select id,old_orderId,new_orderId,exchange_id
+            from tb_exchange_order_relations
+            where old_orderId=#{oldOrderId}
+    </select>
+
     <select id="selectAllExchangeOrders" parameterType="java.lang.String" resultMap="returnsMap">
         SELECT return_id,return_code,return_state,order_id,return_price,created,modified_user,updated,return_type
         FROM tb_return
@@ -35,11 +140,11 @@
     </select>
 
     <insert id="toGenerateExchangeOrderGoods" parameterType="java.util.List">
-            insert into tb_return_goods (order_id,goods_id,number)
-            values
-            <foreach collection="list" item="temp" index= "index" separator=",">
-                (#{temp.orderId},#{temp.goodsId},#{temp.number})
-            </foreach>
+        insert into tb_return_goods (order_id,goods_id,number)
+        values
+        <foreach collection="list" item="temp" index= "index" separator=",">
+            (#{temp.orderId},#{temp.goodsId},#{temp.number})
+        </foreach>
     </insert>
 
     <insert id="toGenerateExchangeOrder">
@@ -54,28 +159,28 @@
             where t.goods_id=#{goodId}
     </select>
 
-    <select id="toSelectGoodByCode" parameterType="int" resultType="cn.com.connext.oms.entity.TbGoods">
+    <select id="toSelectGoodByCode" parameterType="String" resultType="cn.com.connext.oms.entity.TbGoods">
             select t.goods_id,t.goods_code,t.goods_name,t.goods_price
             from tb_goods t
             where t.goods_code=#{goodsCode}
     </select>
 
     <update id="updateTbReturn" parameterType="java.util.List">
-            <foreach collection="list" item="bean" index="index" open="" close="" separator=";">
-                UPDATE tb_return
-                set return_state=#{bean.returnState},modified_user=#{bean.modifiedUser},updated=#{bean.updated}
-                where return_id = #{bean.returnId}
-            </foreach>
+        <foreach collection="list" item="bean" index="index" open="" close="" separator=";">
+            UPDATE tb_return
+            set return_state=#{bean.returnState},modified_user=#{bean.modifiedUser},updated=#{bean.updated}
+            where return_id = #{bean.returnId}
+        </foreach>
     </update>
 
     <select id="selectTbReturnById" parameterType="int" resultType="cn.com.connext.oms.entity.TbReturn">
-            SELECT t.return_id,t.return_code,t.return_state,t.order_id,t.return_price,t.created,t.modified_user,t.updated
+            SELECT t.return_id,t.return_code,t.return_state,t.order_id,t.return_price,t.created,t.modified_user,t.updated,t.return_type
             FROM tb_return t
             WHERE t.return_id=#{returnId}
     </select>
 
     <select id="selectTbReturnByOrderId" parameterType="int" resultType="cn.com.connext.oms.entity.TbReturn">
-        SELECT t.return_id,t.return_code,t.return_state,t.order_id,t.return_price,t.created,t.modified_user,t.updated
+        SELECT t.return_id,t.return_code,t.return_state,t.order_id,t.return_price,t.created,t.modified_user,t.updated,t.return_type
         FROM tb_return t
         WHERE t.order_id=#{orderId}
     </select>
@@ -91,12 +196,6 @@
           VALUES (#{tbInput.inputCode},#{tbInput.orderId},#{tbInput.inputState},#{tbInput.created},#{tbInput.updated},#{tbInput.synchronizeState})
     </insert>
 
-    <insert id="insertOutput">
-            INSERT into tb_output (output_code,order_id,output_state,created,updated,synchronize_state,modified_user)
-            VALUES (#{tbOutput.outputCode},#{tbOutput.orderId},#{tbOutput.outputState},#{tbOutput.created},
-                    #{tbOutput.updated},#{tbOutput.synchronizeState},#{tbOutput.modifiedUser})
-    </insert>
-
     <update id="updateTbInput">
             UPDATE tb_input
             SET input_state=#{tbInput.inputState},updated=#{tbInput.updated},synchronize_state=#{tbInput.synchronizeState}
@@ -108,24 +207,8 @@
             from tb_input
             WHERE order_id=#{orderId}
     </select>
-
-    <select id="selectStockByGoodId" parameterType="int" resultType="cn.com.connext.oms.entity.TbStock">
-            select stock_id,available_stock,locked_stock,total_stock,goods_id
-            from tb_stock
-            where goods_id=#{goodId}
+    <select id="selectCountOfOrder" resultType="java.lang.Integer">
+        select count(order_id) from tb_order
     </select>
 
-    <select id="selectStockByGoodCode" parameterType="int" resultType="cn.com.connext.oms.entity.TbStock">
-            select stock_id,available_stock,locked_stock,total_stock,goods_id
-            from tb_stock
-            where goods_id=(select goods_id from tb_goods
-            where goods_code=#{goodCode});
-    </select>
-
-    <update id="updateStock">
-            update tb_stock
-            set available_stock=#{tbStock.availableStock},
-                locked_stock=#{tbStock.lockedStock}
-            where goods_id=#{tbStock.goodsId}
-    </update>
 </mapper>
