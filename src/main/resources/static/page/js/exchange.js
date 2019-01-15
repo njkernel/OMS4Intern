@@ -63,14 +63,18 @@ var Exchange = new Vue({
         },
         toCancel(){
             var toCancel=this;
-            var url="/return/checkReturnOrExchange";
+            var url="/return/returnOrderCancel";
             if (toCancel.ids.length === 0){
                 alert("您还未选择！");
                 return false;
             }
-            var cancelIds=this;
-            var url="/exchange/toCancel";
-            axios.get(url,{params: cancelIds.ids}).then(function (response) {
+            axios.get(url,{params: toCancel.ids}).then(function (response) {
+                if (response.status === 200) {
+                    alert("操作成功!");
+                    toCancel.refresh();
+                } else if (response.status === 500) {
+                    alert("操作失败!");
+                }
             }).cache(function (err) {
                 console.log(err)
             });
@@ -97,11 +101,11 @@ var Exchange = new Vue({
             }
             $("#iframe").attr("src","/index/returnDetails?orderId="+exchangeDetails.detailsData.orderId);
             // console.log("orderId为"+exchangeDetails.detailsData.orderId);
-            axios.get(url,{params: exchangeDetails.detailsData}).then(function (response) {
-                exchangeDetails.detailsInfo = response.data.data;
-            }).catch(function (err) {
-                console.log(err)
-            });
+            // axios.get(url,{params: exchangeDetails.detailsData}).then(function (response) {
+            //     exchangeDetails.detailsInfo = response.data.data;
+            // }).catch(function (err) {
+            //     console.log(err)
+            // });
         }
     }
 });

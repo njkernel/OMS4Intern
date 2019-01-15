@@ -24,9 +24,9 @@
                                     <div class="title-content1-top3">退货金额：<input th:value="${test.returnPrice}"></div>
                                 </div>
                                 <div class="title-content3">
-                                    <div class="title-content1-top1">创建时间：<input th:text="${test.created}"></div>
+                                    <div class="title-content1-top1">创建时间：<time th:text="${#dates.format(test.created,'yyyy-MM-dd HH:mm:ss')}"></time></div>
                                     <div class="title-content1-top2">修改人：<input th:text="${test.modifiedUser}"></div>
-                                    <div class="title-content1-top3">修改时间：<input th:text="${test.updated}"></div>
+                                    <div class="title-content1-top3">修改时间：<time th:text="${#dates.format(test.updated,'yyyy-MM-dd HH:mm:ss')}"></time></div>
                                 </div>
                             </div>
                         </div>

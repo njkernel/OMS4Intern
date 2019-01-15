@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OmsApplicationTests {
@@ -26,5 +29,12 @@ public class OmsApplicationTests {
         tbExchangeService.toGenerateExchangeOrderGoods(a,b,c);
     }
 
+    @Test
+    public void test(){
+        Date date=new Date();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String string=format.format(date);
+        System.out.println(string);
+    }
 }
 
