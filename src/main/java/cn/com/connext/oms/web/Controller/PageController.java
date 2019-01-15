@@ -2,16 +2,10 @@ package cn.com.connext.oms.web.Controller;
 
 
 import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;
-import cn.com.connext.oms.entity.TbInput;
-import cn.com.connext.oms.entity.TbReturn;
-import cn.com.connext.oms.entity.TbReturnGoods;
+import cn.com.connext.oms.entity.TbOrderDetails;
+import cn.com.connext.oms.service.*;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
-import cn.com.connext.oms.service.TbAbnormalService;
-import cn.com.connext.oms.service.TbExchangeService;
 
-
-import cn.com.connext.oms.service.TbRefundService;
-import cn.com.connext.oms.service.TbReturnService;
 import io.swagger.annotations.ApiOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -63,6 +58,9 @@ public class PageController {
     @Autowired
     private TbExchangeService tbExchangeService;
 
+    @Autowired
+    private OutputService outputService;
+
 
 
     /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
@@ -95,8 +93,6 @@ public class PageController {
     }
 
 
-
-
     /**
      * @Description: 查看退款单页面
      * @Param: []
@@ -110,7 +106,6 @@ public class PageController {
         model.addAttribute("map", map);
         HttpSession session = request.getSession();
         session.setAttribute("basic", "我的");
-
         return "pages/details/orders/refund-list";
     }
 
@@ -128,35 +123,7 @@ public class PageController {
 
 
     /**
-     * 入库单页面
-     * @return
-     */
-    @GetMapping({"/tbInput"})
-    public String toInput(){
-        return "pages/details/orders/warehouse-in-list";
-    }
-
-    /**
-     * 入库单详情页
-     */
-    @GetMapping({"/inputDetails"})
-    public String inputDetails(@RequestParam("orderId") int orderId,Model model){
-        try {
-
-            ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
-            TbInput tbInput = tbReturnService.getInputByOrderId(orderId);
-            List<TbReturnGoods> tbReturnGoodsList = tbReturnService.getTbReturnGoodsById(orderId);
-            model.addAttribute("returnDetails",returnDetails);
-            model.addAttribute("tbInput",tbInput);
-            model.addAttribute("tbReturnGoodsList",tbReturnGoodsList);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-            return "pages/specific/addstock";
-    }
-
-
-    /**     * @Description: 退款单的分页
+     * @Description: 退款单的分页
      * @Param: [page, model, size, request]
      * @return: java.lang.String
      * @Author: Lili Chen
@@ -260,5 +227,32 @@ public class PageController {
         }
         return "pages/specific/return-goods.html";
     }
-
+    /**
+     *
+     * 功能描述:  跳转到出库单详情页面
+     *
+     * @param:
+     * @return:
+     * @auther: Jay
+     * @date: ${DATE}
+     */
+    @RequestMapping("/outputList")
+    public String outputList(){
+       return "pages/details/orders/warehouse-out-list";
+    }
+    /**
+     * 功能描述: 根据订单id查询出所有出库单的详情
+     *
+     * @param: 订单id
+     * @return: 返回订单所有详情消息，包含订单基本信息以及出库单信息，商品信息
+     * @auther: Jay
+     * @date: 2019/1/8
+     */
+    @GetMapping("orderDetailsAll")
+    public ModelAndView outStockDetails(Integer orderId){
+        ModelAndView mv = new ModelAndView("pages/specific/outstock");
+        List<TbOrderDetails> outStockDetails = outputService.orderDetails(orderId);
+        mv.addObject("outStockDetails",outStockDetails);
+        return mv;
+    }
 }

@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="/assets/styles/reset.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
-
 </head>
 <body class="index" style="overflow-y: hidden">
 <div class="main">
@@ -36,7 +35,8 @@
                     <li class="list_li" mid="tab2" funurl="/abnormal">
                         <a tabindex="-1" href="javascript:void(0);">异常订单列表</a>
                     </li>
- 					<li class="list_li" mid="tab3" funurl="/OutputDetails">                        <a tabindex="-1" href="javascript:void(0);">出库单列表</a>
+                    <li class="list_li" mid="tab3" funurl="/outputList">
+                        <a tabindex="-1" href="javascript:void(0);">出库单列表</a>
                     </li>
                     <li class="list_li" mid="tab4" funurl="/tbInput">
                         <a tabindex="-1" href="javascript:void(0);">入库单列表</a>
@@ -59,15 +59,9 @@
                     <li class="list_li" mid="tab7" funurl=".././details/warehouse/wareHouse.html">
                         <a tabindex="-1" href="javascript:void(0);">库存列表</a>
                     </li>
-                    <!-- <li class="list_li" mid="tab3" funurl=".././details/orders/warehouse-out-list.html">
-                        <a tabindex="-1" href="javascript:void(0);">出库单列表</a>
-                    </li>
-                    <li class="list_li" mid="tab4" funurl=".././details/orders/warehouse-in-list.html">
-                        <a tabindex="-1" href="javascript:void(0);">入库单列表</a>
-                    </li> -->
                 </ul>
             </dd>
-            <dt class="list_dt">
+            <dt class="list_dt" shiro:hasPermission="goods">
                 <!--<span class="_after"></span>-->
                 <i class="i_goods left-i"></i>
                 <p>商品管理</p>
@@ -80,7 +74,7 @@
                     </li>
                 </ul>
             </dd>
-            <dt class="list_dt">
+            <dt class="list_dt" shiro:hasPermission="admin">
                 <!--<span class="_after"></span>-->
                 <i class="i_user left-i"></i>
                 <p>用户</p>
@@ -91,7 +85,7 @@
                     <li class="list_li" mid="tab9" funurl=".././details/user/administrator.html">
                         <a tabindex="-1" href="javascript:void(0);">仓库管理员管理</a>
                     </li>
-                    <li class="list_li" mid="tab10" funurl=".././details/user/refusedPerson.html">
+                    <li class="list_li" mid="tab10" funurl=".././details/user/refused-person.html">
                         <a tabindex="-1" href="javascript:void(0);">收货人管理</a>
                     </li>
                     <li class="list_li" mid="tab11" funurl=".././details/user/expressCompany.html">
@@ -110,6 +104,7 @@
            <span class="shrink">
                 <i class="fa fa-arrow-left" ></i>
            </span>
+            <a href="/logout">注销</a>
             <ul class="user-list">
                 <!--<li><i class="i_seach"></i></li>-->
                 <!--<li><i class="i_user"></i></li>-->
@@ -119,34 +114,24 @@
                 <span class="logoff">注销</span>
             </ul>
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active noclose"><a href="#bTabs_navTabsMainPage" data-toggle="tab">首页</a>
+                <li role="presentation" class="active noclose" ><a href="#bTabs_tab1" data-toggle="tab">订单列表</a>
                 </li>
             </ul>
             <!--noclose-->
             <div class="tab-content">
-                <div class="tab-pane active" id="bTabs_navTabsMainPage">
-                    <div class="home-page">
-                        <div class="page-title">
-                            <h2>欢迎使用OMS管理系统！</h2>
-                        </div>
-                        <div class="page-welcome">
-                            <img src="/assets/images/welcome.jpg" alt="" style="width: 100%;height: 600px;" >
-                        </div>
-                        <div class="page-clock">
-                            <canvas id="canvas" width="300" height="300">
-                            </canvas>
-                        </div>
-                    </div>
+                <!--默认显示第一个列表-->
+                <div class="tab-pane active" id="bTabs_tab1">
+                    <iframe frameborder="0" scrolling="auto" style="width:100%;height:100%;border:0px;" src=".././details/orders/order-list.html"></iframe>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script src="/assets/javascript/jquery-2.1.1.min.js"></script>
-<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
 <script src="/assets/javascript/tabs/tabs.js"></script>
 <!-- <script src="/assets/javascript/popup/popup.js"></script> -->
 <script src="/assets/javascript/index.js"></script>
 <script src="/assets/javascript/clock.js"></script>
+<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
 </body>
 </html>

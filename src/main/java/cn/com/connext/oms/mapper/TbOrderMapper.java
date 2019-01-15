@@ -2,6 +2,7 @@ package cn.com.connext.oms.mapper;
 
 import cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto;
 import cn.com.connext.oms.entity.TbOrder;
+import cn.com.connext.oms.entity.TbOrderDetails;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,13 +13,7 @@ import java.util.List;
 
 @Repository
 public interface TbOrderMapper extends MyMapper<TbOrder> {
-    /**
-    * @Author: Jay
-    * @Param: 订单状态
-    * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
-    * @Create: 2019/1/13
-    */
-    List<TbOrder> getAllOrderByStatus(String state);
+
 
 
     /**

@@ -76,14 +76,12 @@ public interface TbOutputMapper extends MyMapper<TbOutput> {
      * @date: ${DATE}
      */
     List<OutRepoOrderDetailDto> getOutRepoOrderDetailDto(int id);
+
     /**
-     *
-     * 功能描述: 根据订单id查询找收货人信息
-     *
-     * @param: 订单id
-     * @return: 收货人信息
-     * @auther: Jay
-     * @date: 2019/1/13
+     * @Author: Jay
+     * @Param: 订单状态
+     * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
+     * @Create: 2019/1/13
      */
-    TbReceiver getReceiver(int orderId);
+    List<TbOrderDetails> getAllOrderByStatus(String status);
 }

@@ -55,23 +55,6 @@ public class TbOrderServiceImpl implements TbOrderService {
         PageInfo<TbOrder> pageInfo =new PageInfo<>(allOrder);
         return allOrder;
     }
-    /**
-     *
-     * 功能描述: 根据订单状态查询所需要的订单
-     *
-     * @param: 订单状态
-     * @return: 返回根据订单状态查询的订单
-     * @auther: Jay
-     * @date: 2019/1/13
-     */
-    @Override
-    public List<TbOrder> getAllOrderByStatus(String status) {
-        // 从第一页开始，每一页显示5条数据
-        PageHelper.startPage(1,5);
-        List<TbOrder> allOrder = tbOrderMapper.getAllOrderByStatus(status);
-        PageInfo<TbOrder> pageInfo =new PageInfo<>(allOrder);
-        return allOrder;
-    }
 
     /**
      * create by: yonyong
