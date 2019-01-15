@@ -25,6 +25,41 @@
       <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
       <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
     </association>
+    <association property="tbReceiver" javaType="cn.com.connext.oms.entity.TbReceiver">
+      <id column="receiver_id" jdbcType="INTEGER" property="receiverId" />
+      <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+      <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone" />
+      <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile" />
+      <result column="receiver_state" jdbcType="VARCHAR" property="receiverState" />
+      <result column="receiver_city" jdbcType="VARCHAR" property="receiverCity" />
+      <result column="receiver_district" jdbcType="VARCHAR" property="receiverDistrict" />
+      <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress" />
+      <result column="receiver_zip" jdbcType="VARCHAR" property="receiverZip" />
+      <result column="created" jdbcType="TIMESTAMP" property="created" />
+      <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+      <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    </association>
+    <association property="tbOrder" javaType="cn.com.connext.oms.entity.TbOrder">
+    <id column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="order_code" jdbcType="VARCHAR" property="orderCode" />
+    <result column="channel_code" jdbcType="VARCHAR" property="channelCode" />
+    <result column="order_state" jdbcType="VARCHAR" property="orderState" />
+    <result column="order_source" jdbcType="VARCHAR" property="orderSource" />
+    <result column="purchase_time" jdbcType="VARCHAR" property="purchaseTime" />
+    <result column="basic_state" jdbcType="VARCHAR" property="basicState" />
+    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="payment_state" jdbcType="VARCHAR" property="paymentState" />
+    <result column="payment_way" jdbcType="VARCHAR" property="paymentWay" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="delivery_warehouse" jdbcType="VARCHAR" property="deliveryWarehouse" />
+    <result column="delivery_company" jdbcType="VARCHAR" property="deliveryCompany" />
+    <result column="delivery_code" jdbcType="VARCHAR" property="deliveryCode" />
+    <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="sum_price" jdbcType="DOUBLE" property="sumPrice" />
+    <result column="receiver_id" jdbcType="INTEGER" property="receiverId" />
+    </association>
   </resultMap>
 
 
@@ -54,31 +89,56 @@
         select * from tb_output where output_code=#{outputCode}
     </select>
   <select id="orderDetails" parameterType="integer" resultType="cn.com.connext.oms.entity.TbOrderDetails">
-    SELECT
-    c.output_id,
-    c.output_code,
-    c.order_id,
-    c.output_state,
-    c.created,
-    c.updated,
-    c.synchronize_state,
-    a.goods_id,
-    a.goods_code,
-    a.goods_name,
-    a.goods_price,
-    b.goods_order_id,
-    b.order_id,
-    b.goods_id,
-    b.num,
-    b.total_price
-    FROM
-    tb_goods a,
-    tb_goods_order b,
-    tb_output c
-    WHERE
-    c.order_id = b.order_id
-    AND a.goods_id = b.goods_id
-    AND c.order_id =#{orderId}
+      SELECT
+      a.order_id,
+      a.order_code,
+      a.channel_code,
+      a.order_state,
+      a.order_source,
+      a.purchase_time,
+      a.basic_state,
+      a.modified_user,
+      a.updated,
+      a.payment_state,
+      a.payment_way,
+      a.payment_time,
+      a.delivery_warehouse,
+      a.delivery_company,
+      a.delivery_code,
+      a.delivery_time,
+      a.sum_price,
+      a.remark,
+      b.receiver_address,
+      b.receiver_city,
+      b.receiver_district,
+      b.receiver_mobile,
+      b.receiver_name,
+      b.receiver_phone,
+      b.receiver_state,
+      b.receiver_zip,
+      c.goods_id,
+      c.goods_code,
+      c.goods_name,
+      c.goods_price,
+      d.goods_order_id,
+      d.num,
+      d.total_price,
+      e.output_code,
+      e.output_state,
+      e.created,
+      e.synchronize_state
+  FROM
+      tb_order a,
+      tb_receiver b,
+      tb_goods c,
+      tb_goods_order d,
+      tb_output e
+  WHERE
+      a.order_id = d.order_id
+  AND d.goods_id = c.goods_id
+  AND a.order_id = b.order_id
+  AND a.order_id = e.order_id
+  AND a.order_id = #{orderId}
   </select>
   <select id="getOutputOrderById" resultType="cn.com.connext.oms.entity.TbOutput">
     select * from tb_output where order_id = #{orderId}
@@ -87,7 +147,45 @@
     select tb_goods.goods_code,tb_goods_order.num from tb_goods, tb_goods_order
     where tb_goods.goods_id=tb_goods_order.goods_id and tb_goods_order.order_id = #{id}
   </select>
-    <select id="getReceiver" resultType="cn.com.connext.oms.entity.TbReceiver">
-      select * from tb_receiver where order_id=#{orderId}
+  <select id="getAllOrderByStatus" resultType="cn.com.connext.oms.entity.TbOrderDetails">
+        SELECT
+      a.order_id,
+      a.order_code,
+      a.channel_code,
+      a.order_state,
+      a.order_source,
+      a.purchase_time,
+      a.basic_state,
+      a.modified_user,
+      a.updated,
+      a.payment_state,
+      a.payment_way,
+      a.payment_time,
+      a.delivery_warehouse,
+      a.delivery_company,
+      a.delivery_code,
+      a.delivery_time,
+      a.sum_price,
+      a.remark,
+      b.receiver_address,
+      b.receiver_city,
+      b.receiver_district,
+      b.receiver_mobile,
+      b.receiver_name,
+      b.receiver_phone,
+      b.receiver_state,
+      b.receiver_zip,
+      e.output_code,
+      e.output_state,
+      e.created,
+      e.synchronize_state
+  FROM
+      tb_order a,
+      tb_receiver b,
+      tb_output e
+  WHERE
+      a.order_id = b.order_id
+  AND a.order_id = e.order_id
+  AND a.order_state=#{state}
     </select>
 </mapper>
