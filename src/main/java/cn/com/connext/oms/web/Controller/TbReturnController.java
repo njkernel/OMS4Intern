@@ -130,8 +130,7 @@ public class TbReturnController {
      */
     @GetMapping("/returnOrderCancel")
     @ApiOperation(value = "退货取消数据接口")
-    public BaseResult returnOrderCancel(@RequestParam("returnId") List<Integer> returnIdsList) {
-        Date updated = new Date();
+    public BaseResult returnOrderCancel (@RequestParam("returnId") List<Integer> returnIdsList){        Date updated = new Date();
         String oms = "oms";
         List<Integer> returnList = new ArrayList<>();
         List<Integer> exchangeList = new ArrayList<>();
@@ -145,10 +144,13 @@ public class TbReturnController {
                 }
 
 
+
+
                 if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
                     exchangeList.add(returnIdsList.get(i));
 
                 }
+
             }
 
             //换货部分的取消 Update BY yonyong
@@ -163,7 +165,7 @@ public class TbReturnController {
             }
 
 
-            //退货部分的取消
+ //退货部分的取消
             try {
                 boolean flag = tbReturnService.returnOrderCancel(returnList, oms, updated);
                 if (flag) {
@@ -172,12 +174,9 @@ public class TbReturnController {
 
             } catch (Exception e) {
 
-                return BaseResult.fail("内部数据出现错误，请稍后重试");
-            }
+                return BaseResult.fail("内部数据出现错误，请稍后重试");            }
         }
-        return BaseResult.fail(500, "取消失败");
     }
-
 
         /**
          * @author: Aaron and yonyong
@@ -187,42 +186,21 @@ public class TbReturnController {
          * @return cn.com.connext.oms.commons.dto.BaseResult
          */
 
-        @GetMapping("/checkReturnOrExchange")
-        @ApiOperation(value = "退货/换货审核分流接口")
-        public BaseResult checkReturnOrExchange (@RequestParam("returnId") List < Integer > returnIdsList) {
-
-            Boolean rsReturn = false;
-            int rsExchange = 0;
-            List<Integer> tbReturnList = new ArrayList<>();
-            List<Integer> tbExchangeList = new ArrayList<>();
-            Date date = new Date();
 
 
-            for (int i = 0; i < returnIdsList.size(); i++) {
-                TbReturn tbReturn = tbReturnService.getTbReturnById(returnIdsList.get(i));
-                if (null != tbReturn) {
-                    //log
-                    if (RETURN_TYPE.equals(tbReturn.getReturnType())) {
-                        //将退货单生成单独的list交给退货部分处理
 
-                        tbReturnList.add(tbReturn.getReturnId());
 
-                    } else if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
-                        //将换货单生成单独的list交给换货处理
-                        tbExchangeList.add(tbReturn.getReturnId());
 
-                    }
+
+
                 }
-            }
-
-            try {
+        }
+ 				try {
                 //获取通过审核的订单，进行处理
-                List<Integer> returnOrdersList = tbReturnService.returnOrdersAudit(tbReturnList);
-                if (null != returnOrdersList) {
-                    tbReturnService.createInputOrder(returnOrdersList);
-                    BaseResult.success("生成入库单成功并成功发送");
-
-                }
+                	List<Integer> returnOrdersList = tbReturnService.returnOrdersAudit(tbReturnList);
+               		if (null != returnOrdersList) {
+                    	tbReturnService.createInputOrder(returnOrdersList);
+                    	BaseResult.success("生成入库单成功并成功发送");                }
 
             } catch (Exception e) {
                 return BaseResult.fail("内部数据操作出现异常");
@@ -249,6 +227,4 @@ public class TbReturnController {
         }
 
 
-
-}
 

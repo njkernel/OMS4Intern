@@ -1,12 +1,13 @@
 package cn.com.connext.oms.web.Controller;
 
 
+import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;
 import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbReturn;
 import cn.com.connext.oms.entity.TbReturnGoods;
-import cn.com.connext.oms.service.TbAbnormalService;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 import cn.com.connext.oms.service.TbExchangeService;
+
 
 import cn.com.connext.oms.service.TbRefundService;
 import cn.com.connext.oms.service.TbReturnService;
@@ -39,12 +40,10 @@ public class PageController {
     @Autowired
     private TbRefundService tbRefundService;
 
-    @Autowired
-    private TbExchangeService tbExchangeService;
+
 
     @Autowired
-    private TbReturnService tbReturnService;
-    /**
+    private TbReturnService tbReturnService;    /**
     * @Author: caps
     * @Description:异常订单列表详情页面
     * @Param: []
@@ -55,12 +54,6 @@ public class PageController {
     public String abnormalDetail(){
         return "pages/specific/abnormal-order";
     }
-
-
-    @Autowired
-    private TbAbnormalService tbAbnormalService;
-
-
 
 
     /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
@@ -94,6 +87,7 @@ public class PageController {
 
 
 
+
     /**
      * @Description: 查看退款单页面
      * @Param: []
@@ -107,6 +101,7 @@ public class PageController {
         model.addAttribute("map", map);
         HttpSession session = request.getSession();
         session.setAttribute("basic", "我的");
+
         return "pages/details/orders/refund-list";
     }
 
@@ -121,6 +116,7 @@ public class PageController {
     public String login() {
         return "pages/login/loadingOrder";
     }
+
 
     /**
      * 入库单页面
@@ -151,8 +147,7 @@ public class PageController {
     }
 
 
-    /**
-     * @Description: 退款单的分页
+    /**     * @Description: 退款单的分页
      * @Param: [page, model, size, request]
      * @return: java.lang.String
      * @Author: Lili Chen
@@ -236,9 +231,21 @@ public class PageController {
      */
     @RequestMapping("/index/returnDetails")
     public String returnDetails(@RequestParam("orderId")int orderId,Model model) {
+        double sum = 0;
+        int num = 0;
         try {
             ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
             model.addAttribute("test",returnDetails);
+
+            List<ReturnGoods> returnGoods=tbExchangeService.selectReturnDetails(returnDetails);
+            model.addAttribute("returnGoods",returnGoods);
+
+            for (ReturnGoods t:returnGoods){
+                sum += t.getReturnPrice();
+                num += t.getReturnNum();
+            }
+            model.addAttribute("sum",sum);
+            model.addAttribute("num",num);
         }catch (Exception e){
             e.printStackTrace();
         }
