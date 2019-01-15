@@ -2,6 +2,7 @@ package cn.com.connext.oms.service.impl;
 
 import afu.org.checkerframework.checker.igj.qual.I;
 import cn.com.connext.oms.commons.dto.BaseResult;
+import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
 import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDTO;
 import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDetailDTO;
@@ -126,6 +127,7 @@ public class TbReturnServiceImpl implements TbReturnService {
                 if (MISTIMING > time ) {
 //                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "等待收货", user, updated);
                     returnOrderList.add(returnIdsList.get(i));
+                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i),"审核通过",user,updated);
                 }else {
                     tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "审核失败", user, updated);
                     BaseResult.fail("审核失败，退货单状态已变为审核失败");
@@ -172,14 +174,14 @@ public class TbReturnServiceImpl implements TbReturnService {
         TbInput tbInput1 = new TbInput();
         boolean flag = false;
         for (int i = 0; i < returnIdsList.size(); i++) {
-            tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i),getSuccess,"oms",time );
+
             int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(i));
 
             String inputCode = CodeGenerateUtils.creatUUID();
             Date created = time;
             Date updated = time;
 
-            boolean flag1 = tbReturnMapper.createInputOrder(inputCode, orderId,inputState,created, updated, synchronizeState);
+            tbReturnMapper.createInputOrder(inputCode, orderId,inputState,created, updated, synchronizeState);
 
 
             tbInput1 = tbExchangeMapper.selectTbInputByOrderId(orderId);
@@ -200,7 +202,7 @@ public class TbReturnServiceImpl implements TbReturnService {
 
 
                 try {
-                    restTemplate.postForEntity("http://10.129.100.51:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
+                    restTemplate.postForEntity("http://10.129.100.38:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
                     TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
                     List<TbReturn> tbReturnsList = new ArrayList<>();
                     tbReturn.setOrderId(orderId);
@@ -304,11 +306,11 @@ public class TbReturnServiceImpl implements TbReturnService {
      * @return PageInfo
      */
     @Override
-    public PageInfo<TbInput> getAllInputOrders(Integer currentPage,Integer pageSize) {
+    public PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize) {
         PageHelper.startPage(currentPage,pageSize);
 
-        List<TbInput> tbReturnList = tbInputMapper.selectAll();
-        PageInfo<TbInput> pageInfo = new PageInfo<TbInput>(tbReturnList);
+        List<InputDTO> tbReturnList = tbReturnMapper.getAllInputOrders();
+        PageInfo<InputDTO> pageInfo = new PageInfo<InputDTO>(tbReturnList);
 
         return pageInfo;
     }

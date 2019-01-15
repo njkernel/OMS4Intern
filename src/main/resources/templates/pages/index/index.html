@@ -1,6 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -22,30 +21,30 @@
         </div>
         <dl class="list_dl">
             <!--加上id="open"默认打开-->
-            <dt class="list_dt" id="open" shiro:hasPermission="order">
+            <dt class="list_dt">
                 <!--<span class="_after"></span>-->
                 <i class="i_orders left-i"></i>
                 <p>订单管理</p>
                 <i class="list_dt_icon"></i>
             </dt>
-            <dd class="list_dd" style="display: block">
+            <dd class="list_dd">
                 <ul class="list_dd_ul"  >
-                    <li class="list_li" mid="tab1"  funurl=".././details/orders/order-list.html">
+                    <li class="list_li" mid="tab1"  funurl=".././details/orders/orderList.html">
                         <a tabindex="-1" href="javascript:void(0);" id="default">订单列表</a>
                     </li>
-                    <li class="list_li" mid="tab2" funurl="/abnormal">
+                    <li class="list_li" mid="tab2" funurl=".././details/orders/errorOrderList.html">
                         <a tabindex="-1" href="javascript:void(0);">异常订单列表</a>
                     </li>
-                    <li class="list_li" mid="tab3" funurl=".././details/orders/warehouse-out-list.html">
+                    <li class="list_li" mid="tab3" funurl=".././details/orders/warehouseOutList.html">
                         <a tabindex="-1" href="javascript:void(0);">出库单列表</a>
                     </li>
-                    <li class="list_li" mid="tab4" funurl=".././details/orders/warehouse-in-list.html">
+                    <li class="list_li" mid="tab4" funurl="/tbInput">
                         <a tabindex="-1" href="javascript:void(0);">入库单列表</a>
                     </li>
-                    <li class="list_li" mid="tab5" funurl=".././details/orders/sales-return-list.html">
+                    <li class="list_li" mid="tab5" funurl=".././details/orders/salesReturnList.html">
                         <a tabindex="-1" href="javascript:void(0);">退货单列表</a>
                     </li>
-                    <li class="list_li" mid="tab6" funurl=".././details/orders/refund-list.html">
+                    <li class="list_li" mid="tab6" funurl=".././details/orders/refundList.html">
                         <a tabindex="-1" href="javascript:void(0);">退款单管理</a>
                     </li>
                 </ul>
@@ -69,7 +68,7 @@
                     </li> -->
                 </ul>
             </dd>
-            <dt class="list_dt" shiro:hasPermission="goods">
+            <dt class="list_dt">
                 <!--<span class="_after"></span>-->
                 <i class="i_goods left-i"></i>
                 <p>商品管理</p>
@@ -77,12 +76,12 @@
             </dt>
             <dd class="list_dd">
                 <ul class="list_dd_ul">
-                    <li class="list_li" mid="tab8" funurl=".././details/commodity/goods-list.html">
+                    <li class="list_li" mid="tab8" funurl=".././details/commodity/goodsList.html">
                         <a tabindex="-1" href="javascript:void(0);">商品列表</a>
                     </li>
                 </ul>
             </dd>
-            <dt class="list_dt" shiro:hasPermission="admin">
+            <dt class="list_dt">
                 <!--<span class="_after"></span>-->
                 <i class="i_user left-i"></i>
                 <p>用户</p>
@@ -93,11 +92,14 @@
                     <li class="list_li" mid="tab9" funurl=".././details/user/administrator.html">
                         <a tabindex="-1" href="javascript:void(0);">仓库管理员管理</a>
                     </li>
-                    <li class="list_li" mid="tab10" funurl=".././details/user/refused-person.html">
+                    <li class="list_li" mid="tab10" funurl=".././details/user/refusedPerson.html">
                         <a tabindex="-1" href="javascript:void(0);">收货人管理</a>
                     </li>
-                    <li class="list_li" mid="tab11" funurl=".././details/user/express-company.html">
-                    <a tabindex="-1" href="javascript:void(0);">快递公司管理</a>
+                    <li class="list_li" mid="tab11" funurl=".././details/user/expressCompany.html">
+                        <a tabindex="-1" href="javascript:void(0);">快递公司管理</a>
+                    </li>
+                    <li class="list_li" mid="tab12" funurl=".././details/user/roleManagement.html">
+                        <a tabindex="-1" href="javascript:void(0);">角色管理</a>
                     </li>
                 </ul>
             </dd>
@@ -109,23 +111,33 @@
            <span class="shrink">
                 <i class="fa fa-arrow-left" ></i>
            </span>
-            <a href="/logout">注销</a>
             <ul class="user-list">
-            <!--<li><i class="i_seach"></i></li>-->
-            <!--<li><i class="i_user"></i></li>-->
-            <li><i class="i_message"></i></li>
-            <li><i class="i_set"></i></li>
-            <li><i class="i_quit"></i></li>
+                <!--<li><i class="i_seach"></i></li>-->
+                <!--<li><i class="i_user"></i></li>-->
+                <!--<li><i class="i_message"></i></li>-->
+                <!--<li><i class="i_set"></i></li>-->
+                <li><i class="i_quit" style="font-size: 25px"></i></li>
+                <span class="logoff">注销</span>
             </ul>
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active noclose" ><a href="#bTabs_tab1" data-toggle="tab">订单列表</a>
+                <li role="presentation" class="active noclose"><a href="#bTabs_navTabsMainPage" data-toggle="tab">首页</a>
                 </li>
             </ul>
             <!--noclose-->
             <div class="tab-content">
-                <!--默认显示第一个列表-->
-                <div class="tab-pane active" id="bTabs_tab1">
-                    <iframe frameborder="0" scrolling="auto" style="width:100%;height:100%;border:0px;" src=".././details/orders/order-list.html"></iframe>
+                <div class="tab-pane active" id="bTabs_navTabsMainPage">
+                    <div class="home-page">
+                        <div class="page-title">
+                            <h2>欢迎使用OMS管理系统！</h2>
+                        </div>
+                        <div class="page-welcome">
+                            <img src="/assets/images/welcome.jpg" alt="" style="width: 100%;height: 600px;" >
+                        </div>
+                        <div class="page-clock">
+                            <canvas id="canvas" width="300" height="300">
+                            </canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -135,6 +147,8 @@
 <script src="/assets/javascript/tabs/tabs.js"></script>
 <!-- <script src="/assets/javascript/popup/popup.js"></script> -->
 <script src="/assets/javascript/index.js"></script>
+<script src="/assets/javascript/clock.js"></script>
 <script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+
 </body>
 </html>

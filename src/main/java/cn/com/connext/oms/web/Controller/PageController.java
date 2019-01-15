@@ -1,5 +1,7 @@
 package cn.com.connext.oms.web.Controller;
 
+import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
+import cn.com.connext.oms.service.TbExchangeService;
 import cn.com.connext.oms.service.TbRefundService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
@@ -23,7 +26,8 @@ public class PageController {
 
     @Autowired
     private TbRefundService tbRefundService;
-
+    @Autowired
+    private TbExchangeService tbExchangeService;
     /**
     * @Author: caps
     * @Description:异常订单列表详情页面
@@ -54,6 +58,9 @@ public class PageController {
     }
 
 
+
+
+
     /** 
     * @Description: 查看退款单页面
     * @Param: [] 
@@ -77,6 +84,30 @@ public class PageController {
     @GetMapping({"/","/login"})
     public String login(){
         return "pages/login/loadingOrder";
+    }
+
+    /**
+     * 入库单页面
+     * @return
+     */
+    @GetMapping({"/tbInput"})
+    public String toInput(){
+        return "pages/details/orders/warehouse-in-list";
+    }
+
+    /**
+     * 入库单详情页
+     */
+    @GetMapping({"/inputDetails"})
+    public String inputDetails(@RequestParam("orderId") int orderId,Model model){
+        try {
+            System.out.println(orderId);
+            ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
+            model.addAttribute("returnDetails",returnDetails);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "pages/specific/addstock";
     }
 
 }

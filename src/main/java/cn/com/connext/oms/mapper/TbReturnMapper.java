@@ -1,5 +1,6 @@
 package cn.com.connext.oms.mapper;
 
+import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbReturn;
 import org.apache.ibatis.annotations.Param;
@@ -113,5 +114,5 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      * 查找所有的入库单详情
      * @return
      */
-    List<TbInput> getAllInputOrders();
+    List<InputDTO> getAllInputOrders();
 }

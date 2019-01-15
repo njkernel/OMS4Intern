@@ -1,5 +1,6 @@
 package cn.com.connext.oms.service;
 
+import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
 import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbReturn;
@@ -86,5 +87,5 @@ public interface TbReturnService {
      * 查找所有的入库单详情
      * @return
      */
-    PageInfo<TbInput> getAllInputOrders(Integer currentPage,Integer pageSize);
+    PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize);
 }

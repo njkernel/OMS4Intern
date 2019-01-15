@@ -2,6 +2,7 @@ package cn.com.connext.oms.web.Controller;
 
 import afu.org.checkerframework.checker.igj.qual.I;
 import cn.com.connext.oms.commons.dto.BaseResult;
+import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.commons.utils.ListToArray;
 import cn.com.connext.oms.commons.utils.StringUtils;
 import cn.com.connext.oms.entity.TbInput;
@@ -44,6 +45,7 @@ public class TbReturnController {
 
     String RETURN_TYPE = "退货";
     String EXCHANGE_TYPE = "换货";
+    String COMPLETED = "已完成";
 
     /**
      *  入库单页面
@@ -52,10 +54,14 @@ public class TbReturnController {
     @GetMapping("/toInput")
     public BaseResult allInputOrders(Integer currentPage,Integer pageSize){
 
-        PageInfo<TbInput> tbInputList = tbReturnService.getAllInputOrders( currentPage, pageSize);
-        return BaseResult.success("查询成功",tbInputList);
-
+        PageInfo<InputDTO> tbInputList = tbReturnService.getAllInputOrders( currentPage, pageSize);
+        if (null != tbInputList) {
+            return BaseResult.success("查询成功", tbInputList);
+        }
+        return BaseResult.fail(500,"后台数据获取失败");
     }
+
+
 
 
     /**
@@ -92,22 +98,27 @@ public class TbReturnController {
     public BaseResult addReturnOrder(@RequestParam("orderId") int orderId, @RequestParam("goodsId") List<Integer> goodsIdsList, @RequestParam("number")List<Integer> numberList){
         boolean flag = false;
         boolean flag1 = false;
+        List<TbOrder> orderList = tbOrderService.getOrderByOrderId(orderId);
+        if(null != orderList) {
 
-        try{
+            try {
+                if (COMPLETED.equals(orderList.get(0).getOrderState())) {
 
-            flag = tbReturnService.addReturnOrderGoods(orderId, goodsIdsList, numberList);
-            TbReturn tbReturn = tbReturnService.createReturnOrder(orderId, goodsIdsList, numberList);
-            flag1 = tbReturnService.addReturnOrder(tbReturn);
+                    flag = tbReturnService.addReturnOrderGoods(orderId, goodsIdsList, numberList);
+                    TbReturn tbReturn = tbReturnService.createReturnOrder(orderId, goodsIdsList, numberList);
+                    flag1 = tbReturnService.addReturnOrder(tbReturn);
 
-            if (flag && flag1) {
-                return BaseResult.success("添加成功");
+                    if (flag && flag1) {
+                        return BaseResult.success("添加成功");
+                    }
+                }
+
+                return BaseResult.fail(500, "添加退货信息失败");
+            } catch (Exception e) {
+                return BaseResult.fail("添加失败");
             }
-
-            return BaseResult.fail(500, "添加退货信息失败");
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return BaseResult.fail("添加失败");
         }
+        return BaseResult.fail(500,"内部数据操作失败");
     }
 
 
@@ -127,13 +138,15 @@ public class TbReturnController {
 
         for (int i = 0; i < returnIdsList.size();i++){
             TbReturn tbReturn = tbReturnService.getTbReturnById(returnIdsList.get(i));
-            if (StringUtils.equals(RETURN_TYPE,tbReturn.getReturnType())){
-                returnList.add(returnIdsList.get(i));
+            if (null != tbReturn) {
+                if (StringUtils.equals(RETURN_TYPE, tbReturn.getReturnType())) {
+                    returnList.add(returnIdsList.get(i));
 
-            }
+                }
 
-            if (EXCHANGE_TYPE == tbReturn.getReturnType()){
-                exchangeList.add(returnIdsList.get(i));
+                if (EXCHANGE_TYPE == tbReturn.getReturnType()) {
+                    exchangeList.add(returnIdsList.get(i));
+                }
             }
         }
 
@@ -187,15 +200,18 @@ public class TbReturnController {
 
         for (int i = 0;i<returnIds.size();i++){
             TbReturn tbReturn = tbReturnService.getTbReturnById(returnIds.get(i));
-            //log
-            if (RETURN_TYPE.equals(tbReturn.getReturnType())){
-                //将退货单生成单独的list交给退货部分处理
-                tbReturnList.add(tbReturn.getReturnId());
+            if (null != tbReturn) {
+                //log
+                if (RETURN_TYPE.equals(tbReturn.getReturnType())) {
+                    //将退货单生成单独的list交给退货部分处理
 
-            }else if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())){
-                //将换货单生成单独的list交给换货处理
-                tbExchangeList.add(tbReturn.getReturnId());
+                    tbReturnList.add(tbReturn.getReturnId());
 
+                } else if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
+                    //将换货单生成单独的list交给换货处理
+                    tbExchangeList.add(tbReturn.getReturnId());
+
+                }
             }
         }
 

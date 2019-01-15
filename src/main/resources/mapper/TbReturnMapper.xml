@@ -84,9 +84,23 @@
   </select>
 
   <!--查找所有的入库单-->
-  <select id="getAllInputOrders" resultType="TbInput">
-    SELECT *
-    FROM tb_input
+  <select id="getAllInputOrders" resultType="cn.com.connext.oms.commons.dto.InputDTO">
+   SELECT
+      a.input_code,
+      a.order_id,
+      a.input_state,
+      a.created,
+      a.updated,
+      a.synchronize_state,
+      b.return_code,
+      b.modified_user
+
+  FROM
+      tb_input a,
+      tb_return b
+
+  WHERE
+      a.order_id = b.order_id
   </select>
 
 </mapper>
