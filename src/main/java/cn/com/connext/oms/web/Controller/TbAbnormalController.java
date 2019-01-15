@@ -65,8 +65,9 @@ public class TbAbnormalController {
     * @Return: cn.com.connext.oms.commons.dto.BaseResult
     * @Create: 2019/1/8 11:53
     */
-    @GetMapping("/abnormalDetail")
-    @ApiOperation(value = "异常订单列表接口")
+
+    @GetMapping("/abnormalDe")
+    @ApiOperation(value = "异常订单详情接口")
     public BaseResult abnormalDetail(int abnormalId){
         try {
             Map<String, Object> map = tbAbnormalService.abnormalDetail(abnormalId);
