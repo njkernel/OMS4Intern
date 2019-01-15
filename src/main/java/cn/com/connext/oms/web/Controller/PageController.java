@@ -1,5 +1,10 @@
 package cn.com.connext.oms.web.Controller;
 
+
+import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;
+import cn.com.connext.oms.entity.TbInput;
+import cn.com.connext.oms.entity.TbReturn;
+import cn.com.connext.oms.entity.TbReturnGoods;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOrderDetails;
 import cn.com.connext.oms.service.OutputService;
@@ -38,6 +43,22 @@ public class PageController {
     @Autowired
     private TbRefundService tbRefundService;
 
+
+
+    @Autowired
+    private TbReturnService tbReturnService;
+    /**
+    * @Author: caps
+    * @Description:异常订单列表详情页面
+    * @Param: []
+    * @Return: java.lang.String
+    * @Create: 2019/1/12 16:01
+    */
+    @RequestMapping("/abnormalModel")
+    public String abnormalDetail(){
+        return "pages/specific/abnormal-order";
+    }
+
     @Autowired
     private TbAbnormalService tbAbnormalService;
 
@@ -46,6 +67,7 @@ public class PageController {
 
     @Autowired
     private OutputService outputService;
+
 
 
     /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
@@ -192,9 +214,21 @@ public class PageController {
      */
     @RequestMapping("/index/returnDetails")
     public String returnDetails(@RequestParam("orderId")int orderId,Model model) {
+        double sum = 0;
+        int num = 0;
         try {
             ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
             model.addAttribute("test",returnDetails);
+
+            List<ReturnGoods> returnGoods=tbExchangeService.selectReturnDetails(returnDetails);
+            model.addAttribute("returnGoods",returnGoods);
+
+            for (ReturnGoods t:returnGoods){
+                sum += t.getReturnPrice();
+                num += t.getReturnNum();
+            }
+            model.addAttribute("sum",sum);
+            model.addAttribute("num",num);
         }catch (Exception e){
             e.printStackTrace();
         }

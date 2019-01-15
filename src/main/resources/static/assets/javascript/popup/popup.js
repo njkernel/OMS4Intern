@@ -1,6 +1,4 @@
 $(function () {
-
-  var Plugin = function (elem, options) {
     this.$elem = elem;
     this.$btn = $('.btn.btn-xs');
     this.$MyAbnormalModel = $('#MyAbnormalModel');
@@ -26,49 +24,55 @@ $(function () {
       });
       this.$btn.on('click', function () {
         self.popbox();
+                self.b_stop = false;
 
-        self.b_stop = false;
+                return false;
+            });
+            this.$btn.on('click', function () {
+                self.popbox();
 
-        return false;
-      });
+                self.b_stop = false;
 
-      this.$close.on('click', function () {
-        self.closePopbox();
+                return false;
+            });
 
-        return false;
-      });
+            this.$close.on('click', function () {
+                self.closePopbox();
 
-      $(document.body).on('click', function () {
-        self.closePopbox();
-      });
-    },
+                return false;
+            });
 
-    popbox: function () { // 显示弹窗
-      var self = this;
-      // debugger;
-      this.$oMask.show().animate({opacity: 1});
-      this.$elem.show().animate({opacity: 1}, function () {
-        self.b_stop = true;
-      });
-    },
+            $(document.body).on('click', function () {
+                self.closePopbox();
+            });
+        },
 
-    closePopbox: function () { // 关闭弹窗
-      var self = this;
+        popbox: function () { // 显示弹窗
+            var self = this;
+            // debugger;
+            this.$oMask.show().animate({opacity: 1});
+            this.$elem.show().animate({opacity: 1}, function () {
+                self.b_stop = true;
+            });
+        },
 
-      if (this.b_stop) {
-        this.$oMask.animate({opacity: 0,}, function () {
-          $(this).hide();
-        });
-        this.$elem.animate({opacity: 0}, function () {
-          $(this).hide();
-        });
-      }
-    },
-    constructor: Plugin
-  };
+        closePopbox: function () { // 关闭弹窗
+            var self = this;
 
-  $.fn.popup = function (options) {
-    var plugin = new Plugin(this, options);
-    return plugin.inital();
-  };
+            if (this.b_stop) {
+                this.$oMask.animate({opacity: 0,}, function () {
+                    $(this).hide();
+                });
+                this.$elem.animate({opacity: 0}, function () {
+                    $(this).hide();
+                });
+            }
+        },
+        constructor: Plugin
+    };
+
+    $.fn.popup = function (options) {
+        var plugin = new Plugin(this, options);
+        return plugin.inital();
+    };
 });

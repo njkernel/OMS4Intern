@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="zh">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -16,13 +17,12 @@
     <!--左侧手风琴开始-->
     <div class="left">
         <div class="left-h2">
-            <img src="/assets/images/OMS.png" alt="">
+            <img src="../../assets/images/OMS.png" alt="">
             <h2>Manage System</h2>
         </div>
         <dl class="list_dl">
             <!--加上id="open"默认打开-->
-            <dt class="list_dt">
-                <!--<span class="_after"></span>-->
+<dt class="list_dt" shiro:hasPermission="order">                <!--<span class="_after"></span>-->
                 <i class="i_orders left-i"></i>
                 <p>订单管理</p>
                 <i class="list_dt_icon"></i>
@@ -38,11 +38,10 @@
                     <li class="list_li" mid="tab3" funurl="/outputList">
                         <a tabindex="-1" href="javascript:void(0);">出库单列表</a>
                     </li>
-                    <li class="list_li" mid="tab4" funurl=".././details/orders/warehouseInList.html">
+                    <li class="list_li" mid="tab4" funurl="/tbInput">
                         <a tabindex="-1" href="javascript:void(0);">入库单列表</a>
                     </li>
-                    <li class="list_li" mid="tab5" funurl=".././details/orders/salesReturnList.html">
-                        <a tabindex="-1" href="javascript:void(0);">退货单列表</a>
+<li class="list_li" mid="tab5" funurl="/index/return">                        <a tabindex="-1" href="javascript:void(0);">退货单列表</a>
                     </li>
                     <li class="list_li" mid="tab6" funurl=".././details/orders/refundList.html">
                         <a tabindex="-1" href="javascript:void(0);">退款单管理</a>
@@ -62,7 +61,7 @@
                     </li>
                 </ul>
             </dd>
-            <dt class="list_dt">
+            <dt class="list_dt" shiro:hasPermission="goods">
                 <!--<span class="_after"></span>-->
                 <i class="i_goods left-i"></i>
                 <p>商品管理</p>
@@ -75,7 +74,7 @@
                     </li>
                 </ul>
             </dd>
-            <dt class="list_dt">
+            <dt class="list_dt" shiro:hasPermission="admin">
                 <!--<span class="_after"></span>-->
                 <i class="i_user left-i"></i>
                 <p>用户</p>
@@ -86,15 +85,15 @@
                     <li class="list_li" mid="tab9" funurl=".././details/user/administrator.html">
                         <a tabindex="-1" href="javascript:void(0);">仓库管理员管理</a>
                     </li>
-                    <li class="list_li" mid="tab10" funurl=".././details/user/refusedPerson.html">
+                    <li class="list_li" mid="tab10" funurl=".././details/user/refused-person.html">
                         <a tabindex="-1" href="javascript:void(0);">收货人管理</a>
                     </li>
                     <li class="list_li" mid="tab11" funurl=".././details/user/expressCompany.html">
-                    <a tabindex="-1" href="javascript:void(0);">快递公司管理</a>
+                        <a tabindex="-1" href="javascript:void(0);">快递公司管理</a>
                     </li>
                     <li class="list_li" mid="tab12" funurl=".././details/user/roleManagement.html">
-                        <a tabindex="-1" href="javascript:void(0);">角色管理</a> 
-                        </li>
+                        <a tabindex="-1" href="javascript:void(0);">角色管理</a>
+                    </li>
                 </ul>
             </dd>
         </dl>
@@ -105,29 +104,24 @@
            <span class="shrink">
                 <i class="fa fa-arrow-left" ></i>
            </span>
+            <a href="/logout">注销</a>
             <ul class="user-list">
-            <li><i class="i_quit" style="font-size: 25px"></i></li>
-            <span class="logoff">注销</span>
+                <!--<li><i class="i_seach"></i></li>-->
+                <!--<li><i class="i_user"></i></li>-->
+                <!--<li><i class="i_message"></i></li>-->
+                <!--<li><i class="i_set"></i></li>-->
+                <li><i class="i_quit" style="font-size: 25px"></i></li>
+                <span class="logoff">注销</span>
             </ul>
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active noclose"><a href="#bTabs_navTabsMainPage" data-toggle="tab">首页</a>
+                <li role="presentation" class="active noclose" ><a href="#bTabs_tab1" data-toggle="tab">订单列表</a>
                 </li>
             </ul>
             <!--noclose-->
             <div class="tab-content">
-                <div class="tab-pane active" id="bTabs_navTabsMainPage">
-                    <div class="home-page">
-                        <div class="page-title">
-                            <h2>欢迎使用OMS管理系统！</h2>
-                        </div>
-                        <div class="page-welcome">
-                            <img src="/assets/images/welcome.jpg" alt="" style="width: 100%;height: 600px;" >
-                        </div>
-                        <div class="page-clock">
-                            <canvas id="canvas" width="300" height="300">
-                            </canvas>
-                        </div>
-                    </div>
+                <!--默认显示第一个列表-->
+                <div class="tab-pane active" id="bTabs_tab1">
+                    <iframe frameborder="0" scrolling="auto" style="width:100%;height:100%;border:0px;" src=".././details/orders/order-list.html"></iframe>
                 </div>
             </div>
         </div>
