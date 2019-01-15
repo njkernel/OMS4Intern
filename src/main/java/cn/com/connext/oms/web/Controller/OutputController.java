@@ -97,7 +97,7 @@ public class OutputController {
                 TbOrder tbOrder = outputService.getOrderById(orderId);
                 tbOrder.setDeliveryWarehouse("南京仓");
                 tbOrder.setDeliveryCompany(receivcerDetails.get(0));
-                tbOrder.setChannelCode(receivcerDetails.get(1));
+                tbOrder.setDeliveryCode(receivcerDetails.get(1));
                 tbOrder.setOrderState(STATUS);
                 Date deliveryTime = new Date(receivcerDetails.get(2));
                 tbOrder.setDeliveryTime(deliveryTime);
