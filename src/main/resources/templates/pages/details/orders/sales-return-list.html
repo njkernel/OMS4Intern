@@ -19,7 +19,7 @@
         <button type="button" class="btn btn-primary" @click="refresh">刷新</button>
         <button type="button" class="btn btn-primary" @click="toAudit">审核</button>
         <button type="button" class="btn btn-primary" @click="toCancel">取消退换</button>
-        <button type="button" class="btn btn-primary" @click="exchangeDetails">查看详情</button>
+        <button type="button" class="btn btn-primary btn-xs" id="exchangeDetails" @click="exchangeDetails">查看详情</button>
         <div class="search-box">
             <form action="">
                 <select name="" id="select">
@@ -52,7 +52,7 @@
             <template v-for="tbReturn in returnOrderInfo">
                 <tr>
                     <td>{{tbReturn.returnId}}</td>
-                    <td><input type="checkbox" :value="tbReturn.returnId" v-model="ids"></td>
+                    <td><input type="checkbox" class="checkbox" :value="tbReturn.returnId" v-model="ids"></td>
                     <td>{{tbReturn.returnId}}</td>
                     <td>{{tbReturn.returnType}}</td>
                     <td>{{tbReturn.returnState}}</td>
@@ -105,7 +105,7 @@
             <span>x</span>
         </div>
         <div class="cont">
-            <iframe src="../../specific/return-goods.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
+            <iframe id="iframe" src="" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
     </div>
 </div>
 <script>

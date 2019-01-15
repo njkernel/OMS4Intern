@@ -35,10 +35,11 @@ var Exchange = new Vue({
             });
         },
 
-        // 刷新
+        // 刷新当前页面
         refresh(){
-            this.initialize();
             this.initInfo();
+            location.reload();
+            alert("刷新成功！");
         },
 
         //审核，分流
@@ -62,22 +63,29 @@ var Exchange = new Vue({
             var exchangeDetails=this;
             var url="/exchange/exchangeDetails";
             if (exchangeDetails.ids.length === 0){
-                alert("您还未选择！")
+                $("#iframe").attr("src","");
+                alert("您还未选择！");
                 return false;
             }
             //根据checkbox绑定的returnId获取对应的orderId
             if (exchangeDetails.ids.length>1){
-                alert("只能选择单条信息进行查看详情！");
+                alert("只能选择单条信息进行查看！");
+                $("#iframe").attr("src","");
                 return false;
             }
             for (var temp in exchangeDetails.returnOrderInfo) {
+
                 if (exchangeDetails.returnOrderInfo[temp].returnId === exchangeDetails.ids[0]) {
                     exchangeDetails.detailsData.orderId = exchangeDetails.returnOrderInfo[temp].orderId;
                 }
             }
+            $("#iframe").attr("src","/index/returnDetails?orderId="+exchangeDetails.detailsData.orderId);
             // console.log("orderId为"+exchangeDetails.detailsData.orderId);
             axios.get(url,{params: exchangeDetails.detailsData}).then(function (response) {
                 exchangeDetails.detailsInfo = response.data.data;
+                console.log("test");
+                //传送数据
+                $("#iframe").contentWindow.postMessage(detailsInfo,"http://127.0.0.1:8502/returnDetails","");
             }).catch(function (err) {
                 console.log(err)
             });
