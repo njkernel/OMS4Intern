@@ -1,7 +1,6 @@
 package cn.com.connext.oms.web.Controller;
 
-
-import cn.com.connext.oms.service.TbAbnormalService;
+import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;import cn.com.connext.oms.service.TbAbnormalService;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 import cn.com.connext.oms.service.TbExchangeService;
 
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -226,9 +226,21 @@ public class PageController {
      */
     @RequestMapping("/index/returnDetails")
     public String returnDetails(@RequestParam("orderId")int orderId,Model model) {
+        double sum = 0;
+        int num = 0;
         try {
             ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
             model.addAttribute("test",returnDetails);
+
+            List<ReturnGoods> returnGoods=tbExchangeService.selectReturnDetails(returnDetails);
+            model.addAttribute("returnGoods",returnGoods);
+
+            for (ReturnGoods t:returnGoods){
+                sum += t.getReturnPrice();
+                num += t.getReturnNum();
+            }
+            model.addAttribute("sum",sum);
+            model.addAttribute("num",num);
         }catch (Exception e){
             e.printStackTrace();
         }
