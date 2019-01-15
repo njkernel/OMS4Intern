@@ -1,4 +1,5 @@
 $(function () {
+    var Plugin = function (elem, options) {
     this.$elem = elem;
     this.$btn = $('.btn.btn-xs');
     this.$MyAbnormalModel = $('#MyAbnormalModel');
