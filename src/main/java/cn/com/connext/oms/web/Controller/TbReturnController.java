@@ -1,6 +1,5 @@
 package cn.com.connext.oms.web.Controller;
 
-import afu.org.checkerframework.checker.igj.qual.I;
 import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.commons.utils.ListToArray;
@@ -13,7 +12,6 @@ import cn.com.connext.oms.service.TbOrderService;
 import cn.com.connext.oms.service.TbReturnService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
-import jdk.internal.util.xml.impl.Input;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,31 +46,31 @@ public class TbReturnController {
     String COMPLETED = "已完成";
 
     /**
-     *  入库单页面
+     * 入库单页面
+     *
      * @return
      */
     @GetMapping("/toInput")
-    public BaseResult allInputOrders(Integer currentPage,Integer pageSize){
+    public BaseResult allInputOrders(Integer currentPage, Integer pageSize) {
 
-        PageInfo<InputDTO> tbInputList = tbReturnService.getAllInputOrders( currentPage, pageSize);
+        PageInfo<InputDTO> tbInputList = tbReturnService.getAllInputOrders(currentPage, pageSize);
         if (null != tbInputList) {
             return BaseResult.success("查询成功", tbInputList);
         }
-        return BaseResult.fail(500,"后台数据获取失败");
+        return BaseResult.fail(500, "后台数据获取失败");
     }
-
-
 
 
     /**
      * 根据订单id查询订单详情
-     * @author: Aaron
+     *
      * @param orderId
      * @return BaseResult
+     * @author: Aaron
      */
     @GetMapping("/getOrderByOrderId")
     @ApiOperation(value = "订单数据接口")
-    public BaseResult getOrderByOrderId (int orderId) {
+    public BaseResult getOrderByOrderId(int orderId) {
         try {
             List<TbOrder> tbOrderList = tbOrderService.getOrderByOrderId(orderId);
             if (null != tbOrderList.get(0)) {
@@ -87,19 +85,20 @@ public class TbReturnController {
 
     /**
      * 将前台的数据整合生成退货单
+     *
      * @param orderId
-     * @author: Aaron
      * @param goodsIdsList
      * @param numberList
      * @return BaseResult
+     * @author: Aaron
      */
     @GetMapping("/addReturnOrder")
     @ApiOperation(value = "生成退货单数据接口")
-    public BaseResult addReturnOrder(@RequestParam("orderId") int orderId, @RequestParam("goodsId") List<Integer> goodsIdsList, @RequestParam("number")List<Integer> numberList){
+    public BaseResult addReturnOrder(@RequestParam("orderId") int orderId, @RequestParam("goodsId") List<Integer> goodsIdsList, @RequestParam("number") List<Integer> numberList) {
         boolean flag = false;
         boolean flag1 = false;
         List<TbOrder> orderList = tbOrderService.getOrderByOrderId(orderId);
-        if(null != orderList) {
+        if (null != orderList) {
 
             try {
                 if (COMPLETED.equals(orderList.get(0).getOrderState())) {
@@ -118,20 +117,20 @@ public class TbReturnController {
                 return BaseResult.fail("添加失败");
             }
         }
-        return BaseResult.fail(500,"内部数据操作失败");
+        return BaseResult.fail(500, "内部数据操作失败");
     }
 
 
     /**
      * 退货单的取消
-     * @author: Aaron
+     *
      * @param returnIdsList
      * @return BaseResult
+     * @author: Aaron
      */
     @GetMapping("/returnOrderCancel")
     @ApiOperation(value = "退货取消数据接口")
-    public BaseResult returnOrderCancel (@RequestParam("returnId") List<Integer> returnIdsList) {
-        Date updated = new Date();
+    public BaseResult returnOrderCancel (@RequestParam("returnId") List<Integer> returnIdsList){        Date updated = new Date();
         String oms = "oms";
         List<Integer> returnList = new ArrayList<>();
         List<Integer> exchangeList = new ArrayList<>();
@@ -145,10 +144,13 @@ public class TbReturnController {
                 }
 
 
+
+
                 if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
                     exchangeList.add(returnIdsList.get(i));
 
                 }
+
             }
 
             //换货部分的取消 Update BY yonyong
@@ -163,17 +165,16 @@ public class TbReturnController {
             }
 
 
-            //退货部分的取消
+ //退货部分的取消
             try {
                 boolean flag = tbReturnService.returnOrderCancel(returnList, oms, updated);
                 if (flag) {
                     return BaseResult.success("退货取消");
                 }
-                return BaseResult.fail(500, "取消失败");
+
             } catch (Exception e) {
 
-                return BaseResult.fail("内部数据出现错误，请稍后重试");
-            }
+                return BaseResult.fail("内部数据出现错误，请稍后重试");            }
         }
         return BaseResult.fail(500,"取消失败");
     }

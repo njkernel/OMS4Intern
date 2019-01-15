@@ -315,6 +315,26 @@ public class TbReturnServiceImpl implements TbReturnService {
         return pageInfo;
     }
 
+    /**
+     * 根据订单id查找退货单
+     * @param orderId
+     * @return
+     */
+    @Override
+    public TbInput getInputByOrderId(int orderId) {
+        return tbReturnMapper.getInputByOrderId(orderId);
+    }
+
+    /**
+     * 根据订单id查退货单商品信息
+     * @param orderId
+     * @return
+     */
+    @Override
+    public List<TbReturnGoods> getTbReturnGoodsById(int orderId) {
+        return tbReturnMapper.getTbReturnGoodsById(orderId);
+    }
+
 
     /**
      * 生成退货单

@@ -4,6 +4,7 @@ import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
 import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbReturn;
+import cn.com.connext.oms.entity.TbReturnGoods;
 import com.github.pagehelper.PageInfo;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
@@ -88,4 +89,18 @@ public interface TbReturnService {
      * @return
      */
     PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize);
+
+    /**
+     * 根据订单id查找退货单
+     * @param orderId
+     * @return
+     */
+    TbInput getInputByOrderId(int orderId);
+
+    /**
+     * 根据订单id查找退货单商品信息
+     * @param orderId
+     * @return
+     */
+    List<TbReturnGoods> getTbReturnGoodsById(int orderId);
 }
