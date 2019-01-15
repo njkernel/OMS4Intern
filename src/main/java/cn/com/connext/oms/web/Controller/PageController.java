@@ -64,12 +64,10 @@ public class PageController {
     * @Author: Lili Chen 
     * @Date: 2019/1/10 
     */
-    @RequestMapping("/getRefund")
-    public String refundPage(Model model, HttpServletRequest request){
+    @RequestMapping("/refund")
+    public String refundPage(Model model){
         Map<String,Object> map=tbRefundService.getAllRefundIndex(1,4);
         model.addAttribute("map",map);
-        HttpSession session=request.getSession();
-        session.setAttribute("basic","我的");
         return "pages/details/orders/refund-list";
     }
     /**
@@ -84,13 +82,13 @@ public class PageController {
         return "pages/login/loadingOrder";
     }
 
-    
-    /** 
-    * @Description: 退款单的分页 
-    * @Param: [page, model, size, request] 
-    * @return: java.lang.String 
-    * @Author: Lili Chen 
-    * @Date: 2019/1/14 
+
+    /**
+    * @Description: 退款单的分页
+    * @Param: [page, model, size, request]
+    * @return: java.lang.String
+    * @Author: Lili Chen
+    * @Date: 2019/1/14
     */
     @RequestMapping("/getRefundIndex")
     public String getAllRefundIndex(Integer page,Model model,Integer size,HttpServletRequest request){
@@ -122,13 +120,13 @@ public class PageController {
         return "pages/details/orders/refund-list";
     }
 
-    
-    /** 
-    * @Description: 根据条件查看退款单 
-    * @Param: [model, select, mySelect, page, request] 
-    * @return: java.lang.String 
-    * @Author: Lili Chen 
-    * @Date: 2019/1/14 
+
+    /**
+    * @Description: 根据条件查看退款单
+    * @Param: [model, select, mySelect, page, request]
+    * @return: java.lang.String
+    * @Author: Lili Chen
+    * @Date: 2019/1/14
     */
     @RequestMapping("/getSearchRefund")
     public String getSearchRefund(Model model,String select,String mySelect,Integer page,HttpServletRequest request){
