@@ -45,13 +45,29 @@ var Exchange = new Vue({
         //审核，分流
         toAudit(){
             var toAudit=this;
-            var url="/exchange/toAudit";
-            axios.get(url,{params: this.returnData}).then(function(response) {
+            var url="/return/checkReturnOrExchange";
+            if (toAudit.ids.length === 0){
+                alert("您还未选择！");
+                return false;
+            }
+            axios.get(url,{params: toAudit.ids}).then(function(response) {
+                if (response.status === 200) {
+                    alert("操作成功!");
+                    toAudit.refresh();
+                } else if (response.status === 500) {
+                    alert("操作失败!");
+                }
             }).catch(function (err) {
                 console.log(err)
             });
         },
         toCancel(){
+            var toCancel=this;
+            var url="/return/checkReturnOrExchange";
+            if (toCancel.ids.length === 0){
+                alert("您还未选择！");
+                return false;
+            }
             var cancelIds=this;
             var url="/exchange/toCancel";
             axios.get(url,{params: cancelIds.ids}).then(function (response) {
@@ -83,9 +99,6 @@ var Exchange = new Vue({
             // console.log("orderId为"+exchangeDetails.detailsData.orderId);
             axios.get(url,{params: exchangeDetails.detailsData}).then(function (response) {
                 exchangeDetails.detailsInfo = response.data.data;
-                console.log("test");
-                //传送数据
-                $("#iframe").contentWindow.postMessage(detailsInfo,"http://127.0.0.1:8502/returnDetails","");
             }).catch(function (err) {
                 console.log(err)
             });
