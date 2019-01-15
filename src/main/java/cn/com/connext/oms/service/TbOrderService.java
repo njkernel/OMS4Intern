@@ -22,6 +22,16 @@ public interface TbOrderService {
      * @Create: 2019/1/6 10:14
      */
     List<TbOrder> getAllOrder();
+    /**
+     *
+     * 功能描述: 根据订单状态查询所需要的订单
+     *
+     * @param: 订单状态
+     * @return: 返回根据订单状态查询的订单
+     * @auther: Jay
+     * @date: 2019/1/13
+     */
+    List<TbOrder> getAllOrderByStatus(String status);
 
     /**
      * create by: yonyong
@@ -33,21 +43,8 @@ public interface TbOrderService {
      */
     List<TbOrder> getOrderDetailsByOrderId(int id);
 
-    /**
-     * @Author: zhaojun
-     * @Description: 根据订单编号查询订单的详情
-     * @Param: []
-     * @Create: 2019/1/7 10:59
-     */
-    public TbOrder getOrderById(int orderId);
-    /**
-     * @Author: zhaojun
-     * @Description: 根据订单ID查询订单所有信息
-     * @Param: []
-     * @Return:
-     * @Create: 2019/1/7 19:19
-     */
-    public OrderGoodsReceiverDto getAllById(int orderId);
+
+
 
 
     /**
@@ -68,7 +65,7 @@ public interface TbOrderService {
    * @Author: Lili Chen 
    * @Date: 2019/1/8 
    */
-    boolean cancelOrder(List<TbOrder> orderList);
+    boolean cancelOrder(Integer[] orderIdList);
     
     
     /** 
@@ -79,5 +76,14 @@ public interface TbOrderService {
     * @Date: 2019/1/8 
     */
     boolean cancelOrderOfWms(String outputs);
+    /**
+     * @Author: zhaojun
+     * @Description: 根据订单ID查询订单所有信息
+     * @Param: []
+     * @Return:
+     * @Create: 2019/1/7 19:19
+     */
+    public OrderGoodsReceiverDto getAllById(int orderId);
+
 
 }

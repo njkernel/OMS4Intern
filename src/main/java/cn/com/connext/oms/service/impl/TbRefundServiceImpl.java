@@ -1,9 +1,13 @@
 package cn.com.connext.oms.service.impl;
 
+import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbRefund;
+import cn.com.connext.oms.mapper.TbOrderMapper;
 import cn.com.connext.oms.mapper.TbRefundMapper;
 import cn.com.connext.oms.service.TbRefundService;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,9 @@ import java.util.Map;
 public class TbRefundServiceImpl implements TbRefundService {
     @Autowired
     private TbRefundMapper tbRefundMapper;
+
+    @Autowired
+    private TbOrderMapper tbOrderMapper;
 
 
     /**
@@ -54,19 +61,6 @@ public class TbRefundServiceImpl implements TbRefundService {
         if(refundResult==refundList.size()){
             return true;
         }
-       /* for(TbRefund refund:tbRefundList){
-            if("待退款".equals(refund.getRefundState())){
-                refund.setRefundState("退款成功");
-            }else{
-                return false;
-            }
-        }
-        if(!refundList.isEmpty()){
-            refundResult=tbRefundMapper.updateRefundListStatue(refundList);
-        }
-        if(refundResult==refundList.size()){
-            return true;
-        }*/
 
         return false;
     }
@@ -118,5 +112,76 @@ public class TbRefundServiceImpl implements TbRefundService {
     @Override
     public TbRefund getRefundById(Integer refundId) {
         return tbRefundMapper.getRefundById(refundId);
+    }
+
+
+    /**
+    * @Description: 根据退款单状态查看退款单
+    * @Param: [refundState]
+    * @return: java.util.Map
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    @Override
+    public Map getListRefundByState(String refundState,Integer page, Integer size) {
+        Map map=new HashMap<>();//存查看退款单分页的参数
+        Integer pageCount=1;//总页数
+        PageHelper.startPage(page,size);
+        List<TbRefund> tbRefundList = tbRefundMapper.getListRefundByState(refundState);//根据退款状态查看退款单
+        PageInfo<TbRefund> pageInfo=new PageInfo<>(tbRefundList);
+        pageCount=pageInfo.getPages();//获取总页数
+        if(pageCount==0){
+            pageCount=1;
+        }
+        if(page>pageCount){//如果目的页面大于总页数
+            page=pageCount;
+            PageHelper.startPage(page,size);
+            tbRefundList = tbRefundMapper.getListRefundByState(refundState);
+        }else if(page==0){//如果目的页面等于0
+            page=1;
+            PageHelper.startPage(page,size);
+            tbRefundList = tbRefundMapper.getListRefundByState(refundState);
+        }
+        map.put("refundList",tbRefundList);
+        map.put("page",page);
+        map.put("pageCount",pageCount);
+        return map;
+
+    }
+
+    /**
+    * @Description: 根据退款单的订单id查看退款单
+    * @Param: [orderId]
+    * @return: java.util.Map
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    @Override
+    public Map getListRefundByOrderCode(String orderCode,Integer page, Integer size) {
+        Map map=new HashMap<>();//存查看退款单分页的参数
+        List<TbRefund> tbRefundList =new ArrayList<>();
+        TbOrder order=tbOrderMapper.getOrderByCode(orderCode);//根据订单编码得到相应的订单
+        PageHelper.startPage(page,size);//利用pageInfo
+        if(order!=null){//如果存在这个订单
+            tbRefundList = tbRefundMapper.getListRefundByOrderId(order.getOrderId());//根据订单号得到退款单列表
+        }else{//如果相应的订单为空
+            map.put("page",1);
+            map.put("pageCount",1);
+            return map;
+        }
+        PageInfo<TbRefund> pageInfo=new PageInfo<>(tbRefundList);
+        if(page>pageInfo.getPages()){//如果当前页大于总页数
+            page=pageInfo.getPages();
+            PageHelper.startPage(page,size);
+            tbRefundList = tbRefundMapper.getListRefundByOrderId(order.getOrderId());
+        }else if(page==0){//如果页数为0
+            page=1;
+            PageHelper.startPage(page,size);
+            tbRefundList = tbRefundMapper.getListRefundByOrderId(order.getOrderId());//根据订单id获得退款单列表
+        }
+        map.put("refundList",tbRefundList);
+        map.put("page",page);
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 }

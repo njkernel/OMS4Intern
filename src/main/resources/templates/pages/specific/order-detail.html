@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>订单详情</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../../assets/javascript/popup/popup.js"></script>
+    <script src="../../../assets/javascript/popup/orderpopup.js"></script>
     <link rel="stylesheet" type="text/css" href="../../assets/styles/specific/order-detail.css"/>
 </head>
 <body style="overflow-x:hidden;">
@@ -66,52 +71,32 @@
                                 </div>
                         </div>
 
-                        <div class="main-content4">
+                        <div class="main-content4" >
                             <div class="title"><text>收货人信息</text></div>
-                            <button class="btn1" id="button_show">编辑</button>
-                            <button class="btn2">取消编辑</button>
-                            <button class="btn3">保存</button>
-                            <div class="address-information">  
+                            <button class="btn1" id="edit" onclick="edit()">编辑</button>
+                            <button class="btn2" id="notEdit" onclick="notEdit()">取消编辑</button>
+                            <button class="btn3" onclick="editReceiver()">保存</button>
+                            <div class="address-information" id="frm">
                                 <div class="address-tel">
+                                    <input type="text" hidden value="" id="receiver_id"/>
                                     <text>收货人:</text>
-                                    <input type="text" disabled="disabled"/>
+                                    <input type="text" disabled="disabled" id="receiver_name"/>
                                     <text>&nbsp;&nbsp;&nbsp;&nbsp;联系电话:</text>
-                                    <input type="text" disabled="disabled"/>
+                                    <input type="text" disabled="disabled" id="receiver_mobile"/>
                                 </div>
                                 <br>
                                 <div class="address-city">
                                     <text>省:</text>
-                                    <select>
-                                        <option>江苏省</option>
-                                        <option>湖南省</option>
-                                        <option>安徽省</option>
-                                        <option>河南省</option>
-                                        <option>湖北省</option>
-                                        <option>河北省</option>
-                                    </select>
+                                    <input type="text" disabled="disabled" id="receiver_state"/>
                                     <text>&nbsp;&nbsp;&nbsp;&nbsp;市:</text>
-                                    <select>
-                                        <option>扬州市</option>
-                                        <option>南通市</option>
-                                        <option>南京市</option>
-                                        <option>苏州市</option>
-                                        <option>南京市</option>
-                                        <option>常州市</option>
-                                    </select>
+                                    <input type="text" disabled="disabled" id="receiver_city"/>
                                     <text>&nbsp;&nbsp;区:</text>
-                                    <select>
-                                        <option>通州区</option>
-                                        <option>朝阳区</option>
-                                        <option>丰县区</option>
-                                        <option>大型区</option>
-                                        <option>平谷区</option>
-                                        <option>西城区</option>
-                                    </select>
+                                    <input type="text" disabled="disabled" id="receiver_district"/>
                                 </div>
                                 <br>
                                 <div class="address-detail">
                                     <text>详细地址</text>
-                                    <input type="text" class="input4" id="detail-input" disabled="disabled"/>
+                                    <input type="text" class="input4" id="receiver_address" disabled="disabled"/>
                                 </div>
                             </div>
                         </div>
@@ -228,4 +213,63 @@
                     </div>
             </div>
 </body>
+
+<script type="text/javascript">
+    function edit() {
+        $("#receiver_name").attr("disabled",false);
+        $("#receiver_address").attr("disabled",false);
+        $("#receiver_city").attr("disabled",false);
+        $("#receiver_district").attr("disabled",false);
+        $("#receiver_state").attr("disabled",false);
+        $("#receiver_mobile").attr("disabled",false);
+
+    }
+    function notEdit() {
+        $("#receiver_name").attr("disabled",true);
+        $("#receiver_address").attr("disabled",true);
+        $("#receiver_city").attr("disabled",true);
+        $("#receiver_district").attr("disabled",true);
+        $("#receiver_state").attr("disabled",true);
+        $("#receiver_mobile").attr("disabled",true);
+
+    }
+
+
+    function editReceiver() {
+        var receiverName=$("#receiver_name").val();
+        var receiverAddress=$("#receiver_address").val();
+        var receiverCity=$("#receiver_city").val();
+        var receiverDistrict=$("#receiver_district").val();
+        var receiverState=$("#receiver_state").val();
+        var receiverMobile=$("#receiver_mobile").val();
+        var receiverId=$("#receiver_id").val();
+        var confirm_ = confirm('确认？');
+        var re = /^1\d{10}$/;
+        if(confirm_){
+            if(!re.test(receiverMobile)){
+                alert("请注意手机格式");
+            }else{
+                $.ajax({
+                    ContentType:"application/json;charset=UTF-8",
+                    type:"post",
+                    url:"/editReceiverInformation",
+                    data: {"receiverName" :receiverName,"receiverAddress":receiverAddress,"receiverCity":receiverCity,
+                        "receiverDistrict":receiverDistrict,"receiverState":receiverState,"receiverMobile":receiverMobile,
+                        "receiverId":receiverId},
+                    success:function (msg) {
+                        if(msg=="success"){
+                            notEdit();
+                            alert("编辑成功");
+                        }else {
+                            alert("编辑失败");
+                        }
+                    }
+                })
+            }
+
+            }
+
+
+    }
+</script>
 </html>

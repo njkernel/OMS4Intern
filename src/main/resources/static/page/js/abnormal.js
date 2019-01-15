@@ -74,15 +74,15 @@ let Abnormal = new Vue({
             callAxiosGet(url,{abnormalId:this.checkedDate},this.Suc,this.Fail)
         },
         //把当前行id存在缓存中
-   /*     toPageStorage(){
-            localStorage.setItem("goodsId", this.checkedDate);
-            /!*console.log(sessionStorage.getItem("id"))*!/
-        },*/
+        /*     toPageStorage(){
+                 localStorage.setItem("goodsId", this.checkedDate);
+                 /!*console.log(sessionStorage.getItem("id"))*!/
+             },*/
 
         //异常订单详情
         checkOrder(){
-           /* let url='/abnormalDetail';
-            callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)*/
+            /* let url='/abnormalDetail';
+             callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)*/
             console.log(this.checkedDate);
             document.getElementById('iframeId').src="/abnormalDetail?abnormalId="+this.checkedDate;
         },
@@ -127,7 +127,7 @@ let Abnormal = new Vue({
                 this.searchDate.modifiedUser=this.searchInput;
             }
 
-           //查询条件
+            //查询条件
             this.page.currentPage=1;
             this.page.orderId=this.searchDate.orderId;
             this.page.abnormalState=this.searchDate.abnormalState;

@@ -101,7 +101,7 @@ public interface TbExchangeService {
       * @Param: update
      * @return int
      */
-    public int updateTbReturn(Integer[] ids,String state, String modifiedUser,Date update);
+    public int updateTbReturn(int[] ids,String state, String modifiedUser,Date update);
 
     /**
      * create by: yonyong
@@ -136,7 +136,7 @@ public interface TbExchangeService {
       * @Param: num
      * @return int
      */
-    public int generateOutput(InputFeedback inputFeedback);
+    public int inputFeedback(InputFeedback inputFeedback);
 
     /**
      * create by: yonyong

@@ -201,13 +201,71 @@
 
     </select>
 
-    <select id="selectCreatedById" resultType="Date">
+    <select id="selectCreatedById" resultType="java.util.Date">
         SELECT purchase_time
         FROM tb_order
         WHERE order_id = #{orderId}
     </select>
     <select id="getOrderById" parameterType="Integer" resultMap="BaseResultMap">
         select * from tb_order where order_id=#{orderId}
+    </select>
+    <select id="getAllOrderByStatus" resultType="cn.com.connext.oms.entity.TbOrder">
+         SELECT
+      a.order_id,
+      a.order_code,
+      a.channel_code,
+      a.order_state,
+      a.order_source,
+      a.purchase_time,
+      a.basic_state,
+      a.modified_user,
+      a.customer_id,
+      a.updated,
+      a.payment_state,
+      a.payment_way,
+      a.payment_time,
+      a.delivery_warehouse,
+      a.delivery_company,
+      a.delivery_code,
+      a.delivery_time,
+      a.sum_price,
+      a.receiver_id,
+      a.remark,
+      b.created,
+      b.order_id,
+      b.receiver_address,
+      b.receiver_city,
+      b.receiver_district,
+      b.receiver_id,
+      b.receiver_mobile,
+      b.receiver_mobile,
+      b.receiver_name,
+      b.receiver_phone,
+      b.receiver_state,
+      b.receiver_zip,
+      b.updated,
+      c.goods_id,
+      c.goods_code,
+      c.goods_name,
+      c.goods_price,
+      d.goods_id,
+      d.goods_order_id,
+      d.order_id,
+      d.num,
+      d.total_price
+  FROM
+      tb_order a,
+      tb_receiver b,
+      tb_goods c,
+      tb_goods_order d
+  WHERE
+      a.order_id = d.order_id
+  AND d.goods_id = c.goods_id
+  AND a.order_id = b.order_id
+  AND a.order_state=#{state}
+    </select>
+    <select id="getOrderByCode" parameterType="String" resultMap="BaseResultMap">
+        select * from tb_order where order_code=#{orderCode}
     </select>
 
     <update id="updateOrderStatue" parameterType="tbOrder">
@@ -260,4 +318,6 @@
         <foreach collection="list" item="item" open="(" separator="," close=")">
             #{item.orderId}
         </foreach>
-    </update></mapper>
+    </update>
+
+</mapper>

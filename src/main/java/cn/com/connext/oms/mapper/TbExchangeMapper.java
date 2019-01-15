@@ -77,7 +77,7 @@ public interface TbExchangeMapper {
      *  * @Param: goodCode
      * @return cn.com.connext.oms.entity.TbGoods
      */
-    public TbGoods toSelectGoodByCode(@Param("goodsCode")int goodsCode);
+    public TbGoods toSelectGoodByCode(@Param("goodsCode")String goodsCode);
 
     /**
      * create by: yonyong
@@ -153,7 +153,7 @@ public interface TbExchangeMapper {
      *  * @Param: tbOutput
      * @return int
      */
-    public int insertOutput(@Param("tbOutput")TbOutput tbOutput);
+//    public int insertOutput(@Param("tbOutput")TbOutput tbOutput);
 
     /**
      * create by: yonyong
@@ -167,35 +167,6 @@ public interface TbExchangeMapper {
 
     public TbInput selectTbInputByOrderId(@Param("orderId") int orderId);
 
-    /**
-     * create by: yonyong
-     * description: 根据商品id查询商品库存信息
-     * create time: 2019/1/10 17:11
-     *
-     *  * @Param: goodId
-     * @return cn.com.connext.oms.entity.TbStock
-     */
-    public TbStock selectStockByGoodId(@Param("goodId")int goodId);
-
-    /**
-     * create by: yonyong
-     * description: 根据商品code查询商品库存信息
-     * create time: 2019/1/10 17:26
-     *
-     *  * @Param: goodCode
-     * @return cn.com.connext.oms.entity.TbStock
-     */
-    public TbStock selectStockByGoodCode(@Param("goodCode")int goodCode);
-
-    /**
-     * create by: yonyong
-     * description: 更新商品库存信息
-     * create time: 2019/1/10 21:52
-     *
-     *  * @Param: tbStock
-     * @return int
-     */
-    public int updateStock(@Param("tbStock")TbStock tbStock);
 
     /**
      * create by: yonyong
@@ -215,7 +186,7 @@ public interface TbExchangeMapper {
      *  * @Param: tbGoodsOrder
      * @return int
      */
-    public int insertGoodsOrder(@Param("tbGoodsOrder")TbGoodsOrder tbGoodsOrder);
+    public int insertGoodsOrders(List<TbGoodsOrder> tbGoodsOrders);
 
     /**
      * create by: yonyong
@@ -237,4 +208,36 @@ public interface TbExchangeMapper {
      */
     public TbExchangeOrderRelations selectExchangeOrderRelationsByOldOrderId(@Param("oldOrderId")int oldOrderId);
 
+    /**
+     * create by: yonyong
+     * description: 根据订单id删除订单商品表相关信息
+     * create time: 2019/1/12 18:21
+     *
+     *  * @Param: orderId
+     * @return int
+     */
+    public int deleteGoodsOrders(@Param("orderId") int orderId);
+
+
+    /**
+     * create by: yonyong
+     * description: 根据订单id删除订单
+     * create time: 2019/1/12 18:23
+     *
+     *  * @Param: orderId
+     * @return int
+     */
+    public int deleteOrder(@Param("orderId")int orderId);
+
+    /**
+     * create by: yonyong
+     * description: 根据订单id删除关联表
+     * create time: 2019/1/12 18:31
+     *
+     *  * @Param: orderId
+     * @return int
+     */
+    public int deleteExchangeOrderRelations(@Param("orderId")int orderId);
+
+    public int selectCountOfOrder();
 }
