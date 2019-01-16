@@ -76,6 +76,7 @@ let orderList = new Vue({
         updateRoute(){
             let url='/UpdateOrderIntoWaitOutPut';
             callAxiosGet(url,{id:this.checkedDate},this.Suc,this.Fail)
+        },
         //异常处理
         abnormalHandle(){
             let url='/abnormalHandle';
