@@ -210,7 +210,7 @@ let orderList = new Vue({
             // else if (toRequestForGoods.checkedNames > 1) {
             //     alert("只能对一条订单进行操作！")
             // }
-            axios.get(url,{params: {orderId : toRequestForGoods.checkedNames}}).then(function(response) {
+            axios.get(url,{params: {orderId : {orderId : toRequestForGoods.checkedNames[0]}}}).then(function(response) {
                 toRequestForGoods.orderId=toRequestForGoods.checkedNames;
                 toRequestForGoods.orderGoodsInfo=response.data.data;
                 toRequestForGoods.status = 'exist';

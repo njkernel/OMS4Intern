@@ -44,6 +44,7 @@
                 <th>订单状态</th>
                 <th>订单来源</th>
                 <th>支付方式</th>
+                <th>仓库备注</th>
                 <th>订单总价</th>
                 <th>发送仓库</th>
                 <th>物流公司</th>
@@ -56,18 +57,20 @@
             <template v-for="list in orderListDate.list" v-cloak>
                 <tr>
                     <td>
-                        <input type="radio" :value="list.orderId" v-model="checkedDate" >
+                        <input type="checkbox" :value="list.orderId" v-model="checkedNames" >
                     </td>
                     <td>{{list.orderId}}</td>
                     <td>{{list.orderState}}</td>
                     <td>{{list.orderSource}}</td>
                     <td>{{list.paymentWay}}</td>
+                    <td>{{list.basicState}}</td>
                     <td>{{list.sumPrice}}</td>
                     <td>{{list.deliveryWarehouse}}</td>
                     <td>{{list.deliveryCompany}}</td>
                     <td>{{list.deliveryCode}}</td>
                     <td>{{list.tbReceiver.receiverName}}</td>
                     <td>{{list.tbReceiver.receiverDistrict+"省"+list.tbReceiver.receiverCity+"市"+list.tbReceiver.receiverAddress}}</td>
+
                 </tr>
             </template>
             </tbody>
