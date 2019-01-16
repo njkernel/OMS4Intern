@@ -70,6 +70,7 @@
                     <td>{{list.deliveryCode}}</td>
                     <td>{{list.tbReceiver.receiverName}}</td>
                     <td>{{list.tbReceiver.receiverDistrict+"省"+list.tbReceiver.receiverCity+"市"+list.tbReceiver.receiverAddress}}</td>
+
                 </tr>
             </template>
             </tbody>
@@ -131,7 +132,7 @@
             $("body").css("overflow-y", "hidden");
         });
 
-        /*$('#orderpopup').orderpopup();*/
+        $('#orderpopup').orderpopup();
         $("body").css("overflow-y", "hidden");
         $("#search-btn").click(function (){
             var valSelect=$("#select option:selected").val();
