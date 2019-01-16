@@ -69,12 +69,37 @@ public interface TbRefundMapper extends MyMapper<TbRefund> {
     List<TbRefund> getListRefundByState(String refundState);
 
 
+
+
     /**
-    * @Description: 根据订单编码查看退款单
+     * @Description: 根据订单编码查看退款单（并分页）
+     * @Param: [map]
+     * @return: java.util.List<cn.com.connext.oms.entity.TbRefund>
+     * @Author: Lili Chen
+     * @Date: 2019/1/15
+     */
+    List<TbRefund> getListRefundByStateIndex(Map map);
+
+
+    /**
+    * @Description: 根据订单id查看退款单
     * @Param: [orderId]
     * @return: com.github.pagehelper.PageInfo<cn.com.connext.oms.entity.TbRefund>
     * @Author: Lili Chen
     * @Date: 2019/1/13
     */
     List<TbRefund> getListRefundByOrderId(Integer orderId);
+
+
+
+    /**
+    * @Description: 根据订单id查看订单
+    * @Param: [map]
+    * @return: java.util.List<cn.com.connext.oms.entity.TbRefund>
+    * @Author: Lili Chen
+    * @Date: 2019/1/15
+    */
+    List<TbRefund> getListRefundByOrderIdIndex(Map map);
+
+
 }

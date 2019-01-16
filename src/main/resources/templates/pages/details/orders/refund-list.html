@@ -8,8 +8,9 @@
     <title>表格</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/assets/javascript/popup/popup.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../../../assets/styles/search.css">
+    <link rel="stylesheet" href="/assets/styles/search.css">
     <style>
         .table-box {
             border: 1px solid #ddd;
@@ -37,9 +38,10 @@
 </head>
 
 <body style="overflow-x:hidden;background:#f3f3f3;">
+<div id="refundDiv">
 <div class="btn-div">
     <button type="button" class="btn btn-primary" onclick="refund()">退款</button>
-    <button type="button" class="btn btn-primary">查看订单</button>
+    <button type="button" class="btn btn-primary btn-xs" onclick="detailRefund()" >查看退款单详情</button>
     <div class="search-box">
         <form id="frm" action="/getSearchRefund">
             <input hidden name='page' value="1">
@@ -104,139 +106,60 @@
     </div><!-- /.modal -->
 </div>
 <div class="footer-pager">
-    <span>共<span id="pageCount" th:text="${map.get('pageCount')}"></span>页，当前第<span id="page" th:text="${map.get('page')}"></span>页</span>
+    <span>共<span id="pageCount" th:text="${map.get('pageCount')}"></span>页，当前第<span id="page" th:text="${map.get('page')}"></span>页，总共<span  th:text="${map.get('dataSize')}"></span>条数据</span>
+
     <ul class="pagination">
-        <li><a th:href="@{/getRefundIndex(page=1,size=4)}">首页</a></li>
-        <li><a th:href="@{/getRefundIndex(page=${map.get('page')-1},size=4)}">上一页</a></li>
-        <li><a th:href="@{/getRefundIndex(page=${map.get('page')+1},size=4)}">下一页</a></li>
-        <li><a th:href="@{/getRefundIndex(page=${map.get('pageCount')},size=4)}">末页</a></li>
+        <li><a th:href="@{/getRefundIndex(page=1,size=4)}">&laquo;</a></li>
+        <th:block th:each="pageSize,iterStat : ${map.get('pageSize')}">
+            <th:block th:if="${map.get('page')==iterStat.index+1}">
+                <li class="active"><a th:href="@{/getRefundIndex(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+            </th:block>
+            <th:block th:if="${map.get('page')!=iterStat.index+1}">
+                <li ><a th:href="@{/getRefundIndex(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+            </th:block>
+        </th:block>
+
+        <li><a th:href="@{/getRefundIndex(page=${map.get('pageCount')},size=4)}">&raquo;</a></li>
     </ul>
 </div>
-<div id="popup" class="popup" style="top: -555px;">
+<div id="popup" class="popup" style="top: -400px;">
     <div class="title">
         <p>退款单详情</p>
         <span></span>
         <span>x</span>
     </div>
     <div class="cont">
-        <iframe src="../../specific/refund.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
+        <iframe id="iframe" src="" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
 </div>
+
+
 <script>
     $(function () {
         $('#popup').popup();
         $("body").css("overflow-y", "hidden");
     });
 </script>
+
+</div>
 </body>
-<script>
-    /*function paging(page) {
-        $("#tbody").html("");
-        $.ajax({
-            ContentType:"application/json;charset=UTF-8",
-            type:"post",
-            url:"/getAllRefundIndex",
-            data:{"page":page,"size":4},
-            success:function (msg) {
-                var refundList=msg["refundList"];
-                var page=msg["page"];
-                var pageCount=msg["pageCount"];
-                $("#page").html(page);
-                $("#pageCount").html(pageCount);
-                for(var refund in refundList){
-                    var a=refundList[refund].returnId;
-                    if(a==null){
-                        var a="无";
-                    }
-                    document.getElementById("tbody").innerHTML+="<tr>" +
-                        "<td>"+refundList[refund].refundId+"</td>" +
-                        "<td><input type='checkbox' name='' id=''></td>" +
-                        "<td>"+refundList[refund].refundCode+"</td>" +
-                        "<td>"+refundList[refund].refundPrice+"</td>" +
-                        "<td>"+refundList[refund].refundState+"</td>" +
-                        "<td>"+a+"</td>" +
-                        "<td>"+refundList[refund].orderId+"</td>" +
-                        "<td>"+refundList[refund].createtd+"</td>" +
-                        "<td>"+refundList[refund].updated+"</td>" +
-                        "<td>"+refundList[refund].modifiedUser+"</td>" +
-                        "</tr>";
-                }
-
-            }
-        })
-
-    }*/
-    function mySearch() {
-        var select=$("#select").val();
-        var mySelect=$("#mySelect").val();
-        alert(select)
-        if(select=="--请选择--"||select==""||mySelect==null||mySelect==""){
-            alert("选择条件不可为空")
-        }else{
-             $("#frm").submit();
-        }
-
-    }
-    function refund() {
-        var confirm_ = confirm('确认？');
+<script type="text/javascript" src="/page/js/refund.js"></script>
+<script type="text/javascript">
+    function detailRefund() {
         var arr=[];//定义一个数组
-        var a=$('input[name="checkid"]:checked');
-        $('input[name="checkid"]:checked').each(function(){
+        var b=$("input[type='checkbox']:checked").length
+        var a=$('input[name="checkid"]:checked').val();
+        /*$(a).each(function(){
             arr.push($(this).val());
-        });
-        alert(arr);
-        if(arr.length>0){
-            if(confirm_){
-                $.ajax({
-                    ContentType:"application/json;charset=UTF-8",
-                    type:"post",
-                    url:"/refund",
-                    data:{"refundIdList":arr.join(",")},
-                    success:function (msg) {
-                        alert(msg);
-                        if(msg=="success"){
-                            alert("退款成功")
-                            location.reload() ;
-                        }else {
-                            alert("退款失败");
-                        }
-                    }
-                })
-            }
-        }else {
-            alert("你还没进行选择");
+        });*/
+
+        if(b==1){
+           $("#iframe").attr("src","/refundDetail?refundId="+a);
+        }else{
+
         }
+
     }
 
-    function queryRefund() {
-        var confirm_ = confirm('确认？');
-        var select=$("#select").val();
-        var mySelect=$("#mySelect").val();
-        if(confirm_){
-            if(select==null||select==""){
-                alert("搜索的必要条件不可为空");
-            }else if(mySelect==null||mySelect==""){
-                alert("搜索的必要条件不可为空");
-            }else{
-                $.ajax({
-                    ContentType:"application/json;charset=UTF-8",
-                    type:"post",
-                    url:"",
-                    data:{"selectFirst":select,"selectSecond":mySelect},
-                    success:function (msg) {
-                        alert(msg);
-                        if(msg=="success"){
-                            alert("退款成功")
-                            window.location.href="/getRefund";
-                        }else {
-                            alert("退款失败");
-                        }
-                    }
-                })
-            }
-
-
-            }
-    }
 </script>
 
 </html>
