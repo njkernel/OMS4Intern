@@ -31,15 +31,9 @@
   <!--更改退货单状态为“已取消”-->
   <update id="returnOrderCancel">
     UPDATE tb_return
-    SET return_state = '已取消',modified_user = #{modifiedUser},updated = #{updated}
+    SET return_state = '退货取消',modified_user = #{modifiedUser},updated = #{updated}
     WHERE return_id = #{returnId}
   </update>
-
-  <!--查找所有待审核的退货单-->
-  <select id="selectAllUnauditOrder" resultType="TbReturn">
-
-  </select>
-
 
   <!--根据订单id查找订单生成时间-->
   <select id="selectCreatedById">
@@ -82,10 +76,47 @@
     (input_code,order_id,input_state,created,updated,synchronize_state)VALUES (#{inputCode},#{orderId},#{inputState},#{created},#{updated},#{synchronizeState})
   </insert>
 
+  <!--根据退货单id查找退货单详情-->
   <select id="getTbReturnById" resultType="TbReturn">
     SELECT *
     FROM tb_return
     WHERE return_id = #{returnId}
+  </select>
+
+  <!--查找所有的入库单-->
+  <select id="getAllInputOrders" resultType="cn.com.connext.oms.commons.dto.InputDTO">
+   SELECT
+      a.input_code,
+      a.order_id,
+      a.input_state,
+      a.created,
+      a.updated,
+      a.synchronize_state,
+      b.return_code,
+      b.modified_user
+
+  FROM
+      tb_input a,
+      tb_return b
+
+  WHERE
+      a.order_id = b.order_id
+  </select>
+<!--根据订单id查找退货单信息-->
+  <select id="getInputByOrderId" resultType="TbInput">
+    SELECT *
+    FROM tb_input
+    WHERE order_id = #{orderId}
+  </select>
+
+
+
+<!--根据订单id查找退货单商品信息-->
+  <select id="getTbReturnGoodsById" resultType="TbReturnGoods">
+    SELECT *
+    FROM tb_return_goods
+    WHERE order_id = #{orderId}
+
   </select>
 
 </mapper>

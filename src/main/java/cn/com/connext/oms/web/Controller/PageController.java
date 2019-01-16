@@ -9,11 +9,21 @@ import cn.com.connext.oms.service.TbGoodsOrderService;
 import cn.com.connext.oms.service.TbOrderService;
 import cn.com.connext.oms.service.TbRefundService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+
+import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;
+import cn.com.connext.oms.entity.TbOrderDetails;
+import cn.com.connext.oms.service.*;
+import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
+
+import io.swagger.annotations.ApiOperation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -41,6 +51,16 @@ public class PageController {
     @Autowired
     private TbGoodsOrderService tbGoodsOrderService;
 
+    @Autowired
+    private  TbExchangeService tbExchangeService;
+
+    @Autowired
+    private OutputService outputService;
+
+
+
+    @Autowired
+    private TbReturnService tbReturnService;
     /**
     * @Author: caps
     * @Description:异常订单列表详情页面
@@ -153,15 +173,6 @@ public class PageController {
         return "pages/details/orders/refund-list";
     }
 
-    @RequestMapping("/refundDetail")
-    public String refundDetail(Integer refundId,Model model){
-        TbRefund refund=tbRefundService.getRefundById(refundId);
-        List<TbGoodsOrder> tbGoodsOrderList=tbGoodsOrderService.getListGoodsOrderById(refund.getOrderId());
-        model.addAttribute("GoodsOrderList",tbGoodsOrderList);
-        model.addAttribute("refund",refund);
-        return "pages/specific/refund";
-    }
-
     /**
      * create by: yonyong
      * description: 进入退换货界面
@@ -175,6 +186,64 @@ public class PageController {
         return "pages/details/orders/sales-return-list";
     }
 
+    /**
+     * create by: yonyong
+     * description: 退换货详情页
+     * create time: 2019/1/14 23:02
+     *
+     *  * @Param:
+     * @return java.lang.String
+     */
+    @RequestMapping("/index/returnDetails")
+    public String returnDetails(@RequestParam("orderId")int orderId, Model model) {
+        double sum = 0;
+        int num = 0;
+        try {
+            ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
+            model.addAttribute("test",returnDetails);
+
+            List<ReturnGoods> returnGoods=tbExchangeService.selectReturnDetails(returnDetails);
+            model.addAttribute("returnGoods",returnGoods);
+
+            for (ReturnGoods t:returnGoods){
+                sum += t.getReturnPrice();
+                num += t.getReturnNum();
+            }
+            model.addAttribute("sum",sum);
+            model.addAttribute("num",num);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "pages/specific/return-goods.html";
+    }
+    /**
+     *
+     * 功能描述:  跳转到出库单详情页面
+     *
+     * @param:
+     * @return:
+     * @auther: Jay
+     * @date: ${DATE}
+     */
+    @RequestMapping("/outputList")
+    public String outputList(){
+       return "pages/details/orders/warehouse-out-list";
+    }
+    /**
+     * 功能描述: 根据订单id查询出所有出库单的详情
+     *
+     * @param: 订单id
+     * @return: 返回订单所有详情消息，包含订单基本信息以及出库单信息，商品信息
+     * @auther: Jay
+     * @date: 2019/1/8
+     */
+    @GetMapping("orderDetailsAll")
+    public ModelAndView outStockDetails(Integer orderId){
+        ModelAndView mv = new ModelAndView("pages/specific/outstock");
+        List<TbOrderDetails> outStockDetails = outputService.orderDetails(orderId);
+        mv.addObject("outStockDetails",outStockDetails);
+        return mv;
+    }
 
     @RequestMapping("/orderDetail")
     public String orderDetail(){

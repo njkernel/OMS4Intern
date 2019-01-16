@@ -5,6 +5,8 @@ import cn.com.connext.oms.commons.utils.HttpClientUtils.exception.HttpProcessExc
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOrderDetails;
 import cn.com.connext.oms.entity.TbOutput;
+import cn.com.connext.oms.entity.TbReceiver;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -44,6 +46,14 @@ public interface OutputService {
      * @date: 2019/1/8
      */
     List<TbOrderDetails> orderDetails(int orderId);
+    /**
+     * @Author: Jay
+     * @Param: 订单状态
+     * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
+     * @Create: 2019/1/13
+     */
+    PageInfo<TbOrderDetails> getAllOrderByStatus(String state,int currentPage,int pageSize);
+
     /**
      *
      * 功能描述: 根据订单id查询所有的订单详情

@@ -2,6 +2,7 @@ package cn.com.connext.oms.service;
 
 import cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto;
 import cn.com.connext.oms.entity.TbOrder;
+import cn.com.connext.oms.entity.TbOrderDetails;
 import com.github.pagehelper.PageInfo;import cn.com.connext.oms.entity.TbOutput;
 import java.util.List;
 
@@ -74,5 +75,6 @@ public interface TbOrderService {
      * @Create: 2019/1/7 19:19
      */
     public OrderGoodsReceiverDto getAllById(int orderId);
+
 
 }

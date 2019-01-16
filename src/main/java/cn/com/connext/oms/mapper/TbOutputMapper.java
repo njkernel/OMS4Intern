@@ -3,6 +3,7 @@ package cn.com.connext.oms.mapper;
 import cn.com.connext.oms.commons.dto.output.OutRepoOrderDetailDto;
 import cn.com.connext.oms.entity.TbOrderDetails;
 import cn.com.connext.oms.entity.TbOutput;
+import cn.com.connext.oms.entity.TbReceiver;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
 
@@ -74,4 +75,13 @@ public interface TbOutputMapper extends MyMapper<TbOutput> {
      * @auther: Jay
      * @date: ${DATE}
      */
-    List<OutRepoOrderDetailDto> getOutRepoOrderDetailDto(int id);}
+    List<OutRepoOrderDetailDto> getOutRepoOrderDetailDto(int id);
+
+    /**
+     * @Author: Jay
+     * @Param: 订单状态
+     * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
+     * @Create: 2019/1/13
+     */
+    List<TbOrderDetails> getAllOrderByStatus(String status);
+}
