@@ -4,13 +4,16 @@ import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.commons.dto.CodeTotalStockDTO;
 import cn.com.connext.oms.service.TbGoodsListService;
 import cn.com.connext.oms.service.TbUpdateStockService;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,22 +39,46 @@ public class TbUpdateStockController {
         */
     @PostMapping("updateTotalStock")
     @ApiOperation(value = "库存变更接口")
-    public BaseResult updateTotalStock(@RequestBody List<CodeTotalStockDTO> codeTotalStockDtos){
-        try {
+    public BaseResult updateTotalStock( @RequestBody List<CodeTotalStockDTO> codeTotalStockDtos){
+       try {
+           List<String> list = new ArrayList<>();
             for (int i=0;i<codeTotalStockDtos.size();i++){
                 Integer id =this.tbGoodsListService.findIdByCode(codeTotalStockDtos.get(i).getGoodsCode());
-                if (null == id)
-                { return BaseResult.fail(codeTotalStockDtos.get(i).getGoodsCode()+"不存在");
-                }else {
+                if (null ==codeTotalStockDtos.get(i).getGoodsCode()) {
+                   list.add(codeTotalStockDtos.get(i).getGoodsCode());
+                    continue;
+                    }else {
+                    System.out.println(id);
+                    System.out.println(codeTotalStockDtos.get(i).getTotalStock());
                     this.tbUpdateStockService.updateStock(id, codeTotalStockDtos.get(i).getTotalStock());
                 }
+
             }
-            return BaseResult.success("成功");
+            if(list!=null) {
+                return BaseResult.success("部分信息缺失", list);
+            }else {
+                return BaseResult.success("成功");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResult.fail("服务器内部错误");
         }
+
     }
+   /* @GetMapping("updateTotalStock")
+    @ApiOperation(value = "库存变更接口")
+    public BaseResult updateTotalStock( String goodsCode,int totalStock){
+        try {
+
+            int id =this.tbGoodsListService.findIdByCode(goodsCode);
+            this.tbUpdateStockService.updateStock(id,totalStock);
+            return BaseResult.success("成功");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResult.fail("服务器内部错误");
+        }
+    }*/
     /**
         * @Author: zhaojun
         * @Description: 更新可用库存与锁定库存

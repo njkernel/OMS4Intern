@@ -32,17 +32,17 @@
     <div>
         <table class="table table-condensed">
             <thead>
-                <tr>
-                    <th>选择</th>
-                    <th>订单号</th>
-                    <th>退货单号</th>
-                    <th>入库单号</th>
-                    <th>入库单状态</th>
-                    <th>同步状态</th>
-                    <th>创建时间</th>
-                    <th>修改时间</th>
-                    <th>修改人</th>
-                </tr>
+            <tr>
+                <th>选择</th>
+                <th>订单号</th>
+                <th>退货单号</th>
+                <th>入库单号</th>
+                <th>入库单状态</th>
+                <th>同步状态</th>
+                <th>创建时间</th>
+                <th>修改时间</th>
+                <th>修改人</th>
+            </tr>
             </thead>
             <tbody>
             <tbody>
@@ -89,7 +89,7 @@
     <div class="footer-pager">
         <!--解析显示分页信息-->
         <!--分页文字信息-->
-        <span>共<span>{{inputOrdersDate.pages}}</span>页，当前第<span>{{inputOrdersDate.pageNum}}，总{{inputOrdersDate.total}}条数据</span>页</span>
+        <span>共<span>{{inputOrdersDate.pages}}</span>页，当前第<span>{{inputOrdersDate.pageNum}}页，总{{inputOrdersDate.total}}条数据</span></span>
         <!--分页条信息-->
         <ul class="pagination">
             <!--如果无上一页，不可点-->
@@ -126,7 +126,7 @@
             </template>
         </ul>
     </div>
-    <div id="popup" class="popup" style="top: -380px;">
+    <div id="popup" class="popup" style="top: -320px;">
         <div class="title">
             <p>入库单详情</p>
             <span></span>

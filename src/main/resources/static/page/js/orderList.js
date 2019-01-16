@@ -7,10 +7,10 @@ let orderList = new Vue({
                 pageSize:5,
                 pageNum:1,
             },
-            orderId : "",
+            orderId:"",
             orderListDate:[],
             //选中行的记录id
-            checkedDate:0,
+            checkedNames:[],
             //搜索输入框
             searchInput:"",
             //异常单数据
@@ -65,9 +65,9 @@ let orderList = new Vue({
 
        /* checkOrder(){
              let url='/getAllOrder';
-             callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)
-            console.log(this.checkedDate);
-            document.getElementById('iframeId3').src="/getAllById?orderId="+this.checkedDate;
+             callAxiosGet(url,{abnormalId:this.checkedNames},this.detailSuc,this.Fail)
+            console.log(this.checkedNames);
+            document.getElementById('iframeId3').src="/getAllById?orderId="+this.checkedNames;
         },*/
 
 
@@ -82,21 +82,34 @@ let orderList = new Vue({
             this.searchDate.abnormalType='';
             this.searchDate.modifiedUser='';
         },
+
+        // 路由操作接口 Jay新增 2019/1/16
+        updateRoute(){
+            let url='/UpdateOrderIntoWaitOutPut';
+            callAxiosGet(url,{id:this.checkedNames},this.Suc,this.Fail)
+        },
         //异常处理
         abnormalHandle(){
             let url='/abnormalHandle';
-            callAxiosGet(url,{abnormalId:this.checkedDate},this.Suc,this.Fail)
+            callAxiosGet(url,{abnormalId:this.checkedNames[0]},this.Suc,this.Fail)
         },
+        // 出库操作，将订单出库 Jay新增 2019/1/16
+        outputOrder(){
+            let url='/Output';
+            callAxiosGet(url,{id:this.checkedNames},this.Suc,this.Fail)
+        },
+
         //把当前行id存在缓存中
             toPageStorage(){
-                 localStorage.setItem("goodsId", this.checkedDate);
+                 localStorage.setItem("goodsId", this.checkedNames);
                  /!*console.log(sessionStorage.getItem("id"))*!/
              },
 
-        //异常订单详情
+        //订单详情
         orderDetails(){
-            console.log(this.checkedDate);
-            document.getElementById('iframeId3').src="/orderDetail?orderId="+this.checkedDate;
+            this.orderId=this.checkedNames[0];
+            console.log(this.orderId);
+            document.getElementById('iframeId3').src="/orderDetail?orderId="+this.orderId;
         },
 
 
@@ -166,7 +179,7 @@ let orderList = new Vue({
                 that.orderListDate=res.data;
                 console.log(that.orderListDate);
                 //默认选中第一条数据
-                that.checkedDate=res.data.list[0].abnormalId;
+                that.checkedNames[0]=res.data.list[0].abnormalId;
 
             }else{
                 alert(res.message);
@@ -181,7 +194,7 @@ let orderList = new Vue({
         },
         //接口未连通
         Fail(err){
-            console.log("网络连接错误")
+
         },
 
         //yonyong添加
@@ -190,15 +203,15 @@ let orderList = new Vue({
             var toRequestForGoods = this;
             toRequestForGoods.status = 'notexist';
             var url = "getGoodsList";
-            if (toRequestForGoods.checkedDate === 0) {
+            if (toRequestForGoods.checkedNames === 0) {
                 alert("请选择一条订单！");
                 return false;
             }
-            // else if (toRequestForGoods.checkedDate > 1) {
+            // else if (toRequestForGoods.checkedNames > 1) {
             //     alert("只能对一条订单进行操作！")
             // }
-            axios.get(url,{params: {orderId : toRequestForGoods.checkedDate}}).then(function(response) {
-                toRequestForGoods.orderId=toRequestForGoods.checkedDate;
+            axios.get(url,{params: {orderId : toRequestForGoods.checkedNames}}).then(function(response) {
+                toRequestForGoods.orderId=toRequestForGoods.checkedNames;
                 toRequestForGoods.orderGoodsInfo=response.data.data;
                 toRequestForGoods.status = 'exist';
                 for (var temp in toRequestForGoods.orderGoodsInfo) {
@@ -217,7 +230,8 @@ let orderList = new Vue({
         toReturn (){},
         toExchange (){},
         orderCheck(){
-            let url='/orderCheck?orderId='+this.checkedDate;
+            this.orderId=this.checkedNames[0];
+            let url='/orderCheck?orderId='+this.orderId;
             callAxiosGetNoParam(url,this.orderCheckSuc,this.orderCheckFail);
         },
         orderCheckSuc(res){

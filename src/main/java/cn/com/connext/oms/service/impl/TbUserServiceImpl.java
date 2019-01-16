@@ -1,6 +1,7 @@
 package cn.com.connext.oms.service.impl;
 
 import cn.com.connext.oms.entity.TbAbnormal;
+import cn.com.connext.oms.entity.TbRefund;
 import cn.com.connext.oms.entity.TbUser;
 import cn.com.connext.oms.mapper.TbUserMapper;
 import cn.com.connext.oms.service.TbUserService;
@@ -10,8 +11,7 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @program: oms
@@ -26,12 +26,12 @@ public class TbUserServiceImpl implements TbUserService {
 
 
     /**
-    * @Description: 添加用户
-    * @Param: [user]
-    * @return: boolean
-    * @Author: Lili Chen
-    * @Date: 2019/1/13
-    */
+     * @Description: 添加用户
+     * @Param: [user]
+     * @return: boolean
+     * @Author: Lili Chen
+     * @Date: 2019/1/13
+     */
     @Override
     public boolean addUser(TbUser user) {
         Date date=new Date();
@@ -42,41 +42,41 @@ public class TbUserServiceImpl implements TbUserService {
         //
         if(tbUser==null){//如果该用户名不存在
             user.setCreated(date);//保存创建时间
-           result= tbUserMapper.addUser(user);
-           if(result==1){//添加成功
-               return true;
-           }
+            result= tbUserMapper.addUser(user);
+            if(result==1){//添加成功
+                return true;
+            }
         }
         return false;
     }
 
     /**
-    * @Description: 删除用户
-    * @Param: [userId]
-    * @return: boolean
-    * @Author: Lili Chen
-    * @Date: 2019/1/13
-    */
+     * @Description: 删除用户
+     * @Param: [userId]
+     * @return: boolean
+     * @Author: Lili Chen
+     * @Date: 2019/1/13
+     */
     @Override
     public boolean deleteUser(Integer userId) {
         int result=0;//保存删除的记录数
         TbUser user=tbUserMapper.getUserById(userId);
         if(user!=null){
-         result=tbUserMapper.deleteUser(userId);
-         if(result==1){
-             return true;
-         }
+            result=tbUserMapper.deleteUser(userId);
+            if(result==1){
+                return true;
+            }
         }
         return false;
     }
 
     /**
-    * @Description: 更改用户信息
-    * @Param: [user]
-    * @return: boolean
-    * @Author: Lili Chen
-    * @Date: 2019/1/13
-    */
+     * @Description: 更改用户信息
+     * @Param: [user]
+     * @return: boolean
+     * @Author: Lili Chen
+     * @Date: 2019/1/13
+     */
     @Override
     public boolean updateUser(TbUser user) {
         Date date=new Date();
@@ -94,18 +94,55 @@ public class TbUserServiceImpl implements TbUserService {
 
 
     /**
-    * @Description: 查看所有用户
-    * @Param: [currentPage, pageSize]
-    * @return: com.github.pagehelper.PageInfo<cn.com.connext.oms.entity.TbUser>
-    * @Author: Lili Chen
-    * @Date: 2019/1/13
-    */
+     * @Description: 查看所有用户
+     * @Param: [currentPage, pageSize]
+     * @return: com.github.pagehelper.PageInfo<cn.com.connext.oms.entity.TbUser>
+     * @Author: Lili Chen
+     * @Date: 2019/1/13
+     */
     @Override
-    public PageInfo<TbUser> getListUser(Integer currentPage, Integer pageSize) {
-        PageHelper.startPage(currentPage,pageSize);
-        List<TbUser> userList = tbUserMapper.getAllUserList();
-
-        PageInfo<TbUser> pageInfo=new PageInfo<>(userList);
-        return pageInfo;
+    public Map getListUser(Integer page, Integer size) {
+        Map map=new HashMap<>();//存查看用户分页的参数
+        Map map2=new HashMap<>();//存返回值
+        Integer beginIndex=0;//查看数据库用户列表列表开始的索引
+        List<TbUser> userList=new ArrayList<>();//存分页中返回的退款单
+        Integer prePage=0;//保存是否有前一页
+        Integer nextPage=0;//保存是否有后一页
+        Integer pageCount=1;
+        List<TbUser> users=tbUserMapper.getAllUserList();
+        if(!users.isEmpty()){
+            Integer count=users.size();//总共的用户信息记录条数
+            pageCount=count/size;//总共的页数
+            if(count%size!=0){
+                pageCount++;
+            }
+            if(page<1){
+                page=1;
+            }
+            if(page>pageCount){
+                page=pageCount;
+            }
+            beginIndex=(page-1)*size;
+            if(page>1){
+                prePage=1;//表示有前一页
+            }
+            if(page<pageCount){
+                nextPage=1;//表示有下一页
+            }
+            map.put("beginIndex",beginIndex);
+            map.put("size",size);
+            userList=tbUserMapper.getAllUserListIndex(map);//获得当页查看到的退款单
+            map2.put("page",page);
+        }else{
+            map2.put("page",1);
+        }
+        Integer pageSize[]=new Integer[pageCount];
+        map2.put("userList",userList);
+        map2.put("pageCount",pageCount);
+        map2.put("prePage",prePage);
+        map2.put("nextPage",nextPage);
+        map2.put("pageSize",pageSize);
+        map2.put("dataSize",users.size());
+        return map2;
     }
 }

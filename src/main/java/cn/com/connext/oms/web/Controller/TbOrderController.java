@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -61,14 +63,39 @@ public class TbOrderController {
          return "201";
     }
 
-    @PostMapping("/cancelOrder")
+    @PostMapping("/index/cancelOrder")
     @ApiOperation(value = "主动取消订单接口")
-    public String cancelOrder(Integer[] orderIdList){
-        boolean b=tbOrderService.cancelOrder(orderIdList);
+    public String cancelOrder(Integer[] orderIdList, HttpServletRequest request){
+        HttpSession session=request.getSession();
+        String userName="";//保存用户名
+        if(session.getAttribute("OMSUSER")!=null){
+             userName=session.getAttribute("OMSUSER").toString();
+        }
+        boolean b=tbOrderService.cancelOrder(orderIdList,"cll");
         if(b){
             return "success";
         }else{
             return "fail";
+        }
+    }
+
+    /**
+     * @Author: zhaojun
+     * @Description: 根据订单号查询订单的详细信息（收货信息和order信息）
+     * @Param: []
+     * @Return:
+     * @Create: 2019/1/7 19:27
+     */
+    @GetMapping("getAllById")
+    @ApiOperation(value = "订单详情接口")
+    public BaseResult getAllById(int orderId){
+        try {
+            TbOrder tbOrder = tbOrderService.getAllById(orderId);
+            /* this.tbOrderService.getAllById(orderId);*/
+            return BaseResult.success("成功",tbOrder);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResult.fail("服务器内部错误");
         }
     }
 
