@@ -15,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
@@ -159,9 +160,20 @@ public class OutputServiceImpl implements OutputService {
      * @date: 2019/1/13
      */
     @Override
-    public PageInfo<TbOrderDetails> getAllOrderByStatus(String status,int currentPage,int pageSize) {
+    public PageInfo<TbOrderDetails> getAllOrderByStatus(String status,int currentPage,int pageSize, TbOrderDetails tbOrderDetails) {
+        Integer orderId = tbOrderDetails.getOrderId();
+        String outputCode = tbOrderDetails.getOutputCode();
+        String deliveryCode = tbOrderDetails.getDeliveryCode();
+
         // 从第一页开始，每一页显示5条数据
         PageHelper.startPage(currentPage,pageSize);
+//        Example example=new Example(TbOrderDetails.class);
+//        example.createCriteria()
+//                .andLike("orderId",orderId!=null?"%"+orderId+"%":null)
+//                .andLike("outputCode",outputCode!=null?"%"+outputCode+"%":null)
+//                .andLike("deliveryCode",deliveryCode!=null?"%"+deliveryCode+"%":null);
+//        List<TbOrderDetails> tbOrderAll= tbOutputMapper.selectByExample(example);
+
         List<TbOrderDetails> allOrder = tbOutputMapper.getAllOrderByStatus(status);
         PageInfo<TbOrderDetails> pageInfo =new PageInfo<>(allOrder);
         return pageInfo;

@@ -52,7 +52,7 @@ public interface OutputService {
      * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
      * @Create: 2019/1/13
      */
-    PageInfo<TbOrderDetails> getAllOrderByStatus(String state,int currentPage,int pageSize);
+    PageInfo<TbOrderDetails> getAllOrderByStatus(String state,int currentPage,int pageSize, TbOrderDetails tbOrderDetails);
 
     /**
      *
