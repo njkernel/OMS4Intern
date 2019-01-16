@@ -31,6 +31,9 @@ let orderList = new Vue({
                 modifiedUser:''
             },
 
+            //yonyong添加
+            //订单商品详情，用于退换货选择数量信息
+            orderGoods : []
         }
     },
     created: function () {
@@ -171,6 +174,25 @@ let orderList = new Vue({
         Fail(err){
             console.log("网络连接错误")
         },
+        //yonyong添加
+        //请求订单相关的商品详情
+        toRequestForGoods (){
+            alert("1")
+            var toRequestForGoods = this;
+            var url = "exchange/toRequest";
+            if (toRequestForGoods.checkedDate.length === 0) {
+                alert("请选择一条订单！");
+                return false;
+            } else if (toRequestForGoods.checkedDate.length > 1) {
+                alert("只能对一条订单进行操作！")
+            }
+            axios.get(url,{params: {orderId : toRequestForGoods.checkedDate}}).then(function(response) {
+                console.log(response.data.data);
+                toRequestForGoods.orderGoods=response.data.data;
+            }).catch(function (err) {
+                console.log(err)
+            });
+        }
     }
 });
 
