@@ -136,20 +136,20 @@ public class TbReturnController {
         List<Integer> returnList = new ArrayList<>();
         List<Integer> exchangeList = new ArrayList<>();
 
-        for (int i = 0; i < returnIdsList.size(); i++) {
-            TbReturn tbReturn = tbReturnService.getTbReturnById(returnIdsList.get(i));
-            if (null != tbReturn) {
-                if (StringUtils.equals(RETURN_TYPE, tbReturn.getReturnType())) {
-                    returnList.add(returnIdsList.get(i));
+            for (int i = 0; i < returnIdsList.size(); i++) {
+                TbReturn tbReturn = tbReturnService.getTbReturnById(returnIdsList.get(i));
+                if (null != tbReturn) {
+                    if (StringUtils.equals(RETURN_TYPE, tbReturn.getReturnType())) {
+                        returnList.add(returnIdsList.get(i));
 
-                }
+                    }
 
-                if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
-                    exchangeList.add(returnIdsList.get(i));
+                    if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
+                        exchangeList.add(returnIdsList.get(i));
 
+                    }
                 }
             }
-        }
 
             //换货部分的取消 Update BY yonyong
            if (exchangeList.size()!=0) {
