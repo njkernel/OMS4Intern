@@ -62,7 +62,7 @@ public class TbGoodsListServiceImpl implements TbGoodsListService {
      * @Create: 2019/1/7 17:54
      */
     @Override
-    public int findIdByCode(String goodsCode) {
+    public Integer findIdByCode(String goodsCode) {
         return this.tbGoodsMapper.findIdByCode(goodsCode);
     }
 

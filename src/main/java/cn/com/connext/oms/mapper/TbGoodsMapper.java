@@ -32,7 +32,7 @@ public interface TbGoodsMapper extends MyMapper<TbGoods> {
      * @Return: cn.com.connext.oms.commons.dto.BaseResult
      * @Create: 2018/1/19 13:03
      */
-    public int findIdByCode(String goodsCode);
+    public Integer findIdByCode(String goodsCode);
     /**
      * @Author: zhaojun
      * @Description: 根据商品id修改商品的信息

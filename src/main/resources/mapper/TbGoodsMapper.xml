@@ -32,8 +32,8 @@
         WHERE
             a.goods_id = b.goods_id
     </select>
-    <!--根据GoodId查询GoodCode-->
-    <select id="findIdByCode" parameterType="String" resultType="integer">
+    <!--根据查询GoodId-->
+    <select id="findIdByCode" parameterType="String" resultType="Integer" >
         SELECT goods_id FROM tb_goods WHERE goods_code=#{goodsCode}
     </select>
     <!--更改商品信息-->

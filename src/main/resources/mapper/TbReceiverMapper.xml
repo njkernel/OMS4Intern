@@ -29,6 +29,6 @@
     </update>
 
   <select id="getReceiverById" parameterType="Integer" resultMap="BaseResultMap">
-        select * from tb_receiver where receiver_id=#{receiverId}
+        select * from tb_receiver where order_id=#{orderId}
     </select>
 </mapper>

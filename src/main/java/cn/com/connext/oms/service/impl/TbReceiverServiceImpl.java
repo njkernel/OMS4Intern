@@ -47,6 +47,11 @@ public class TbReceiverServiceImpl implements TbReceiverService {
         return false;
     }
 
+   /* @Override
+    public TbReceiver getReceiverByOrderId(Integer orderId) {
+        return this.getReceiverById(orderId);
+    }*/
+
 
     /**
     * @Description: 根据id查看收货人信息
