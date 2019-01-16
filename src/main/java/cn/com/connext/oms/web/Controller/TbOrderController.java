@@ -72,4 +72,24 @@ public class TbOrderController {
         }
     }
 
+    /**
+     * @Author: zhaojun
+     * @Description: 根据订单号查询订单的详细信息（收货信息和order信息）
+     * @Param: []
+     * @Return:
+     * @Create: 2019/1/7 19:27
+     */
+    @GetMapping("getAllById")
+    @ApiOperation(value = "订单详情接口")
+    public BaseResult getAllById(int orderId){
+        try {
+            TbOrder tbOrder = tbOrderService.getAllById(orderId);
+            /* this.tbOrderService.getAllById(orderId);*/
+            return BaseResult.success("成功",tbOrder);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResult.fail("服务器内部错误");
+        }
+    }
+
 }

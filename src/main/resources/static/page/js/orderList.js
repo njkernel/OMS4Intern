@@ -70,11 +70,7 @@ let orderList = new Vue({
             this.searchDate.abnormalType='';
             this.searchDate.modifiedUser='';
         },
-        //异常处理
-        abnormalHandle(){
-            let url='/abnormalHandle';
-            callAxiosGet(url,{abnormalId:this.checkedDate},this.Suc,this.Fail)
-        },
+
         //把当前行id存在缓存中
             toPageStorage(){
                  localStorage.setItem("goodsId", this.checkedDate);
@@ -84,7 +80,11 @@ let orderList = new Vue({
         //异常订单详情
         orderDetails(){
             console.log(this.checkedDate);
-            document.getElementById('iframeId3').src="/orderDetail?orderId="+this.checkedDate;
+            if (this.checkedDate!=null) {
+            document.getElementById('iframeId3').src="/orderDetail?orderId="+this.checkedDate;}
+            else {
+                console.log("请先选择订单")
+            }
         },
 
 
