@@ -1,8 +1,27 @@
 package cn.com.connext.oms.web.Controller;
 
+import cn.com.connext.oms.entity.TbGoods;
+import cn.com.connext.oms.entity.TbGoodsOrder;
+import cn.com.connext.oms.entity.TbOrder;
+import cn.com.connext.oms.entity.TbRefund;
+import cn.com.connext.oms.service.TbGoodsListService;
+import cn.com.connext.oms.service.TbGoodsOrderService;
+import cn.com.connext.oms.service.TbOrderService;
+import cn.com.connext.oms.service.TbRefundService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;
+import cn.com.connext.oms.entity.TbGoods;
+import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbOrderDetails;
+import cn.com.connext.oms.entity.TbReturnGoods;
+import cn.com.connext.oms.service.*;
+import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
+
+import cn.com.connext.oms.commons.dto.GoodsGoodsOrderDto;
+import cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto;
+import cn.com.connext.oms.entity.TbGoods;
+import cn.com.connext.oms.entity.TbReceiver;
 import cn.com.connext.oms.service.*;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 
@@ -18,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,31 +56,26 @@ public class PageController {
     @Autowired
     private TbRefundService tbRefundService;
 
-
+    @Autowired
+    private TbOrderService tbOrderService;
 
     @Autowired
-    private TbReturnService tbReturnService;
-    /**
-    * @Author: caps
-    * @Description:异常订单列表详情页面
-    * @Param: []
-    * @Return: java.lang.String
-    * @Create: 2019/1/12 16:01
-    */
-    @RequestMapping("/abnormalModel")
-    public String abnormalDetail(){
-        return "pages/specific/abnormal-order";
-    }
-
-    @Autowired
-    private TbAbnormalService tbAbnormalService;
+    private TbGoodsOrderService tbGoodsOrderService;
 
     @Autowired
     private TbExchangeService tbExchangeService;
 
     @Autowired
+    private  TbGoodsListService tbGoodsListService;
+
+    @Autowired
     private OutputService outputService;
 
+    @Autowired
+    private TbReturnService tbReturnService;
+
+    @Autowired
+    private TbAbnormalService tbAbnormalService;
 
 
     /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
@@ -75,6 +90,8 @@ public class PageController {
             return null;
         }
     }
+
+    /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
     @RequestMapping("/abnormal")
     public String abnormal() {
         return "pages/details/orders/error-order-list";
@@ -101,14 +118,13 @@ public class PageController {
      * @Date: 2019/1/10
      */
     @RequestMapping("/getRefund")
-    public String refundPage(Model model, HttpServletRequest request) {
-        Map<String, Object> map = tbRefundService.getAllRefundIndex(1, 4);
-        model.addAttribute("map", map);
-        HttpSession session = request.getSession();
-        session.setAttribute("basic", "我的");
+    public String refundPage(Model model, HttpServletRequest request){
+        Map<String,Object> map=tbRefundService.getAllRefundIndex(1,4);
+        model.addAttribute("map",map);
+        HttpSession session=request.getSession();
+        session.setAttribute("basic","我的");
         return "pages/details/orders/refund-list";
     }
-
     /**
      * @Description: 登录页面
      * @Param: []
@@ -116,70 +132,63 @@ public class PageController {
      * @Author: Lili Chen
      * @Date: 2019/1/10
      */
-    @GetMapping({"/", "/login"})
-    public String login() {
+    @GetMapping({"/","/login"})
+    public String login(){
         return "pages/login/loadingOrder";
     }
 
 
     /**
-     * @Description: 退款单的分页
-     * @Param: [page, model, size, request]
-     * @return: java.lang.String
-     * @Author: Lili Chen
-     * @Date: 2019/1/14
-     */
+    * @Description: 退款单的分页
+    * @Param: [page, model, size, request]
+    * @return: java.lang.String
+    * @Author: Lili Chen
+    * @Date: 2019/1/14
+    */
     @RequestMapping("/getRefundIndex")
-    public String getAllRefundIndex(Integer page, Model model, Integer size, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String basic = session.getAttribute("basic").toString();
-        String mySelect = "";
-        if (session.getAttribute("basic2") != null) {
-            mySelect = session.getAttribute("basic2").toString();
+    public String getAllRefundIndex(Integer page,Model model,Integer size,HttpServletRequest request){
+        HttpSession session=request.getSession();
+        String basic=session.getAttribute("basic").toString();
+        String mySelect="";
+        if(session.getAttribute("basic2")!=null){
+          mySelect=session.getAttribute("basic2").toString();
         }
 
-        Map<String, Object> map = new HashMap<>();
-        if (basic.equals("orderCode")) {
-            map = tbRefundService.getListRefundByOrderCode(mySelect, page, 4);
-        } else if (basic.equals("refundState")) {
-            map = tbRefundService.getListRefundByState(mySelect, page, 4);
+        Map<String,Object> map=new HashMap<>();
+        if(basic.equals("orderCode")){
+            map=tbRefundService.getListRefundByOrderCode(mySelect,page,4);
+        }else if(basic.equals("refundState")){
+           map=tbRefundService.getListRefundByState(mySelect,page,4);
 
-        } else {
-            map = tbRefundService.getAllRefundIndex(page, size);
+        }else{
+            map=tbRefundService.getAllRefundIndex(page,size);
         }
-        if (map == null) {
-            map = new HashMap<>();
-            map.put("refundList", null);
-            map.put("page", 1);
-            map.put("pageCount", 1);
-
-        }
-
-        model.addAttribute("map", map);
+        model.addAttribute("map",map);
         return "pages/details/orders/refund-list";
     }
 
 
     /**
-     * @Description: 根据条件查看退款单
-     * @Param: [model, select, mySelect, page, request]
-     * @return: java.lang.String
-     * @Author: Lili Chen
-     * @Date: 2019/1/14
-     */
+    * @Description: 根据条件查看退款单
+    * @Param: [model, select, mySelect, page, request]
+    * @return: java.lang.String
+    * @Author: Lili Chen
+    * @Date: 2019/1/14
+    */
     @RequestMapping("/getSearchRefund")
-    public String getSearchRefund(Model model, String select, String mySelect, Integer page, HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        HttpSession session = request.getSession();
-        session.setAttribute("basic2", mySelect);
-        if (select.equals("orderCode")) {
-            map = tbRefundService.getListRefundByOrderCode(mySelect, page, 4);
-            session.setAttribute("basic", "orderCode");
-        } else if (select.equals("refundState")) {
-            session.setAttribute("basic", "refundState");
-            map = tbRefundService.getListRefundByState(mySelect, page, 4);
+    public String getSearchRefund(Model model,String select,String mySelect,Integer page,HttpServletRequest request){
+        Map<String,Object> map=new HashMap<>();
+        HttpSession session=request.getSession();
+        session.setAttribute("basic2",mySelect);
+        if(select.equals("orderCode")){
+          map=tbRefundService.getListRefundByOrderCode(mySelect,page,4);
+          session.setAttribute("basic","orderCode");
+        }else if(select.equals("refundState")){
+            session.setAttribute("basic","refundState");
+            map=tbRefundService.getListRefundByState(mySelect,page,4);
         }
-        model.addAttribute("map", map);
+
+        model.addAttribute("map",map);
         return "pages/details/orders/refund-list";
     }
 
@@ -187,13 +196,12 @@ public class PageController {
      * create by: yonyong
      * description: 进入退换货界面
      * create time: 2019/1/14 17:14
-     * <p>
-     * * @Param:
      *
+     *  * @Param:
      * @return java.lang.String
      */
     @RequestMapping("/index/return")
-    public String returnPage() {
+    public String returnPage(){
         return "pages/details/orders/sales-return-list";
     }
 
@@ -206,7 +214,7 @@ public class PageController {
      * @return java.lang.String
      */
     @RequestMapping("/index/returnDetails")
-    public String returnDetails(@RequestParam("orderId")int orderId,Model model) {
+    public String returnDetails(@RequestParam("orderId")int orderId, Model model) {
         double sum = 0;
         int num = 0;
         try {
@@ -227,6 +235,54 @@ public class PageController {
         }
         return "pages/specific/return-goods.html";
     }
+    /**
+     * 功能描述:跳转到商品列表
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/15 10:59
+     */
+    @RequestMapping("/goodsList")
+    public String returnGoodsList() {
+        return "pages/details/commodity/goods-list";
+    }
+
+    /**
+     * 功能描述:订单列表跳转
+     * @param: []
+     * @return: java.lang.String
+     * @auther: Jun.Zhao
+     * @date: 2019/1/15 13:38
+     */
+    @RequestMapping("/orderList")
+    public String returnOrederList() {
+        return "pages/details/orders/order-list";
+    }
+   /* *
+     * 功能描述:订单详情跳转
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/15 16:21
+     * */
+    @RequestMapping("/orderDetail")
+    public String returnOrderDetail(Integer orderId, Model model){
+        OrderGoodsReceiverDto orderGoodsReceiverDto =tbOrderService.getAllById(orderId);
+        model.addAttribute("orderDetail",orderGoodsReceiverDto);
+        List<GoodsGoodsOrderDto> goodsGoodsOrderDtos=tbGoodsListService.goodsListFromOrder(orderId);
+        model.addAttribute("orderGoodsDetails",goodsGoodsOrderDtos);
+        int sum1 = 0;
+        double sum2 = 0;
+        for (int i =0;i<goodsGoodsOrderDtos.size();i++){
+            sum1+=goodsGoodsOrderDtos.get(i).getNum();
+            sum2+=goodsGoodsOrderDtos.get(i).getTotalPrice();
+        }
+        model.addAttribute("sumNum",sum1);
+        model.addAttribute("sumTotalPrice",sum2);
+        return "pages/specific/order-detail";
+    }
+
+
     /**
      *
      * 功能描述:  跳转到出库单详情页面
@@ -254,5 +310,45 @@ public class PageController {
         List<TbOrderDetails> outStockDetails = outputService.orderDetails(orderId);
         mv.addObject("outStockDetails",outStockDetails);
         return mv;
+    }
+
+
+    /**
+     * created By Aaron
+     * 入库单页面
+     * @return
+     */
+    @GetMapping({"/tbInput"})
+    public String toInput(){
+        return "pages/details/orders/warehouse-in-list";
+    }
+
+    /**
+     * created By Aaron
+     * 入库单详情页
+     */
+    @GetMapping({"/inputDetails"})
+    public String inputDetails(@RequestParam("orderId") int orderId,Model model){
+
+        try {
+            TbGoods tbGoods =new TbGoods();
+            List goods = new ArrayList();
+            ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
+            TbInput tbInput = tbReturnService.getInputByOrderId(orderId);
+            List<TbReturnGoods> tbReturnGoodsList = tbReturnService.getTbReturnGoodsById(orderId);
+            for (int i = 0;i<tbReturnGoodsList.size();i++){
+                 tbGoods = tbReturnService.getGoodsById(tbReturnGoodsList.get(i).getGoodsId());
+                 goods.add(tbGoods);
+            }
+
+            model.addAttribute("goods",goods);
+            model.addAttribute("returnDetails",returnDetails);
+            model.addAttribute("tbInput",tbInput);
+            model.addAttribute("tbReturnGoodsList",tbReturnGoodsList);
+            model.addAttribute("tbReturnService",tbReturnService);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "pages/specific/addstock";
     }
 }

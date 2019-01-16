@@ -119,4 +119,11 @@
 
   </select>
 
+  <!--根据商品id查询商品信息-->
+  <select id="getGoodsById" resultType="TbGoods">
+    SELECT *
+    FROM tb_goods
+    WHERE goods_id = #{goodsId}
+  </select>
+
 </mapper>

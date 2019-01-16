@@ -42,13 +42,14 @@
                             <th>数量</th>
                             <th>金额</th>
                         </tr>
-                        <tr>
-                            <td class="ttdd">12345</td>
-                            <td>矿泉水</td>
-                            <td>12344556</td>
-                            <td>2</td>
-                            <td>200</td>
-                            <td>400</td>
+
+                        <tr th:each="temp:${tbReturnGoodsList}">
+                            <td th:text="${temp.goodsId}"></td>
+                            <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsName()}"></td>
+                            <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsCode()}"></td>
+                            <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsPrice()}"></td>
+                            <td th:text="${temp.number}"></td>
+                            <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsPrice()*temp.number}"></td>
                         </tr>
 
                     </table>

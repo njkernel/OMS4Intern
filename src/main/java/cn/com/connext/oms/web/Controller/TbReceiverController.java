@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: OMS4Intern
@@ -30,5 +32,14 @@ public class TbReceiverController {
         }else{
             return "fail";
         }
+    }
+
+    @PostMapping("/cancelEdit")
+    @ApiOperation(value = "编辑收货人信息")
+    public Map cancelEdit(Integer receiverId){
+        TbReceiver receiver=tbReceiverService.getReceiverById(receiverId);
+        Map map=new HashMap();
+        map.put("receiver",receiver);
+        return map;
     }
 }

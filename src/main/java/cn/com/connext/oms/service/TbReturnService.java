@@ -2,6 +2,7 @@ package cn.com.connext.oms.service;
 
 import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
+import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbReturn;
 import cn.com.connext.oms.entity.TbReturnGoods;
@@ -103,4 +104,11 @@ public interface TbReturnService {
      * @return
      */
     List<TbReturnGoods> getTbReturnGoodsById(int orderId);
+
+    /**
+     * 根据商品id查询商品信息
+     * @param goodsId
+     * @return
+     */
+    TbGoods  getGoodsById(int goodsId);
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../../assets/styles/specific/order-detail.css"/>
 </head>
 <body style="overflow-x:hidden;">
-        <div class="container">
+        <div class="container" style="top: -380px;">
                 <!-- 上面部分 -->
                 <!-- <div class="top">  
                     <span style="color:black;position:absolute;margin-left:25px;font-size: 20px;margin-top: 20px">订单详情</span>
@@ -24,35 +24,33 @@
                             <div class="title"><text>基本信息</text></div>
                             <div class="title-content">
                                 <div class="title-content1">
-                                    <div class="title-content1-top1">订单号：<input disabled="disabled"></div>
-                                    <div class="title-content1-top2">渠道订单号：<input disabled="disabled"></div>
-                                    <div class="title-content1-top3">订单状态：<input disabled="disabled"></div>
+                                    <div class="title-content1-top1">订单号：<input disabled="disabled" th:value="${orderDetail.orderId}"></div>
+                                    <div class="title-content1-top2">渠道订单号：<input disabled="disabled"  th:value="${orderDetail.channelCode}"></div>
+                                    <div class="title-content1-top3">订单状态：<input disabled="disabled" th:value="${orderDetail.basicState}"></div>
                                 </div>
                                 <div class="title-content2">
-                                    <div class="title-content1-top1">订单来源：<input disabled="disabled"></div>
-                                    <div class="title-content1-top2">买家ID：<input disabled="disabled"></div>
-                                    <div class="title-content1-top3">下单时间：<input disabled="disabled"></div>
+                                    <div class="title-content1-top1">订单来源：<input disabled="disabled"  th:value="${orderDetail.orderSource}"></div>
+                                    <div class="title-content1-top2">买家ID：<input disabled="disabled"  th:value="${orderDetail.customerId}"></div>
+                                    <div class="title-content1-top3">下单时间：<input disabled="disabled"  th:value="${orderDetail.purchaseTime}"></div>
                                 </div>
                                 <div class="title-content3">
-                                    <div class="title-content1-top1">基本状态：<input disabled="disabled"></div>
-                                    <div class="title-content1-top2">修改人：<input disabled="disabled"></div>
-                                    <div class="title-content1-top3">修改时间：<input disabled="disabled"></div>
+                                    <div class="title-content1-top1">基本状态：<input disabled="disabled"  th:value="${orderDetail.basicState}"></div>
+                                    <div class="title-content1-top2">修改人：<input disabled="disabled"  th:value="${orderDetail.modifiedUser}"></div>
+                                    <div class="title-content1-top3">修改时间：<input disabled="disabled"  th:value="${orderDetail.updated}"></div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="main-content2">
-                                <div class="title"><text>支付信息</text></div>
+                            <div class="title"><text>支付信息</text></div>
                                 <div class="title-content">
                                     <div class="title-content1">
-                                        <div class="title-content1-top1">支付状态：<span></span></div>
-                                        <div class="title-content1-top2">付款方式：<span></span></div>
-                                        <div class="title-content1-top3">付款时间：<span></span></div>
+                                        <div class="title-content1-top1">支付状态：<input disabled="disabled"  th:value="${orderDetail.paymentState}"><span></span></div>
+                                        <div class="title-content1-top2">付款方式：<input disabled="disabled"  th:value="${orderDetail.paymentWay}"><span></span></div>
+                                        <div class="title-content1-top3">付款时间：<input disabled="disabled"  th:value="${orderDetail.paymentTime}"><span></span></div>
                                     </div>
                                     <div class="title-content2">
-                                        <div class="title-content1-top1">商品总价：<span></span></div>
-                                        <div class="title-content1-top2">订单折扣：<span></span></div>
-                                        <div class="title-content1-top3">订单总价：<span></span></div>
+                                        <div class="title-content1-top1">商品总价：<input disabled="disabled"  th:value="${orderDetail.sumPrice}"><span></span></div>
                                     </div>
                                 </div>
                         </div>
@@ -61,12 +59,12 @@
                                 <div class="title"><text>配送信息</text></div>
                                 <div class="title-content">
                                     <div class="title-content1">
-                                        <div class="title-content1-top1">发货仓库：<span></span></div>
-                                        <div class="title-content1-top2">物流信息：<span></span></div>
-                                        <div class="title-content1-top3">物流单号：<span></span></div>
+                                        <div class="title-content1-top1">发货仓库：<input disabled="disabled"  th:value="${orderDetail.deliveryWarehouse}"><span></span></div>
+                                        <div class="title-content1-top2">物流公司：<input disabled="disabled"  th:value="${orderDetail.deliveryCompany}"><span></span></div>
+                                        <div class="title-content1-top3">物流单号：<input disabled="disabled"  th:value="${orderDetail.deliveryCode}"><span></span></div>
                                     </div>
                                     <div class="title-content2">
-                                        <div class="title-content1-top1">配送时间：<span></span></div>
+                                        <div class="title-content1-top1">发货时间：<input disabled="disabled"  th:value="${orderDetail.deliveryTime}"><span></span></div>
                                     </div>
                                 </div>
                         </div>
@@ -78,198 +76,66 @@
                             <button class="btn3" onclick="editReceiver()">保存</button>
                             <div class="address-information" id="frm">
                                 <div class="address-tel">
-                                    <input type="text" hidden value="" id="receiver_id"/>
+                                    <input type="text" hidden value="1005" id="receiver_id" th:value="${orderDetail.receiverId}" />
                                     <text>收货人:</text>
-                                    <input type="text" disabled="disabled" id="receiver_name"/>
+                                    <input type="text" disabled="disabled" id="receiver_name" th:value="${orderDetail.receiverName}"/>
                                     <text>&nbsp;&nbsp;&nbsp;&nbsp;联系电话:</text>
-                                    <input type="text" disabled="disabled" id="receiver_mobile"/>
+                                    <input type="text" disabled="disabled" id="receiver_mobile" th:value="${orderDetail.receiverMobile}"/>
                                 </div>
                                 <br>
                                 <div class="address-city">
                                     <text>省:</text>
-                                    <input type="text" disabled="disabled" id="receiver_state"/>
+                                    <input type="text" disabled="disabled" id="receiver_state" th:value="${orderDetail.receiverDistrict}"/>
                                     <text>&nbsp;&nbsp;&nbsp;&nbsp;市:</text>
-                                    <input type="text" disabled="disabled" id="receiver_city"/>
+                                    <input type="text" disabled="disabled" id="receiver_city" th:value="${orderDetail.receiverCity}"/>
+
                                     <text>&nbsp;&nbsp;区:</text>
-                                    <input type="text" disabled="disabled" id="receiver_district"/>
+                                    <input type="text" disabled="disabled" id="receiver_district" th:value="${orderDetail.receiverState}" />
                                 </div>
                                 <br>
                                 <div class="address-detail">
-                                    <text>详细地址</text>
-                                    <input type="text" class="input4" id="receiver_address" disabled="disabled"/>
+                                    <text>详细地址:</text>
+                                    <input type="text" id="receiver_address" disabled="disabled" th:value="${orderDetail.receiverAddress}"/>
                                 </div>
                             </div>
                         </div>
   
                          <div class="main-content5">
                             <div class="main-content5-title"><text style="font-size:20px;">商品信息</text></div>
-                            <table border="0" cellspacing="0" cellpadding="0" class="tab">
+                                <table class="table table-condensed">
+                                <thead>
                                 <tr class="tr-title">
                                     <th>商品编码</th>
                                     <th>商品名称</th>
                                     <th>商品单价</th>
                                     <th>商品数量</th>
                                     <th>商品总价</th>
-                                    <th>商品备注</th>
                                 </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                    <td>1000</td>
-                                    <td></td>
+                                </thead>
+
+                                <tr th:each="ml,mlstat:${orderGoodsDetails}">
+                                    <td class="ttdd" th:text="${ml.goodsCode}"></td>
+                                    <td th:text="${ml.goodsName}"></td>
+                                    <td th:text="${ml.goodsPrice}"></td>
+                                    <td th:text="${ml.num}"></td>
+                                    <td th:text="${ml.totalPrice}"></td>
                                 </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                    <td>1000</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td> 
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                    <td>1000</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td> 
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>  
-                                    <td>1000</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                    <td>1000</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                    <td>1000</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                    <td>1000</td>
-                                    <td></td>
-                                </tr> 
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                    <td>1000</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                    <td>1000</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                    <td>1000</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                    <td>1000</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
+
+
                                     <td style="font-size: 15px;"><strong>总计</strong></td>
                                     <td></td>
                                     <td></td>
-                                    <td>4005</td>
-                                    <td>1000</td>
+                                    <td th:text="${sumNum}"></td>
+                                    <td th:text="${sumTotalPrice}"></td>
                                     <td></td>
                                 </tr>
+                             </tr>
                             </table>
                         </div> 
                     </div>
             </div>
 </body>
 
-<script type="text/javascript">
-    function edit() {
-        $("#receiver_name").attr("disabled",false);
-        $("#receiver_address").attr("disabled",false);
-        $("#receiver_city").attr("disabled",false);
-        $("#receiver_district").attr("disabled",false);
-        $("#receiver_state").attr("disabled",false);
-        $("#receiver_mobile").attr("disabled",false);
+<script type="text/javascript" src="/page/js/receiver.js"></script>
 
-    }
-    function notEdit() {
-        $("#receiver_name").attr("disabled",true);
-        $("#receiver_address").attr("disabled",true);
-        $("#receiver_city").attr("disabled",true);
-        $("#receiver_district").attr("disabled",true);
-        $("#receiver_state").attr("disabled",true);
-        $("#receiver_mobile").attr("disabled",true);
-
-    }
-
-
-    function editReceiver() {
-        var receiverName=$("#receiver_name").val();
-        var receiverAddress=$("#receiver_address").val();
-        var receiverCity=$("#receiver_city").val();
-        var receiverDistrict=$("#receiver_district").val();
-        var receiverState=$("#receiver_state").val();
-        var receiverMobile=$("#receiver_mobile").val();
-        var receiverId=$("#receiver_id").val();
-        var confirm_ = confirm('确认？');
-        var re = /^1\d{10}$/;
-        if(confirm_){
-            if(!re.test(receiverMobile)){
-                alert("请注意手机格式");
-            }else{
-                $.ajax({
-                    ContentType:"application/json;charset=UTF-8",
-                    type:"post",
-                    url:"/editReceiverInformation",
-                    data: {"receiverName" :receiverName,"receiverAddress":receiverAddress,"receiverCity":receiverCity,
-                        "receiverDistrict":receiverDistrict,"receiverState":receiverState,"receiverMobile":receiverMobile,
-                        "receiverId":receiverId},
-                    success:function (msg) {
-                        if(msg=="success"){
-                            notEdit();
-                            alert("编辑成功");
-                        }else {
-                            alert("编辑失败");
-                        }
-                    }
-                })
-            }
-
-            }
-
-
-    }
-</script>
 </html>

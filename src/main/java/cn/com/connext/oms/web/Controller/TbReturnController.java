@@ -218,12 +218,12 @@ public class TbReturnController {
             try {
                 //获取通过审核的订单，进行处理
                 List<Integer> returnOrdersList = tbReturnService.returnOrdersAudit(tbReturnList);
-                if (null != returnOrdersList) {
+                if (0 != returnOrdersList.size()) {
                     tbReturnService.createInputOrder(returnOrdersList);
                     BaseResult.success("生成入库单成功并成功发送");
-
+                } else {
+                 BaseResult.fail(500,"请检查退货单的状态");
                 }
-
             } catch (Exception e) {
                 return BaseResult.fail("内部数据操作出现异常");
             }

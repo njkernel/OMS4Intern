@@ -111,45 +111,45 @@
         </table>
     </div>
     <div class="footer-pager">
-        <!--解析显示分页信息-->
-        <!--分页文字信息-->
-        <span>共<span>{{abnormalDate.pages}}</span>页，当前第<span>{{abnormalDate.pageNums}}，总{{abnormalDate.total}}条数据</span>页</span>
-        <!--分页条信息-->
-        <ul class="pagination">
-            <!--如果无上一页，不可点-->
-            <template v-if="abnormalDate.hasPreviousPage==false">
-                <li><a href="#">&laquo;</a></li>
-            </template>
-            <!--如果有上一页，可点-->
-            <template v-if="abnormalDate.hasPreviousPage==true">
-                <!--点前一页，跳到当前页码前一页-->
-                <li @click="to_page(abnormalDate.pageNum-1)"><a href="#">&laquo;</a></li>
-            </template>
+    <!--解析显示分页信息-->
+    <!--分页文字信息-->
+    <span>共<span>{{abnormalDate.pages}}</span>页，当前第<span>{{abnormalDate.pageNums}}，总{{abnormalDate.total}}条数据</span>页</span>
+    <!--分页条信息-->
+    <ul class="pagination">
+        <!--如果无上一页，不可点-->
+        <template v-if="abnormalDate.hasPreviousPage==false">
+            <li><a href="#">&laquo;</a></li>
+        </template>
+        <!--如果有上一页，可点-->
+        <template v-if="abnormalDate.hasPreviousPage==true">
+            <!--点前一页，跳到当前页码前一页-->
+            <li @click="to_page(abnormalDate.pageNum-1)"><a href="#">&laquo;</a></li>
+        </template>
 
-            <!--遍历连续显示的页码-->
-            <template v-for="pagenum in abnormalDate.navigatepageNums">
-                <!--如果是当前页码，高亮显示-->
-                <template v-if="pagenum==abnormalDate.pageNum">
-                    <li class="active"><a href="#">{{pagenum}}</a></li>
-                </template>
-                <!--如果不是当前页码，正常显示-->
-                <template v-if="pagenum!=abnormalDate.pageNum">
-                    <!--点击后把当前页码传送给axios-->
-                    <li class @click="to_page(pagenum)"><a href="#">{{pagenum}}</a></li>
-                </template>
+        <!--遍历连续显示的页码-->
+        <template v-for="pagenum in abnormalDate.navigatepageNums">
+            <!--如果是当前页码，高亮显示-->
+            <template v-if="pagenum==abnormalDate.pageNum">
+                <li class="active"><a href="#">{{pagenum}}</a></li>
             </template>
+            <!--如果不是当前页码，正常显示-->
+            <template v-if="pagenum!=abnormalDate.pageNum">
+                <!--点击后把当前页码传送给axios-->
+                <li class @click="to_page(pagenum)"><a href="#">{{pagenum}}</a></li>
+            </template>
+        </template>
 
-            <!--如果无下一页，不可点-->
-            <template v-if="abnormalDate.hasNextPage==false">
-                <li><a href="#">&raquo;</a></li>
-            </template>
-            <!--如果有下一页，可点-->
-            <template v-if="abnormalDate.hasNextPage==true">
-                <!--把当前页码的下一页传送给axios-->
-                <li @click="to_page(abnormalDate.pageNum+1)"><a href="#">&raquo;</a></li>
-            </template>
-        </ul>
-    </div>
+        <!--如果无下一页，不可点-->
+        <template v-if="abnormalDate.hasNextPage==false">
+            <li><a href="#">&raquo;</a></li>
+        </template>
+        <!--如果有下一页，可点-->
+        <template v-if="abnormalDate.hasNextPage==true">
+            <!--把当前页码的下一页传送给axios-->
+            <li @click="to_page(abnormalDate.pageNum+1)"><a href="#">&raquo;</a></li>
+        </template>
+    </ul>
+</div>
     <!-- 弹出框 -->
     <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
