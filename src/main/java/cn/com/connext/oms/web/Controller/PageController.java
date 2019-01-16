@@ -27,6 +27,8 @@ import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 
 import io.swagger.annotations.ApiOperation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,6 +54,9 @@ import java.util.Map;
  */
 @Controller
 public class PageController {
+
+
+    //private static final Logger LOGGER = LoggerFactory.getLogger(pageController.class);
 
     @Autowired
     private TbRefundService tbRefundService;
@@ -117,7 +122,7 @@ public class PageController {
      * @Author: Lili Chen
      * @Date: 2019/1/10
      */
-    @RequestMapping("/getRefund")
+    @RequestMapping("/index/getRefund")
     public String refundPage(Model model, HttpServletRequest request){
         Map<String,Object> map=tbRefundService.getAllRefundIndex(1,4);
         model.addAttribute("map",map);
@@ -145,7 +150,7 @@ public class PageController {
     * @Author: Lili Chen
     * @Date: 2019/1/14
     */
-    @RequestMapping("/getRefundIndex")
+    @RequestMapping("/index/getRefundIndex")
     public String getAllRefundIndex(Integer page,Model model,Integer size,HttpServletRequest request){
         HttpSession session=request.getSession();
         String basic=session.getAttribute("basic").toString();
@@ -175,7 +180,7 @@ public class PageController {
     * @Author: Lili Chen
     * @Date: 2019/1/14
     */
-    @RequestMapping("/getSearchRefund")
+    @RequestMapping("/index/getSearchRefund")
     public String getSearchRefund(Model model,String select,String mySelect,Integer page,HttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
         HttpSession session=request.getSession();
@@ -347,8 +352,27 @@ public class PageController {
             model.addAttribute("tbReturnGoodsList",tbReturnGoodsList);
             model.addAttribute("tbReturnService",tbReturnService);
         }catch (Exception e){
-            e.printStackTrace();
+            return null;
         }
         return "pages/specific/addstock";
+    }
+
+
+
+    /** 
+    * @Description: 查看退款单详情
+    * @Param: [refundId, model] 
+    * @return: java.lang.String 
+    * @Author: Lili Chen 
+    * @Date: 2019/1/16 
+    */
+    @RequestMapping("/index/refundDetail")
+    public String refundDetail(Integer refundId,Model model) {
+        TbRefund tbRefund=tbRefundService.getRefundById(refundId);
+        List<TbGoodsOrder> GoodsOrderList=tbGoodsOrderService.getListGoodsOrderById(tbRefund.getOrderId());
+        model.addAttribute("refund",tbRefund);
+        model.addAttribute("GoodsOrderList",GoodsOrderList);
+        
+        return "pages/specific/refund";
     }
 }

@@ -76,7 +76,7 @@
                             <button class="btn3" onclick="editReceiver()">保存</button>
                             <div class="address-information" id="frm">
                                 <div class="address-tel">
-                                    <input type="text" hidden value="1005" id="receiver_id" th:value="${orderDetail.receiverId}" />
+                                    <input type="text" hidden id="receiver_id" th:value="${orderDetail.receiverId}" />
                                     <text>收货人:</text>
                                     <input type="text" disabled="disabled" id="receiver_name" th:value="${orderDetail.receiverName}"/>
                                     <text>&nbsp;&nbsp;&nbsp;&nbsp;联系电话:</text>

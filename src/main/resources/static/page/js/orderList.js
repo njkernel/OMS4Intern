@@ -7,9 +7,10 @@ let orderList = new Vue({
                 pageSize:5,
                 pageNum:1,
             },
+            orderId:"",
             orderListDate:[],
             //选中行的记录id
-            checkedDate:"",
+            checkedNames:[],
             //搜索输入框
             searchInput:"",
             //异常单数据
@@ -75,6 +76,10 @@ let orderList = new Vue({
         updateRoute(){
             let url='/UpdateOrderIntoWaitOutPut';
             callAxiosGet(url,{id:this.checkedDate},this.Suc,this.Fail)
+        //异常处理
+        abnormalHandle(){
+            let url='/abnormalHandle';
+            callAxiosGet(url,{abnormalId:this.checkedNames[0]},this.Suc,this.Fail)
         },
         // 出库操作，将订单出库 Jay新增 2019/1/16
         outputOrder(){
@@ -88,10 +93,11 @@ let orderList = new Vue({
                  /!*console.log(sessionStorage.getItem("id"))*!/
              },
 
-        //异常订单详情
+        //订单详情
         orderDetails(){
-            console.log(this.checkedDate);
-            document.getElementById('iframeId3').src="/orderDetail?orderId="+this.checkedDate;
+            this.orderId=this.checkedNames[0];
+            console.log(this.orderId);
+            document.getElementById('iframeId3').src="/orderDetail?orderId="+this.orderId;
         },
 
 
@@ -161,7 +167,7 @@ let orderList = new Vue({
                 that.orderListDate=res.data;
                 console.log(that.orderListDate);
                 //默认选中第一条数据
-                that.checkedDate=res.data.list[0].abnormalId;
+                that.checkedDate[0]=res.data.list[0].abnormalId;
 
             }else{
                 alert(res.message);
@@ -176,8 +182,20 @@ let orderList = new Vue({
         },
         //接口未连通
         Fail(err){
-            console.log("网络连接错误")
+
         },
+        orderCheck(){
+            this.orderId=this.checkedNames[0];
+            let url='/orderCheck?orderId='+this.orderId;
+            callAxiosGetNoParam(url,this.orderCheckSuc,this.orderCheckFail);
+        },
+        orderCheckSuc(res){
+            alert(res.message);
+            this.initTable()
+        },
+        orderCheckFail(res){
+            alert("请先选择订单")
+        }
     }
 });
 

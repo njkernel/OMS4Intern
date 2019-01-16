@@ -51,16 +51,14 @@ function refund() {
     $('input[name="checkid"]:checked').each(function(){
         arr.push($(this).val());
     });
-    alert(arr);
     if(arr.length>0){
         if(confirm_){
             $.ajax({
                 ContentType:"application/json;charset=UTF-8",
                 type:"post",
-                url:"/refund",
+                url:"/index/refund",
                 data:{"refundIdList":arr.join(",")},
                 success:function (msg) {
-                    alert(msg);
                     if(msg=="success"){
                         alert("退款成功")
                         location.reload() ;
@@ -103,4 +101,16 @@ function queryRefund() {
 
 
     }
+
+    /*function detailRefund() {
+        var arr=[];//定义一个数组
+        var b=$("input[type='checkbox']:checked").length
+        var a=$('input[name="checkid"]:checked').val();
+        if(b==1){
+            $("#iframe").attr("src","/refundDetail?refundId="+a);
+        }else{
+
+        }
+
+    }*/
 }

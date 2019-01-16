@@ -14,6 +14,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -135,36 +136,34 @@ public class TbReturnController {
         List<Integer> returnList = new ArrayList<>();
         List<Integer> exchangeList = new ArrayList<>();
 
-        for (int i = 0; i < returnIdsList.size(); i++) {
-            TbReturn tbReturn = tbReturnService.getTbReturnById(returnIdsList.get(i));
-            if (null != tbReturn) {
-                if (StringUtils.equals(RETURN_TYPE, tbReturn.getReturnType())) {
-                    returnList.add(returnIdsList.get(i));
+            for (int i = 0; i < returnIdsList.size(); i++) {
+                TbReturn tbReturn = tbReturnService.getTbReturnById(returnIdsList.get(i));
+                if (null != tbReturn) {
+                    if (StringUtils.equals(RETURN_TYPE, tbReturn.getReturnType())) {
+                        returnList.add(returnIdsList.get(i));
 
+                    }
+
+                    if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
+                        exchangeList.add(returnIdsList.get(i));
+
+                    }
                 }
-
-
-
-
-                if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
-                    exchangeList.add(returnIdsList.get(i));
-
-                }
-
             }
 
             //换货部分的取消 Update BY yonyong
-            int[] ids = ListToArray.listToArray(exchangeList);
-            int t = tbExchangeService.updateTbReturn(ids, "换货取消", "yonyong", new Date());
-            if (-1 == t) {
-                return BaseResult.fail("系统错误！");
-            } else if (-2 == t) {
-                BaseResult.fail(500, "换货单只有在待审核状态才能取消！");
-            } else {
-                BaseResult.success("您已成功取消换货！");
-            }
+           if (exchangeList.size()!=0) {
+               int[] ids = ListToArray.listToArray(exchangeList);
+               int t = tbExchangeService.updateTbReturn(ids, "换货取消", "yonyong", new Date());
+               if (-1 == t) {
+                   return BaseResult.fail("系统错误！");
+               } else if (-2 == t) {
+                   BaseResult.fail(500, "换货单只有在待审核状态才能取消！");
+               } else {
+                   BaseResult.success("您已成功取消换货！");
+               }
 
-
+           }
  //退货部分的取消
             try {
                 boolean flag = tbReturnService.returnOrderCancel(returnList, oms, updated);
@@ -175,7 +174,7 @@ public class TbReturnController {
             } catch (Exception e) {
 
                 return BaseResult.fail("内部数据出现错误，请稍后重试");            }
-        }
+
         return BaseResult.fail(500,"取消失败");
     }
 
@@ -189,7 +188,7 @@ public class TbReturnController {
 
         @GetMapping("/checkReturnOrExchange")
         @ApiOperation(value = "退货/换货审核分流接口")
-        public BaseResult checkReturnOrExchange (@RequestParam("returnId") List < Integer > returnIds) {
+        public BaseResult checkReturnOrExchange (@RequestParam("returnId") List<Integer> returnIds) {
 
             Boolean rsReturn = false;
             int rsExchange = 0;
@@ -204,7 +203,6 @@ public class TbReturnController {
                     //log
                     if (RETURN_TYPE.equals(tbReturn.getReturnType())) {
                         //将退货单生成单独的list交给退货部分处理
-
                         tbReturnList.add(tbReturn.getReturnId());
 
                     } else if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
@@ -218,7 +216,8 @@ public class TbReturnController {
             try {
                 //获取通过审核的订单，进行处理
                 List<Integer> returnOrdersList = tbReturnService.returnOrdersAudit(tbReturnList);
-                if (0 != returnOrdersList.size()) {
+//                if (0 != returnOrdersList.size()) {
+                if (!CollectionUtils.isEmpty(returnOrdersList)) {
                     tbReturnService.createInputOrder(returnOrdersList);
                     BaseResult.success("生成入库单成功并成功发送");
                 } else {

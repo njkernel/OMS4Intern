@@ -68,7 +68,7 @@ public class ReturnInputStateFeedback {
 
 
         //退货部分的状态反馈及更新状态 created by Aaron
-        if (RETURN_TYPE == type) {
+        if (RETURN_TYPE.equals(type)) {
             try {
                 details = objectMapper.readValue(goodDetails, new TypeReference<List<GoodDetails>>() {
                 });
@@ -90,7 +90,7 @@ public class ReturnInputStateFeedback {
         }
 
         //换货部分的状态反馈及更新  crated by yonyong
-        if (EXCHANGE_TYPE == type) {
+        if (EXCHANGE_TYPE.equals(type)) {
             try {
                 details = objectMapper.readValue(goodDetails,new TypeReference<List<GoodDetails>>() {});
             } catch (IOException e) {
