@@ -5,6 +5,8 @@ import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOutput;
 import cn.com.connext.oms.mapper.TbOutputMapper;
 import cn.com.connext.oms.service.TbOrderService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,13 +36,14 @@ public class TbOrderController {
     * @Return: cn.com.connext.oms.commons.dto.BaseResult
     * @Create: 2019/1/6 10:24
     */
-
     @GetMapping("/getAllOrder")
     @ApiOperation(value = "订单数据接口")
-    public BaseResult getAllOrder(){
+    public BaseResult getAllOrder(int pageNum,int pageSize){
         try {
-            List<TbOrder> allOrder = tbOrderService.getAllOrder();
-            return BaseResult.success("成功",allOrder);
+            PageHelper.startPage(pageNum,pageSize);
+            List<TbOrder> getAllOrder =this.tbOrderService.getAllOrder();
+            PageInfo<TbOrder> orderListInfo = new PageInfo<>(getAllOrder);
+            return BaseResult.success("成功",orderListInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResult.fail("服务器内部错误");
@@ -60,8 +63,8 @@ public class TbOrderController {
 
     @PostMapping("/cancelOrder")
     @ApiOperation(value = "主动取消订单接口")
-    public String cancelOrder(List<TbOrder> tbOrderList){
-        boolean b=tbOrderService.cancelOrder(tbOrderList);
+    public String cancelOrder(Integer[] orderIdList){
+        boolean b=tbOrderService.cancelOrder(orderIdList);
         if(b){
             return "success";
         }else{

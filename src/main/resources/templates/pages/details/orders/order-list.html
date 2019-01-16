@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,20 +8,21 @@
     <title>表格</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/assets/javascript/popup/popup.js"></script>
+    <script src="/assets/javascript/popup/orderpopup.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="../../../assets/javascript/popup/popup.js"></script>
-    <script src="../../../assets/javascript/popup/orderpopup.js"></script>
-    <link rel="stylesheet" href="../../../assets/styles/search.css">
+    <link rel="stylesheet" href="/assets/styles/search.css">
 </head>
 <body style="overflow-x:hidden;background:#f3f3f3;">
+    <div id="orderList">
     <div id="mask_shadow"></div>
     <div class="btn-div">
         <button type="button" class="btn btn-primary">预检</button>
-        <button type="button" class="btn btn-primary">取消</button>
+        <button type="button" class="btn btn-primary" onclick="">取消</button>
         <button type="button" class="btn btn-primary">出库</button>
         <button type="button" class="btn btn-primary">退货</button>
         <button type="button" class="btn btn-primary">换货</button>
-        <button type="button" class="btn btn-primary">查看订单</button>
+        <button type="button" class="btn btn-primary" id="MyAbnormalModel" @click="orderDetails">查看订单</button>
         <div class="search-box">
             <form action="">
                 <select name="" id="select">
@@ -52,197 +54,70 @@
                 </tr>
             </thead>
             <tbody>
+           <template v-for="list in orderListDate.list" v-cloak>
                 <tr>
-                    <td>1</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td>
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
-                            <div class="order-watch-btn">查看</div>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs">
-                            <div class="order-operation-btn">操作</div>
-                        </button>
+                        <input type="radio" :value="list.orderId" v-model="checkedDate" >
+                        <label>{{checkedDate}}</label>
                     </td>
+                    <td>{{list.basicState}}</td>
+                    <td>{{list.channelCode}}</td>
+                    <td>{{list.basicState}}</td>
+                    <td>{{list.orderSource}}</td>
+                    <td>{{list.paymentWay}}</td>
+                    <td>{{list.sumPrice}}</td>
+                    <td>{{list.deliveryWarehouse}}</td>
+                    <td>{{list.deliveryCompany}}</td>
+                    <td>{{list.deliveryCode}}</td>
+                    <td>{{list.tbReceiver.receiverName}}</td>
+                    <td>{{list.tbReceiver.receiverDistrict+"省"+list.tbReceiver.receiverCity+"市"+list.tbReceiver.receiverAddress}}</td>
+
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
-                            <div class="order-watch-btn">查看</div>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs">
-                            <div class="order-operation-btn">操作</div>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
-                            <div class="order-watch-btn">查看</div>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs">
-                            <div class="order-operation-btn">操作</div>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
-                            <div class="order-watch-btn">查看</div>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs">
-                            <div class="order-operation-btn">操作</div>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
-                            <div class="order-watch-btn">查看</div>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs">
-                            <div class="order-operation-btn">操作</div>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
-                            <div class="order-watch-btn">查看</div>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs">
-                            <div class="order-operation-btn">操作</div>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
-                            <div class="order-watch-btn">查看</div>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs">
-                            <div class="order-operation-btn">操作</div>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal">
-                            <div class="order-watch-btn">查看</div>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs">
-                            <div class="order-watch-btn">操作</div>
-                        </button>
-                    </td>
-                </tr>
+            </template>
             </tbody>
         </table>
+        </table>
     </div>
-    <div class="footer-pager">
-        <span>共<span>5</span>页，当前第<span>1</span>页</span>
-        <ul class="pagination">
-            <li><a href="#">&laquo;</a></li>
-            <li class="active"><a href="#">1</a></li>
-            <li class="disabled"><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
-        </ul>
-    </div>
+        <div class="footer-pager">
+            <!--解析显示分页信息-->
+            <!--分页文字信息-->
+            <span>共<span>{{orderListDate.pages}}</span>页，当前第<span>{{orderListDate.pageNum}}，总{{orderListDate.total}}条数据</span>页</span>
+            <!--分页条信息-->
+            <ul class="pagination">
+                <!--如果无上一页，不可点-->
+                <template v-if="orderListDate.hasPreviousPage==false">
+                    <li><a href="#">&laquo;</a></li>
+                </template>
+                <!--如果有上一页，可点-->
+                <template v-if="orderListDate.hasPreviousPage==true">
+                    <!--点前一页，跳到当前页码前一页-->
+                    <li @click="to_page(orderListDate.pageNum-1)"><a href="#">&laquo;</a></li>
+                </template>
+
+                <!--遍历连续显示的页码-->
+                <template v-for="pagenum in orderListDate.navigatepageNums">
+                    <!--如果是当前页码，高亮显示-->
+                    <template v-if="pagenum==orderListDate.pageNum">
+                        <li class="active"><a href="#">{{pagenum}}</a></li>
+                    </template>
+                    <!--如果不是当前页码，正常显示-->
+                    <template v-if="pagenum!=orderListDate.pageNum">
+                        <!--点击后把当前页码传送给axios-->
+                        <li class @click="to_page(pagenum)"><a href="#">{{pagenum}}</a></li>
+                    </template>
+                </template>
+
+                <!--如果无下一页，不可点-->
+                <template v-if="orderListDate.hasNextPage==false">
+                    <li><a href="#">&raquo;</a></li>
+                </template>
+                <!--如果有下一页，可点-->
+                <template v-if="orderListDate.hasNextPage==true">
+                    <!--把当前页码的下一页传送给axios-->
+                    <li @click="to_page(orderListDate.pageNum+1)"><a href="#">&raquo;</a></li>
+                </template>
+            </ul>
+        </div>
     <div id="popup" class="popup">
         <div class="title">
             <p>订单详情</p>
@@ -250,14 +125,14 @@
             <span>x</span>
         </div>
         <div class="cont">
-            <iframe id="orderframe" src="../../specific/order-detail.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
+            <iframe src="" scrolling="auto" id="iframeId3" style="width:100%;height:100%;border:0px;"></iframe></div>
     </div>
-    <script>
-        $(function () {
-            $('#popup').popup();
-            $("body").css("overflow-y", "hidden");
-        });
-  
+        <script>
+            $(function () {
+                $('#popup').popup();
+                $("body").css("overflow-y", "hidden");
+            });
+
             $('#orderpopup').orderpopup();
             $("body").css("overflow-y", "hidden");
             $("#search-btn").click(function (){
@@ -272,6 +147,12 @@
                     }
                 }
             });
-    </script>
+        </script>
+    </div>
 </body>
+<script src="/commons/plugins/iview/js/vue.min.js"></script>
+<script src="/commons/plugins/iview/js/vue-router.js"></script>
+<script type="text/javascript" src="/commons/plugins/iview/js/axios.min.js"></script>
+<script type="text/javascript" src="/commons/js/axiosUtils.js"></script>
+<script type="text/javascript" src="/page/js/orderList.js"></script>
 </html>

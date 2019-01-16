@@ -5,6 +5,8 @@ import cn.com.connext.oms.commons.dto.GoodsGoodsOrderDto;
 import cn.com.connext.oms.commons.dto.GoodsStockDto;
 import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.service.TbGoodsListService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +27,7 @@ public class TbGetGoodsListController {
     @Autowired
     private TbGoodsListService tbGoodsListService;
     /**
-        * @Author: zhaojun
+        * @Author: ZhaoJun
         * @Description: 根据订单编号查询该订单的商品编号
         * @Param: []
         * @Return: cn.com.connext.oms.commons.dto.BaseResult
@@ -43,24 +45,26 @@ public class TbGetGoodsListController {
         }
     }
     /**
-        * @Author: zhaojun
+        * @Author: ZhaoJun
         * @Description: 查询所有商品的信息和库存
         * @Param: []
         * @Create: 2019/1/7 17:36
         */
     @GetMapping("getAllGoods")
     @ApiOperation(value = "查询所有商品的信息和库存")
-    public BaseResult getAllGoods(){
+    public BaseResult getAllGoods(int pageNum,int pageSize){
         try {
-            List<GoodsStockDto> getAllGoods = tbGoodsListService.getAllGoods();
-            return BaseResult.success("成功",getAllGoods);
+            PageHelper.startPage(pageNum,pageSize);
+            List<GoodsStockDto> getAllGoods =this.tbGoodsListService.getAllGoods();
+            PageInfo<GoodsStockDto> goodsListInfo = new PageInfo<>(getAllGoods);
+            return BaseResult.success("成功",goodsListInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResult.fail("服务器内部错误");
         }
     }
     /**
-        * @Author: zhaojun
+        * @Author: ZhaoJun
         * @Description: 根据订单号查询订单对应的商品信息
         * @Param: []
         * @Return:

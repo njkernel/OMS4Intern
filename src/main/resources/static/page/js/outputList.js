@@ -1,41 +1,41 @@
-let Abnormal = new Vue({
-    el: '#abnormal',
+let outputList = new Vue({
+    el: '#outputList',
     data: function () {
         return {
             //分页数据
             page:{
                 pageSize:5,
                 currentPage:1,
-                abnormalState:'', orderId:'', abnormalType:'', modifiedUser:''
+                outputCode:'', orderId:'', receiverName:'', deliveryCode:''
             },
             //选中行的记录id
             checkedDate:"",
             //搜索输入框
             searchInput:"",
             //异常单数据
-            abnormalDate:[],
+            outputDate:[],
             goodsInfo:[],
             //默认选中
             selected: 'orderId',
             //下拉框选项
             options: [
                 { text: '订单id', value: 'orderId' },
-                { text: '异常类型', value: 'abnormalType' },
-                { text: '异常状态', value: 'abnormalState' },
-                { text: '修改人', value: 'modifiedUser' }
+                { text: '出库单号', value: 'outputCode' },
+                { text: '收货人', value: 'receiverName' },
+                { text: '快递单号', value: 'deliveryCode' }
             ],
             //搜索条件
             searchDate:{
-                abnormalState:'',
+                outputCode:'',
                 orderId:'',
-                abnormalType:'',
-                modifiedUser:''
+                receiverName:'',
+                deliveryCode:''
             },
 
             //模态框数据
             modalData:{
-                // goodsInfo:[],
-                // abnormalInfo:[],
+                goodsInfo:[],
+                abnormalInfo:[],
             },
         }
     },
@@ -44,12 +44,11 @@ let Abnormal = new Vue({
     },
 
 
-
     methods: {
         //初始化表格
         initTable(){
-            let url='/abnormalList';
-            callAxiosGet(url,this.page,this.getListSuc,this.Fail);
+            let url='/OutputDetails';
+            callAxiosGet(url,this.page,this.getListSuc,this.Fail)
         },
         //初始化
         refresh(){
@@ -73,36 +72,19 @@ let Abnormal = new Vue({
             /*console.log(this.checkedDate);*/
             callAxiosGet(url,{abnormalId:this.checkedDate},this.Suc,this.Fail)
         },
-        //把当前行id存在缓存中
-        /*     toPageStorage(){
-                 localStorage.setItem("goodsId", this.checkedDate);
-                 /!*console.log(sessionStorage.getItem("id"))*!/
-             },*/
+        /*        //把当前行id存在缓存中
+                toPageStorage(){
+                    sessionStorage.setItem("id", this.checkedDate);
+                    /!*console.log(sessionStorage.getItem("id"))*!/
+                },*/
 
         //异常订单详情
         checkOrder(){
-            /* let url='/abnormalDetail';
-             callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)*/
-            console.log(this.checkedDate);
-            document.getElementById('iframeId').src="/abnormalDetail?abnormalId="+this.checkedDate;
+            let url='/abnormalDetail';
+            callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)
         },
 
-        /*根据页码，查询到要显示的数据*/
-        to_page(pn) {
-            let that=this;
-            axios.get('/abnormalList', {
-                params: {
-                    currentPage:pn,
-                    pageSize: that.page.pageSize
-                }
-            }).then(res => {
-                console.log(res);
-                that.abnormalDate = res.data.data;
-                console.log(that.abnormalDate)
-            }, err => {
-                console(err);
-            })
-        },
+
         //查询事件
         searchBtn(){
             if(this.selected==='orderId'){
@@ -150,15 +132,14 @@ let Abnormal = new Vue({
 
         //异常订单列表接口反馈
         getListSuc(res){
-
+            console.log(res);
             let that=this;
             if(res.status===200){
-                that.abnormalDate=res.data;
-                console.log(that.abnormalDate);
+                that.outputDate=res.data.list;
                 //默认选中第一条数据
                 that.checkedDate=res.data.list[0].abnormalId;
-                let url='/abnormalDetail';
-                // callAxiosGet(url,{abnormalId:res.data.list[0].abnormalId},that.detailSuc,that.Fail)
+                let url='/OutputDetails';
+                callAxiosGet(url,{abnormalId:res.data.list[0].abnormalId},that.detailSuc,that.Fail)
             }else{
                 alert(res.message);
             }
@@ -176,7 +157,3 @@ let Abnormal = new Vue({
         },
     }
 });
-
-
-
-

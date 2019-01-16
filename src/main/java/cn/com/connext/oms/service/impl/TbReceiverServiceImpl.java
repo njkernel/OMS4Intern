@@ -33,4 +33,9 @@ public class TbReceiverServiceImpl implements TbReceiverService {
         }
         return false;
     }
+
+    @Override
+    public TbReceiver getReceiverById(Integer orderId) {
+        return this.getReceiverById(orderId);
+    }
 }
