@@ -157,7 +157,7 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
                 .andLike("orderId",orderId!=null?"%"+orderId+"%":null)
                 .andLike("abnormalType",abnormalType!=null?"%"+abnormalType+"%":null)
                 .andLike("modifiedUser",modifiedUser!=null?"%"+modifiedUser+"%":null);
-        example.setOrderByClause("updated DESC,created DESC");
+        example.setOrderByClause("createtime ASC");
         List<TbAbnormal> tbAbnormals = tbAbnormalMapper.selectByExample(example);
 
         PageInfo<TbAbnormal> pageInfo=new PageInfo<>(tbAbnormals);
@@ -181,17 +181,19 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         List<AbnormalGoodsOrderDTO> goods=null;
         Integer orderId = tbAbnormal.getOrderId();
         List<Integer> goodsIdByOrder = getGoodsIdByOrder(orderId);
-        double totleprice=0;
+        double orderTotleprice=0;
+        double goodsTotleprice=0;
         for (Integer id:goodsIdByOrder){
             goods = tbAbnormalMapper.getAbnormalGoodsOrderDTOByOrderId(orderId);
         }
         for (AbnormalGoodsOrderDTO abnormalGoodsOrderDTO:goods){
-            totleprice+=abnormalGoodsOrderDTO.getTotalPrice();
+            goodsTotleprice=abnormalGoodsOrderDTO.getTotalPrice()*abnormalGoodsOrderDTO.getNum();
+            orderTotleprice+=goodsTotleprice;
         }
         Map<String,Object> map=new HashMap<>();
         map.put("abnormalInfo",abnormals);
         map.put("goodsInfo",goods);
-        map.put("totleprice",totleprice);
+        map.put("totleprice",orderTotleprice);
         return map;
     }
 
