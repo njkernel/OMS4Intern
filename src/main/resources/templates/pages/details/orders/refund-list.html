@@ -43,7 +43,7 @@
     <button type="button" class="btn btn-primary" onclick="refund()">退款</button>
     <button type="button" class="btn btn-primary btn-xs" onclick="detailRefund()" >查看退款单详情</button>
     <div class="search-box">
-        <form id="frm" action="/getSearchRefund">
+        <form id="frm" action="/index/getSearchRefund">
             <input hidden name='page' value="1">
             <select name="select" id="select">
                 <option value="">--请选择--</option>
@@ -109,17 +109,17 @@
     <span>共<span id="pageCount" th:text="${map.get('pageCount')}"></span>页，当前第<span id="page" th:text="${map.get('page')}"></span>页，总共<span  th:text="${map.get('dataSize')}"></span>条数据</span>
 
     <ul class="pagination">
-        <li><a th:href="@{/getRefundIndex(page=1,size=4)}">&laquo;</a></li>
+        <li><a th:href="@{/index/getRefundIndex(page=1,size=4)}">&laquo;</a></li>
         <th:block th:each="pageSize,iterStat : ${map.get('pageSize')}">
             <th:block th:if="${map.get('page')==iterStat.index+1}">
-                <li class="active"><a th:href="@{/getRefundIndex(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+                <li class="active"><a th:href="@{/index/getRefundIndex(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
             </th:block>
             <th:block th:if="${map.get('page')!=iterStat.index+1}">
-                <li ><a th:href="@{/getRefundIndex(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+                <li ><a th:href="@{/index/getRefundIndex(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
             </th:block>
         </th:block>
 
-        <li><a th:href="@{/getRefundIndex(page=${map.get('pageCount')},size=4)}">&raquo;</a></li>
+        <li><a th:href="@{/index/getRefundIndex(page=${map.get('pageCount')},size=4)}">&raquo;</a></li>
     </ul>
 </div>
 <div id="popup" class="popup" style="top: -400px;">

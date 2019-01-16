@@ -51,7 +51,6 @@ function refund() {
     $('input[name="checkid"]:checked').each(function(){
         arr.push($(this).val());
     });
-    alert(arr);
     if(arr.length>0){
         if(confirm_){
             $.ajax({
@@ -60,7 +59,6 @@ function refund() {
                 url:"/refund",
                 data:{"refundIdList":arr.join(",")},
                 success:function (msg) {
-                    alert(msg);
                     if(msg=="success"){
                         alert("退款成功")
                         location.reload() ;

@@ -10,7 +10,7 @@ function cancel() {
             $.ajax({
                 ContentType:"application/json;charset=UTF-8",
                 type:"post",
-                url:"/cancelOrder",
+                url:"/index/cancelOrder",
                 data:{"refundIdList":arr.join(",")},
                 success:function (msg) {
                     if(msg=="success"){

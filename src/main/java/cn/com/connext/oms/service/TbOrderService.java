@@ -56,7 +56,7 @@ public interface TbOrderService {
    * @Author: Lili Chen 
    * @Date: 2019/1/8 
    */
-    boolean cancelOrder(Integer[] orderIdList);
+    boolean cancelOrder(Integer[] orderIdList,String userName);
     
     
     /** 
