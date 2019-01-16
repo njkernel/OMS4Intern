@@ -171,6 +171,17 @@ let orderList = new Vue({
         Fail(err){
             console.log("网络连接错误")
         },
+        orderCheck(){
+            let url='/orderCheck?orderId='+this.checkedDate;
+            callAxiosGetNoParam(url,this.orderCheckSuc,this.orderCheckFail);
+        },
+        orderCheckSuc(res){
+            alert(res.message);
+            this.initTable()
+        },
+        orderCheckFail(res){
+            alert("请先选择订单")
+        }
     }
 });
 
