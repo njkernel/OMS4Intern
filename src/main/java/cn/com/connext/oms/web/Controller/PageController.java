@@ -27,6 +27,8 @@ import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 
 import io.swagger.annotations.ApiOperation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,6 +54,9 @@ import java.util.Map;
  */
 @Controller
 public class PageController {
+
+
+
 
     @Autowired
     private TbRefundService tbRefundService;
@@ -347,7 +352,7 @@ public class PageController {
             model.addAttribute("tbReturnGoodsList",tbReturnGoodsList);
             model.addAttribute("tbReturnService",tbReturnService);
         }catch (Exception e){
-            e.printStackTrace();
+            return null;
         }
         return "pages/specific/addstock";
     }
