@@ -14,6 +14,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -189,7 +190,7 @@ public class TbReturnController {
 
         @GetMapping("/checkReturnOrExchange")
         @ApiOperation(value = "退货/换货审核分流接口")
-        public BaseResult checkReturnOrExchange (@RequestParam("returnId") List < Integer > returnIds) {
+        public BaseResult checkReturnOrExchange (@RequestParam("returnId") List<Integer> returnIds) {
 
             Boolean rsReturn = false;
             int rsExchange = 0;
@@ -204,7 +205,6 @@ public class TbReturnController {
                     //log
                     if (RETURN_TYPE.equals(tbReturn.getReturnType())) {
                         //将退货单生成单独的list交给退货部分处理
-
                         tbReturnList.add(tbReturn.getReturnId());
 
                     } else if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
@@ -218,7 +218,8 @@ public class TbReturnController {
             try {
                 //获取通过审核的订单，进行处理
                 List<Integer> returnOrdersList = tbReturnService.returnOrdersAudit(tbReturnList);
-                if (0 != returnOrdersList.size()) {
+//                if (0 != returnOrdersList.size()) {
+                if (!CollectionUtils.isEmpty(returnOrdersList)) {
                     tbReturnService.createInputOrder(returnOrdersList);
                     BaseResult.success("生成入库单成功并成功发送");
                 } else {
