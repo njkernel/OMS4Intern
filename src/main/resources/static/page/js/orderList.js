@@ -71,11 +71,23 @@ let orderList = new Vue({
             this.searchDate.abnormalType='';
             this.searchDate.modifiedUser='';
         },
+
+        // 路由操作接口 Jay新增 2019/1/16
+        updateRoute(){
+            let url='/UpdateOrderIntoWaitOutPut';
+            callAxiosGet(url,{id:this.checkedDate},this.Suc,this.Fail)
+        },
         //异常处理
         abnormalHandle(){
             let url='/abnormalHandle';
             callAxiosGet(url,{abnormalId:this.checkedNames[0]},this.Suc,this.Fail)
         },
+        // 出库操作，将订单出库 Jay新增 2019/1/16
+        outputOrder(){
+            let url='/Output';
+            callAxiosGet(url,{id:this.checkedDate},this.Suc,this.Fail)
+        },
+
         //把当前行id存在缓存中
             toPageStorage(){
                  localStorage.setItem("goodsId", this.checkedDate);
