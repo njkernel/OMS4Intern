@@ -192,6 +192,17 @@ let orderList = new Vue({
             }).catch(function (err) {
                 console.log(err)
             });
+        },
+        orderCheck(){
+            let url='/orderCheck?orderId='+this.checkedDate;
+            callAxiosGetNoParam(url,this.orderCheckSuc,this.orderCheckFail);
+        },
+        orderCheckSuc(res){
+            alert(res.message);
+            this.initTable()
+        },
+        orderCheckFail(res){
+            alert("请先选择订单")
         }
     }
 });

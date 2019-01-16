@@ -87,7 +87,7 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
             tbOrder.setOrderState("订单异常");
             tbOrder.setUpdated(new Date());
             tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
-            return BaseResult.fail("异常", list);
+            return BaseResult.fail("订单存在异常，请先进行处理", list);
         }
         else {
             tbOrder.setOrderState("待路由");
@@ -157,6 +157,7 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
                 .andLike("orderId",orderId!=null?"%"+orderId+"%":null)
                 .andLike("abnormalType",abnormalType!=null?"%"+abnormalType+"%":null)
                 .andLike("modifiedUser",modifiedUser!=null?"%"+modifiedUser+"%":null);
+        example.setOrderByClause("updated DESC,created DESC");
         List<TbAbnormal> tbAbnormals = tbAbnormalMapper.selectByExample(example);
 
         PageInfo<TbAbnormal> pageInfo=new PageInfo<>(tbAbnormals);
@@ -180,12 +181,17 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         List<AbnormalGoodsOrderDTO> goods=null;
         Integer orderId = tbAbnormal.getOrderId();
         List<Integer> goodsIdByOrder = getGoodsIdByOrder(orderId);
+        double totleprice=0;
         for (Integer id:goodsIdByOrder){
             goods = tbAbnormalMapper.getAbnormalGoodsOrderDTOByOrderId(orderId);
+        }
+        for (AbnormalGoodsOrderDTO abnormalGoodsOrderDTO:goods){
+            totleprice+=abnormalGoodsOrderDTO.getTotalPrice();
         }
         Map<String,Object> map=new HashMap<>();
         map.put("abnormalInfo",abnormals);
         map.put("goodsInfo",goods);
+        map.put("totleprice",totleprice);
         return map;
     }
 
