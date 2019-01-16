@@ -17,7 +17,7 @@
 <div id="orderList">
     <div id="mask_shadow"></div>
     <div class="btn-div">
-        <button type="button" class="btn btn-primary">预检</button>
+        <button type="button" class="btn btn-primary" @click="orderCheck">预检</button>
         <button type="button" class="btn btn-primary">路由</button>
         <button type="button" class="btn btn-primary" onclick="">取消</button>
         <button type="button" class="btn btn-primary">出库</button>
@@ -39,7 +39,6 @@
         <table class="table table-condensed">
             <thead>
             <tr>
-                <th>序号</th>
                 <th>批量</th>
                 <th>订单号</th>
                 <th>订单状态</th>
@@ -51,7 +50,6 @@
                 <th>物流单号</th>
                 <th>收货人</th>
                 <th>收货地址</th>
-                <th>操作</th>
             </tr>
             </thead>
             <tbody>
@@ -59,11 +57,9 @@
                 <tr>
                     <td>
                         <input type="radio" :value="list.orderId" v-model="checkedDate" >
-                        <label>{{checkedDate}}</label>
                     </td>
-                    <td>{{list.basicState}}</td>
-                    <td>{{list.channelCode}}</td>
-                    <td>{{list.basicState}}</td>
+                    <td>{{list.orderId}}</td>
+                    <td>{{list.orderState}}</td>
                     <td>{{list.orderSource}}</td>
                     <td>{{list.paymentWay}}</td>
                     <td>{{list.sumPrice}}</td>
@@ -72,7 +68,6 @@
                     <td>{{list.deliveryCode}}</td>
                     <td>{{list.tbReceiver.receiverName}}</td>
                     <td>{{list.tbReceiver.receiverDistrict+"省"+list.tbReceiver.receiverCity+"市"+list.tbReceiver.receiverAddress}}</td>
-
                 </tr>
             </template>
             </tbody>
@@ -134,7 +129,7 @@
             $("body").css("overflow-y", "hidden");
         });
 
-        $('#orderpopup').orderpopup();
+        /*$('#orderpopup').orderpopup();*/
         $("body").css("overflow-y", "hidden");
         $("#search-btn").click(function (){
             var valSelect=$("#select option:selected").val();
