@@ -61,20 +61,24 @@ public class PageController {
     @Autowired
     private OutputService outputService;
 
-
-
     @Autowired
     private TbReturnService tbReturnService;
-    /**
-    * @Author: caps
-    * @Description:异常订单列表详情页面
-    * @Param: []
-    * @Return: java.lang.String
-    * @Create: 2019/1/12 16:01
-    */
-    @RequestMapping("/abnormalModel")
-    public String abnormalDetail(){
-        return "pages/specific/abnormal-order";
+
+    @Autowired
+    private TbAbnormalService tbAbnormalService;
+
+
+    /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
+    @GetMapping("/abnormalDetail")
+    @ApiOperation(value = "异常订单详情接口")
+    public String abnormalDetail(int abnormalId,Model model){
+        try {
+            Map<String, Object> map = tbAbnormalService.abnormalDetail(abnormalId);
+            model.addAttribute("map",map);
+            return "pages/specific/abnormal-order";
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
