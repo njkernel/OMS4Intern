@@ -33,7 +33,7 @@ public class TbRefundController {
         return map;
     }
 
-    @PostMapping("/refund")
+    @PostMapping("/index/refund")
     @ApiOperation(value = "进行退款操作")
     public String refund(Integer[] refundIdList){
         boolean b=tbRefundService.updateRefundListStatue(refundIdList);

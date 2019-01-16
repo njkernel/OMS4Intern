@@ -24,5 +24,5 @@ public interface TbReceiverMapper extends MyMapper<TbReceiver> {
     * @Author: Lili Chen
     * @Date: 2019/1/9
     */
-    TbReceiver getReceiverById(Integer orderId);
+    TbReceiver getReceiverById(Integer receiverId);
 }
