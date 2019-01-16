@@ -56,7 +56,7 @@ function refund() {
             $.ajax({
                 ContentType:"application/json;charset=UTF-8",
                 type:"post",
-                url:"/refund",
+                url:"/index/refund",
                 data:{"refundIdList":arr.join(",")},
                 success:function (msg) {
                     if(msg=="success"){
@@ -99,6 +99,18 @@ function queryRefund() {
             })
         }
 
+
+    }
+
+    function detailRefund() {
+        var arr=[];//定义一个数组
+        var b=$("input[type='checkbox']:checked").length
+        var a=$('input[name="checkid"]:checked').val();
+        if(b==1){
+            $("#iframe").attr("src","/index/refundDetail?refundId="+a);
+        }else{
+
+        }
 
     }
 }

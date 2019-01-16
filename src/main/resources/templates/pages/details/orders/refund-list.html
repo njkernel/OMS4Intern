@@ -143,23 +143,5 @@
 </div>
 </body>
 <script type="text/javascript" src="/page/js/refund.js"></script>
-<script type="text/javascript">
-    function detailRefund() {
-        var arr=[];//定义一个数组
-        var b=$("input[type='checkbox']:checked").length
-        var a=$('input[name="checkid"]:checked').val();
-        /*$(a).each(function(){
-            arr.push($(this).val());
-        });*/
-
-        if(b==1){
-           $("#iframe").attr("src","/refundDetail?refundId="+a);
-        }else{
-
-        }
-
-    }
-
-</script>
 
 </html>

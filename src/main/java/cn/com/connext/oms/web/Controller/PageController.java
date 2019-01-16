@@ -366,7 +366,7 @@ public class PageController {
     * @Author: Lili Chen 
     * @Date: 2019/1/16 
     */
-    @RequestMapping("/refundDetail")
+    @RequestMapping("/index/refundDetail")
     public String refundDetail(Integer refundId,Model model) {
         TbRefund tbRefund=tbRefundService.getRefundById(refundId);
         List<TbGoodsOrder> GoodsOrderList=tbGoodsOrderService.getListGoodsOrderById(tbRefund.getOrderId());

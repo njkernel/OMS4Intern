@@ -157,7 +157,7 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
                 .andLike("orderId",orderId!=null?"%"+orderId+"%":null)
                 .andLike("abnormalType",abnormalType!=null?"%"+abnormalType+"%":null)
                 .andLike("modifiedUser",modifiedUser!=null?"%"+modifiedUser+"%":null);
-        example.setOrderByClause("updated DESC,created DESC");
+        /*example.setOrderByClause("updated DESC,created DESC");*/
         List<TbAbnormal> tbAbnormals = tbAbnormalMapper.selectByExample(example);
 
         PageInfo<TbAbnormal> pageInfo=new PageInfo<>(tbAbnormals);

@@ -7,9 +7,10 @@ let orderList = new Vue({
                 pageSize:5,
                 pageNum:1,
             },
+            orderId:"",
             orderListDate:[],
             //选中行的记录id
-            checkedDate:"",
+            checkedNames:[],
             //搜索输入框
             searchInput:"",
             //异常单数据
@@ -81,10 +82,11 @@ let orderList = new Vue({
                  /!*console.log(sessionStorage.getItem("id"))*!/
              },
 
-        //异常订单详情
+        //订单详情
         orderDetails(){
-            console.log(this.checkedDate);
-            document.getElementById('iframeId3').src="/orderDetail?orderId="+this.checkedDate;
+            this.orderId=this.checkedNames[0],
+            console.log(this.orderId);
+            document.getElementById('iframeId3').src="/orderDetail?orderId="+this.orderId;
         },
 
 
