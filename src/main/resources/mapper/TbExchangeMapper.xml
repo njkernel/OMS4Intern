@@ -178,8 +178,8 @@
     </select>
 
     <update id="updateTbReturn" parameterType="java.util.List">
-        UPDATE tb_return
-        <foreach collection="list" item="bean" index="index" open="" close="" separator=";">
+        <foreach collection="list" item="bean" separator=";">
+            UPDATE tb_return
             set return_state=#{bean.returnState},modified_user=#{bean.modifiedUser},updated=#{bean.updated}
             where return_id = #{bean.returnId}
         </foreach>

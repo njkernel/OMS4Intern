@@ -21,8 +21,8 @@
         <button type="button" class="btn btn-primary" @click="updateRoute">路由</button>
         <button type="button" class="btn btn-primary" onclick="cancel()">取消</button>
         <button type="button" class="btn btn-primary" @click="outputOrder">出库</button>
-        <button type="button" class="btn btn-primary">退货</button>
-        <button type="button" class="btn btn-primary">换货</button>
+        <button type="button" class="btn btn-primary" id="return" data-toggle="modal" data-target="#demoModal" @click="toRequestForGoods">退货</button>
+        <button type="button" class="btn btn-primary" id="exchange" data-toggle="modal" data-target="#demoModal" @click="toRequestForGoods">换货</button>
         <button type="button" class="btn btn-primary" id="MyAbnormalModel" @click="orderDetails">查看订单</button>
         <div class="search-box">
             <form action="">
@@ -57,7 +57,7 @@
             <template v-for="list in orderListDate.list" v-cloak>
                 <tr>
                     <td>
-                    <input type="checkbox"  :value="list.orderId" v-model="checkedNames">
+                        <input type="checkbox" :value="list.orderId" v-model="checkedNames" >
                     </td>
                     <td>{{list.orderId}}</td>
                     <td>{{list.orderState}}</td>
@@ -126,13 +126,78 @@
         <div class="cont">
             <iframe src="" scrolling="auto" id="iframeId3" style="width:100%;height:100%;border:0px;"></iframe></div>
     </div>
+    <!--yonyong弹窗界面-->
+    <!--<div v-if="status=='exist'">-->
+    <div>
+        <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">退货管理</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal refund" role="form">
+                            <div class="form-group ">
+                                <label for="fiarstnme" class="col-sm-2 control-label">订单号:{{orderId}}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="fiarstnme" style="border:0;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <table class="table table-condensed" >
+                                        <thead>
+                                        <tr>
+                                            <th>商品ID</th>
+                                            <th>商品编码</th>
+                                            <th>商品名称</th>
+                                            <th>商品单价</th>
+                                            <th>退货数量</th>
+                                            <!--<th>商品总价</th>-->
+                                        </tr>
+                                        </thead>
+                                        <template v-for="(test,index) in orderGoodsInfo">
+                                            <tr>
+                                                <td>{{test[0].goodsId}}</td>
+                                                <td>{{test[0].goodsCode}}</td>
+                                                <td>{{test[0].goodsName}}</td>
+                                                <td>{{test[0].goodsPrice}}</td>
+                                                <td class="refund">
+                                                    <div class="control-btn">
+                                                        <div class="control-btn">
+                                                            <button type="button"  class="subtract" @click="countDown(index)">-</button>
+                                                            <input type= "text" class="txtnum" v-model="test[0].goodNum" style="width: 22px;">
+                                                            <button  type="button"  class="plus" @click="countUp(index)">+</button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <!--<td>1000</td>-->
+                                                <td></td>
+                                            </tr>
+                                        </template>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary save"  data-dismiss="modal" id="save" @click="exchangeReturn">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         $(function () {
             $('#popup').popup();
             $("body").css("overflow-y", "hidden");
         });
 
-        $('#orderpopup').orderpopup();
+        /*$('#orderpopup').orderpopup();*/
         $("body").css("overflow-y", "hidden");
         $("#search-btn").click(function (){
             var valSelect=$("#select option:selected").val();
@@ -155,4 +220,5 @@
 <script type="text/javascript" src="/commons/js/axiosUtils.js"></script>
 <script type="text/javascript" src="/page/js/orderList.js"></script>
 <script type="text/javascript" src="/page/js/cancel.js"></script>
+<script src="/page/js/exchangeOrder.js"></script>
 </html>
