@@ -7,9 +7,10 @@ let orderList = new Vue({
                 pageSize:5,
                 pageNum:1,
             },
+            orderId : "",
             orderListDate:[],
             //选中行的记录id
-            checkedDate:"",
+            checkedDate:0,
             //搜索输入框
             searchInput:"",
             //异常单数据
@@ -33,7 +34,15 @@ let orderList = new Vue({
 
             //yonyong添加
             //订单商品详情，用于退换货选择数量信息
-            orderGoods : []
+            orderGoodsInfo : [],
+            nums : 0,
+            orderGoods :{
+                orderId : 0,
+                nums : 0,
+                goodId : 0,
+                goodPrice : 0,
+                status : 'exist'
+            }
         }
     },
     created: function () {
@@ -174,25 +183,39 @@ let orderList = new Vue({
         Fail(err){
             console.log("网络连接错误")
         },
+
         //yonyong添加
         //请求订单相关的商品详情
         toRequestForGoods (){
-            alert("1")
             var toRequestForGoods = this;
-            var url = "exchange/toRequest";
-            if (toRequestForGoods.checkedDate.length === 0) {
+            toRequestForGoods.status = 'notexist';
+            var url = "getGoodsList";
+            if (toRequestForGoods.checkedDate === 0) {
                 alert("请选择一条订单！");
                 return false;
-            } else if (toRequestForGoods.checkedDate.length > 1) {
-                alert("只能对一条订单进行操作！")
             }
+            // else if (toRequestForGoods.checkedDate > 1) {
+            //     alert("只能对一条订单进行操作！")
+            // }
             axios.get(url,{params: {orderId : toRequestForGoods.checkedDate}}).then(function(response) {
-                console.log(response.data.data);
-                toRequestForGoods.orderGoods=response.data.data;
+                toRequestForGoods.orderId=toRequestForGoods.checkedDate;
+                toRequestForGoods.orderGoodsInfo=response.data.data;
+                toRequestForGoods.status = 'exist';
+                for (var temp in toRequestForGoods.orderGoodsInfo) {
+                    toRequestForGoods.$set(temp,"goodNum",0);
+                }
             }).catch(function (err) {
                 console.log(err)
             });
         },
+        countDown (index){
+            this.list[index].num--
+        },
+        countUp (index){
+            this.list[index].num++
+        },
+        toReturn (){},
+        toExchange (){},
         orderCheck(){
             let url='/orderCheck?orderId='+this.checkedDate;
             callAxiosGetNoParam(url,this.orderCheckSuc,this.orderCheckFail);
