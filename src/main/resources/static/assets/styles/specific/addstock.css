@@ -19,7 +19,7 @@ body{
 }
 .main-body{
     background-color: rgb(255,255,255);
-    height: 850px;
+
     position: relative;
 }
 .main-content1{
@@ -68,10 +68,6 @@ input{
 .title-content3{
     height: 50px;
     /* background-color: forestgreen; */
-}
-.main-content2{
-    height: 640px;
-    /* background-color: gold; */
 }
 .main-content2-title{
     height: 40px;
