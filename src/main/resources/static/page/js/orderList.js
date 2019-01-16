@@ -4,7 +4,7 @@ let orderList = new Vue({
         return {
             //分页数据
             page:{
-                pageSize:5,
+                pageSize:3,
                 pageNum:1,
             },
             orderId:"",
@@ -182,9 +182,21 @@ let orderList = new Vue({
 
         },
         orderCheck(){
-            this.orderId=this.checkedNames[0];
-            let url='/orderCheck?orderId='+this.orderId;
-            callAxiosGetNoParam(url,this.orderCheckSuc,this.orderCheckFail);
+            if (this.checkedNames.length===0){
+                alert("请先选择订单");
+                return null
+            }
+            if (this.checkedNames.length===1){
+                this.orderId=this.checkedNames[0];
+                let url='/orderCheck?orderId='+this.orderId;
+                callAxiosGetNoParam(url,this.orderCheckSuc,this.orderCheckFail);
+            }
+            else{
+                alert("当前只支持单笔订单预检");
+                return null;
+            }
+
+
         },
         orderCheckSuc(res){
             alert(res.message);

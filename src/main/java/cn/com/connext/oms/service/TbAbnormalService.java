@@ -4,6 +4,7 @@ import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.entity.TbAbnormal;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -23,7 +24,7 @@ public interface TbAbnormalService {
      * @Create: 2019/1/7 17:50
      */
 
-    BaseResult checkGoods(int orderId);
+    BaseResult checkGoods(int orderId, HttpSession session);
 
     /**
      * @Author: caps
