@@ -34,9 +34,9 @@ public class TbOrderServiceImplTest {
         TbOrder order2=tbOrderMapper.getOrderById(1901060002);
         orderList.add(order);
         orderList.add(order2);*/
-       Integer[] orderIdList={1901060003,1901060004};
+     /*  Integer[] orderIdList={1901060003,1901060004};
        boolean b= tbOrderService.cancelOrder(orderIdList);
-        System.out.println(b);
+        System.out.println(b);*/
     }
 
    /* @Test

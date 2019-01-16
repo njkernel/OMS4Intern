@@ -266,30 +266,5 @@ public class TbRefundServiceImpl implements TbRefundService {
         map2.put("pageSize",pageSize);
         map2.put("dataSize",refunds.size());
         return map2;
-       /* Map map=new HashMap<>();//存查看退款单分页的参数
-        List<TbRefund> tbRefundList =new ArrayList<>();
-        TbOrder order=tbOrderMapper.getOrderByCode(orderCode);//根据订单编码得到相应的订单
-        PageHelper.startPage(page,size);//利用pageInfo
-        if(order!=null){//如果存在这个订单
-            tbRefundList = tbRefundMapper.getListRefundByOrderId(order.getOrderId());//根据订单号得到退款单列表
-        }else{//如果相应的订单为空
-            map.put("page",1);
-            map.put("pageCount",1);
-            return map;
-        }
-        PageInfo<TbRefund> pageInfo=new PageInfo<>(tbRefundList);
-        if(page>pageInfo.getPages()){//如果当前页大于总页数
-            page=pageInfo.getPages();
-            PageHelper.startPage(page,size);
-            tbRefundList = tbRefundMapper.getListRefundByOrderId(order.getOrderId());
-        }else if(page==0){//如果页数为0
-            page=1;
-            PageHelper.startPage(page,size);
-            tbRefundList = tbRefundMapper.getListRefundByOrderId(order.getOrderId());//根据订单id获得退款单列表
-        }
-        map.put("refundList",tbRefundList);
-        map.put("page",page);
-        map.put("pageCount",pageInfo.getPages());
-        return map;*/
     }
 }

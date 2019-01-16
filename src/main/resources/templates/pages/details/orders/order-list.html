@@ -17,9 +17,9 @@
 <div id="orderList">
     <div id="mask_shadow"></div>
     <div class="btn-div">
-        <button type="button" class="btn btn-primary">预检</button>
+        <button type="button" class="btn btn-primary" @click="orderCheck">预检</button>
         <button type="button" class="btn btn-primary">路由</button>
-        <button type="button" class="btn btn-primary" onclick="">取消</button>
+        <button type="button" class="btn btn-primary" onclick="cancel()">取消</button>
         <button type="button" class="btn btn-primary">出库</button>
         <button type="button" class="btn btn-primary">退货</button>
         <button type="button" class="btn btn-primary">换货</button>
@@ -39,33 +39,31 @@
         <table class="table table-condensed">
             <thead>
             <tr>
-                <th>序号</th>
                 <th>批量</th>
                 <th>订单号</th>
                 <th>订单状态</th>
                 <th>订单来源</th>
                 <th>支付方式</th>
+                <th>仓库备注</th>
                 <th>订单总价</th>
                 <th>发送仓库</th>
                 <th>物流公司</th>
                 <th>物流单号</th>
                 <th>收货人</th>
                 <th>收货地址</th>
-                <th>操作</th>
             </tr>
             </thead>
             <tbody>
             <template v-for="list in orderListDate.list" v-cloak>
                 <tr>
                     <td>
-                        <input type="radio" :value="list.orderId" v-model="checkedDate" >
-                        <label>{{checkedDate}}</label>
+                    <input type="checkbox"  :value="list.orderId" v-model="checkedNames">
                     </td>
-                    <td>{{list.basicState}}</td>
-                    <td>{{list.orderCode}}</td>
-                    <td>{{list.basicState}}</td>
+                    <td>{{list.orderId}}</td>
+                    <td>{{list.orderState}}</td>
                     <td>{{list.orderSource}}</td>
                     <td>{{list.paymentWay}}</td>
+                    <td>{{list.basicState}}</td>
                     <td>{{list.sumPrice}}</td>
                     <td>{{list.deliveryWarehouse}}</td>
                     <td>{{list.deliveryCompany}}</td>
@@ -156,4 +154,5 @@
 <script type="text/javascript" src="/commons/plugins/iview/js/axios.min.js"></script>
 <script type="text/javascript" src="/commons/js/axiosUtils.js"></script>
 <script type="text/javascript" src="/page/js/orderList.js"></script>
+<script type="text/javascript" src="/page/js/cancel.js"></script>
 </html>

@@ -61,9 +61,22 @@
     <result column="receiver_id" jdbcType="INTEGER" property="receiverId" />
     </association>
   </resultMap>
+    <resultMap id="outputMap" type="cn.com.connext.oms.entity.TbOutput">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="output_id" jdbcType="INTEGER" property="outputId" />
+        <result column="output_code" jdbcType="VARCHAR" property="outputCode" />
+        <result column="order_id" jdbcType="INTEGER" property="orderId" />
+        <result column="output_state" jdbcType="VARCHAR" property="outputState" />
+        <result column="created" jdbcType="TIMESTAMP" property="created" />
+        <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+        <result column="synchronize_state" jdbcType="VARCHAR" property="synchronizeState" />
+    </resultMap>
 
 
-  <update id="updateOutputListStatue" parameterType="java.util.List">
+
+    <update id="updateOutputListStatue" parameterType="java.util.List">
     UPDATE tb_output
     SET output_state = CASE output_id
     <foreach collection="list" item="item">
@@ -77,7 +90,7 @@
     </foreach>
   </update>
 
-  <select id="getOutputByOrderId" parameterType="Integer" resultMap="BaseResultMap">
+  <select id="getOutputByOrderId" parameterType="Integer" resultMap="outputMap">
         select * from tb_output where order_id=#{orderId}
     </select>
 

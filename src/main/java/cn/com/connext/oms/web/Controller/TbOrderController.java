@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -61,10 +63,15 @@ public class TbOrderController {
          return "201";
     }
 
-    @PostMapping("/cancelOrder")
+    @PostMapping("/index/cancelOrder")
     @ApiOperation(value = "主动取消订单接口")
-    public String cancelOrder(Integer[] orderIdList){
-        boolean b=tbOrderService.cancelOrder(orderIdList);
+    public String cancelOrder(Integer[] orderIdList, HttpServletRequest request){
+        HttpSession session=request.getSession();
+        String userName="";//保存用户名
+        if(session.getAttribute("OMSUSER")!=null){
+             userName=session.getAttribute("OMSUSER").toString();
+        }
+        boolean b=tbOrderService.cancelOrder(orderIdList,"cll");
         if(b){
             return "success";
         }else{

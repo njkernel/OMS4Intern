@@ -40,6 +40,7 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Autowired
     private TbStockMapper tbStockMapper;
 
+
     /**
      * @Author: caps
      * @Description: 获取所有订单
@@ -99,7 +100,7 @@ public class TbOrderServiceImpl implements TbOrderService {
     */
     @Transactional(readOnly = false)
     @Override
-    public boolean cancelOrder(Integer[] orderIdList) {
+    public boolean cancelOrder(Integer[] orderIdList,String userName) {
         Date date=new Date();
         List<TbOrder> tbOrderList=new ArrayList<>();//保存需要更改状态的订单
         List<TbStock> stockList=new ArrayList<>();//保存需要更新的库存
@@ -176,9 +177,8 @@ public class TbOrderServiceImpl implements TbOrderService {
 
                 TbRefund refund=new TbRefund();
                 refund.setCreatetd(date);
-                refund.setModifiedUser("cll");
-                UUID uuid = UUID.randomUUID();
-                refund.setRefundCode(uuid+"");
+                refund.setModifiedUser(userName);
+                refund.setRefundCode(CodeGenerateUtils.creatUUID());
                 refund.setRefundPrice(tbOrder.getSumPrice());
                 refund.setOrderId(tbOrder.getOrderId());
                 refund.setRefundState("待退款");
@@ -199,12 +199,12 @@ public class TbOrderServiceImpl implements TbOrderService {
                     if(number.equals("200")) {//如果在wms取消订单成功
                         for (TbOrder order : tbOrderList) {
                             order.setBasicState("无");
-                            order.setModifiedUser("cll");
+                            order.setModifiedUser(userName);
                             order.setOrderState("已取消");
                             order.setUpdated(date);
                             TbOutput output = tbOutputMapper.getOutputByOrderId(order.getOrderId());
                             output.setOutputState("已取消");
-                            output.setModifiedUser("cll");
+                            output.setModifiedUser(userName);
                             outputs.add(output);//保存需要取消的出库单
                         }
                         orderResult = tbOrderMapper.updateOrderListStatue(tbOrderList);//订单状态设置为已取消
@@ -219,8 +219,8 @@ public class TbOrderServiceImpl implements TbOrderService {
                                 order.setModifiedUser("仓库请求修改");
                                 output.setModifiedUser("仓库请求修改");
                             }else{
-                                order.setModifiedUser("cll");
-                                output.setModifiedUser("cll");
+                                order.setModifiedUser(userName);
+                                output.setModifiedUser(userName);
                             }
                             order.setOrderState("已取消");
                             order.setUpdated(date);
