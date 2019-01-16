@@ -57,7 +57,7 @@
             <template v-for="list in orderListDate.list" v-cloak>
                 <tr>
                     <td>
-                    <input type="checkbox"  :value="list.orderId" v-model="checkedNames">
+                        <input type="checkbox" :value="list.orderId" v-model="checkedNames" >
                     </td>
                     <td>{{list.orderId}}</td>
                     <td>{{list.orderState}}</td>
@@ -197,7 +197,7 @@
             $("body").css("overflow-y", "hidden");
         });
 
-        $('#orderpopup').orderpopup();
+        /*$('#orderpopup').orderpopup();*/
         $("body").css("overflow-y", "hidden");
         $("#search-btn").click(function (){
             var valSelect=$("#select option:selected").val();
