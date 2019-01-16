@@ -202,7 +202,7 @@ public class TbReturnServiceImpl implements TbReturnService {
 
 
                 try {
-                    restTemplate.postForEntity("http://10.129.100.38:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
+                    restTemplate.postForEntity("http://10.129.100.35:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
                     TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
                     List<TbReturn> tbReturnsList = new ArrayList<>();
                     tbReturn.setOrderId(orderId);
@@ -210,10 +210,10 @@ public class TbReturnServiceImpl implements TbReturnService {
                     tbReturn.setUpdated(new Date());
                     tbReturnsList.add(tbReturn);
 
-                    tbInput.setInputState("接收成功");
-                    tbInput.setUpdated(new Date());
-                    tbInput.setSynchronizeState("已同步");
-                    tbExchangeMapper.updateTbInput(tbInput);
+                    tbInput1.setInputState("接收成功");
+                    tbInput1.setUpdated(new Date());
+                    tbInput1.setSynchronizeState("已同步");
+                    tbExchangeMapper.updateTbInput(tbInput1);
                     tbExchangeMapper.updateTbReturn(tbReturnsList);
                 } catch (Exception e1) {
                     return false;
@@ -333,6 +333,11 @@ public class TbReturnServiceImpl implements TbReturnService {
     @Override
     public List<TbReturnGoods> getTbReturnGoodsById(int orderId) {
         return tbReturnMapper.getTbReturnGoodsById(orderId);
+    }
+
+    @Override
+    public TbGoods getGoodsById(int goodsId) {
+        return tbReturnMapper.getGoodsById(goodsId);
     }
 
 

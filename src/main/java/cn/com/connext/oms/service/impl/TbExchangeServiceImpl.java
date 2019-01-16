@@ -36,7 +36,7 @@ import java.util.List;
 public class TbExchangeServiceImpl implements TbExchangeService {
   private final String TOKENS = "yonyong";
   private static long MISTIMING;
-  public static String IP="10.129.100.51";
+  public static String IP="10.129.100.35";
   public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
 
   @Autowired RestTemplate restTemplate;
@@ -279,7 +279,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
           detailDTOS.add(new InRepertoryDetailDTO(tbGoods.getGoodsCode(), t.getNumber()));
         }
 
-        String token = AES.AESEncode(TOKENS, String.valueOf(tbInput1.getInputId()));
+        String token = AES.AESEncode(TOKENS, String.valueOf(tbInput1.getInputId()));//1
         InRepertoryDTO inRepertoryDTO =
                 new InRepertoryDTO(
                         token,
@@ -301,14 +301,14 @@ public class TbExchangeServiceImpl implements TbExchangeService {
           tbReturn.setReturnState("等待收货");
           tbReturn.setUpdated(new Date());
           tbReturns.add(tbReturn);
-          tbInput.setInputState("接收成功");
-          tbInput.setUpdated(new Date());
-          tbInput.setSynchronizeState("已同步");
+          tbInput1.setInputState("接收成功");
+          tbInput1.setUpdated(new Date());
+          tbInput1.setSynchronizeState("已同步");
           restTemplate.postForEntity(
                   URL,
                   inRepertoryDTO.toMap(),
                   String.class);
-          tbExchangeMapper.updateTbInput(tbInput);
+          tbExchangeMapper.updateTbInput(tbInput1);
           tbExchangeMapper.updateTbReturn(tbReturns);
         } catch (Exception e1) {
           return -1;

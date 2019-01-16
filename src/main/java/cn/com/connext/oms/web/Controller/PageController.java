@@ -11,7 +11,10 @@ import cn.com.connext.oms.service.TbRefundService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;
+import cn.com.connext.oms.entity.TbGoods;
+import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbOrderDetails;
+import cn.com.connext.oms.entity.TbReturnGoods;
 import cn.com.connext.oms.service.*;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 
@@ -27,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -245,13 +249,54 @@ public class PageController {
         return mv;
     }
 
+
     @RequestMapping("/orderDetail")
     public String orderDetail(){
         return "pages/specific/order-detail";
     }
 
     @RequestMapping("/orderList")
-    public String orderList(){
+    public String orderList() {
         return "pages/details/orders/order-list";
+    }
+
+
+    /**
+     * created By Aaron
+     * 入库单页面
+     * @return
+     */
+    @GetMapping({"/tbInput"})
+    public String toInput(){
+        return "pages/details/orders/warehouse-in-list";
+    }
+
+    /**
+     * created By Aaron
+     * 入库单详情页
+     */
+    @GetMapping({"/inputDetails"})
+    public String inputDetails(@RequestParam("orderId") int orderId,Model model){
+
+        try {
+            TbGoods tbGoods =new TbGoods();
+            List goods = new ArrayList();
+            ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
+            TbInput tbInput = tbReturnService.getInputByOrderId(orderId);
+            List<TbReturnGoods> tbReturnGoodsList = tbReturnService.getTbReturnGoodsById(orderId);
+            for (int i = 0;i<tbReturnGoodsList.size();i++){
+                 tbGoods = tbReturnService.getGoodsById(tbReturnGoodsList.get(i).getGoodsId());
+                 goods.add(tbGoods);
+            }
+
+            model.addAttribute("goods",goods);
+            model.addAttribute("returnDetails",returnDetails);
+            model.addAttribute("tbInput",tbInput);
+            model.addAttribute("tbReturnGoodsList",tbReturnGoodsList);
+            model.addAttribute("tbReturnService",tbReturnService);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "pages/specific/addstock";
     }
 }

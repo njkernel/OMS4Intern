@@ -1,6 +1,7 @@
 package cn.com.connext.oms.mapper;
 
 import cn.com.connext.oms.commons.dto.InputDTO;
+import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.entity.TbInput;
 import cn.com.connext.oms.entity.TbReturn;
 import cn.com.connext.oms.entity.TbReturnGoods;
@@ -130,4 +131,11 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      * @return
      */
     List<TbReturnGoods> getTbReturnGoodsById(@Param("orderId")int orderId);
+
+    /**
+     * 根据商品id查询商品信息
+     * @param goodsId
+     * @return
+     */
+    TbGoods getGoodsById(@Param("goodsId") int goodsId);
 }
