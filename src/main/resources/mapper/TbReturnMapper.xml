@@ -126,4 +126,7 @@
     WHERE goods_id = #{goodsId}
   </select>
 
+
+
+
 </mapper>

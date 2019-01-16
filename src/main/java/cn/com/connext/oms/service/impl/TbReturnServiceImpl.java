@@ -37,11 +37,11 @@ import java.util.List;
 @Service
 public class TbReturnServiceImpl implements TbReturnService {
     private static long MISTIMING = 1296000000;
-    private final String TOKENS = "yonyong";
-    String unchecked = "待审核";
-    String getFailed = "收货失败";
-    String getSuccess = "收货成功";
-    String getFeedBackOutTime = "超15天未收货";
+    private static final String TOKENS = "yonyong";
+    private static final String UNCHECKED = "待审核";
+    private static final String GET_FAILED = "收货失败";
+    private static final String GET_SUCCESS = "收货成功";
+    private static final String GET_FEEDBACK_OUTTIME = "超15天未收货";
 
     @Autowired
     RestTemplate restTemplate;
@@ -91,7 +91,7 @@ public class TbReturnServiceImpl implements TbReturnService {
             String state = tbReturnMapper.selectReturnOrderStateById(returnList.get(i));
             updated = new Date();
             String oms = "oms";
-            if (unchecked.equals(state)) {
+            if (UNCHECKED.equals(state)) {
                 flag = tbReturnMapper.returnOrderCancel(returnList.get(i), oms, updated);
 
                 BaseResult.success("取消成功");
@@ -123,7 +123,7 @@ public class TbReturnServiceImpl implements TbReturnService {
             Long time = now.getTime() - created.getTime();
             String user = "oms";
             Date updated = new Date();
-            if (unchecked.equals(state)){
+            if (UNCHECKED.equals(state)){
                 if (MISTIMING > time ) {
 //                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "等待收货", user, updated);
                     returnOrderList.add(returnIdsList.get(i));
@@ -155,7 +155,7 @@ public class TbReturnServiceImpl implements TbReturnService {
             return flag;
         }
         BaseResult.fail(500, "添加退货单失败");
-        return false;
+        return flag;
     }
 
 
@@ -172,9 +172,8 @@ public class TbReturnServiceImpl implements TbReturnService {
         Date time = new Date();
         TbInput tbInput = new TbInput();
         TbInput tbInput1 = new TbInput();
-        boolean flag = false;
+//        boolean flag = false;
         for (int i = 0; i < returnIdsList.size(); i++) {
-
             int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(i));
 
             String inputCode = CodeGenerateUtils.creatUUID();
@@ -183,12 +182,10 @@ public class TbReturnServiceImpl implements TbReturnService {
 
             tbReturnMapper.createInputOrder(inputCode, orderId,inputState,created, updated, synchronizeState);
 
-
             tbInput1 = tbExchangeMapper.selectTbInputByOrderId(orderId);
             List<TbReturnGoods> tbReturnGoodsList = tbExchangeMapper.selectTbReturnGoodsByOrderId(orderId);
             List<TbOrder> tbOrder = tbOrderMapper.getOrderByOrderId(orderId);
             List<InRepertoryDetailDTO> detailDTOS = new ArrayList<>();
-
 
             for (TbReturnGoods t : tbReturnGoodsList) {
                 TbGoods tbGoods = tbExchangeMapper.toSelectGoodById(t.getGoodsId());
@@ -199,7 +196,6 @@ public class TbReturnServiceImpl implements TbReturnService {
                         String.valueOf(tbInput1.getInputId()), String.valueOf(orderId),
                         tbOrder.get(0).getChannelCode(), tbOrder.get(0).getDeliveryCompany(),
                         tbOrder.get(0).getDeliveryCode(), detailDTOS);
-
 
                 try {
                     restTemplate.postForEntity("http://10.129.100.35:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
@@ -216,6 +212,7 @@ public class TbReturnServiceImpl implements TbReturnService {
                     tbExchangeMapper.updateTbInput(tbInput1);
                     tbExchangeMapper.updateTbReturn(tbReturnsList);
                 } catch (Exception e1) {
+                    //logs
                     return false;
                 }
 
@@ -256,7 +253,7 @@ public class TbReturnServiceImpl implements TbReturnService {
             return 1;
         }
 
-        if (getFailed.equals(inputFeedback.getInputState())) {
+        if (GET_FAILED.equals(inputFeedback.getInputState())) {
             tbInput.setInputState("收货失败");
             tbInput.setUpdated(new Date());
             tbInput.setSynchronizeState("已同步");
@@ -265,7 +262,7 @@ public class TbReturnServiceImpl implements TbReturnService {
             tbReturn.setModifiedUser(inputFeedback.getModifiedUser());
             tbReturn.setUpdated(new Date());
             tbReturnsList.add(tbReturn);
-        } else if (getFeedBackOutTime.equals(inputFeedback.getInputState())) {
+        } else if (GET_FEEDBACK_OUTTIME.equals(inputFeedback.getInputState())) {
             tbInput.setInputState("超15天未收货");
             tbInput.setUpdated(new Date());
             tbInput.setSynchronizeState("已同步");
@@ -274,7 +271,7 @@ public class TbReturnServiceImpl implements TbReturnService {
             tbReturn.setModifiedUser(inputFeedback.getModifiedUser());
             tbReturn.setUpdated(new Date());
             tbReturnsList.add(tbReturn);
-        } else if (getSuccess.equals(inputFeedback.getInputState())) {
+        } else if (GET_SUCCESS.equals(inputFeedback.getInputState())) {
             tbInput.setInputState("收货成功");
             tbInput.setUpdated(new Date());
             tbInput.setSynchronizeState("已同步");
@@ -293,9 +290,9 @@ public class TbReturnServiceImpl implements TbReturnService {
             return 1;
         }
 
-        if (getFailed.equals(inputFeedback.getInputState())) {
+        if (GET_FAILED.equals(inputFeedback.getInputState())) {
             return 2;
-        } else if (getFeedBackOutTime.equals(inputFeedback.getInputState())) {
+        } else if (GET_FEEDBACK_OUTTIME.equals(inputFeedback.getInputState())) {
             return 3;
         }
         return  0;
