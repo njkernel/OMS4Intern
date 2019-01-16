@@ -39,10 +39,10 @@ public class TbReturnServiceImpl implements TbReturnService {
     private static long MISTIMING = 1296000000;
     private static final String TOKENS = "yonyong";
     private static final String UNCHECKED = "待审核";
-    private static final String GET_FAILED = "收货失败";
-    private static final String GET_SUCCESS = "收货成功";
-    private static final String GET_FEEDBACK_OUTTIME = "超15天未收货";
-
+    private static final String GET_FAILED = "fail";
+    private static final String GET_SUCCESS = "success";
+    private static final String GET_FEEDBACK_OUTTIME = "over";
+    private static final String URL = "http://10.129.100.35:8080/api/inRepertoryOrder";
     @Autowired
     RestTemplate restTemplate;
 
@@ -198,7 +198,7 @@ public class TbReturnServiceImpl implements TbReturnService {
                         tbOrder.get(0).getDeliveryCode(), detailDTOS);
 
                 try {
-                    restTemplate.postForEntity("http://10.129.100.35:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
+                    restTemplate.postForEntity(URL, inRepertoryDTO.toMap(), String.class);
                     TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
                     List<TbReturn> tbReturnsList = new ArrayList<>();
                     tbReturn.setOrderId(orderId);

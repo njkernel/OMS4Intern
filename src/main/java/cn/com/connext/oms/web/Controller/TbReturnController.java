@@ -144,28 +144,26 @@ public class TbReturnController {
 
                 }
 
-
-
-
                 if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
                     exchangeList.add(returnIdsList.get(i));
 
                 }
-
             }
+        }
 
             //换货部分的取消 Update BY yonyong
-            int[] ids = ListToArray.listToArray(exchangeList);
-            int t = tbExchangeService.updateTbReturn(ids, "换货取消", "yonyong", new Date());
-            if (-1 == t) {
-                return BaseResult.fail("系统错误！");
-            } else if (-2 == t) {
-                BaseResult.fail(500, "换货单只有在待审核状态才能取消！");
-            } else {
-                BaseResult.success("您已成功取消换货！");
-            }
+           if (exchangeList.size()!=0) {
+               int[] ids = ListToArray.listToArray(exchangeList);
+               int t = tbExchangeService.updateTbReturn(ids, "换货取消", "yonyong", new Date());
+               if (-1 == t) {
+                   return BaseResult.fail("系统错误！");
+               } else if (-2 == t) {
+                   BaseResult.fail(500, "换货单只有在待审核状态才能取消！");
+               } else {
+                   BaseResult.success("您已成功取消换货！");
+               }
 
-
+           }
  //退货部分的取消
             try {
                 boolean flag = tbReturnService.returnOrderCancel(returnList, oms, updated);
@@ -176,7 +174,7 @@ public class TbReturnController {
             } catch (Exception e) {
 
                 return BaseResult.fail("内部数据出现错误，请稍后重试");            }
-        }
+        
         return BaseResult.fail(500,"取消失败");
     }
 
