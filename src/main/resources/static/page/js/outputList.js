@@ -16,18 +16,6 @@ let outputList = new Vue({
             outputDate:[],
             //默认选中
             selected: 'orderId',
-            //下拉框选项
-            options: [
-                { text: '订单号', value: 'orderId' },
-                { text: '出库单号', value: 'outputCode' },
-                { text: '快递单号', value: 'deliveryCode' }
-            ],
-            //搜索条件
-            searchDate:{
-                orderId:'',
-                outputCode:'',
-                deliveryCode:''
-            },
         }
     },
     created: function () {
@@ -46,15 +34,6 @@ let outputList = new Vue({
             this.initTable();
         },
 
-        //清空搜索条件
-        initialize(){
-            this.page.orderId='';
-            this.page.outputCode='';
-            this.page.deliveryCode='';
-            this.searchDate.orderId='';
-            this.searchDate.outputCode='';
-            this.searchDate.deliveryCode='';
-        },
 
         // 出库订单详情
         viewOutputDetails(){
@@ -78,50 +57,7 @@ let outputList = new Vue({
             })
         },
 
-        //查询事件
-        search(){
-            if(this.selected==='orderId'){
-                let reg = /^\d{1,10}$/;
-                this.initialize();
-                if (reg.test(this.searchInput)){
-                    this.searchDate.orderId=this.searchInput;
-                    console.log(this.searchDate.orderId);
-                }else {
-                    alert("输入错误");
-                }
-            }
-            else if(this.selected==='outputCode'){
-                this.initialize();
-                this.searchDate.outputCode=this.searchInput;
-                console.log(this.searchDate.outputCode);
-            }
-            else if(this.selected==='deliveryCode'){
-                this.initialize();
-                this.searchDate.deliveryCode=this.searchInput;
-            }
-            else {
-                this.initialize();
-            }
 
-            //查询条件
-            this.page.currentPage=1;
-            this.page.orderId=this.searchDate.orderId;
-            this.page.outputCode=this.searchDate.outputCode;
-            this.page.deliveryCode=this.searchDate.deliveryCode;
-            //初始化表格
-            this.initTable();
-        },
-
-        detailSuc(res){
-            let that=this;
-            if(res.status===200){
-                that.goodsInfo=res.data.goodsInfo;
-                console.log("goodsInfo"+JSON.stringify(that.goodsInfo));
-                console.log("abnormalDate"+JSON.stringify(that.abnormalDate));
-            }else{
-                alert(res.message);
-            }
-        },
 
         //出库订单列表接口反馈
         getListSuc(res){

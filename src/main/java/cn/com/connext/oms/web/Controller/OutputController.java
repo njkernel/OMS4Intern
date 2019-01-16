@@ -65,8 +65,8 @@ public class OutputController {
      * @date: 2019/1/8
      */
     @GetMapping("OutputDetails")
-    public BaseResult OutputDetails(int currentPage,int pageSize, TbOrderDetails tbOrderDetails) {
-        PageInfo<TbOrderDetails> allOrderByStatus = outputService.getAllOrderByStatus(STATUS4, currentPage, pageSize, tbOrderDetails);
+    public BaseResult OutputDetails(int currentPage,int pageSize) {
+        PageInfo<TbOrderDetails> allOrderByStatus = outputService.getAllOrderByStatus(STATUS4, currentPage, pageSize);
         // 需要和前端页面绑定
         return BaseResult.success("成功", allOrderByStatus);
     }
@@ -101,8 +101,6 @@ public class OutputController {
                 tbOrder.setOrderState(STATUS);
                 Date deliveryTime = new Date(receivcerDetails.get(2));
                 tbOrder.setDeliveryTime(deliveryTime);
-                Date updated = new Date(receivcerDetails.get(3));
-                tbOrder.setUpdated(updated);
                 return outputService.updateOrder(tbOrder);
             }
             // 判断是否发货状态，状态没有更改成功
