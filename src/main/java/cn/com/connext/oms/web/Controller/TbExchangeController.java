@@ -1,17 +1,22 @@
 package cn.com.connext.oms.web.Controller;
 
 import cn.com.connext.oms.commons.dto.BaseResult;
+import cn.com.connext.oms.commons.dto.GoodsGoodsOrderDto;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
+import cn.com.connext.oms.commons.utils.ListToArray;
 import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbReturn;
 import cn.com.connext.oms.service.TbExchangeService;
+import cn.com.connext.oms.service.TbGoodsListService;
 import cn.com.connext.oms.service.TbOrderService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +37,9 @@ public class TbExchangeController {
 
     @Autowired
      TbOrderService tbOrderService;
+
+    @Autowired
+    TbGoodsListService tbGoodsListService;
 
 
     /**
@@ -93,9 +101,11 @@ public class TbExchangeController {
     @RequestMapping("/toGenerateExchangeOrder")
     @ApiOperation(value = "生成换货单接口")
     public BaseResult toGenerateExchangeOrder(@RequestParam("orderId")int orderId,
-                                              @RequestParam("goodId")int[] goodId,
-                                              @RequestParam("num")int[] num){
+                                              @RequestParam("goodId")List<Integer> goodIds,
+                                              @RequestParam("num")List<Integer> nums){
         TbGoods tbGoods=new TbGoods();
+        int []goodId = ListToArray.listToArray(goodIds);
+        int []num = ListToArray.listToArray(nums);
         try {
             tbExchangeService.toGenerateExchangeOrderGoods(orderId,goodId,num);
             TbReturn tbReturn=tbExchangeService.setTbReturn(orderId,goodId,num);
@@ -168,6 +178,16 @@ public class TbExchangeController {
          int rt=tbExchangeService.generateInput(ids);
          return BaseResult.success("完成");
 
+    }
+
+    @RequestMapping("/getOrderGoodsNumsDetails")
+    public BaseResult getOrderGoodsNum(@Param("orderId") int orderId){
+         try {
+             List<GoodsGoodsOrderDto> goodsGoodsOrderDtos=tbGoodsListService.goodsListFromOrder(orderId);
+             return BaseResult.success("success",goodsGoodsOrderDtos);
+         }catch (Exception e){
+             return BaseResult.fail("failed!");
+         }
     }
 
 }
