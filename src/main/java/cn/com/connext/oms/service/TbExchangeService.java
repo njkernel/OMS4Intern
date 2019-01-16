@@ -2,6 +2,7 @@ package cn.com.connext.oms.service;
 
 import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
+import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;
 import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.entity.TbReturn;
 import com.github.pagehelper.PageInfo;
@@ -30,7 +31,7 @@ public interface TbExchangeService {
       * @Param: retuenId
      * @return com.github.pagehelper.PageInfo<cn.com.connext.oms.entity.TbReturn>
      */
-    public PageInfo<TbReturn> showAllReturns(Integer currentPage,Integer pageSize,String returnType);
+    public PageInfo<TbReturn> showAllReturns(Integer currentPage,Integer pageSize,TbReturn tbReturn);
 
     /**
      * create by: yonyong
@@ -101,7 +102,7 @@ public interface TbExchangeService {
       * @Param: update
      * @return int
      */
-    public int updateTbReturn(Integer[] ids,String state, String modifiedUser,Date update);
+    public int updateTbReturn(int[] ids,String state, String modifiedUser,Date update);
 
     /**
      * create by: yonyong
@@ -136,7 +137,7 @@ public interface TbExchangeService {
       * @Param: num
      * @return int
      */
-    public int generateOutput(InputFeedback inputFeedback);
+    public int inputFeedback(InputFeedback inputFeedback);
 
     /**
      * create by: yonyong
@@ -158,4 +159,14 @@ public interface TbExchangeService {
      * @return int
      */
     public int checkToken(String token,String orderId);
+
+    /**
+     * create by: yonyong
+     * description: 根据退货详情单获取换货商品详情
+     * create time: 2019/1/15 12:30
+     *
+     *  * @Param: returnDetails
+     * @return java.util.List<cn.com.connext.oms.commons.dto.exchange.ReturnDetails>
+     */
+    public List<ReturnGoods> selectReturnDetails(ReturnDetails returnDetails);
 }

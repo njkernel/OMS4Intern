@@ -1,6 +1,7 @@
 package cn.com.connext.oms.web.Controller;
 
 import cn.com.connext.oms.commons.dto.BaseResult;
+import cn.com.connext.oms.commons.dto.GoodsGoodsOrderDto;
 import cn.com.connext.oms.commons.dto.GoodsStockDto;
 import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.service.TbGoodsListService;
@@ -53,6 +54,23 @@ public class TbGetGoodsListController {
         try {
             List<GoodsStockDto> getAllGoods = tbGoodsListService.getAllGoods();
             return BaseResult.success("成功",getAllGoods);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResult.fail("服务器内部错误");
+        }
+    }
+    /**
+        * @Author: zhaojun
+        * @Description: 根据订单号查询订单对应的商品信息
+        * @Param: []
+        * @Return:
+        * @Create: 2019/1/8 17:36
+        */
+   @GetMapping("goodsListFromOrder")
+    public BaseResult goodsListFromOrder(int orderId){
+        try {
+            List<GoodsGoodsOrderDto> goodsListFromOrder= tbGoodsListService.goodsListFromOrder(orderId);
+            return BaseResult.success("成功",goodsListFromOrder);
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResult.fail("服务器内部错误");

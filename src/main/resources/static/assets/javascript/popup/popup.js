@@ -1,8 +1,8 @@
 $(function () {
-
-  var Plugin = function (elem, options) {
+    var Plugin = function (elem, options) {
     this.$elem = elem;
     this.$btn = $('.btn.btn-xs');
+    this.$MyAbnormalModel = $('#MyAbnormalModel');
     this.$oMask = $('#mask_shadow');
     this.$oTitle = this.$elem.find('.title');
     this.$close = this.$oTitle.find('span');
@@ -16,51 +16,64 @@ $(function () {
       this.$elem.on('click', function () {
         return false;
       });
-      this.$btn.on('click', function () {  
+      this.$MyAbnormalModel.on('click', function () {
         self.popbox();
 
         self.b_stop = false;
 
         return false;
       });
+      this.$btn.on('click', function () {
+        self.popbox();
+                self.b_stop = false;
 
-      this.$close.on('click', function () {
-        self.closePopbox();
+                return false;
+            });
+            this.$btn.on('click', function () {
+                self.popbox();
 
-        return false;
-      });
+                self.b_stop = false;
 
-      $(document.body).on('click', function () {
-        self.closePopbox();
-      });
-    },
+                return false;
+            });
 
-    popbox: function () { // 显示弹窗
-      var self = this;
-      // debugger;
-      this.$oMask.show().animate({opacity: 1});
-      this.$elem.show().animate({opacity: 1}, function () {
-        self.b_stop = true;
-      });
-    },
+            this.$close.on('click', function () {
+                self.closePopbox();
 
-    closePopbox: function () { // 关闭弹窗
-      var self = this;
+                return false;
+            });
 
-      if (this.b_stop) {
-        this.$oMask.animate({opacity: 0,}, function () {
-          $(this).hide();
-        });
-        this.$elem.animate({opacity: 0}, function () {
-          $(this).hide();
-        });
-      }
-    },
-    constructor: Plugin
-  };
+            $(document.body).on('click', function () {
+                self.closePopbox();
+            });
+        },
 
-  $.fn.popup = function (options) {
-    var plugin = new Plugin(this, options);
-    return plugin.inital();
-  };
+        popbox: function () { // 显示弹窗
+            var self = this;
+            // debugger;
+            this.$oMask.show().animate({opacity: 1});
+            this.$elem.show().animate({opacity: 1}, function () {
+                self.b_stop = true;
+            });
+        },
+
+        closePopbox: function () { // 关闭弹窗
+            var self = this;
+
+            if (this.b_stop) {
+                this.$oMask.animate({opacity: 0,}, function () {
+                    $(this).hide();
+                });
+                this.$elem.animate({opacity: 0}, function () {
+                    $(this).hide();
+                });
+            }
+        },
+        constructor: Plugin
+    };
+
+    $.fn.popup = function (options) {
+        var plugin = new Plugin(this, options);
+        return plugin.inital();
+    };
 });

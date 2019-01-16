@@ -61,4 +61,19 @@ VALUES
   <select id="getAllRefundIndex" parameterType="Object"  resultMap="BaseResultMap">
          select * from tb_refund order by tb_refund.createtd DESC limit #{beginIndex},#{size}
     </select>
+
+  <select id="getListRefundByState" parameterType="String" resultMap="BaseResultMap">
+        select * from tb_refund  where refund_state=#{refundState} order by tb_refund.createtd
+    </select>
+  <select id="getListRefundByStateIndex" parameterType="Object" resultMap="BaseResultMap">
+        select * from tb_refund  where refund_state=#{refundState} order by tb_refund.createtd DESC limit #{beginIndex},#{size}
+</select>
+
+  <select id="getListRefundByOrderId" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_refund  where order_id=#{orderId} order by tb_refund.createtd
+</select>
+
+  <select id="getListRefundByOrderIdIndex" parameterType="Object" resultMap="BaseResultMap">
+        select * from tb_refund  where order_id=#{orderId} order by tb_refund.createtd DESC limit #{beginIndex},#{size}
+</select>
 </mapper>

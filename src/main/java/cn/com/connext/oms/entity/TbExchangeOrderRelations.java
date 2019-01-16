@@ -34,10 +34,20 @@ public class TbExchangeOrderRelations {
     @Column(name = "newOrderId")
     private Integer newOrderId;
 
-    public TbExchangeOrderRelations(Integer id, Integer oldOrderId, Integer newOrderId) {
+    /**
+     * 对应的换货单号
+     */
+    @Column(name = "exchange_id")
+    public Integer exchangeId;
+
+    public TbExchangeOrderRelations() {
+    }
+
+    public TbExchangeOrderRelations(Integer id, Integer oldOrderId, Integer newOrderId, Integer exchangeId) {
         this.id = id;
         this.oldOrderId = oldOrderId;
         this.newOrderId = newOrderId;
+        this.exchangeId = exchangeId;
     }
 
     public Integer getId() {
@@ -62,5 +72,13 @@ public class TbExchangeOrderRelations {
 
     public void setNewOrderId(Integer newOrderId) {
         this.newOrderId = newOrderId;
+    }
+
+    public Integer getExchangeId() {
+        return exchangeId;
+    }
+
+    public void setExchangeId(Integer exchangeId) {
+        this.exchangeId = exchangeId;
     }
 }

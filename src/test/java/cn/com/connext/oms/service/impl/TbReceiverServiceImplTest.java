@@ -26,10 +26,10 @@ public class TbReceiverServiceImplTest {
       tbReceiver.setReceiverDistrict("浔阳区");
       tbReceiver.setReceiverAddress("九瑞大道碧桂园");
       tbReceiver.setReceiverMobile("18303938394");
-      tbReceiver.setReceiverPhone("0792-4647474");
-      tbReceiver.setReceiverName("张三");
-      tbReceiver.setReceiverZip("332200");
-      tbReceiver.setUpdated(new Date());
+     /* tbReceiver.setReceiverPhone("0792-4647474");*/
+      tbReceiver.setReceiverName("张四");
+     /* tbReceiver.setReceiverZip("332200");*/
+     /* tbReceiver.setUpdated(new Date());*/
       tbReceiver.setReceiverId(1005);
         boolean a=tbReceiverService.updateReceiver(tbReceiver);
         System.out.println(a);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,25 +8,26 @@
     <link rel="stylesheet" type="text/css" href="../../assets/styles/specific/return-goods.css"/>
 </head>
 <body>
-        <div class="container">
-                    <div class="main-body">
+        <div class="container" id="exchangeDetails">
+                    <div class="main-body" th:if="${test}">
                         <div class="main-content1">
                             <div class="title"><text>基本信息</text></div>
                             <div class="title-content">
                                 <div class="title-content1">
-                                    <div class="title-content1-top1">退货单号：<input></div>
-                                    <div class="title-content1-top2">退货/换货：<input></div>
-                                    <div class="title-content1-top3">退货状态：<input></div>
+                                    <div class="title-content1-top1">退货单号：<input th:text="${test.returnCode}"></div>
+                                    <div class="title-content1-top2">退货/换货：<input th:text="${test.returnType}"></div>
+                                    <div class="title-content1-top3">退货状态：<input th:text="${test.returnState}"></div>
                                 </div>
                                 <div class="title-content2">
-                                    <div class="title-content1-top1">订单号：<input></div>
-                                    <div class="title-content1-top2">渠道订单号：<input></div>
-                                    <div class="title-content1-top3">退货金额：<input></div>
+                                    <div class="title-content1-top1">订单号：<input th:text="${test.orderId}"></div>
+                                    <div class="title-content1-top2">渠道订单号：<input th:text="${test.channelCode}"></div>
+                                    <div class="title-content1-top3">退货金额：<input th:text="${test.returnPrice}"></div>
                                 </div>
                                 <div class="title-content3">
-                                    <div class="title-content1-top1">创建时间：<input></div>
-                                    <div class="title-content1-top2">修改人：<input></div>
-                                    <div class="title-content1-top3">修改时间：<input></div>
+                                    <div class="title-content1-top1">创建时间：<input th:text="${#dates.format(test.created,'yyyy-MM-dd')}"></div>
+                                    <div class="title-content1-top2">修改人：<input th:text="${test.modifiedUser}"></div>
+                                    <div class="title-content1-top3">修改时间：<input th:text="${#dates.format(test.updated,'yyyy-MM-dd')}"></div>
+                                    <!--<div class="title-content1-top3">修改时间：<input th:text="${#dates.format(test.updated,'yyyy-MM-dd HH:mm:ss')}"></div>-->
                                 </div>
                             </div>
                         </div>
@@ -40,93 +41,26 @@
                                     <th>退货数量</th>
                                     <th>退货金额</th>
                                 </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td> 
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td> 
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>  
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td> 
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>200</td>
+                                <tr th:each="temp:${returnGoods}">
+                                    <td class="ttdd" th:text="${temp.goodCode}"></td>
+                                    <td th:text="${temp.goodName}">矿泉水</td>
+                                    <td th:text="${temp.returnNum}">2</td>
+                                    <td th:text="${temp.returnPrice}">200</td>
                                 </tr>
                                 <tr>
                                     <td style="font-size: 15px;"><strong>总计</strong></td>
                                     <td></td>
-                                    <td>2000</td>
-                                    <td>4005</td>
+                                    <td th:text="${num}">2000</td>
+                                    <td th:text="${sum}">4005</td>
                                 </tr>
+
                             </table>
                         </div>
                     </div>
-                </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script type="text/javascript" src="/commons/plugins/iview/js/axios.min.js"></script>
+        <script type="text/javascript" src="/commons/js/axiosUtils.js"></script>
+        <script type="text/javascript" src="/page/js/exchangeDetails.js"></script>
 </body>
 </html>

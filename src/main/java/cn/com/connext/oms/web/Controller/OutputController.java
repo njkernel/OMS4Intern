@@ -9,6 +9,7 @@ import cn.com.connext.oms.service.TbOrderService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
@@ -64,41 +65,10 @@ public class OutputController {
      * @date: 2019/1/8
      */
     @GetMapping("OutputDetails")
-    public BaseResult OutputDetails() {
-        List<TbOrder> allOrder = tbOrderService.getAllOrder();
+    public BaseResult OutputDetails(int currentPage,int pageSize) {
+        PageInfo<TbOrderDetails> allOrderByStatus = outputService.getAllOrderByStatus(STATUS4, currentPage, pageSize);
         // 需要和前端页面绑定
-        return BaseResult.success("成功", allOrder);
-    }
-
-    /**
-     * 功能描述: 根据订单id查询出所有出库单的详情
-     *
-     * @param: 订单id
-     * @return: 返回出库单的所有需要详情，包含商品信息
-     * @auther: Jay
-     * @date: 2019/1/8
-     */
-    @GetMapping("orderDetails")
-    public BaseResult orderDetails(int orderId) {
-        List<TbOrderDetails> orderDetails = outputService.orderDetails(orderId);
-        // 需要和前端页面绑定
-        return BaseResult.success("成功", orderDetails);
-    }
-
-    /**
-     * 功能描述: 根据订单id查询出所有出库单的详情
-     *
-     * @param: 订单id
-     * @return: 返回订单所有详情消息，包含订单基本信息以及出库单信息，商品信息
-     * @auther: Jay
-     * @date: 2019/1/8
-     */
-    @GetMapping("orderDetailsAll")
-    public BaseResult orderDetailsAll(Integer orderId) {
-        TbOrder tbOrder = outputService.getOrderById(orderId);
-        List<TbOrderDetails> orderDetails = outputService.orderDetails(orderId);
-        // 需要和前端页面绑定
-        return BaseResult.success("成功", orderDetails);
+        return BaseResult.success("成功", allOrderByStatus);
     }
 
     /**
@@ -127,7 +97,7 @@ public class OutputController {
                 TbOrder tbOrder = outputService.getOrderById(orderId);
                 tbOrder.setDeliveryWarehouse("南京仓");
                 tbOrder.setDeliveryCompany(receivcerDetails.get(0));
-                tbOrder.setChannelCode(receivcerDetails.get(1));
+                tbOrder.setDeliveryCode(receivcerDetails.get(1));
                 tbOrder.setOrderState(STATUS);
                 Date deliveryTime = new Date(receivcerDetails.get(2));
                 tbOrder.setDeliveryTime(deliveryTime);

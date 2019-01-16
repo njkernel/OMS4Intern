@@ -12,202 +12,62 @@
     <link rel="stylesheet" href="../../../assets/styles/search.css">
 </head>
 <body style="overflow-x:hidden;background:#f3f3f3;">
-    <div id="mask_shadow"></div>
+<div id="mask_shadow"></div>
+<div id="exchange" style="height: 600px">
     <div class="btn-div">
-        <button type="button" class="btn btn-primary">创建退货单</button>
-        <button type="button" class="btn btn-primary">换货发货</button>
-        <button type="button" class="btn btn-primary">审核</button>
-        <button type="button" class="btn btn-primary">取消退货</button>
-        <button type="button" class="btn btn-primary">查看订单</button>
+        <button type="button" class="btn btn-primary" @click="batch">批量</button>
+        <button type="button" class="btn btn-primary" @click="refresh">刷新</button>
+        <button type="button" class="btn btn-primary" @click="toAudit">审核</button>
+        <button type="button" class="btn btn-primary" @click="toCancel">取消退换</button>
+        <button type="button" class="btn btn-primary" id="MyAbnormalModel" @click="exchangeDetails" >查看详情</button>
         <div class="search-box">
             <form action="">
-                <select name="" id="">
-                    <option value=""></option>
-                    <option value=""></option>
+                <select v-model="selected">
+                    <option v-for="option in options" :value="option.value">
+                        {{ option.text }}
+                    </option>
                 </select>
-                <input type="text">
-                <button type="button" class="btn btn-success">搜索</button>
+                <input v-model.trim="searchInput">
+                <button type="button" class="btn btn-success" @click="search">搜索</button>
             </form>
         </div>
     </div>
     <div>
         <table class="table table-condensed">
             <thead>
-                <tr>
-                    <th>序号</th>
-                    <th>批量</th>
-                    <th>退货单号</th>
-                    <th>退货/换货</th>
-                    <th>退货状态</th>
-                    <th>订单号</th>
-                    <th>退货金额</th>
-                    <th>创建时间</th>
-                    <th>修改时间</th>
-                    <th>修改人</th>
-                    <th>操作</th>
-                </tr>
+            <tr>
+                <th>序号</th>
+                <th>批量</th>
+                <th>退货单号</th>
+                <th>退货/换货</th>
+                <th>退货状态</th>
+                <th>订单号</th>
+                <th>退货金额</th>
+                <th>创建时间</th>
+                <th>修改时间</th>
+                <th>修改人</th>
+                <th>操作</th>
+            </tr>
             </thead>
             <tbody>
+            <template v-for="tbReturn in returnOrderInfo.list">
                 <tr>
-                    <td>1</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{tbReturn.returnId}}</td>
+                    <td><input type="checkbox" class="checkbox" :value="tbReturn.returnId" v-model="ids"></td>
+                    <td>{{tbReturn.returnId}}</td>
+                    <td>{{tbReturn.returnType}}</td>
+                    <td>{{tbReturn.returnState}}</td>
+                    <td>{{tbReturn.orderId}}</td>
+                    <td>{{tbReturn.returnPrice}}</td>
+                    <td>{{tbReturn.created}}</td>
+                    <td>{{tbReturn.updated}}</td>
+                    <td>{{tbReturn.modifiedUser}}</td>
                     <td>
                         <button type="button" class="btn btn-default btn-xs">操作</button>
                         <button type="button" class="btn btn-danger btn-xs">操作</button>
                     </td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs">操作</button>
-                        <button type="button" class="btn btn-danger btn-xs">操作</button>
-                    </td>
-                </tr>
+            </template>
             </tbody>
         </table>
     </div>
@@ -228,31 +88,65 @@
         </div><!-- /.modal -->
     </div>
     <div class="footer-pager">
-        <span>共<span>5</span>页，当前第<span>1</span>页</span>
+        <!--解析显示分页信息-->
+        <!--分页文字信息-->
+        <span>共<span>{{returnOrderInfo.pages}}</span>页，当前第<span>{{returnOrderInfo.pageNum}}页，总{{returnOrderInfo.total}}条数据</span></span>
+        <!--分页条信息-->
         <ul class="pagination">
-            <li><a href="#">&laquo;</a></li>
-            <li class="active"><a href="#">1</a></li>
-            <li class="disabled"><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
+            <!--如果无上一页，不可点-->
+            <template v-if="returnOrderInfo.hasPreviousPage==false">
+                <li><a href="#">&laquo;</a></li>
+            </template>
+            <!--如果有上一页，可点-->
+            <template v-if="returnOrderInfo.hasPreviousPage==true">
+                <!--点前一页，跳到当前页码前一页-->
+                <li @click="to_page(returnOrderInfo.pageNum-1)"><a href="#">&laquo;</a></li>
+            </template>
+
+            <!--遍历连续显示的页码-->
+            <template v-for="pagenum in returnOrderInfo.navigatepageNums">
+                <!--如果是当前页码，高亮显示-->
+                <template v-if="pagenum==returnOrderInfo.pageNum">
+                    <li class="active"><a href="#">{{pagenum}}</a></li>
+                </template>
+                <!--如果不是当前页码，正常显示-->
+                <template v-if="pagenum!=returnOrderInfo.pageNum">
+                    <!--点击后把当前页码传送给axios-->
+                    <li class @click="to_page(pagenum)"><a href="#">{{pagenum}}</a></li>
+                </template>
+            </template>
+
+            <!--如果无下一页，不可点-->
+            <template v-if="returnOrderInfo.hasNextPage==false">
+                <li><a href="#">&raquo;</a></li>
+            </template>
+            <!--如果有下一页，可点-->
+            <template v-if="returnOrderInfo.hasNextPage==true">
+                <!--把当前页码的下一页传送给axios-->
+                <li @click="to_page(returnOrderInfo.pageNum+1)"><a href="#">&raquo;</a></li>
+            </template>
         </ul>
     </div>
-    <div id="popup" class="popup" style="top: -555px;">
+    <div id="popup" class="popup" style="top: -65%;">
         <div class="title">
             <p>退货单详情</p>
             <span></span>
             <span>x</span>
         </div>
         <div class="cont">
-            <iframe src="../../specific/return-goods.html" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
+            <iframe id="iframe" src="" scrolling="auto" style="width:100%;height:100%;border:0px;"></iframe></div>
     </div>
-    <script>
-        $(function () {
-            $('#popup').popup();
-            $("body").css("overflow-y", "hidden");
-        });
-    </script>
+</div>
+<script>
+    $(function () {
+        $('#popup').popup();
+        $("body").css("overflow-y", "hidden");
+    });
+</script>
+
 </body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript" src="/commons/plugins/iview/js/axios.min.js"></script>
+<script type="text/javascript" src="/commons/js/axiosUtils.js"></script>
+<script type="text/javascript" src="/page/js/exchange.js"></script>
 </html>

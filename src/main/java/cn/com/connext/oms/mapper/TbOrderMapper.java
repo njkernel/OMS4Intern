@@ -2,6 +2,7 @@ package cn.com.connext.oms.mapper;
 
 import cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto;
 import cn.com.connext.oms.entity.TbOrder;
+import cn.com.connext.oms.entity.TbOrderDetails;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,14 +13,7 @@ import java.util.List;
 
 @Repository
 public interface TbOrderMapper extends MyMapper<TbOrder> {
-    /**
-    * @Author: caps
-    * @Description:
-    * @Param: []
-    * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
-    * @Create: 2019/1/6 10:14
-    */
-    List<TbOrder> getAllOrder(String state);
+
 
 
     /**
@@ -60,6 +54,17 @@ public interface TbOrderMapper extends MyMapper<TbOrder> {
     */
     int updateOrderListBasicRemark(List<TbOrder> tbOrderList);
 
+
+
+    /**
+    * @Description: 根据订单编码查看订单
+    * @Param: [orderCode]
+    * @return: cn.com.connext.oms.entity.TbOrder
+    * @Author: Lili Chen
+    * @Date: 2019/1/13
+    */
+    TbOrder getOrderByCode(String orderCode);
+
     List<TbOrder> getAllOrder();
 
     /**
@@ -72,22 +77,7 @@ public interface TbOrderMapper extends MyMapper<TbOrder> {
      */
     List<TbOrder> getOrderByOrderId(@Param("id")int id);
 
-    /**
-     * @Author: zhaojun
-     * @Description: 根据订单编号查询订单详情
-     * @Param: []
-     * @Return: cn.com.connext.oms.commons.dto.BaseResult
-     * @Create: 2019/1/7 10:54
-     */
-    public TbOrder getOrderById(int orderId);
-    /**
-     * @Author: zhaojun
-     * @Description:
-     * @Param: []
-     * @Return:
-     * @Create: 2019/1/7 19:16z
-     */
-    public OrderGoodsReceiverDto getAllById(int orderId);
+
 
     /**
      * create by: Aaron
@@ -106,4 +96,12 @@ public interface TbOrderMapper extends MyMapper<TbOrder> {
      * @return  * @Param: null
      */
     Date selectCreatedById(int orderId);
+    /**
+     * @Author: zhaojun
+     * @Description:
+     * @Param: []
+     * @Return:
+     * @Create: 2019/1/7 19:16z
+     */
+    public  OrderGoodsReceiverDto getAllById(int orderId);
 }

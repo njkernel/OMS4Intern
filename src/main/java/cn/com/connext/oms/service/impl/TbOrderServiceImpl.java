@@ -77,27 +77,8 @@ public class TbOrderServiceImpl implements TbOrderService {
         }
     }
 
-    /**
-     * @Author: zhaojun
-     * @Description:
-     * @Param: []
-     * @Create: 2019/1/7 11:01
-     */
-    @Override
-    public TbOrder getOrderById(int orderId) {
-        return tbOrderMapper.getOrderById(orderId);
-    }
 
-    /**
-     * @Author: zhaojun
-     * @Description: 根据订单ID查询订单所有信息
-     * @Param: []
-     * @Create: 2019/1/7 19:24
-     */
-    @Override
-    public OrderGoodsReceiverDto getAllById(int orderId) {
-        return tbOrderMapper.getAllById(orderId);
-    }
+
 
     /**
      * create by: Aaron
@@ -111,7 +92,8 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Override
     public List<TbOrder> getOrderByOrderId(int orderId) {
         return tbOrderMapper.getOrderByOrderId(orderId);
-    } /**
+    }
+    /**
     * @Description: 主动批量取消订单
     * @Param: [tbOrderList]
     * @return: boolean
@@ -120,20 +102,28 @@ public class TbOrderServiceImpl implements TbOrderService {
     */
     @Transactional(readOnly = false)
     @Override
-    public boolean cancelOrder(List<TbOrder> tbOrderList) {
+    public boolean cancelOrder(Integer[] orderIdList) {
         Date date=new Date();
+        List<TbOrder> tbOrderList=new ArrayList<>();//保存需要更改状态的订单
         List<TbStock> stockList=new ArrayList<>();//保存需要更新的库存
         List<TbGoodsOrder> goodsOrderList=new ArrayList<>();//保存需要更新订单的相应商品订单关系表
         StringBuffer outputBuffer=new StringBuffer();
         List<TbOutput> outputs=new ArrayList<TbOutput>();//OMS需要更新的出库单
         List<TbRefund> tbRefundList=new ArrayList<TbRefund>();//存即将生成的退款单
-        TbRefund refund=new TbRefund();
         int count=0;//记录需要更新的订单条数
         int orderResult=0;//订单状态更新返回结果
         int outputResult=0;//出库单更新返回结果
         int refundResult=0;//退款单更新返回结果
         int stockResult=0;//库存更新条数
         String number="";//取消WMS出库单返回的状态码
+        for(Integer orderId:orderIdList){
+            TbOrder order=tbOrderMapper.getOrderById(orderId);
+            if(order==null){
+                return false;
+            }else{
+                tbOrderList.add(order);
+            }
+        }
         if(!tbOrderList.isEmpty()){//集合不为空
             for(TbOrder tbOrder:tbOrderList){
                 goodsOrderList=tbGoodsOrderMapper.getStockByOrderId(tbOrder.getOrderId());//根据订单id查看到相应的订单商品关系表
@@ -187,6 +177,7 @@ public class TbOrderServiceImpl implements TbOrderService {
 
                 }
 
+                TbRefund refund=new TbRefund();
                 refund.setCreatetd(date);
                 refund.setModifiedUser("cll");
                 UUID uuid = UUID.randomUUID();
@@ -283,7 +274,7 @@ public class TbOrderServiceImpl implements TbOrderService {
         if(!outputList.isEmpty()){//要更改的出库单不为空
            for(TbOutput tbOutput:outputList){
                tbOrder=tbOrderMapper.getOrderById(tbOutput.getOrderId());//根据订单id获取订单对象
-               if("已取消".equals(tbOrder.getOrderState())){
+               if("已取消".equals(tbOrder.getOrderState())||"已完成".equals(tbOrder.getOrderState())){
                    return false;
                }
                else if(!"已完成".equals(tbOrder.getOrderState())){
@@ -300,5 +291,15 @@ public class TbOrderServiceImpl implements TbOrderService {
            }
         }
         return false;
+    }
+    /**
+     * @Author: zhaojun
+     * @Description: 根据订单ID查询订单所有信息
+     * @Param: []
+     * @Create: 2019/1/7 19:24
+     */
+    @Override
+    public OrderGoodsReceiverDto getAllById(int orderId) {
+        return tbOrderMapper.getAllById(orderId);
     }
 }

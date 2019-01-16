@@ -201,13 +201,16 @@
 
     </select>
 
-    <select id="selectCreatedById" resultType="Date">
+    <select id="selectCreatedById" resultType="java.util.Date">
         SELECT purchase_time
         FROM tb_order
         WHERE order_id = #{orderId}
     </select>
     <select id="getOrderById" parameterType="Integer" resultMap="BaseResultMap">
         select * from tb_order where order_id=#{orderId}
+    </select>
+    <select id="getOrderByCode" parameterType="String" resultMap="BaseResultMap">
+        select * from tb_order where order_code=#{orderCode}
     </select>
 
     <update id="updateOrderStatue" parameterType="tbOrder">
@@ -260,4 +263,6 @@
         <foreach collection="list" item="item" open="(" separator="," close=")">
             #{item.orderId}
         </foreach>
-    </update></mapper>
+    </update>
+
+</mapper>
