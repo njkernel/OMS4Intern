@@ -74,7 +74,7 @@ let orderList = new Vue({
         //异常处理
         abnormalHandle(){
             let url='/abnormalHandle';
-            callAxiosGet(url,{abnormalId:this.checkedDate},this.Suc,this.Fail)
+            callAxiosGet(url,{abnormalId:this.checkedNames[0]},this.Suc,this.Fail)
         },
         //把当前行id存在缓存中
             toPageStorage(){
@@ -84,7 +84,7 @@ let orderList = new Vue({
 
         //订单详情
         orderDetails(){
-            this.orderId=this.checkedNames[0],
+            this.orderId=this.checkedNames[0];
             console.log(this.orderId);
             document.getElementById('iframeId3').src="/orderDetail?orderId="+this.orderId;
         },
@@ -156,7 +156,7 @@ let orderList = new Vue({
                 that.orderListDate=res.data;
                 console.log(that.orderListDate);
                 //默认选中第一条数据
-                that.checkedDate=res.data.list[0].abnormalId;
+                that.checkedDate[0]=res.data.list[0].abnormalId;
 
             }else{
                 alert(res.message);
@@ -171,10 +171,11 @@ let orderList = new Vue({
         },
         //接口未连通
         Fail(err){
-            console.log("网络连接错误")
+
         },
         orderCheck(){
-            let url='/orderCheck?orderId='+this.checkedDate;
+            this.orderId=this.checkedNames[0];
+            let url='/orderCheck?orderId='+this.orderId;
             callAxiosGetNoParam(url,this.orderCheckSuc,this.orderCheckFail);
         },
         orderCheckSuc(res){

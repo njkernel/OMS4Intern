@@ -57,7 +57,7 @@
             <template v-for="list in orderListDate.list" v-cloak>
                 <tr>
                     <td>
-                        <input type="checkbox"  :value="list.orderId" v-model="checkedNames" name="checkid" >
+                    <input type="checkbox"  :value="list.orderId" v-model="checkedNames">
                     </td>
                     <td>{{list.orderId}}</td>
                     <td>{{list.orderState}}</td>

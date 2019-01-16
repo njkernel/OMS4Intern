@@ -27,7 +27,7 @@
                 <p>订单管理</p>
                 <i class="list_dt_icon"></i>
             </dt>
-            <dd class="list_dd" style="display: block">
+            <dd class="list_dd" >
                 <ul class="list_dd_ul"  >
                     <li class="list_li" mid="tab1"  funurl="orderList">
                         <a tabindex="-1" href="javascript:void(0);" id="default">订单列表</a>
@@ -48,8 +48,8 @@
                     </li>
                 </ul>
             </dd>
-            <dt class="list_dt">
-                <!--<span class="_after"></span>-->
+            <!--<dt class="list_dt">
+                &lt;!&ndash;<span class="_after"></span>&ndash;&gt;
                 <i class="i_warehouse left-i"></i>
                 <p>库存管理</p>
                 <i class="list_dt_icon"></i>
@@ -59,14 +59,14 @@
                     <li class="list_li" mid="tab7" funurl=".././details/warehouse/wareHouse.html">
                         <a tabindex="-1" href="javascript:void(0);">库存列表</a>
                     </li>
-                    <!-- <li class="list_li" mid="tab3" funurl=".././details/orders/warehouse-out-list.html">
+                    &lt;!&ndash; <li class="list_li" mid="tab3" funurl=".././details/orders/warehouse-out-list.html">
                         <a tabindex="-1" href="javascript:void(0);">出库单列表</a>
                     </li>
                     <li class="list_li" mid="tab4" funurl=".././details/orders/warehouse-in-list.html">
                         <a tabindex="-1" href="javascript:void(0);">入库单列表</a>
-                    </li> -->
+                    </li> &ndash;&gt;
                 </ul>
-            </dd>
+            </dd>-->
             <dt class="list_dt" shiro:hasPermission="goods">
                 <!--<span class="_after"></span>-->
                 <i class="i_goods left-i"></i>
@@ -91,9 +91,9 @@
                     <li class="list_li" mid="tab9" funurl="index/getAllUser?page=1&size=4">
                         <a tabindex="-1" href="javascript:void(0);">订单管理员管理</a>
                     </li>
-                    <li class="list_liorderpopup" mid="tab10" funurl=".././details/user/refusedPerson.html">
+                    <!--<li class="list_liorderpopup" mid="tab10" funurl=".././details/user/refusedPerson.html">
                         <a tabindex="-1" href="javascript:void(0);">收货人管理</a>
-                    </li>
+                    </li>-->
                     <li class="list_li" mid="tab11" funurl=".././details/user/expressCompany.html">
                     <a tabindex="-1" href="javascript:void(0);">快递公司管理</a>
                     </li>
@@ -110,13 +110,13 @@
            <span class="shrink">
                 <i class="fa fa-arrow-left" ></i>
            </span>
-            <a href="/logout">注销</a>
+            <!--<a href="/logout">注销</a>-->
             <ul class="user-list">
                 <!--<li><i class="i_seach"></i></li>-->
                 <!--<li><i class="i_user"></i></li>-->
                 <!--<li><i class="i_message"></i></li>-->
                 <!--<li><i class="i_set"></i></li>-->
-                <li><i class="i_quit" style="font-size: 25px"></i></li>
+                <li href="/logout"><i class="i_quit" style="font-size: 25px"></i></li>
                 <span class="logoff">注销</span>
             </ul>
             <ul class="nav nav-tabs" role="tablist">

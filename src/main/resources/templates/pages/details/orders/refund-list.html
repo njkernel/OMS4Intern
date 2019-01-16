@@ -41,7 +41,7 @@
 <div id="refundDiv">
 <div class="btn-div">
     <button type="button" class="btn btn-primary" onclick="refund()">退款</button>
-    <button type="button" class="btn btn-primary btn-xs" onclick="detailRefund()" >查看退款单详情</button>
+    <button type="button" class="btn btn-primary" id="MyAbnormalModel" onclick="detailRefund()" >查看退款单详情</button>
     <div class="search-box">
         <form id="frm" action="/index/getSearchRefund">
             <input hidden name='page' value="1">
@@ -143,5 +143,17 @@
 </div>
 </body>
 <script type="text/javascript" src="/page/js/refund.js"></script>
+<script>
+    function detailRefund() {
+        var arr=[];//定义一个数组
+        var b=$("input[type='checkbox']:checked").length
+        var a=$('input[name="checkid"]:checked').val();
+        if(b==1){
+            $("#iframe").attr("src","/index/refundDetail?refundId="+a);
+        }else{
 
+        }
+
+    }
+</script>
 </html>
