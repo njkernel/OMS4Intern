@@ -11,6 +11,8 @@ import cn.com.connext.oms.mapper.TbOutputMapper;
 import cn.com.connext.oms.mapper.TbReceiverMapper;
 import cn.com.connext.oms.service.OutputService;
 import cn.com.connext.oms.web.Api.output.OutputApi;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -147,6 +149,23 @@ public class OutputServiceImpl implements OutputService {
      * @auther: Jay
      * @date: 2019/1/8
      */
+    /**
+     *
+     * 功能描述: 根据订单状态查询所需要的订单
+     *
+     * @param: 订单状态
+     * @return: 返回根据订单状态查询的订单
+     * @auther: Jay
+     * @date: 2019/1/13
+     */
+    @Override
+    public PageInfo<TbOrderDetails> getAllOrderByStatus(String status,int currentPage,int pageSize) {
+        // 从第一页开始，每一页显示5条数据
+        PageHelper.startPage(currentPage,pageSize);
+        List<TbOrderDetails> allOrder = tbOutputMapper.getAllOrderByStatus(status);
+        PageInfo<TbOrderDetails> pageInfo =new PageInfo<>(allOrder);
+        return pageInfo;
+    }
     @Override
     public TbOrder getOrderById(Integer orderId) {
         return tbOrderMapper.selectByPrimaryKey(orderId);
@@ -199,18 +218,5 @@ public class OutputServiceImpl implements OutputService {
             return "200";
         }
         return "error";
-    }
-    /**
-     *
-     * 功能描述: 根据订单id查询找收货人信息
-     *
-     * @param: 订单id
-     * @return: 收货人信息
-     * @auther: Jay
-     * @date: 2019/1/13
-     */
-    @Override
-    public TbReceiver getReceiver(int orderId) {
-        return tbOutputMapper.getReceiver(orderId);
     }
 }

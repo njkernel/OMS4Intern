@@ -127,12 +127,24 @@
             where old_orderId=#{oldOrderId}
     </select>
 
-    <select id="selectAllExchangeOrders" parameterType="java.lang.String" resultMap="returnsMap">
+    <select id="selectAllExchangeOrders" resultMap="returnsMap">
         SELECT return_id,return_code,return_state,order_id,return_price,created,modified_user,updated,return_type
         FROM tb_return
         <choose>
-            <when test="returnType !=null and returnType != ''">
-                WHERE return_type LIKE "%"#{returnType}"%"
+            <when test="tbReturn.returnType !=null and tbReturn.returnType != ''">
+                WHERE return_type LIKE "%"#{tbReturn.returnType}"%"
+            </when>
+            <when test="tbReturn.returnId !=null and tbReturn.returnId != ''">
+                WHERE return_id LIKE "%"#{tbReturn.returnId}"%"
+            </when>
+            <when test="tbReturn.orderId !=null and tbReturn.orderId != ''">
+                WHERE order_id LIKE "%"#{tbReturn.orderId}"%"
+            </when>
+            <when test="tbReturn.returnState !=null and tbReturn.returnState != ''">
+                WHERE return_state LIKE "%"#{tbReturn.returnState}"%"
+            </when>
+            <when test="tbReturn.modifiedUser !=null and tbReturn.modifiedUser != ''">
+                WHERE modified_user LIKE "%"#{tbReturn.modifiedUser}"%"
             </when>
             <otherwise>
             </otherwise>
@@ -166,8 +178,8 @@
     </select>
 
     <update id="updateTbReturn" parameterType="java.util.List">
+        UPDATE tb_return
         <foreach collection="list" item="bean" index="index" open="" close="" separator=";">
-            UPDATE tb_return
             set return_state=#{bean.returnState},modified_user=#{bean.modifiedUser},updated=#{bean.updated}
             where return_id = #{bean.returnId}
         </foreach>

@@ -6,6 +6,7 @@ import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOrderDetails;
 import cn.com.connext.oms.entity.TbOutput;
 import cn.com.connext.oms.entity.TbReceiver;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -46,6 +47,14 @@ public interface OutputService {
      */
     List<TbOrderDetails> orderDetails(int orderId);
     /**
+     * @Author: Jay
+     * @Param: 订单状态
+     * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
+     * @Create: 2019/1/13
+     */
+    PageInfo<TbOrderDetails> getAllOrderByStatus(String state,int currentPage,int pageSize);
+
+    /**
      *
      * 功能描述: 根据订单id查询所有的订单详情
      *
@@ -82,14 +91,4 @@ public interface OutputService {
      * @date: 2019/1/9
      */
     String updateOutput(TbOutput tbOutput);
-    /**
-     *
-     * 功能描述: 根据订单id查询找收货人信息
-     *
-     * @param: 订单id
-     * @return: 收货人信息
-     * @auther: Jay
-     * @date: 2019/1/13
-     */
-    TbReceiver getReceiver(int orderId);
 }

@@ -13,21 +13,22 @@
 </head>
 <body style="overflow-x:hidden;background:#f3f3f3;">
 <div id="mask_shadow"></div>
-<div id="exchange">
+<div id="exchange" style="height: 600px">
     <div class="btn-div">
-        <button type="button" class="btn btn-primary">创建退货单</button>
+        <button type="button" class="btn btn-primary" @click="batch">批量</button>
         <button type="button" class="btn btn-primary" @click="refresh">刷新</button>
         <button type="button" class="btn btn-primary" @click="toAudit">审核</button>
         <button type="button" class="btn btn-primary" @click="toCancel">取消退换</button>
-        <button type="button" class="btn btn-primary btn-xs" id="exchangeDetails" @click="exchangeDetails">查看详情</button>
+        <button type="button" class="btn btn-primary" id="MyAbnormalModel" @click="exchangeDetails" >查看详情</button>
         <div class="search-box">
             <form action="">
-                <select name="" id="select">
-                    <option value=""></option>
-                    <option value=""></option>
+                <select v-model="selected">
+                    <option v-for="option in options" :value="option.value">
+                        {{ option.text }}
+                    </option>
                 </select>
-                <input type="text">
-                <button type="button" class="btn btn-success">搜索</button>
+                <input v-model.trim="searchInput">
+                <button type="button" class="btn btn-success" @click="search">搜索</button>
             </form>
         </div>
     </div>
@@ -49,7 +50,7 @@
             </tr>
             </thead>
             <tbody>
-            <template v-for="tbReturn in returnOrderInfo">
+            <template v-for="tbReturn in returnOrderInfo.list">
                 <tr>
                     <td>{{tbReturn.returnId}}</td>
                     <td><input type="checkbox" class="checkbox" :value="tbReturn.returnId" v-model="ids"></td>
@@ -87,18 +88,46 @@
         </div><!-- /.modal -->
     </div>
     <div class="footer-pager">
-        <span>共<span>5</span>页，当前第<span>1</span>页</span>
+        <!--解析显示分页信息-->
+        <!--分页文字信息-->
+        <span>共<span>{{returnOrderInfo.pages}}</span>页，当前第<span>{{returnOrderInfo.pageNum}}页，总{{returnOrderInfo.total}}条数据</span></span>
+        <!--分页条信息-->
         <ul class="pagination">
-            <li><a href="#">&laquo;</a></li>
-            <li class="active"><a href="#">1</a></li>
-            <li class="disabled"><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
+            <!--如果无上一页，不可点-->
+            <template v-if="returnOrderInfo.hasPreviousPage==false">
+                <li><a href="#">&laquo;</a></li>
+            </template>
+            <!--如果有上一页，可点-->
+            <template v-if="returnOrderInfo.hasPreviousPage==true">
+                <!--点前一页，跳到当前页码前一页-->
+                <li @click="to_page(returnOrderInfo.pageNum-1)"><a href="#">&laquo;</a></li>
+            </template>
+
+            <!--遍历连续显示的页码-->
+            <template v-for="pagenum in returnOrderInfo.navigatepageNums">
+                <!--如果是当前页码，高亮显示-->
+                <template v-if="pagenum==returnOrderInfo.pageNum">
+                    <li class="active"><a href="#">{{pagenum}}</a></li>
+                </template>
+                <!--如果不是当前页码，正常显示-->
+                <template v-if="pagenum!=returnOrderInfo.pageNum">
+                    <!--点击后把当前页码传送给axios-->
+                    <li class @click="to_page(pagenum)"><a href="#">{{pagenum}}</a></li>
+                </template>
+            </template>
+
+            <!--如果无下一页，不可点-->
+            <template v-if="returnOrderInfo.hasNextPage==false">
+                <li><a href="#">&raquo;</a></li>
+            </template>
+            <!--如果有下一页，可点-->
+            <template v-if="returnOrderInfo.hasNextPage==true">
+                <!--把当前页码的下一页传送给axios-->
+                <li @click="to_page(returnOrderInfo.pageNum+1)"><a href="#">&raquo;</a></li>
+            </template>
         </ul>
     </div>
-    <div id="popup" class="popup" style="top: -555px;">
+    <div id="popup" class="popup" style="top: -65%;">
         <div class="title">
             <p>退货单详情</p>
             <span></span>

@@ -18,7 +18,7 @@
     <div id="mask_shadow"></div>
     <div class="btn-div">
         <button type="button" class="btn btn-primary">预检</button>
-        <button type="button" class="btn btn-primary" onclick="">取消</button>
+        <button type="button" class="btn btn-primary" onclick="cancel()">取消</button>
         <button type="button" class="btn btn-primary">出库</button>
         <button type="button" class="btn btn-primary">退货</button>
         <button type="button" class="btn btn-primary">换货</button>
@@ -150,9 +150,42 @@
         </script>
     </div>
 </body>
+
+<script th:type="text/javascript">
+    function refund() {
+        var confirm_ = confirm('确认？');
+        var arr=[];//定义一个数组
+        var a=$('input[name="checkid"]:checked');
+        a.each(function(){
+            arr.push($(this).val());
+        });
+        if(arr.length>0){
+            if(confirm_){
+                $.ajax({
+                    ContentType:"application/json;charset=UTF-8",
+                    type:"post",
+                    url:"/cancelOrder",
+                    data:{"refundIdList":arr.join(",")},
+                    success:function (msg) {
+                        if(msg=="success"){
+                            alert("取消成功")
+                            location.reload() ;
+                        }else {
+                            alert("取消失败");
+                        }
+                    }
+                })
+            }
+        }else {
+            alert("你还没进行选择");
+        }
+    }
+</script>
 <script src="/commons/plugins/iview/js/vue.min.js"></script>
 <script src="/commons/plugins/iview/js/vue-router.js"></script>
 <script type="text/javascript" src="/commons/plugins/iview/js/axios.min.js"></script>
 <script type="text/javascript" src="/commons/js/axiosUtils.js"></script>
 <script type="text/javascript" src="/page/js/orderList.js"></script>
+<script type="text/javascript" src="/page/js/cancel.js"></script>
+
 </html>

@@ -99,8 +99,7 @@
                                 </div>
                             </div>
                         </div>
-
-
+  
                          <div class="main-content5">
                             <div class="main-content5-title"><text style="font-size:20px;">商品信息</text></div>
                                 <table class="table table-condensed">
@@ -137,62 +136,6 @@
             </div>
 </body>
 
-<script type="text/javascript">
-    function edit() {
-        $("#receiver_name").attr("disabled",false);
-        $("#receiver_address").attr("disabled",false);
-        $("#receiver_city").attr("disabled",false);
-        $("#receiver_district").attr("disabled",false);
-        $("#receiver_state").attr("disabled",false);
-        $("#receiver_mobile").attr("disabled",false);
+<script type="text/javascript" src="/page/js/receiver.js"></script>
 
-    }
-    function notEdit() {
-        $("#receiver_name").attr("disabled",true);
-        $("#receiver_address").attr("disabled",true);
-        $("#receiver_city").attr("disabled",true);
-        $("#receiver_district").attr("disabled",true);
-        $("#receiver_state").attr("disabled",true);
-        $("#receiver_mobile").attr("disabled",true);
-
-    }
-
-
-    function editReceiver() {
-        var receiverName=$("#receiver_name").val();
-        var receiverAddress=$("#receiver_address").val();
-        var receiverCity=$("#receiver_city").val();
-        var receiverDistrict=$("#receiver_district").val();
-        var receiverState=$("#receiver_state").val();
-        var receiverMobile=$("#receiver_mobile").val();
-        var receiverId=$("#receiver_id").val();
-        var confirm_ = confirm('确认？');
-        var re = /^1\d{10}$/;
-        if(confirm_){
-            if(!re.test(receiverMobile)){
-                alert("请注意手机格式");
-            }else{
-                $.ajax({
-                    ContentType:"application/json;charset=UTF-8",
-                    type:"post",
-                    url:"/editReceiverInformation",
-                    data: {"receiverName" :receiverName,"receiverAddress":receiverAddress,"receiverCity":receiverCity,
-                        "receiverDistrict":receiverDistrict,"receiverState":receiverState,"receiverMobile":receiverMobile,
-                        "receiverId":receiverId},
-                    success:function (msg) {
-                        if(msg=="success"){
-                            notEdit();
-                            alert("编辑成功");
-                        }else {
-                            alert("编辑失败");
-                        }
-                    }
-                })
-            }
-
-            }
-
-
-    }
-</script>
 </html>

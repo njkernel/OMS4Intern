@@ -2,6 +2,7 @@ package cn.com.connext.oms.service.impl;
 
 import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
+import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;
 import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDTO;
 import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDetailDTO;
 import cn.com.connext.oms.commons.utils.AES;
@@ -35,7 +36,7 @@ import java.util.List;
 public class TbExchangeServiceImpl implements TbExchangeService {
   private final String TOKENS = "yonyong";
   private static long MISTIMING;
-  public static String IP="10.129.100.51";
+  public static String IP="10.129.100.35";
   public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
 
   @Autowired RestTemplate restTemplate;
@@ -54,9 +55,9 @@ public class TbExchangeServiceImpl implements TbExchangeService {
    */
   @Override
   public PageInfo<TbReturn> showAllReturns(
-          Integer currentPage, Integer pageSize, String returnType) {
+          Integer currentPage, Integer pageSize, TbReturn tbReturn) {
     PageHelper.startPage(currentPage, pageSize);
-    List<TbReturn> tbReturns = tbExchangeMapper.selectAllExchangeOrders(returnType);
+    List<TbReturn> tbReturns = tbExchangeMapper.selectAllExchangeOrders(tbReturn);
     PageInfo<TbReturn> pageInfo = new PageInfo<>(tbReturns);
     return pageInfo;
   }
@@ -171,22 +172,23 @@ public class TbExchangeServiceImpl implements TbExchangeService {
   @Override
   public int updateTbReturn(int[] ids, String state, String modifiedUser, Date update) {
     List<TbReturn> tbReturns = new ArrayList<>();
-    TbReturn tbReturn = new TbReturn();
     for (int i = 0; i < ids.length; i++) {
+      TbReturn tbReturn = new TbReturn();
+      if (!"待审核".equals(tbExchangeMapper.selectTbReturnById(ids[0]).getReturnState())){
+        continue;
+      }
       tbReturn.setReturnId(ids[i]);
       tbReturn.setReturnState(state);
       tbReturn.setModifiedUser(modifiedUser);
       tbReturn.setUpdated(update);
       tbReturns.add(tbReturn);
     }
-    if ("待审核".equals(state)) {
       try {
-        return tbExchangeMapper.updateTbReturn(tbReturns);
+        tbExchangeMapper.updateTbReturn(tbReturns);
       } catch (Exception e) {
         return -1;
       }
-    }
-    return -2;
+      return 0;
   }
 
   /**
@@ -247,69 +249,69 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     // 批量生成入库单并推送至WMS
     for (int i = 0; i < ids.length; i++) {
 
-      TbReturn tbReturn1 = tbExchangeMapper.selectTbReturnById(ids[i]);
-      int orderId = tbReturn1.getOrderId();
+        TbReturn tbReturn1 = tbExchangeMapper.selectTbReturnById(ids[i]);
+        int orderId = tbReturn1.getOrderId();
 
-      if ("审核失败".equals(tbReturn1.getReturnState())) {
-        continue;
-      }
-      // 生成入库单
-      TbInput tbInput = new TbInput();
-      tbInput.setInputCode(CodeGenerateUtils.creatUUID());
-      tbInput.setOrderId(orderId);
-      tbInput.setInputState("传输中");
-      tbInput.setCreated(new Date());
-      tbInput.setUpdated(new Date());
-      tbInput.setSynchronizeState("未同步");
-      try {
-        tbExchangeMapper.insertInput(tbInput);
-      } catch (Exception e) {
-        return -1;
-      }
-      // 发送入库单
-      TbInput tbInput1 = tbExchangeMapper.selectTbInputByOrderId(orderId);
-      List<TbReturnGoods> tbReturnGoods = tbExchangeMapper.selectTbReturnGoodsByOrderId(orderId);
-      List<TbOrder> tbOrder = tbOrderMapper.getOrderByOrderId(orderId);
-
-      List<InRepertoryDetailDTO> detailDTOS = new ArrayList<>();
-      for (TbReturnGoods t : tbReturnGoods) {
-        TbGoods tbGoods = tbExchangeMapper.toSelectGoodById(t.getGoodsId());
-        detailDTOS.add(new InRepertoryDetailDTO(tbGoods.getGoodsCode(), t.getNumber()));
-      }
-
-      String token = AES.AESEncode(TOKENS, String.valueOf(tbInput1.getInputId()));
-      InRepertoryDTO inRepertoryDTO =
-              new InRepertoryDTO(
-                      token,
-                      String.valueOf(tbInput1.getInputId()),
-                      String.valueOf(orderId),
-                      tbOrder.get(0).getChannelCode(),
-                      tbOrder.get(0).getDeliveryCompany(),
-                      tbOrder.get(0).getDeliveryCode(),
-                      detailDTOS);
-
-//      try {
-//        restTemplate.postForEntity(
-//            "http://10.129.100.22:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
-//      } catch (Exception e) {
-      try {
-        restTemplate.postForEntity(
-                URL,
-                inRepertoryDTO.toMap(),
-                String.class);
-        TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
-        List<TbReturn> tbReturns = new ArrayList<>();
-        tbReturn.setOrderId(orderId);
-        tbReturn.setReturnState("等待收货");
-        tbReturn.setUpdated(new Date());
-        tbReturns.add(tbReturn);
-        tbInput.setInputState("接收成功");
+        if ("审核失败".equals(tbReturn1.getReturnState())) {
+          continue;
+        }
+        // 生成入库单
+        TbInput tbInput = new TbInput();
+        tbInput.setInputCode(CodeGenerateUtils.creatUUID());
+        tbInput.setOrderId(orderId);
+        tbInput.setInputState("传输中");
+        tbInput.setCreated(new Date());
         tbInput.setUpdated(new Date());
-        tbInput.setSynchronizeState("已同步");
-        tbExchangeMapper.updateTbInput(tbInput);
-        tbExchangeMapper.updateTbReturn(tbReturns);
-      } catch (Exception e1) {
-        return -1;
+        tbInput.setSynchronizeState("未同步");
+        try {
+          tbExchangeMapper.insertInput(tbInput);
+        } catch (Exception e) {
+          return -1;
+        }
+        // 发送入库单
+        TbInput tbInput1 = tbExchangeMapper.selectTbInputByOrderId(orderId);
+        List<TbReturnGoods> tbReturnGoods = tbExchangeMapper.selectTbReturnGoodsByOrderId(orderId);
+        List<TbOrder> tbOrder = tbOrderMapper.getOrderByOrderId(orderId);
+
+        List<InRepertoryDetailDTO> detailDTOS = new ArrayList<>();
+        for (TbReturnGoods t : tbReturnGoods) {
+          TbGoods tbGoods = tbExchangeMapper.toSelectGoodById(t.getGoodsId());
+          detailDTOS.add(new InRepertoryDetailDTO(tbGoods.getGoodsCode(), t.getNumber()));
+        }
+
+        String token = AES.AESEncode(TOKENS, String.valueOf(tbInput1.getInputId()));//1
+        InRepertoryDTO inRepertoryDTO =
+                new InRepertoryDTO(
+                        token,
+                        String.valueOf(tbInput1.getInputId()),
+                        String.valueOf(orderId),
+                        tbOrder.get(0).getChannelCode(),
+                        tbOrder.get(0).getDeliveryCompany(),
+                        tbOrder.get(0).getDeliveryCode(),
+                        detailDTOS);
+
+  //      try {
+  //        restTemplate.postForEntity(
+  //            "http://10.129.100.22:8080/api/inRepertoryOrder", inRepertoryDTO.toMap(), String.class);
+  //      } catch (Exception e) {
+        try {
+          List<TbReturn> tbReturns = new ArrayList<>();
+          TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
+          tbReturn.setOrderId(orderId);
+          tbReturn.setReturnState("等待收货");
+          tbReturn.setUpdated(new Date());
+          tbReturns.add(tbReturn);
+          tbInput1.setInputState("接收成功");
+          tbInput1.setUpdated(new Date());
+          tbInput1.setSynchronizeState("已同步");
+          restTemplate.postForEntity(
+                  URL,
+                  inRepertoryDTO.toMap(),
+                  String.class);
+          tbExchangeMapper.updateTbInput(tbInput1);
+          tbExchangeMapper.updateTbReturn(tbReturns);
+        } catch (Exception e1) {
+          return -1;
       }
     }
     // }
@@ -431,5 +433,31 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     } else {
       return 0;
     }
+  }
+
+  /**
+   * create by: yonyong
+   * description: 根据退货详情单获取换货商品详情
+   * create time: 2019/1/15 12:30
+   *
+   *  * @Param: returnDetails
+   * @return java.util.List<cn.com.connext.oms.commons.dto.exchange.ReturnDetails>
+   */
+  @Override
+  public List<ReturnGoods> selectReturnDetails(ReturnDetails returnDetails){
+      List<ReturnGoods> list=new ArrayList<>();
+      List<TbReturnGoods> tbReturnGoods=returnDetails.getTbReturnGoods();
+      for (TbReturnGoods t:tbReturnGoods) {
+        ReturnGoods returnGoods = new ReturnGoods();
+        TbGoods tbGoods = tbExchangeMapper.toSelectGoodById(t.getGoodsId());
+          returnGoods.setGoodId(t.getGoodsId());
+          returnGoods.setOrderId(t.getOrderId());
+          returnGoods.setReturnNum(t.getNumber());
+          returnGoods.setReturnPrice(t.getNumber()*tbGoods.getGoodsPrice());
+          returnGoods.setGoodCode(tbGoods.getGoodsCode());
+          returnGoods.setGoodName(tbGoods.getGoodsName());
+          list.add(returnGoods);
+      }
+      return list;
   }
 }

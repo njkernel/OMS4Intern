@@ -27,7 +27,7 @@ public interface TbExchangeMapper {
       * @Param: returnId
      * @return com.github.pagehelper.PageInfo<cn.com.connext.oms.entity.TbReturn>
      */
-    public List<TbReturn> selectAllExchangeOrders(@Param("returnType")String returnType);
+    public List<TbReturn> selectAllExchangeOrders(@Param("tbReturn")TbReturn tbReturn);
 
 //    /**
 //     * create by: yonyong

@@ -34,6 +34,16 @@ public interface TbGoodsOrderMapper extends MyMapper<TbGoodsOrder> {
      * @Create: 2018/1/8 16:03
      */
     public List<GoodsGoodsOrderDto> goodsListFromOrder(int orderId);
+    
+    
+    /** 
+    * @Description: 根据订单id查看到订单商品列表 
+    * @Param: [orderId] 
+    * @return: java.util.List<cn.com.connext.oms.entity.TbGoodsOrder> 
+    * @Author: Lili Chen 
+    * @Date: 2019/1/15 
+    */
+    public List<TbGoodsOrder> getListGoodsOrderById(Integer orderId);
 
 
 

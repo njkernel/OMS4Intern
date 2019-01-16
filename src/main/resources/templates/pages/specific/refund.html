@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,17 +14,17 @@
                             <div class="title"><text>基本信息</text></div>
                             <div class="title-content">
                                 <div class="title-content1">
-                                    <div class="title-content1-top1">退款单号：<input></div>
-                                    <div class="title-content1-top2">退款金额：<input></div>
-                                    <div class="title-content1-top3">退款状态：<input></div>
+                                    <div class="title-content1-top1">退款单号：<input th:text="${refund.getRefundCode()}"></div>
+                                    <div class="title-content1-top2">退款金额：<input th:text="${refund.getRefundPrice()}"></div>
+                                    <div class="title-content1-top3">退款状态：<input th:text="${refund.getRefundState()}"></div>
                                 </div>
                                 <div class="title-content2">
-                                    <div class="title-content1-top1">退货单号：<input></div>
-                                    <div class="title-content1-top2">创建时间：<input></div>
-                                    <div class="title-content1-top3">修改人：<input></div>
+                                    <div class="title-content1-top1">退货单号：<input th:text="${refund.getOrderId()}"></div>
+                                    <div class="title-content1-top2">创建时间：<input th:text="${#dates.format(refund.createtd, 'yyyy-MM-dd HH:mm:ss')}"></input></div>
+                                    <div class="title-content1-top3">修改人：<input th:text="${refund.getModifiedUser()}"></div>
                                 </div>
                                 <div class="title-content3">
-                                    <div class="title-content1-top1">修改时间：<input></div>
+                                    <div class="title-content1-top1">修改时间：<input th:text="${#dates.format(refund.updated, 'yyyy-MM-dd HH:mm:ss')}"></div>
                                 </div>
                             </div>
                         </div>
@@ -38,104 +39,15 @@
                                     <th>商品数量</th>
                                     <th>商品总价</th>
                                 </tr>
+                                <tbody th:each="goodOrder,iterStat : ${GoodsOrderList}">
                                 <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
+                                    <td th:text="${goodOrder.getTbGoods().getGoodsCode()}"></td>
+                                    <td th:text="${goodOrder.getTbGoods().getGoodsName()}"></td>
+                                    <td th:text="${goodOrder.getTbGoods().getGoodsPrice()}"></td>
+                                    <td th:text="${goodOrder.getNum()}"></td>
+                                    <td th:text="${goodOrder.getTotalPrice()}"></td>
                                 </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td> 
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td> 
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>  
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td> 
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td class="ttdd">12345</td>
-                                    <td>矿泉水</td>
-                                    <td>2</td>
-                                    <td>50</td>
-                                    <td>200</td>
-                                </tr>
-                                <tr>
-                                    <td style="font-size: 15px;"><strong>总计</strong></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>2000</td>
-                                    <td>4005</td>
-                                </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>

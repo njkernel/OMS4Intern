@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,19 +15,18 @@
                     <div class="title"><text>商品信息</text></div>
                     <div class="title-content">
                         <div class="title-content1">
-                            <div class="title-content1-top1">订单号：<input disabled="disabled"></div>
-                            <div class="title-content1-top2">渠道订单号：<input disabled="disabled" ></div>
-                            <div class="title-content1-top3">退货单号：<input disabled="disabled"></div>
+                            <div class="title-content1-top1">订单号：<input  th:text="${returnDetails.orderId}" ></div>
+                            <div class="title-content1-top2">渠道订单号：<input th:text="${returnDetails.channelCode}" ></div>
+                            <div class="title-content1-top3">退货单号：<input th:text="${returnDetails.returnCode}"></div>
                         </div>
                         <div class="title-content2">
-                            <div class="title-content1-top1">入库单号：<input disabled="disabled"></div>
-                            <div class="title-content1-top2">入库单状态：<input disabled="disabled"></div>
-                            <div class="title-content1-top3">收获仓库：<input disabled="disabled"></div>
+                            <div class="title-content1-top1">入库单号：<input th:text="${tbInput.inputCode}"></div>
+                            <div class="title-content1-top2">入库单状态：<input th:text="${tbInput.inputState}"></div>
                         </div>
                         <div class="title-content3">
-                            <div class="title-content1-top1">创建时间：<input disabled="disabled"></div>
-                            <div class="title-content1-top2">修改人：<input disabled="disabled"></div>
-                            <div class="title-content1-top3">修改时间：<input disabled="disabled"></div>
+                            <div class="title-content1-top1">创建时间：<input th:text="${returnDetails.created}"></div>
+                            <div class="title-content1-top2">修改人：<input th:text="${returnDetails.modifiedUser}"></div>
+                            <div class="title-content1-top3">修改时间：<input th:text="${returnDetails.updated}"></div>
                         </div>
                     </div>
                 </div>
@@ -43,118 +42,16 @@
                             <th>数量</th>
                             <th>金额</th>
                         </tr>
-                        <tr>
-                            <td class="ttdd">12345</td>
-                            <td>矿泉水</td>
-                            <td>12344556</td>
-                            <td>2</td>
-                            <td>200</td>
-                            <td>400</td>
+
+                        <tr th:each="temp:${tbReturnGoodsList}">
+                            <td th:text="${temp.goodsId}"></td>
+                            <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsName()}"></td>
+                            <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsCode()}"></td>
+                            <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsPrice()}"></td>
+                            <td th:text="${temp.number}"></td>
+                            <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsPrice()*temp.number}"></td>
                         </tr>
-                        <tr>
-                            <td class="ttdd">23456</td>
-                            <td>凉茶</td>
-                            <td>12344556</td>
-                            <td>3</td>
-                            <td>100</td>
-                            <td>300</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td class="ttdd">45678</td>
-                            <td>薯片</td>
-                            <td>33444556</td>
-                            <td>4</td>
-                            <td>200</td>
-                            <td>800</td>
-                        </tr>
-                        <tr>
-                            <td stytle="font-size:20px"><strong>总计</strong></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>800</td>
-                            <td>5678</td>
-                        </tr>
+
                     </table>
                 </div>
             </div>

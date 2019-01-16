@@ -8,6 +8,7 @@ import cn.com.connext.oms.entity.TbReturn;
 import cn.com.connext.oms.service.TbExchangeService;
 import cn.com.connext.oms.service.TbOrderService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,9 +45,10 @@ public class TbExchangeController {
      * @return cn.com.connext.oms.commons.dto.BaseResult
      */
     @RequestMapping("/showAllExchanges")
-    public  BaseResult showAllReturns(Integer currentPage,Integer pageSize,String returnType){
+    @ApiOperation(value = "显示所有换货单接口")
+    public  BaseResult showAllReturns(Integer currentPage,Integer pageSize,TbReturn tbReturn){
         try {
-            PageInfo<TbReturn> pageInfo=tbExchangeService.showAllReturns(currentPage,pageSize,returnType);
+            PageInfo<TbReturn> pageInfo=tbExchangeService.showAllReturns(currentPage,pageSize,tbReturn);
             return BaseResult.success("查询成功！",pageInfo);
         }catch (Exception e){
             e.printStackTrace();
@@ -63,6 +65,7 @@ public class TbExchangeController {
      * @return java.lang.String
      */
     @RequestMapping("/toRequest")
+    @ApiOperation(value = "获取订单所有信息接口")
     public BaseResult toRequest(@RequestParam("orderId")int orderId){
         try {
             List<TbOrder> tbOrder = tbOrderService.getOrderByOrderId(orderId);
@@ -88,6 +91,7 @@ public class TbExchangeController {
      * @return cn.com.connext.oms.commons.dto.BaseResult
      */
     @RequestMapping("/toGenerateExchangeOrder")
+    @ApiOperation(value = "生成换货单接口")
     public BaseResult toGenerateExchangeOrder(@RequestParam("orderId")int orderId,
                                               @RequestParam("goodId")int[] goodId,
                                               @RequestParam("num")int[] num){
@@ -111,6 +115,7 @@ public class TbExchangeController {
      * @return cn.com.connext.oms.commons.dto.BaseResult
      */
     @RequestMapping("/exchangeDetails")
+    @ApiOperation(value = "换货单详情接口")
     public BaseResult exchangeDetails(@RequestParam("orderId")int orderId){
         try {
             ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
@@ -130,6 +135,7 @@ public class TbExchangeController {
      * @return cn.com.connext.oms.commons.dto.BaseResult
      */
     @RequestMapping("/toCancel")
+    @ApiOperation(value = "取消换货接口")
     public BaseResult toCancel(@RequestParam("ids")int [] ids){
         int t=tbExchangeService.updateTbReturn(ids,"换货取消","yonyong",new Date());
         if (t==-1){
@@ -152,7 +158,8 @@ public class TbExchangeController {
      * @return cn.com.connext.oms.commons.dto.BaseResult
      */
      @RequestMapping("/toAudit ")
-    public BaseResult toAudit(@RequestParam("ids")int [] ids){
+     @ApiOperation(value = "审核换货单接口")
+     public BaseResult toAudit(@RequestParam("ids")int [] ids){
          Date date=new Date();
          int rs=tbExchangeService.AuditTbReturn(ids,"yonyong",date);
          if (rs!=1){
