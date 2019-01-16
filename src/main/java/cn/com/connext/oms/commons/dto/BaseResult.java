@@ -44,7 +44,7 @@ public class BaseResult implements Serializable {
         return BaseResult.createResult(status, message, null);
     }
     public static BaseResult fail(String message, Object data) {
-        return BaseResult.createResult(STATUS_SUCCESS, message, data);
+        return BaseResult.createResult(STATUS_FAIL, message, data);
     }
 
 
