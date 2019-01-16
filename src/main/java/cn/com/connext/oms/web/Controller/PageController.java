@@ -64,11 +64,9 @@ public class PageController {
 
     @Autowired
     private TbExchangeService tbExchangeService;
+
     @Autowired
-    private TbOrderService tbOrderService;
-   @Autowired
-   private  TbGoodsListService tbGoodsListService;
-    private  TbExchangeService tbExchangeService;
+    private  TbGoodsListService tbGoodsListService;
 
     @Autowired
     private OutputService outputService;
@@ -260,13 +258,13 @@ public class PageController {
     public String returnOrederList() {
         return "pages/details/orders/order-list";
     }
-    /**
+   /* *
      * 功能描述:订单详情跳转
      * @param:
      * @return:
      * @auther: Jun.Zhao
      * @date: 2019/1/15 16:21
-     */
+     * */
     @RequestMapping("/orderDetail")
     public String returnOrderDetail(Integer orderId, Model model){
         OrderGoodsReceiverDto orderGoodsReceiverDto =tbOrderService.getAllById(orderId);
@@ -312,17 +310,6 @@ public class PageController {
         List<TbOrderDetails> outStockDetails = outputService.orderDetails(orderId);
         mv.addObject("outStockDetails",outStockDetails);
         return mv;
-    }
-
-
-    @RequestMapping("/orderDetail")
-    public String orderDetail(){
-        return "pages/specific/order-detail";
-    }
-
-    @RequestMapping("/orderList")
-    public String orderList() {
-        return "pages/details/orders/order-list";
     }
 
 

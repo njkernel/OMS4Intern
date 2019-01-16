@@ -12,14 +12,14 @@ public interface TbReceiverService {
     * @Date: 2019/1/14
     */
     boolean updateReceiver(TbReceiver tbReceiver);
-    /**
+   /* *//**
      * 功能描述:根据订单查看收货人信息
      * @param:
      * @return:
      * @auther: Jun.Zhao
      * @date: 2019/1/15 19:58
-     */
-    TbReceiver getReceiverByOrderId(Integer orderId);
+     *//*
+    TbReceiver getReceiverById(Integer orderId);*/
 
 
     /**

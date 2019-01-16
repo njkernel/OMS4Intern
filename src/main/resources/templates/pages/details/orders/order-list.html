@@ -14,11 +14,12 @@
     <link rel="stylesheet" href="/assets/styles/search.css">
 </head>
 <body style="overflow-x:hidden;background:#f3f3f3;">
-    <div id="orderList">
+<div id="orderList">
     <div id="mask_shadow"></div>
     <div class="btn-div">
         <button type="button" class="btn btn-primary">预检</button>
-        <button type="button" class="btn btn-primary" onclick="cancel()">取消</button>
+        <button type="button" class="btn btn-primary">路由</button>
+        <button type="button" class="btn btn-primary" onclick="">取消</button>
         <button type="button" class="btn btn-primary">出库</button>
         <button type="button" class="btn btn-primary">退货</button>
         <button type="button" class="btn btn-primary">换货</button>
@@ -37,24 +38,24 @@
     <div>
         <table class="table table-condensed">
             <thead>
-                <tr>
-                    <th>序号</th>
-                    <th>批量</th>
-                    <th>订单号</th>
-                    <th>订单状态</th>
-                    <th>订单来源</th>
-                    <th>支付方式</th>
-                    <th>订单总价</th>
-                    <th>发送仓库</th>
-                    <th>物流公司</th>
-                    <th>物流单号</th>
-                    <th>收货人</th>
-                    <th>收货地址</th>
-                    <th>操作</th>
-                </tr>
+            <tr>
+                <th>序号</th>
+                <th>批量</th>
+                <th>订单号</th>
+                <th>订单状态</th>
+                <th>订单来源</th>
+                <th>支付方式</th>
+                <th>订单总价</th>
+                <th>发送仓库</th>
+                <th>物流公司</th>
+                <th>物流单号</th>
+                <th>收货人</th>
+                <th>收货地址</th>
+                <th>操作</th>
+            </tr>
             </thead>
             <tbody>
-           <template v-for="list in orderListDate.list" v-cloak>
+            <template v-for="list in orderListDate.list" v-cloak>
                 <tr>
                     <td>
                         <input type="radio" :value="list.orderId" v-model="checkedDate" >
@@ -78,46 +79,46 @@
         </table>
         </table>
     </div>
-        <div class="footer-pager">
-            <!--解析显示分页信息-->
-            <!--分页文字信息-->
-            <span>共<span>{{orderListDate.pages}}</span>页，当前第<span>{{orderListDate.pageNum}}，总{{orderListDate.total}}条数据</span>页</span>
-            <!--分页条信息-->
-            <ul class="pagination">
-                <!--如果无上一页，不可点-->
-                <template v-if="orderListDate.hasPreviousPage==false">
-                    <li><a href="#">&laquo;</a></li>
-                </template>
-                <!--如果有上一页，可点-->
-                <template v-if="orderListDate.hasPreviousPage==true">
-                    <!--点前一页，跳到当前页码前一页-->
-                    <li @click="to_page(orderListDate.pageNum-1)"><a href="#">&laquo;</a></li>
-                </template>
+    <div class="footer-pager">
+        <!--解析显示分页信息-->
+        <!--分页文字信息-->
+        <span>共<span>{{orderListDate.pages}}</span>页，当前第<span>{{orderListDate.pageNum}}，总{{orderListDate.total}}条数据</span>页</span>
+        <!--分页条信息-->
+        <ul class="pagination">
+            <!--如果无上一页，不可点-->
+            <template v-if="orderListDate.hasPreviousPage==false">
+                <li><a href="#">&laquo;</a></li>
+            </template>
+            <!--如果有上一页，可点-->
+            <template v-if="orderListDate.hasPreviousPage==true">
+                <!--点前一页，跳到当前页码前一页-->
+                <li @click="to_page(orderListDate.pageNum-1)"><a href="#">&laquo;</a></li>
+            </template>
 
-                <!--遍历连续显示的页码-->
-                <template v-for="pagenum in orderListDate.navigatepageNums">
-                    <!--如果是当前页码，高亮显示-->
-                    <template v-if="pagenum==orderListDate.pageNum">
-                        <li class="active"><a href="#">{{pagenum}}</a></li>
-                    </template>
-                    <!--如果不是当前页码，正常显示-->
-                    <template v-if="pagenum!=orderListDate.pageNum">
-                        <!--点击后把当前页码传送给axios-->
-                        <li class @click="to_page(pagenum)"><a href="#">{{pagenum}}</a></li>
-                    </template>
+            <!--遍历连续显示的页码-->
+            <template v-for="pagenum in orderListDate.navigatepageNums">
+                <!--如果是当前页码，高亮显示-->
+                <template v-if="pagenum==orderListDate.pageNum">
+                    <li class="active"><a href="#">{{pagenum}}</a></li>
                 </template>
+                <!--如果不是当前页码，正常显示-->
+                <template v-if="pagenum!=orderListDate.pageNum">
+                    <!--点击后把当前页码传送给axios-->
+                    <li class @click="to_page(pagenum)"><a href="#">{{pagenum}}</a></li>
+                </template>
+            </template>
 
-                <!--如果无下一页，不可点-->
-                <template v-if="orderListDate.hasNextPage==false">
-                    <li><a href="#">&raquo;</a></li>
-                </template>
-                <!--如果有下一页，可点-->
-                <template v-if="orderListDate.hasNextPage==true">
-                    <!--把当前页码的下一页传送给axios-->
-                    <li @click="to_page(orderListDate.pageNum+1)"><a href="#">&raquo;</a></li>
-                </template>
-            </ul>
-        </div>
+            <!--如果无下一页，不可点-->
+            <template v-if="orderListDate.hasNextPage==false">
+                <li><a href="#">&raquo;</a></li>
+            </template>
+            <!--如果有下一页，可点-->
+            <template v-if="orderListDate.hasNextPage==true">
+                <!--把当前页码的下一页传送给axios-->
+                <li @click="to_page(orderListDate.pageNum+1)"><a href="#">&raquo;</a></li>
+            </template>
+        </ul>
+    </div>
     <div id="popup" class="popup">
         <div class="title">
             <p>订单详情</p>
@@ -127,65 +128,32 @@
         <div class="cont">
             <iframe src="" scrolling="auto" id="iframeId3" style="width:100%;height:100%;border:0px;"></iframe></div>
     </div>
-        <script>
-            $(function () {
-                $('#popup').popup();
-                $("body").css("overflow-y", "hidden");
-            });
-
-            $('#orderpopup').orderpopup();
+    <script>
+        $(function () {
+            $('#popup').popup();
             $("body").css("overflow-y", "hidden");
-            $("#search-btn").click(function (){
-                var valSelect=$("#select option:selected").val();
-                var valInput=$("#search-input").val();
-                var reg = /^\d{1,11}$/;
-                if (valSelect=="orderId"){
-                    if (reg.test(valInput)){
-                        return true;
-                    }else {
-                        alert("输入错误");
-                    }
-                }
-            });
-        </script>
-    </div>
-</body>
-
-<script th:type="text/javascript">
-    function refund() {
-        var confirm_ = confirm('确认？');
-        var arr=[];//定义一个数组
-        var a=$('input[name="checkid"]:checked');
-        a.each(function(){
-            arr.push($(this).val());
         });
-        if(arr.length>0){
-            if(confirm_){
-                $.ajax({
-                    ContentType:"application/json;charset=UTF-8",
-                    type:"post",
-                    url:"/cancelOrder",
-                    data:{"refundIdList":arr.join(",")},
-                    success:function (msg) {
-                        if(msg=="success"){
-                            alert("取消成功")
-                            location.reload() ;
-                        }else {
-                            alert("取消失败");
-                        }
-                    }
-                })
+
+        $('#orderpopup').orderpopup();
+        $("body").css("overflow-y", "hidden");
+        $("#search-btn").click(function (){
+            var valSelect=$("#select option:selected").val();
+            var valInput=$("#search-input").val();
+            var reg = /^\d{1,11}$/;
+            if (valSelect=="orderId"){
+                if (reg.test(valInput)){
+                    return true;
+                }else {
+                    alert("输入错误");
+                }
             }
-        }else {
-            alert("你还没进行选择");
-        }
-    }
-</script>
+        });
+    </script>
+</div>
+</body>
 <script src="/commons/plugins/iview/js/vue.min.js"></script>
 <script src="/commons/plugins/iview/js/vue-router.js"></script>
 <script type="text/javascript" src="/commons/plugins/iview/js/axios.min.js"></script>
 <script type="text/javascript" src="/commons/js/axiosUtils.js"></script>
 <script type="text/javascript" src="/page/js/orderList.js"></script>
-<script type="text/javascript" src="/page/js/cancel.js"></script>
-
 </html>
