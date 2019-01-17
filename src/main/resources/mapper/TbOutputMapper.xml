@@ -98,7 +98,7 @@
         select * from tb_output where output_id=#{outputId}
     </select>
 
-  <select id="getOutputByOutputCode" parameterType="String" resultMap="BaseResultMap">
+  <select id="getOutputByOutputCode" parameterType="String" resultMap="outputMap">
         select * from tb_output where output_code=#{outputCode}
     </select>
   <select id="orderDetails" parameterType="integer" resultType="cn.com.connext.oms.entity.TbOrderDetails">

@@ -47,7 +47,7 @@ public class OutputController {
     /**
      * 功能描述: 根据传入的数组id生成出库单，并根据WMS返回值修改订单状态为已出库或者出库异常
      *
-     * @param: 订单id
+     * @param: 订单idOutputDetails
      * @return: 返回修改状态码，成功或失败
      * @auther: Jay
      * @date: 2019/1/7

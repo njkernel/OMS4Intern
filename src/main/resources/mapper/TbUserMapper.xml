@@ -12,7 +12,6 @@
         <result column="updated" jdbcType="TIMESTAMP" property="updated" />
         <result column="role_id" jdbcType="INTEGER" property="roleId" />
         <association property="tbRole" javaType="cn.com.connext.oms.entity.TbRole">
-            <id column="role_id" jdbcType="INTEGER" property="roleId" />
             <result column="role_name" jdbcType="VARCHAR" property="roleName" />
         </association>
     </resultMap>
@@ -25,7 +24,7 @@
          update tb_user set user_name=#{userName},user_password=#{userPassword},updated=#{updated},role_id=#{roleId} where user_id=#{userId}
     </update>
     <select id="getUserById" parameterType="Integer" resultMap="BaseResultMap">
-        select * from tb_user where user_id=#{userId}
+        select tb_user.*,tb_role.role_name from tb_user,tb_role where user_id=#{userId} and tb_user.role_id=tb_role.role_id
     </select>
     <select id="getUserByName" parameterType="String" resultMap="BaseResultMap">
         select * from tb_user where user_name=#{userName}

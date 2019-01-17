@@ -59,7 +59,23 @@ function editReceiver() {
     if(confirm_){
         if(!re.test(receiverMobile)){
             alert("请注意手机格式");
-        }else{
+        }
+        else if(receiverAddress==null||receiverAddress==""){
+            alert("请注意详细地址不可为空");
+        }
+        else if(receiverCity==null||receiverAddress==""){
+            alert("城市不可为空");
+        }
+        else if(receiverName==null||receiverMobile==""){
+            alert("名字不可为空");
+        }
+        else if(receiverDistrict==null||receiverDistrict==""){
+            alert("区不可为空");
+        }
+        else if(receiverState==null||receiverState==""){
+            alert("省不可为空");
+        }
+        else{
             $.ajax({
                 ContentType:"application/json;charset=UTF-8",
                 type:"post",

@@ -1,9 +1,6 @@
 package cn.com.connext.oms.web.Controller;
 
-import cn.com.connext.oms.entity.TbGoods;
-import cn.com.connext.oms.entity.TbGoodsOrder;
-import cn.com.connext.oms.entity.TbOrder;
-import cn.com.connext.oms.entity.TbRefund;
+import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.service.TbGoodsListService;
 import cn.com.connext.oms.service.TbGoodsOrderService;
 import cn.com.connext.oms.service.TbOrderService;
@@ -12,16 +9,12 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;
 import cn.com.connext.oms.entity.TbGoods;
-import cn.com.connext.oms.entity.TbInput;
-import cn.com.connext.oms.entity.TbOrderDetails;
-import cn.com.connext.oms.entity.TbReturnGoods;
 import cn.com.connext.oms.service.*;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 
 import cn.com.connext.oms.commons.dto.GoodsGoodsOrderDto;
 import cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto;
 import cn.com.connext.oms.entity.TbGoods;
-import cn.com.connext.oms.entity.TbReceiver;
 import cn.com.connext.oms.service.*;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
 
@@ -81,6 +74,12 @@ public class PageController {
 
     @Autowired
     private TbAbnormalService tbAbnormalService;
+
+    @Autowired
+    private TbUserService tbUserService;
+
+    @Autowired
+    private TbRoleService tbRoleService;
 
 
     /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
@@ -374,5 +373,23 @@ public class PageController {
         model.addAttribute("GoodsOrderList",GoodsOrderList);
         
         return "pages/specific/refund";
+    }
+
+
+
+    /**
+     * @Description: 查看用户首页
+     * @Param: [page, size, model]
+     * @return: java.lang.String
+     * @Author: Lili Chen
+     * @Date: 2019/1/16
+     */
+    @RequestMapping("/index/getAllUser")
+    public String getAllUser(Integer page, Integer size, Model model){
+        Map<String,Object> map=tbUserService.getListUser(page,size);
+        List<TbRole> roleList=tbRoleService.getListRole();
+        model.addAttribute("map",map);
+        model.addAttribute("roleList",roleList);
+        return "pages/details/user/administrator";
     }
 }
