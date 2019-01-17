@@ -21,6 +21,7 @@ import java.util.List;
  **/
 @Component
 public class ExchangeUtils {
+    private static final String COMPLETED = "已完成";
 
     @Autowired
     TbExchangeMapper tbExchangeMapper;
@@ -37,30 +38,17 @@ public class ExchangeUtils {
      * @return java.util.List<cn.com.connext.oms.entity.TbGoodsOrder>
      */
     public int newOrder(List<GoodDetails> goodDetails, int oldOrderId){
-        int orderId=1901060001+tbExchangeMapper.selectCountOfOrder();
+        int orderId=1997060190+tbExchangeMapper.selectCountOfOrder();
         List<TbGoodsOrder> tbGoodsOrders=new ArrayList<>();
 
-        String orderCode="lw"+String.valueOf(orderId);
+        String orderCode="Huan"+String.valueOf(orderId);
         String channelCode="qd"+String.valueOf(orderId);
         TbReturn tbReturn=new TbReturn();
+        TbReceiver tbReceiver= new TbReceiver();
         Date date=new Date();
         TbExchangeOrderRelations tbExchangeOrderRelations=new TbExchangeOrderRelations();
 
         double sum=0;
-
-        //如果订单属于WMS重复发送，则以最新的为准,删掉数据库里已存在的，插入新的数据信息
-        boolean status=this.checkOrderIsExchange(oldOrderId);
-        if (status){
-            orderId=orderId-1;
-            try {
-                tbExchangeMapper.deleteOrder(orderId);
-                tbExchangeMapper.deleteGoodsOrders(orderId);
-                tbExchangeMapper.deleteExchangeOrderRelations(oldOrderId);
-            }catch (Exception e){
-                e.printStackTrace();
-                return 0;
-            }
-        }
 
         for (GoodDetails goodDetails1:goodDetails){
             TbGoodsOrder tbGoodsOrder=new TbGoodsOrder();
@@ -84,6 +72,8 @@ public class ExchangeUtils {
         }catch (Exception e){
             return 0;
         }
+        tbOrder.setUpdated(new Date());
+        tbOrder.setDeliveryCode(CodeGenerateUtils.creatUUID());
         tbOrder.setOrderId(orderId);
         tbOrder.setOrderCode(orderCode);
         tbOrder.setChannelCode(channelCode);
@@ -102,16 +92,20 @@ public class ExchangeUtils {
         tbExchangeOrderRelations.setNewOrderId(orderId);
         tbExchangeOrderRelations.setOldOrderId(oldOrderId);
 
-
+        //向receiver表中添加用户订单关联信息，先给要插入的记录信息赋值，表结构设计的的是一对一
+        tbReceiver = tbExchangeMapper.selectTbReceiverByOrderId(oldOrderId);
+        tbReceiver.setUpdated(new Date());
+        tbReceiver.setCreated(new Date());
+        tbReceiver.setOrderId(orderId);
 
         try {
             tbExchangeMapper.insertGoodsOrders(tbGoodsOrders);
             tbExchangeMapper.insertOrder(tbOrder);
             tbExchangeMapper.insertExchangeOrderRelations(tbExchangeOrderRelations);
+            tbExchangeMapper.insertReciver(tbReceiver);
         }catch (Exception e){
             return 0;
         }
-        orderId ++;
         return 1;
     }
 
@@ -156,4 +150,23 @@ public class ExchangeUtils {
         }
     }
 
+    /**
+     * create by: yonyong
+     * description: 通过查询订单id判断订单状态是否为已完成
+     * create time: 2019/1/11 12:20
+     *
+     *  * @Param: orderId
+     * @return boolean
+     */
+    public boolean checkOrderStatus(int orderId){
+        try{
+            if (COMPLETED.equals(tbOrderMapper.getOrderById(orderId).getOrderState())){
+                return true;
+            }else {
+                return false;
+            }
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

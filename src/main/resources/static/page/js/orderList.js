@@ -225,7 +225,6 @@ let orderList = new Vue({
             }else if ("exchange" === eventName){
                 toRequestForGoods.returnType = "exchange";
             }
-            console.log(toRequestForGoods.checkedNames[0]);
             if (toRequestForGoods.checkedNames.length === 0) {
                 alert("请选择一条订单！");
                 return false;
@@ -237,9 +236,7 @@ let orderList = new Vue({
             toRequestForGoods.orderId = toRequestForGoods.checkedNames[0];
             axios.get(url,{params: {orderId : toRequestForGoods.orderId}}).then(function(response) {
                 toRequestForGoods.orderGoodsInfo=response.data.data;
-                console.log(toRequestForGoods.orderGoodsInfo);
                 for (var t = 0;t<toRequestForGoods.orderGoodsInfo.length;t++) {
-                    console.log(toRequestForGoods.orderGoodsInfo[t][0]);
                     toRequestForGoods.$set(toRequestForGoods.orderGoodsInfo[t][0],"goodNum","0");
                 }
             }).catch(function (err) {
@@ -258,7 +255,6 @@ let orderList = new Vue({
             this.orderId=this.checkedNames[0];
             var url = null;
             var data = null;
-            console.log(exchangeReturn.returnType);
             if(!exchangeReturn.checkExchangeReturnIsNull(exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo))){
                 alert("既不退货又不换货，你是测试来找bug的吗！");
                 return false;
@@ -268,9 +264,6 @@ let orderList = new Vue({
             }
             if ("return" === exchangeReturn.returnType){
                 url = 'return/addReturnOrder';
-                console.log("orderId为:"+exchangeReturn.orderId);
-                console.log("goodsId为:"+exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo));
-                console.log("number为:"+exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo));
                 data = {
                     orderId : exchangeReturn.orderId,
                     goodsId : exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo)+"",
@@ -278,9 +271,6 @@ let orderList = new Vue({
                 };
             }else if ("exchange" === exchangeReturn.returnType){
                 url = 'exchange/toGenerateExchangeOrder';
-                console.log("orderId为:"+exchangeReturn.orderId);
-                console.log("goodsId为:"+exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo));
-                console.log("number为:"+exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo));
                 data = {
                     orderId : exchangeReturn.orderId,
                     goodId : exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo)+"",
@@ -288,6 +278,14 @@ let orderList = new Vue({
                 };
             }
             axios.get(url,{params: data}).then(function(response) {
+                if (response.data.status == "401"){
+                    alert("订单已经进入换货流程，不能进行退换操作!");
+                    return false;
+                }
+                if (response.data.status == "402"){
+                    alert("只能对已完成的订单操作!");
+                    return false;
+                }
                 alert("操作成功！");
             }).catch(function (err) {
                 alert("操作失败！");
@@ -332,8 +330,6 @@ let orderList = new Vue({
                 return false;
             });
             for (var p = 0; p<checkExchangeReturnIsOverFlow.beforeGoodsNum.length;p++){
-                console.log("原来的："+checkExchangeReturnIsOverFlow.beforeGoodsNum[p]);
-                console.log("现在的："+goodsNum[p]);
                 if (checkExchangeReturnIsOverFlow.beforeGoodsNum[p]<goodsNum[p]){
                     alert("别太过分，Overflow了哦！");
                     return false;
