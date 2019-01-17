@@ -39,7 +39,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
   private static final String GET_FAILED = "fail";
   private static final String GET_SUCCESS = "success";
   private static final String GET_FEEDBACK_OUTTIME = "over";
-  public static String IP="10.129.100.57";
+  public static String IP="127.0.0.1";
   public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
 
   @Autowired RestTemplate restTemplate;

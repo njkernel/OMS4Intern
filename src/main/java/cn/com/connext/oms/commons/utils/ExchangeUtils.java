@@ -169,4 +169,24 @@ public class ExchangeUtils {
             return false;
         }
     }
+
+    /**
+     * create by: Aaron
+     * description: 通过orderId判断订单是否有过退换货记录
+     * create time: 2019/1/17 23:46
+     *
+     * boolean
+     * @return  * @Param: orderId
+     */
+    public boolean checkOrderIsReturn(int orderId){
+        try{
+            TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
+            if (null == tbReturn){
+                return false;
+            }
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

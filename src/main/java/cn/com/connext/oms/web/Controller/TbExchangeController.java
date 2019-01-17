@@ -107,7 +107,7 @@ public class TbExchangeController {
                                               @RequestParam("goodId")List<Integer> goodIds,
                                               @RequestParam("num")List<Integer> nums){
         //判断是否为换货单
-        if (exchangeUtils.checkOrderIsExchange(orderId)){
+        if (exchangeUtils.checkOrderIsReturn(orderId)){
             return BaseResult.fail(401,"订单为换货单!");
         }
         //判断订单状态是否为已完成

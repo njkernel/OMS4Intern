@@ -113,7 +113,7 @@ public class TbReturnController {
         boolean flag = false;
         boolean flag1 = false;
         //判断是否为换货单
-        if (exchangeUtils.checkOrderIsExchange(orderId)){
+        if (exchangeUtils.checkOrderIsReturn(orderId)){
             return BaseResult.fail(401,"订单为退货单!");
         }
         //判断订单状态是否为已完成

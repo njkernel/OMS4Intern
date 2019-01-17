@@ -40,7 +40,7 @@ public class TbReturnServiceImpl implements TbReturnService {
     private static final String GET_FAILED = "fail";
     private static final String GET_SUCCESS = "success";
     private static final String GET_FEEDBACK_OUTTIME = "over";
-    private static final String URL = "http://10.129.100.57:8080/api/inRepertoryOrder";
+    private static final String URL = "http://127.0.0.1:8080/api/inRepertoryOrder";
     private static final String AUDIT_SUCESS = "审核通过";
     private static final String AUDIT_FAILED = "审核失败";
     private static final Logger log = LoggerFactory.getLogger(TbReturnServiceImpl.class);
