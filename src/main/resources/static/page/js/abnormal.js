@@ -21,8 +21,7 @@ let Abnormal = new Vue({
             options: [
                 { text: '订单id', value: 'orderId' },
                 { text: '异常类型', value: 'abnormalType' },
-                { text: '异常状态', value: 'abnormalState' },
-                { text: '修改人', value: 'modifiedUser' }
+                { text: '异常状态', value: 'abnormalState' }
             ],
             //搜索条件
             searchDate:{
@@ -157,8 +156,6 @@ let Abnormal = new Vue({
                 console.log(that.abnormalDate);
                 //默认选中第一条数据
                 that.checkedDate=res.data.list[0].abnormalId;
-                let url='/abnormalDetail';
-                // callAxiosGet(url,{abnormalId:res.data.list[0].abnormalId},that.detailSuc,that.Fail)
             }else{
                 alert(res.message);
             }
@@ -172,7 +169,7 @@ let Abnormal = new Vue({
         },
         //接口未连通
         Fail(err){
-            console.log("网络连接错误")
+
         },
     }
 });

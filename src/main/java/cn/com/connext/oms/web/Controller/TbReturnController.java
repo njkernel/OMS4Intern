@@ -156,7 +156,7 @@ public class TbReturnController {
                int[] ids = ListToArray.listToArray(exchangeList);
                int t = tbExchangeService.updateTbReturn(ids, "换货取消", "yonyong", new Date());
                if (-1 == t) {
-                   return BaseResult.fail("系统错误！");
+                   BaseResult.fail("系统错误！");
                } else if (-2 == t) {
                    BaseResult.fail(500, "换货单只有在待审核状态才能取消！");
                } else {

@@ -23,7 +23,7 @@ public class TbReceiverController {
     @Autowired
     private TbReceiverService tbReceiverService;
 
-    @PostMapping("/editReceiverInformation")
+    @PostMapping("/index/editReceiverInformation")
     @ApiOperation(value = "编辑收货人信息")
     public String editReceiverInformation(TbReceiver tbReceiver){
         boolean b=tbReceiverService.updateReceiver(tbReceiver);
@@ -34,7 +34,7 @@ public class TbReceiverController {
         }
     }
 
-    @PostMapping("/cancelEdit")
+    @PostMapping("/index/cancelEdit")
     @ApiOperation(value = "编辑收货人信息")
     public Map cancelEdit(Integer receiverId){
         TbReceiver receiver=tbReceiverService.getReceiverById(receiverId);

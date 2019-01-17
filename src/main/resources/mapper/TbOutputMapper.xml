@@ -75,7 +75,8 @@
     </resultMap>
 
 
-  <update id="updateOutputListStatue" parameterType="java.util.List">
+
+    <update id="updateOutputListStatue" parameterType="java.util.List">
     UPDATE tb_output
     SET output_state = CASE output_id
     <foreach collection="list" item="item">

@@ -8,6 +8,14 @@ function edit() {
     $("#receiver_mobile").attr("disabled",false);
 
 }
+function not() {
+    $("#receiver_name").attr("disabled",true);
+    $("#receiver_address").attr("disabled",true);
+    $("#receiver_city").attr("disabled",true);
+    $("#receiver_district").attr("disabled",true);
+    $("#receiver_state").attr("disabled",true);
+    $("#receiver_mobile").attr("disabled",true);
+}
 function notEdit() {
     var receiver_id=$("#receiver_id").val();
     $("#receiver_name").attr("disabled",true);
@@ -20,7 +28,7 @@ function notEdit() {
     $.ajax({
         ContentType:"application/json;charset=UTF-8",
         type:"post",
-        url:"/cancelEdit",
+        url:"/index/cancelEdit",
         data: {"receiverId":receiver_id},
         success:function (msg) {
             var receiver=msg["receiver"];
@@ -55,13 +63,13 @@ function editReceiver() {
             $.ajax({
                 ContentType:"application/json;charset=UTF-8",
                 type:"post",
-                url:"/editReceiverInformation",
+                url:"/index/editReceiverInformation",
                 data: {"receiverName" :receiverName,"receiverAddress":receiverAddress,"receiverCity":receiverCity,
                     "receiverDistrict":receiverDistrict,"receiverState":receiverState,"receiverMobile":receiverMobile,
                     "receiverId":receiverId},
                 success:function (msg) {
                     if(msg=="success"){
-                        notEdit();
+                         not();
                         alert("编辑成功");
                     }else {
                         alert("编辑失败");

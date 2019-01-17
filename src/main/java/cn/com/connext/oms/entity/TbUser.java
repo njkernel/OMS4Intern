@@ -52,6 +52,17 @@ public class TbUser implements Serializable {
         return userId;
     }
 
+    private TbRole tbRole;
+
+
+    public TbRole getTbRole() {
+        return tbRole;
+    }
+
+    public void setTbRole(TbRole tbRole) {
+        this.tbRole = tbRole;
+    }
+
     /**
      * 设置用户id
      *
