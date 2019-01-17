@@ -216,6 +216,7 @@ public class TbReturnController {
         @ApiOperation(value = "退货/换货审核分流接口")
         public BaseResult checkReturnOrExchange (@RequestParam("returnId") List<Integer> returnIdsList) {
 
+
             List<Integer> tbReturnList = new ArrayList<>();
             List<Integer> tbExchangeList = new ArrayList<>();
             Date date = new Date();
@@ -226,7 +227,6 @@ public class TbReturnController {
                 if (null != tbReturn) {
 
                     if (RETURN_TYPE.equals(tbReturn.getReturnType())) {
-
                         //将退货单生成单独的list交给退货部分处理
                         tbReturnList.add(tbReturn.getReturnId());
                     } else if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
@@ -240,8 +240,10 @@ public class TbReturnController {
             try {
                 //获取通过审核的订单，进行处理
                 List<Integer> returnOrdersList = tbReturnService.returnOrdersAudit(tbReturnList);
+
                 if (0 != returnOrdersList.size()) {
     //           if (!CollectionUtils.isEmpty(returnOrdersList)) {
+
                     tbReturnService.createInputOrder(returnOrdersList);
                     BaseResult.success("生成入库单成功并成功发送");
                 } else {
