@@ -6,7 +6,7 @@ let outputList = new Vue({
             page:{
                 pageSize:5,
                 currentPage:1,
-                // outputCode:'', orderId:'', receiverName:'', deliveryCode:''
+                outputCode:'', orderId:'',  deliveryCode:''
             },
             //选中行的记录id
             checkedDate:"",
@@ -16,6 +16,18 @@ let outputList = new Vue({
             outputDate:[],
             //默认选中
             selected: 'orderId',
+            //下拉框选项
+            options: [
+                { text: '订单号', value: 'orderId' },
+                { text: '出库单号', value: 'outputCode' },
+                { text: '快递单号', value: 'deliveryCode' }
+            ],
+            //搜索条件
+            searchData:{
+                orderId:'',
+                outputCode:'',
+                deliveryCode:''
+            },
         }
     },
     created: function () {
@@ -32,6 +44,15 @@ let outputList = new Vue({
         refresh(){
             this.initialize();
             this.initTable();
+        },
+        //清空搜索条件
+        initialize(){
+            this.page.orderId='';
+            this.page.outputCode='';
+            this.page.deliveryCode='';
+            this.searchData.orderId='';
+            this.searchData.outputCode='';
+            this.searchData.deliveryCode='';
         },
 
 
@@ -57,7 +78,39 @@ let outputList = new Vue({
             })
         },
 
+        //查询事件
+        search(){
+            if(this.selected==='orderId'){
+                let reg = /^\d{1,10}$/;
+                this.initialize();
+                if (reg.test(this.searchInput)){
+                    this.searchData.orderId=this.searchInput;
+                    console.log(this.searchData.orderId);
+                }else {
+                    alert("输入错误");
+                }
+            }
+            else if(this.selected==='outputCode'){
+                this.initialize();
+                this.searchData.outputCode=this.searchInput;
+                console.log(this.searchData.outputCode);
+            }
+            else if(this.selected==='deliveryCode'){
+                this.initialize();
+                this.searchData.deliveryCode=this.searchInput;
+            }
+            else {
+                this.initialize();
+            }
 
+            //查询条件
+            this.page.currentPage=1;
+            this.page.orderId=this.searchData.orderId;
+            this.page.outputCode=this.searchData.outputCode;
+            this.page.deliveryCode=this.searchData.deliveryCode;
+            //初始化表格
+            this.initTable();
+        },
 
         //出库订单列表接口反馈
         getListSuc(res){
