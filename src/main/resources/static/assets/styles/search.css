@@ -1,3 +1,9 @@
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+}
 .btn-div .search-box{
     /* margin-right: 40px; */
     float: right;
@@ -42,22 +48,22 @@ body div table thead {
 .table tbody tr .operation{
 
     width:100px;
-    
+
     height:30px;
 }
 .table tbody tr .number{
 
     width:100px;
-    
+
     height:30px;
 }
 .table tbody tr .batch{
 
     width:100px;
-    
+
     height:30px;
 }
-.table tbody tr td #sel{   
+.table tbody tr td #sel{
     width: 100px;
     height : 21px;
     border-radius : 10%;
@@ -68,7 +74,7 @@ body div table thead {
     left:16px;
     z-index: 100;
 }
-.table tbody tr td #changeId{   
+.table tbody tr td #changeId{
     width: 100px;
     height : 21px;
     border-radius : 10%;
@@ -124,7 +130,7 @@ body div table thead {
     border-radius: .2em;
     background-color: silver;
     text-indent: .15em;
-    line-height: .65;  
+    line-height: .65;
 }
 #checkOne:checked + label::before {
     content: "\2713";
@@ -136,56 +142,68 @@ body div table thead {
     clip: rect(0, 0, 0, 0);
 }
 .clearfix::after {
-    content:""; 
+    content:"";
     display:table; /*采用此方法可以有效避免浏览器兼容问题*/
     clear:both;
 }
 /* end-- */
 /*popup*/
 #mask_shadow {
-display: none;
-opacity: 0;
-position: fixed;
-z-index: 1;
-left: 0;
-top: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    opacity: 0;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 .popup {
-display: none;
-opacity: 0; 
-position: relative;
-margin: 0 auto;
-z-index: 3;
-top: -489px;
-width: 966px;
-height: 530px;
-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    display: none;
+    opacity: 0;
+    position: fixed;
+    margin: 0 auto;
+    z-index: 3;
+    top:  0;
+    right: 8%;
+    width: 966px;
+    height: 530px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 .popup .title {
-position: relative;
-width: 100%;
-height: 45px;
-background-color:#4285F4;
+    position: relative;
+    width: 100%;
+    height: 45px;
+    background-color:#4285F4;
 }
 .popup .title p {
-padding-left: 14px;
-line-height: 55px;
-color:#fff;
+    padding-left: 14px;
+    line-height: 55px;
+    color:#fff;
 }
 .popup .title span {
-position: absolute;
-top: 12px;
-right:  8px;
-width: 30px;
-height: 30px;
-color: #fff;
-font-size: 21px;
-cursor: pointer;
-text-align: center;
-/* border: 1px solid #333; */
+    position: absolute;
+    top: 12px;
+    right:  8px;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    font-size: 21px;
+    cursor: pointer;
+    text-align: center;
+    /* border: 1px solid #333; */
 }
 .popup .cont { width: 100%; height:100%; background-color: #fff;    }
 /* end */
+.col-sm-10 .notice {
+    color: red;
+    display: none;
+}
+.subtract,.plus {
+    width: 20px;
+    text-align: center;
+}
+.txtnum {
+    text-align: center;
+}
