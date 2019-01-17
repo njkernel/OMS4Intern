@@ -39,15 +39,15 @@ public class OutputController {
      * @auther: Jay
      * @date: 2019/1/7
      */
-    @GetMapping("/UpdateOrderIntoWaitOutPut")
-    public BaseResult UpdateOrderIntoWaitOutPut(@RequestParam(value = "id") int[] id) {
+    @PostMapping("/UpdateOrderIntoWaitOutPut")
+    public BaseResult UpdateOrderIntoWaitOutPut(@RequestParam(value = "id") int id[]) {
         return outputService.UpdateOrderIntoWaitOutPut(id);
     }
 
     /**
      * 功能描述: 根据传入的数组id生成出库单，并根据WMS返回值修改订单状态为已出库或者出库异常
      *
-     * @param: 订单id
+     * @param: 订单idOutputDetails
      * @return: 返回修改状态码，成功或失败
      * @auther: Jay
      * @date: 2019/1/7
@@ -65,8 +65,8 @@ public class OutputController {
      * @date: 2019/1/8
      */
     @GetMapping("OutputDetails")
-    public BaseResult OutputDetails(int currentPage,int pageSize) {
-        PageInfo<TbOrderDetails> allOrderByStatus = outputService.getAllOrderByStatus(STATUS4, currentPage, pageSize);
+    public BaseResult OutputDetails(int currentPage,int pageSize, TbOrderDetails tbOrderDetails) {
+        PageInfo<TbOrderDetails> allOrderByStatus = outputService.getAllOrderByStatus(currentPage, pageSize, tbOrderDetails);
         // 需要和前端页面绑定
         return BaseResult.success("成功", allOrderByStatus);
     }

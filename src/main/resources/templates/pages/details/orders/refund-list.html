@@ -59,7 +59,6 @@
     <table class="table table-condensed">
         <thead>
         <tr>
-            <th>序号</th>
             <th>批量</th>
             <th>退款单号</th>
             <th>退款金额</th>
@@ -73,7 +72,6 @@
         </thead>
         <tbody id="tbody" th:each="refund,iterStat : ${map.get('refundList')}">
         <tr>
-            <td th:text="${iterStat.index}"></td>
             <td><input type='checkbox' name='checkid' th:value='${refund.refundId}'></td>
             <td th:text="${refund.refundCode}"></td>
             <td th:text="${refund.refundPrice}"></td>
@@ -122,7 +120,7 @@
         <li><a th:href="@{/index/getRefundIndex(page=${map.get('pageCount')},size=4)}">&raquo;</a></li>
     </ul>
 </div>
-<div id="popup" class="popup" style="top: -400px;">
+<div id="popup" class="popup" >
     <div class="title">
         <p>退款单详情</p>
         <span></span>

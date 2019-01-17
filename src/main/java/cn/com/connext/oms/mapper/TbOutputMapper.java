@@ -84,4 +84,14 @@ public interface TbOutputMapper extends MyMapper<TbOutput> {
      * @Create: 2019/1/13
      */
     List<TbOrderDetails> getAllOrderByStatus(String status);
+    /**
+     *
+     * 功能描述:
+     *
+     * @param:
+     * @return:
+     * @auther: Jay
+     * @date: ${DATE}
+     */
+    List<TbOrderDetails> getOutputOrdersBySearch(String state, TbOrderDetails tbOrderDetails);
 }

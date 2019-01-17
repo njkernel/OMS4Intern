@@ -39,15 +39,15 @@ public class TbOrderServiceImplTest {
         System.out.println(b);*/
     }
 
-   /* @Test
+    @Test
     public void cancelOrderOfWms() {
         List<TbOutput> outputList=new ArrayList<TbOutput>();
-        TbOutput output=tbOutputMapper.getOutputByOrderId(1901060001);
+       /* TbOutput output=tbOutputMapper.getOutputByOrderId(1901060001);
         TbOutput output2=tbOutputMapper.getOutputByOrderId(1901060002);
         outputList.add(output);
-        outputList.add(output2);
-        boolean a= tbOrderService.cancelOrderOfWms(outputList);
+        outputList.add(output2);*/
+        boolean a= tbOrderService.cancelOrderOfWms("1901060001a5baee9");
         System.out.println(a);
 
-    }*/
+    }
 }
