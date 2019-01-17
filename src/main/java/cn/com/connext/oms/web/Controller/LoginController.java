@@ -62,7 +62,7 @@ public class LoginController {
             try {
                 subject.login(token);
                 TbUser userByName = loginService.findUserByName(name);
-                request.getSession().setAttribute("userName",userByName);
+                request.getSession().setAttribute("OMSUSER",userByName.getUserName());
                 return BaseResult.success("登录成功");
             } catch (Exception  e) {
                 //登录失败

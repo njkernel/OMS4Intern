@@ -15,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
@@ -67,7 +68,7 @@ public class OutputServiceImpl implements OutputService {
             tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
             return BaseResult.success("成功！");
           } else {
-            return BaseResult.fail("请选择状态为带路由的订单！");
+            return BaseResult.fail("请选择状态为待路由的订单！");
              }
         }
         return BaseResult.fail("异常！");
@@ -90,17 +91,7 @@ public class OutputServiceImpl implements OutputService {
         if (tbOrder.getOrderState().equals(STATUS3)||tbOrder.getOrderState().equals(STATUS5)){
         //根据收获人信息查询收获人信息
         TbReceiver tbReceiver = tbReceiverMapper.selectByPrimaryKey(tbOrder.getReceiverId());
-        // 生成出库单，设置出库单属性
-        TbOutput tbOutput = new TbOutput();
-        String outputCode = id+""+UUID.randomUUID().toString().substring(1,8);
-        Date date = new Date();
-        //生成出库单
-        tbOutput.setOutputCode(outputCode);
-        tbOutput.setOrderId(id);
-        tbOutput.setOutputState(STATUS3);
-        tbOutput.setCreated(date);
-        tbOutput.setUpdated(date);
-        tbOutputMapper.insertSelective(tbOutput);
+        TbOutput tbOutput = this.getOneTbOutput(id);
         //传送出库单并接受返回值类型判断是否接收成功
         String s = null;
             try {
@@ -109,7 +100,7 @@ public class OutputServiceImpl implements OutputService {
                 e.printStackTrace();
             }
 
-            //判断接收的结果
+            // 判断接收的结果 200 表示接收成功
         if ("200".equals(s)){
             tbOutput.setOutputState(STATUS6);
             tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
@@ -117,10 +108,11 @@ public class OutputServiceImpl implements OutputService {
             tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
             return BaseResult.success("出库成功！");
         } else {
-            tbOutput.setOutputState(STATUS5);
-            tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
+                // 状态不是200的一切情况
             tbOrder.setOrderState(STATUS5);
             tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+            tbOutput.setOutputState(STATUS5);
+            tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
          }
         }else {
         return BaseResult.fail("请选择待出库的订单！");
@@ -160,6 +152,16 @@ public class OutputServiceImpl implements OutputService {
      */
     @Override
     public PageInfo<TbOrderDetails> getAllOrderByStatus(String status,int currentPage,int pageSize) {
+//        Integer orderId = tbOrderDetails.getOrderId();
+//        String outputCode = tbOrderDetails.getOutputCode();
+//        String deliveryCode = tbOrderDetails.getDeliveryCode();
+//        Example example=new Example(TbOrderDetails.class);
+//        example.createCriteria()
+//                .andLike("orderId",orderId!=null?"%"+orderId+"%":null)
+//                .andLike("outputCode",outputCode!=null?"%"+outputCode+"%":null)
+//                .andLike("deliveryCode",deliveryCode!=null?"%"+deliveryCode+"%":null);
+//        List<TbOrderDetails> tbOrderAll= tbOutputMapper.selectByExample(example);
+
         // 从第一页开始，每一页显示5条数据
         PageHelper.startPage(currentPage,pageSize);
         List<TbOrderDetails> allOrder = tbOutputMapper.getAllOrderByStatus(status);
@@ -218,5 +220,36 @@ public class OutputServiceImpl implements OutputService {
             return "200";
         }
         return "error";
+    }
+    /*
+     *
+     * 功能描述: 判断是否生成新的出库单，当订单异常时，不生成新的出库单
+     *
+     * @param:  订单id
+     * @return:  返回出库单
+     * @auther: Jay
+     * @date: 2019/1/16
+     * */
+
+    public TbOutput getOneTbOutput(int id){
+        System.out.println("3267467236746283687"+id);
+        TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(id);
+        if (tbOrder.getOrderState().equals(STATUS5)){
+            TbOutput tbOutput = tbOutputMapper.getOutputByOrderId(id);
+            return tbOutput;
+        } else {
+            // 生成出库单，设置出库单属性
+            TbOutput tbOutput = new TbOutput();
+            String outputCode = id+""+UUID.randomUUID().toString().substring(1,8);
+            Date date = new Date();
+            //生成出库单
+            tbOutput.setOutputCode(outputCode);
+            tbOutput.setOrderId(id);
+            tbOutput.setOutputState(STATUS3);
+            tbOutput.setCreated(date);
+            tbOutput.setUpdated(date);
+            tbOutputMapper.insertSelective(tbOutput);
+            return tbOutput;
+        }
     }
 }

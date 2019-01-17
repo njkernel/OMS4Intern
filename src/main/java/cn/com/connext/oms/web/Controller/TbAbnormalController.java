@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 
@@ -28,9 +29,9 @@ public class TbAbnormalController {
 
     @GetMapping("/orderCheck")
     @ApiOperation(value = "订单预检操作接口")
-    public BaseResult orderCheck(int orderId){
+    public BaseResult orderCheck(int orderId, HttpSession session){
         try {
-            return tbAbnormalService.checkGoods(orderId);
+            return tbAbnormalService.checkGoods(orderId,session);
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResult.fail("服务器内部错误");

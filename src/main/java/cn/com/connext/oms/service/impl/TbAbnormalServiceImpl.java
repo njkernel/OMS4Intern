@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -49,7 +50,7 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
      * @Create: 2019/1/7 17:51
      */
 
-    public BaseResult checkGoods(int orderId){
+    public BaseResult checkGoods(int orderId,HttpSession session){
 
 
 
@@ -59,27 +60,30 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         example.createCriteria().andEqualTo("orderId",orderId);
         TbOrder tbOrder = tbOrderMapper.selectOneByExample(example);
 
-        if (!StringUtils.equals(tbOrder.getOrderState(),"待预检")){
+        if (!StringUtils.equals(tbOrder.getOrderState(),"待预检")&&!StringUtils.equals(tbOrder.getOrderState(),"订单异常")){
             return BaseResult.fail("当前订单状态不可以进行预检操作");
+        }
+        if (StringUtils.equals(tbOrder.getOrderState(),"订单异常")){
+            return BaseResult.fail("请先处理当前订单的异常");
         }
 
         //根据订单id获取相关商品id集合
         List<Integer> goodsIdByOrder = getGoodsIdByOrder(orderId);
         //金额异常
         if(tbOrder.getSumPrice()>15000){
-            creatAbnormal(orderId,"金额异常","金额超过一万五","待处理");
+            creatAbnormal(orderId,"金额异常","金额超过一万五","待处理",session);
             list.add("金额异常");
         }
         //备注异常
         if (!StringUtils.equals(tbOrder.getRemark(),"无")){
-            creatAbnormal(orderId,"备注异常","备注异常","待处理");
+            creatAbnormal(orderId,"备注异常","备注异常","待处理",session);
             list.add("备注异常");
         }
         //判断库存
         for (Integer goodId:goodsIdByOrder){
             TbStock tbStock = tbAbnormalMapper.selectStockByGoodsId(goodId);
             if(tbStock.getAvailableStock()<=0){
-                creatAbnormal(orderId,"库存异常","库存不足","待处理");
+                creatAbnormal(orderId,"库存异常","库存不足","待处理",session);
                 list.add("库存异常");
             }
         }
@@ -126,13 +130,15 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
      * @Create: 2019/1/7 17:51
      */
 
-    public void creatAbnormal(Integer orderId,String setAbnormalType,String setAbnormalReason,String setAbnormalState){
+    public void creatAbnormal(Integer orderId, String setAbnormalType, String setAbnormalReason, String setAbnormalState, HttpSession session){
         TbAbnormal tbAbnormal=new TbAbnormal();
         tbAbnormal.setOrderId(orderId);
         tbAbnormal.setAbnormalType(setAbnormalType);
         tbAbnormal.setAbnormalReason(setAbnormalReason);
         tbAbnormal.setAbnormalState(setAbnormalState);
         tbAbnormal.setCreatetime(new Date());
+        String omsuser = (String) session.getAttribute("OMSUSER");
+        tbAbnormal.setModifiedUser(omsuser);
         tbAbnormalMapper.insert(tbAbnormal);
     }
 
@@ -155,9 +161,8 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         example.createCriteria()
                 .andLike("abnormalState",abnormalState!=null?"%"+abnormalState+"%":null)
                 .andLike("orderId",orderId!=null?"%"+orderId+"%":null)
-                .andLike("abnormalType",abnormalType!=null?"%"+abnormalType+"%":null)
-                .andLike("modifiedUser",modifiedUser!=null?"%"+modifiedUser+"%":null);
-        example.setOrderByClause("createtime ASC");
+                .andLike("abnormalType",abnormalType!=null?"%"+abnormalType+"%":null);
+        example.setOrderByClause("createtime DESC");
         List<TbAbnormal> tbAbnormals = tbAbnormalMapper.selectByExample(example);
 
         PageInfo<TbAbnormal> pageInfo=new PageInfo<>(tbAbnormals);
