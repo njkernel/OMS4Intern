@@ -49,6 +49,22 @@ public interface TbUserService {
     Map getListUser(Integer page, Integer size);
 
 
+    /**
+    * @Description: 验证用户名字
+     * @Param: [userName]
+    * @return: java.lang.String
+    * @Author: Lili Chen
+    * @Date: 2019/1/17
+    */
+    String validateName(String userName);
 
+    /**
+    * @Description: 根据用户id查看用户
+    * @Param: [userId]
+    * @return: cn.com.connext.oms.entity.TbUser
+    * @Author: Lili Chen
+    * @Date: 2019/1/17
+    */
+    TbUser getUserById(Integer userId);
 
 }

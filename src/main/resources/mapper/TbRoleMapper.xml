@@ -10,4 +10,12 @@
     <result column="updated" jdbcType="TIMESTAMP" property="updated" />
     <result column="created" jdbcType="TIMESTAMP" property="created" />
   </resultMap>
+
+  <select id="getRoleById" parameterType="Integer" resultMap="BaseResultMap">
+        select * from tb_role where role_id=#{roleId}
+    </select>
+
+  <select id="getListRole"  resultMap="BaseResultMap">
+        select * from tb_role
+    </select>
 </mapper>
