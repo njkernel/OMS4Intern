@@ -71,7 +71,7 @@ public class TbOrderController {
         if(session.getAttribute("OMSUSER")!=null){
              userName=session.getAttribute("OMSUSER").toString();
         }
-        boolean b=tbOrderService.cancelOrder(orderIdList,"cll");
+        boolean b=tbOrderService.cancelOrder(orderIdList,userName);
         if(b){
             return "success";
         }else{

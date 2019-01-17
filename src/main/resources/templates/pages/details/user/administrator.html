@@ -59,17 +59,17 @@
     <span>共<span id="pageCount" th:text="${map.get('pageCount')}"></span>页，当前第<span id="page" th:text="${map.get('page')}"></span>页，总共<span  th:text="${map.get('dataSize')}"></span>条数据</span>
 
     <ul class="pagination">
-        <li><a th:href="@{/getAllUser(page=1,size=4)}">&laquo;</a></li>
+        <li><a th:href="@{/index/getAllUser(page=1,size=4)}">&laquo;</a></li>
         <th:block th:each="pageSize,iterStat : ${map.get('pageSize')}">
             <th:block th:if="${map.get('page')==iterStat.index+1}">
-                <li class="active"><a th:href="@{/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+                <li class="active"><a th:href="@{/index/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
             </th:block>
             <th:block th:if="${map.get('page')!=iterStat.index+1}">
-                <li ><a th:href="@{/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+                <li ><a th:href="@{/index/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
             </th:block>
         </th:block>
 
-        <li><a th:href="@{/getAllUser(page=${map.get('pageCount')},size=4)}">&raquo;</a></li>
+        <li><a th:href="@{/index/getAllUser(page=${map.get('pageCount')},size=4)}">&raquo;</a></li>
     </ul>
 </div>
 <!-- 弹出框 -->
