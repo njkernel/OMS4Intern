@@ -80,20 +80,44 @@ let orderList = new Vue({
 
         // 路由操作接口 Jay新增 2019/1/16
         updateRoute(){
-            this.orderId=this.checkedNames[0];
-            let url='/UpdateOrderIntoWaitOutPut';
-            callAxiosGet(url,{id:this.orderId},this.Suc,this.Fail)
+            var confirm_ = confirm('确认？');
+            var arr=[];
+            arr=this.checkedNames;
+            if(arr.length>0){
+                if(confirm_){
+                    $.ajax({
+                        type:'post',
+                        url:'/UpdateOrderIntoWaitOutPut',
+                        data:{
+                            "id":arr.join(",")},
+                        dataType:'JSON',
+                        success:function (data) {
+                            alert(data.message);
+                        }
+                    })
+                }
+            }else {
+                alert("请先选择订单");
+            }
         },
-        //异常处理
+
+        // 异常处理
         abnormalHandle(){
             let url='/abnormalHandle';
             callAxiosGet(url,{abnormalId:this.checkedNames[0]},this.Suc,this.Fail)
         },
+
         // 出库操作，将订单出库 Jay新增 2019/1/16
         outputOrder(){
-            this.orderId=this.checkedNames[0];
-            let url='/Output';
-            callAxiosGet(url,{id:this.orderId},this.Suc,this.Fail)
+            if (this.checkedNames.length===0){
+                alert("请先选择订单");
+                return null
+            }
+            else {
+                this.orderId = this.checkedNames[0];
+                let url = '/Output';
+                callAxiosGet(url, {id: this.orderId}, this.Suc, this.Fail)
+            }
         },
 
         //订单详情
