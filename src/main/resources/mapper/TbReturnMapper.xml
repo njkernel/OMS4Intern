@@ -95,12 +95,13 @@
       b.return_code,
       b.modified_user
 
-  FROM
-      tb_input a,
-      tb_return b
+   FROM
+       tb_input a,
+       tb_return b
 
-  WHERE
-      a.order_id = b.order_id
+   WHERE
+       a.order_id = b.order_id
+       and
   </select>
 <!--根据订单id查找退货单信息-->
   <select id="getInputByOrderId" resultType="TbInput">

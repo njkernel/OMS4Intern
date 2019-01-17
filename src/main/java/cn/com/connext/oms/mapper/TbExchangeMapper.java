@@ -240,4 +240,24 @@ public interface TbExchangeMapper {
     public int deleteExchangeOrderRelations(@Param("orderId")int orderId);
 
     public int selectCountOfOrder();
+
+    /**
+     * create by: yonyong
+     * description: 根据订单id orderId查询收货人信息
+     * create time: 2019/1/17 13:06
+     *
+     *  * @Param: orderId
+     * @return int
+     */
+    public TbReceiver selectTbReceiverByOrderId(@Param("orderId")int orderId);
+
+    /**
+     * create by: yonyong
+     * description: 添加收货人与订单关联信息记录
+     * create time: 2019/1/17 13:06
+     *
+     *  * @Param: orderId
+     * @return int
+     */
+    public int insertReciver(@Param("tbReceiver")TbReceiver tbReceiver);
 }

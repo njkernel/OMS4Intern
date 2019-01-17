@@ -2,6 +2,7 @@ package cn.com.connext.oms.web.Controller;
 
 import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.commons.dto.InputDTO;
+import cn.com.connext.oms.commons.utils.ExchangeUtils;
 import cn.com.connext.oms.commons.utils.ListToArray;
 import cn.com.connext.oms.commons.utils.StringUtils;
 import cn.com.connext.oms.entity.TbInput;
@@ -10,8 +11,11 @@ import cn.com.connext.oms.entity.TbReturn;
 import cn.com.connext.oms.service.TbExchangeService;
 import cn.com.connext.oms.service.TbOrderService;
 import cn.com.connext.oms.service.TbReturnService;
+import cn.com.connext.oms.service.impl.TbReturnServiceImpl;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -41,6 +45,9 @@ public class TbReturnController {
     private TbOrderService tbOrderService;
     @Autowired
     private TbExchangeService tbExchangeService;
+    @Autowired
+    private ExchangeUtils exchangeUtils;
+    private static final Logger log = LoggerFactory.getLogger(TbReturnServiceImpl.class);
 
     String RETURN_TYPE = "退货";
     String EXCHANGE_TYPE = "换货";
@@ -51,8 +58,14 @@ public class TbReturnController {
      *
      * @return
      */
+    /**
+     *
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/toInput")
-    public BaseResult allInputOrders(Integer currentPage, Integer pageSize) {
+    public BaseResult allInputOrders(Integer currentPage, Integer pageSize ) {
 
         PageInfo<InputDTO> tbInputList = tbReturnService.getAllInputOrders(currentPage, pageSize);
         if (null != tbInputList) {
@@ -79,6 +92,7 @@ public class TbReturnController {
             }
             return BaseResult.fail(500, "请检查订单状态！");
         } catch (Exception e) {
+
             return BaseResult.fail("查询失败");
         }
 
@@ -98,6 +112,14 @@ public class TbReturnController {
     public BaseResult addReturnOrder(@RequestParam("orderId") int orderId, @RequestParam("goodsId") List<Integer> goodsIdsList, @RequestParam("number") List<Integer> numberList) {
         boolean flag = false;
         boolean flag1 = false;
+        //判断是否为换货单
+        if (exchangeUtils.checkOrderIsReturn(orderId)){
+            return BaseResult.fail(401,"订单为退货单!");
+        }
+        //判断订单状态是否为已完成
+        if (!exchangeUtils.checkOrderStatus(orderId)){
+            return BaseResult.fail(402,"只能对已完成的订单操作!");
+        }
         List<TbOrder> orderList = tbOrderService.getOrderByOrderId(orderId);
         if (null != orderList) {
 
@@ -118,6 +140,7 @@ public class TbReturnController {
                 return BaseResult.fail("添加失败");
             }
         }
+        //todo 可以写清楚的异常，写清楚
         return BaseResult.fail(500, "内部数据操作失败");
     }
 
@@ -131,7 +154,8 @@ public class TbReturnController {
      */
     @GetMapping("/returnOrderCancel")
     @ApiOperation(value = "退货取消数据接口")
-    public BaseResult returnOrderCancel (@RequestParam("returnId") List<Integer> returnIdsList){        Date updated = new Date();
+    public BaseResult returnOrderCancel (@RequestParam("returnId") List<Integer> returnIdsList){
+        Date updated = new Date();
         String oms = "oms";
         List<Integer> returnList = new ArrayList<>();
         List<Integer> exchangeList = new ArrayList<>();
@@ -164,16 +188,18 @@ public class TbReturnController {
                }
 
            }
- //退货部分的取消
-            try {
-                boolean flag = tbReturnService.returnOrderCancel(returnList, oms, updated);
-                if (flag) {
-                    return BaseResult.success("退货取消");
-                }
 
-            } catch (Exception e) {
+           //退货部分的取消
+           try {
+               boolean flag = tbReturnService.returnOrderCancel(returnList, oms, updated);
+               if (flag) {
+                   return BaseResult.success("退货取消");
+               }
 
-                return BaseResult.fail("内部数据出现错误，请稍后重试");            }
+           } catch (Exception e) {
+
+              return BaseResult.fail("内部数据出现错误，请稍后重试");
+           }
 
         return BaseResult.fail(500,"取消失败");
     }
@@ -188,27 +214,25 @@ public class TbReturnController {
 
         @GetMapping("/checkReturnOrExchange")
         @ApiOperation(value = "退货/换货审核分流接口")
-        public BaseResult checkReturnOrExchange (@RequestParam("returnId") List<Integer> returnIds) {
+        public BaseResult checkReturnOrExchange (@RequestParam("returnId") List<Integer> returnIdsList) {
 
-            Boolean rsReturn = false;
-            int rsExchange = 0;
+
             List<Integer> tbReturnList = new ArrayList<>();
             List<Integer> tbExchangeList = new ArrayList<>();
             Date date = new Date();
 
 
-            for (int i = 0; i < returnIds.size(); i++) {
-                TbReturn tbReturn = tbReturnService.getTbReturnById(returnIds.get(i));
+            for (int i = 0; i < returnIdsList.size(); i++) {
+                TbReturn tbReturn = tbReturnService.getTbReturnById(returnIdsList.get(i));
                 if (null != tbReturn) {
-                    //log
+
                     if (RETURN_TYPE.equals(tbReturn.getReturnType())) {
                         //将退货单生成单独的list交给退货部分处理
                         tbReturnList.add(tbReturn.getReturnId());
-
                     } else if (EXCHANGE_TYPE.equals(tbReturn.getReturnType())) {
+
                         //将换货单生成单独的list交给换货处理
                         tbExchangeList.add(tbReturn.getReturnId());
-
                     }
                 }
             }
@@ -216,14 +240,17 @@ public class TbReturnController {
             try {
                 //获取通过审核的订单，进行处理
                 List<Integer> returnOrdersList = tbReturnService.returnOrdersAudit(tbReturnList);
-//                if (0 != returnOrdersList.size()) {
-                if (!CollectionUtils.isEmpty(returnOrdersList)) {
+
+                if (0 != returnOrdersList.size()) {
+    //           if (!CollectionUtils.isEmpty(returnOrdersList)) {
+
                     tbReturnService.createInputOrder(returnOrdersList);
                     BaseResult.success("生成入库单成功并成功发送");
                 } else {
                  BaseResult.fail(500,"请检查退货单的状态");
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 return BaseResult.fail("内部数据操作出现异常");
             }
 
