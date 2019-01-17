@@ -261,32 +261,37 @@ public class TbOrderServiceImpl implements TbOrderService {
         List<TbOutput> outputList=new ArrayList<TbOutput>();//保存需要更改的出库单
         List<TbOrder> orderList=new ArrayList<TbOrder>();//保存需要在OMS更改备注的订单
         int orderResult=0;//保存订单更改的条数
-        String[] outputString=outputs.split(",");//将传过来的数据转换成字符串数组
-        TbOutput myOutput=new TbOutput();
-        for(String output:outputString){
-            myOutput=tbOutputMapper.getOutputByOutputCode(output);//根据出库单编码获取出库单的对象
-            outputList.add(myOutput);
-        }
-        TbOrder tbOrder=new TbOrder();
-        if(!outputList.isEmpty()){//要更改的出库单不为空
-           for(TbOutput tbOutput:outputList){
-               tbOrder=tbOrderMapper.getOrderById(tbOutput.getOrderId());//根据订单id获取订单对象
-               if("已取消".equals(tbOrder.getOrderState())||"已完成".equals(tbOrder.getOrderState())){
-                   return false;
-               }
-               else if(!"已完成".equals(tbOrder.getOrderState())){
-                   tbOrder.setBasicState("wms请求取消");
-                   orderList.add(tbOrder);
-               }
+        if(outputs.length()>0){//如果传过来的出库单不为空
+            String[] outputString=outputs.split(",");//将传过来的数据转换成字符串数组
+            TbOutput myOutput=new TbOutput();
+            for(String output:outputString){
+                myOutput=tbOutputMapper.getOutputByOutputCode(output);//根据出库单编码获取出库单的对象
+                if(myOutput!=null){
+                    outputList.add(myOutput);
+                }
+            }
+            TbOrder tbOrder=new TbOrder();
+            if(!outputList.isEmpty()){//要更改的出库单不为空
+                for(TbOutput tbOutput:outputList){
+                    tbOrder=tbOrderMapper.getOrderById(tbOutput.getOrderId());//根据订单id获取订单对象
+                    if("已取消".equals(tbOrder.getOrderState())||"已完成".equals(tbOrder.getOrderState())){
+                        return false;
+                    }
+                    else if(!"已完成".equals(tbOrder.getOrderState())){
+                        tbOrder.setBasicState("wms请求取消");
+                        orderList.add(tbOrder);
+                    }
 
-           }
-           if(!orderList.isEmpty()){
-               orderResult=tbOrderMapper.updateOrderListBasicRemark(orderList);
-           }
-           if(orderResult==orderList.size()){
-               return true;
-           }
+                }
+                if(!orderList.isEmpty()){
+                    orderResult=tbOrderMapper.updateOrderListBasicRemark(orderList);
+                }
+                if(orderResult==orderList.size()){
+                    return true;
+                }
+            }
         }
+
         return false;
     }
     /**
