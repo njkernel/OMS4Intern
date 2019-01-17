@@ -9,10 +9,7 @@ import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDetailDTO;
 import cn.com.connext.oms.commons.utils.AES;
 import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
 import cn.com.connext.oms.entity.*;
-import cn.com.connext.oms.mapper.TbExchangeMapper;
-import cn.com.connext.oms.mapper.TbInputMapper;
-import cn.com.connext.oms.mapper.TbOrderMapper;
-import cn.com.connext.oms.mapper.TbReturnMapper;
+import cn.com.connext.oms.mapper.*;
 import cn.com.connext.oms.service.TbReturnService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -57,6 +54,9 @@ public class TbReturnServiceImpl implements TbReturnService {
 
     @Autowired
     private TbExchangeMapper tbExchangeMapper;
+
+    @Autowired
+    private TbRefundMapper tbRefundMapper;
 
     /**
      * 生成退货单对应的商品表
@@ -243,6 +243,7 @@ public class TbReturnServiceImpl implements TbReturnService {
         TbReturn tbReturn = new TbReturn();
         TbInput tbInput = new TbInput();
         List<TbReturn> tbReturnsList = new ArrayList<>();
+        List<TbRefund> refundList = new ArrayList<>();
 
         int orderId = inputFeedback.getOrderId();
 
@@ -280,12 +281,29 @@ public class TbReturnServiceImpl implements TbReturnService {
             tbReturn.setModifiedUser(inputFeedback.getModifiedUser());
             tbReturn.setUpdated(new Date());
             tbReturnsList.add(tbReturn);
+
+            TbRefund tbRefund =new TbRefund();
+            String refundCode = CodeGenerateUtils.creatUUID();
+            double refundPrice = tbReturn.getReturnPrice();
+            String refundState = "待退款";
+            int returnId = tbReturn.getReturnId();
+            String modifiedUser = "oms";
+            Date time = new Date();
+            tbRefund.setRefundCode(refundCode);
+            tbRefund.setRefundPrice(refundPrice);
+            tbRefund.setRefundState(refundState);
+            tbRefund.setReturnId(returnId+"");
+            tbRefund.setCreatetd(time);
+            tbRefund.setModifiedUser(modifiedUser);
+            tbRefund.setUpdated(time);
+            tbRefund.setOrderId(orderId);
+            refundList.add(tbRefund);
         }
 
         try {
             tbExchangeMapper.updateTbInput(tbInput);
             tbExchangeMapper.updateTbReturn(tbReturnsList);
-
+            tbRefundMapper.batchAddRefund(refundList);
         } catch (Exception e) {
             return 1;
         }
