@@ -33,7 +33,6 @@
     <table class="table table-condensed">
         <thead>
         <tr>
-            <th>序号</th>
             <th>用户账号</th>
             <th>用户密码</th>
             <th>用户角色</th>
@@ -42,7 +41,6 @@
         </thead>
         <tbody id="tbody" th:each="user,iterStat : ${map.get('userList')}">
         <tr th:id="'tr_'+${user.userId}">
-            <td th:text="${iterStat.index}"></td>
             <td th:text="${user.userName}"></td>
             <td th:text="${user.userPassword}"></td>
             <td th:text="${user.tbRole.roleName}"></td>
@@ -59,7 +57,12 @@
     <span>共<span id="pageCount" th:text="${map.get('pageCount')}"></span>页，当前第<span id="page" th:text="${map.get('page')}"></span>页，总共<span  th:text="${map.get('dataSize')}"></span>条数据</span>
 
     <ul class="pagination">
-        <li><a th:href="@{/index/getAllUser(page=1,size=4)}">&laquo;</a></li>
+        <th:block th:if="${map.get('prePage')==1}">
+            <li><a th:href="@{/index/getAllUser(page=${map.get('page')-1},size=4)}">&laquo;</a></li>
+        </th:block>
+        <th:block th:if="${map.get('prePage')==0}">
+            <li><a href="#" disabled="true">&laquo;</a></li>
+        </th:block>
         <th:block th:each="pageSize,iterStat : ${map.get('pageSize')}">
             <th:block th:if="${map.get('page')==iterStat.index+1}">
                 <li class="active"><a th:href="@{/index/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
@@ -68,8 +71,12 @@
                 <li ><a th:href="@{/index/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
             </th:block>
         </th:block>
-
-        <li><a th:href="@{/index/getAllUser(page=${map.get('pageCount')},size=4)}">&raquo;</a></li>
+        <th:block th:if="${map.get('nextPage')==1}">
+            <li><a th:href="@{/index/getAllUser(page=${map.get('page')+1},size=4)}">&raquo;</a></li>
+        </th:block>
+        <th:block th:if="${map.get('nextPage')==0}">
+            <li><a href="#" disabled="true">&raquo;</a></li>
+        </th:block>
     </ul>
 </div>
 <!-- 弹出框 -->
@@ -154,7 +161,7 @@
                     <div class="form-group">
                         <label for="myPassword" class="col-sm-2 control-label">用户密码</label>
                         <div class="col-sm-10">
-                            <input type="text" readonly name="myPassword" class="form-control" id="myPassword" value="用户密码">
+                            <input type="text"  name="myPassword" class="form-control" id="myPassword" value="用户密码">
                         </div>
                     </div>
                    <!-- <div class="form-group">
@@ -178,7 +185,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary save"  data-dismiss="modal" id="save1">保存</button>
+                <button type="button" class="btn btn-primary save"  data-dismiss="modal" id="save1" onclick="save()">保存</button>
             </div>
         </div>
 

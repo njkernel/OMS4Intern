@@ -7,12 +7,12 @@ function updateUserId(id) {
         data: {"userId": id},
         success: function (msg) {
             var user=msg["user"];
-            var roleName=msg["roleName"];
-            alert(roleName);
+            /*var roleName=msg["roleName"];
+            alert(roleName);*/
             $("#myName").val(user.userName);
             $("#myPassword").val(user.userPassword);
             $("#userRole").val(user.roleId);
-            $("#userRole").html(roleName);
+            $("#userRole").html(user.tbRole.roleName);
         }
     })
 
@@ -86,8 +86,42 @@ function addUser() {
             }
         })
     }
+}
 
+function save() {
+    var userId=$("#updateUserId").val();
+    var userName=$("#myName").val();
+    var userPassword=$("#myPassword").val();
+    var roleId=$("#myRole").val();
 
+    if(userName==""||userName==null){
+        alert("用户名不可为空");
+    }
+    else if(userPassword==""||userPassword==null){
+        alert("用户密码不可为空");
+    }
+    else if(roleId==""||roleId==null){
+        alert("角色不可为空");
+    }else{
+        $.ajax({
+            ContentType:"application/json;charset=UTF-8",
+            type:"post",
+            url:"/index/editUser",
+            data:{"userName":userName,"userPassword":userPassword,"roleId":roleId,"userId":userId},
+            success:function (msg) {
+                if(msg=="success"){
+                    alert("修改成功");
 
+                }
+                else if(msg="mySelf"){
+                    alert("修改成功，请重新登录");
+                    window.location.href="/logout";
+                }
+                else {
+                    alert("修改失败");
+                }
+            }
+        })
+    }
 
 }

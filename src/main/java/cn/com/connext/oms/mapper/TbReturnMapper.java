@@ -38,7 +38,7 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      * @param returnId
      * @param modifiedUser
      * @param updated
-     * @return
+     * @return boolean
      */
     boolean returnOrderCancel(@Param("returnId") int returnId, @Param("modifiedUser") String modifiedUser, @Param("updated") Date updated);
 
@@ -46,7 +46,7 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      * 根据退货单id查找退货单
      *
      * @param returnId
-     * @return
+     * @return String
      */
     String selectReturnOrderStateById(@Param("returnId") int returnId);
 
@@ -57,7 +57,7 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      * @param state
      * @param user
      * @param updated
-     * @return
+     * @return boolean
      */
     boolean updateReturnOrderStateById(@Param("returnId") int returnId, @Param("state") String state, @Param("user") String user, @Param("updated") Date updated);
 
@@ -65,7 +65,7 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      * 更具退货单查找订单完成时间
      *
      * @param goodId
-     * @return
+     * @return double
      */
     double getPriceByGoodId(@Param("goodId") int goodId);
 
@@ -80,7 +80,7 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      * @param modifiedUser
      * @param updated
      * @param returnType
-     * @return
+     * @return boolean
      */
     boolean addReturnOrder(@Param("returnCode") String returnCode, @Param("returnState") String returnState, @Param("orderId") int orderId, @Param("returnPrice") double returnPrice, @Param("created") Date created, @Param("modifiedUser") String modifiedUser, @Param("updated") Date updated, @Param("returnType") String returnType);
 
@@ -88,7 +88,7 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      * 根据订单id查找退货单id
      *
      * @param returnId
-     * @return
+     * @return int
      */
     int selectOrderIdByReturnId(@Param("returnId") int returnId);
 
@@ -126,9 +126,9 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      *
      * @return List
      */
-    List<InputDTO> getAllInputOrders();
+    List<InputDTO> getAllInputOrders(@Param("tbInput")TbInput tbInput);
 
-    /**
+   /***
      * 根据订单id获取入库单
      *
      * @param orderId

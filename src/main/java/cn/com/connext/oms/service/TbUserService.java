@@ -35,7 +35,7 @@ public interface TbUserService {
      * @Author: Lili Chen
      * @Date: 2019/1/13
      */
-    boolean updateUser(TbUser user);
+    Integer updateUser(TbUser user);
 
 
     /**
