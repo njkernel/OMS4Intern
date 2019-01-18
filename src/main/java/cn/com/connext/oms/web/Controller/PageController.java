@@ -1,11 +1,12 @@
 package cn.com.connext.oms.web.Controller;
 
-import cn.com.connext.oms.commons.dto.BaseResult;
+import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.service.TbGoodsListService;
 import cn.com.connext.oms.service.TbGoodsOrderService;
 import cn.com.connext.oms.service.TbOrderService;
 import cn.com.connext.oms.service.TbRefundService;
+import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 import cn.com.connext.oms.commons.dto.exchange.ReturnGoods;
@@ -263,6 +264,7 @@ public class PageController {
     public String returnOrederList() {
         return "pages/details/orders/order-list";
     }
+
    /* *
      * 功能描述:订单详情跳转
      * @param:
@@ -315,15 +317,6 @@ public class PageController {
         List<TbOrderDetails> outStockDetails = outputService.orderDetails(orderId);
         mv.addObject("outStockDetails",outStockDetails);
         return mv;
-    }
-    @GetMapping("orderDetailsAll2")
-    public BaseResult outStockDetails2(int orderId){
-        List<TbOrderDetails> outStockDetails = outputService.orderDetails(orderId);
-        for (int i = 0;i<outStockDetails.size();i++){
-            TbOrderDetails  tbOrderDetails = outStockDetails.get(i);
-            return BaseResult.success("121212",outStockDetails);
-        }
-        return BaseResult.success("1787878");
     }
 
 

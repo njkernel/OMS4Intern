@@ -10,10 +10,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -99,7 +96,7 @@ public class TbGoodsController {
      * @Param: []
      * @Create: 2019/1/7 17:36
      */
-    @GetMapping("getAllGoods")
+    /*@GetMapping("getAllGoods")
     @ApiOperation(value = "查询所有商品的信息和库存")
     public BaseResult getAllGoods(int pageNum,int pageSize){
         try {
@@ -110,6 +107,24 @@ public class TbGoodsController {
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResult.fail("服务器内部错误");
+        }
+    }*/
+    /**
+     * 功能描述:显示所有商品和模糊查询
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/18 11:13
+     */
+    @RequestMapping("/getAllGoods")
+    @ApiOperation(value = "显示所有商品接口")
+    public  BaseResult showAllGoods(Integer currentPage,Integer pageSize,GoodsStockDto goodsStockDto){
+        try {
+            PageInfo<GoodsStockDto> pageInfo=tbGoodsListService.getAllGoods(currentPage,pageSize,goodsStockDto);
+            return BaseResult.success("查询成功！",pageInfo);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return BaseResult.fail("服务器内部错误！");
         }
     }
     /**

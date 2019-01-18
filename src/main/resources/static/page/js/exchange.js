@@ -174,7 +174,6 @@ var Exchange = new Vue({
             }).then(function (response) {
                 if (response.status === 200) {
                     that.returnOrderInfo = response.data.data;
-                    console.log(that.returnOrderInfo)
                 } else if (response.status === 500) {
                     alert("操作失败!");
                 }

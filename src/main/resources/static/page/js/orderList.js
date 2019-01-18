@@ -4,32 +4,33 @@ let orderList = new Vue({
         return {
             //分页数据
             page:{
-                pageSize:3,
-                pageNum:1,
+                pageSize:5,
+                currentPage:1,
+                receiverName:'',
+                orderState:'',
+                deliveryCode:'',
             },
             orderId:"",
             orderListDate:[],
             //选中行的记录id
             checkedNames:[],
             //搜索输入框
-            searchInput:"",
+            searchInput3:"",
             //异常单数据
             goodsInfo:[],
             //默认选中
             selected: 'orderId',
             //下拉框选项
-            options: [
-                { text: '订单id', value: 'orderId' },
-                { text: '异常类型', value: 'abnormalType' },
-                { text: '异常状态', value: 'abnormalState' },
-                { text: '修改人', value: 'modifiedUser' }
+            options3: [
+                { text: '收货人', value: 'receiverName' },
+                { text: '订单状态', value: 'orderState' },
+                { text: '物流单号', value: 'deliveryCode' },
             ],
             //搜索条件
             searchDate:{
-                abnormalState:'',
-                orderId:'',
-                abnormalType:'',
-                modifiedUser:''
+                receiverName:'',
+                orderState:'',
+                deliveryCode:'',
             },
             //yonyongi添加
             //订单商品详情，用于退换货选择数量信息
@@ -57,25 +58,14 @@ let orderList = new Vue({
             this.initialize();
             this.initTable();
         },
-
-       /* checkOrder(){
-             let url='/getAllOrder';
-             callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)
-            console.log(this.checkedDate);
-            document.getElementById('iframeId3').src="/getAllById?orderId="+this.checkedDate;
-        },*/
-
-
         //清空搜索条件
         initialize(){
-            this.page.abnormalState='';
-            this.page.orderId='';
-            this.page.abnormalType='';
-            this.page.modifiedUser='';
-            this.searchDate.abnormalState='';
-            this.searchDate.orderId='';
-            this.searchDate.abnormalType='';
-            this.searchDate.modifiedUser='';
+            this.page.receiverName='';
+            this.page.orderState='';
+            this.page.deliveryCode='';
+            this.searchDate.receiverName='';
+            this.searchDate.orderState='';
+            this.searchDate.deliveryCode='';
         },
 
         // 路由操作接口 Jay新增 2019/1/16
@@ -132,8 +122,11 @@ let orderList = new Vue({
             let that=this;
             axios.get('/getAllOrder', {
                 params: {
-                    pageNum:pn,
-                    pageSize: that.page.pageSize
+                    currentPage:pn,
+                    pageSize: that.page.pageSize,
+                    receiverName : this.searchDate. receiverName,
+                    orderState :this.searchDate.orderState,
+                    deliveryCode :this.searchDate.deliveryCode
                 }
             }).then(res => {
                 console.log(res);
@@ -143,35 +136,35 @@ let orderList = new Vue({
             })
         },
         //查询事件
-        searchBtn(){
+        searchBtn3(){
             if(this.selected==='orderId'){
                 let reg = /^\d{1,10}$/;
                 this.initialize();
-                if (reg.test(this.searchInput)){
-                    this.searchDate.orderId=this.searchInput;
+                if (reg.test(this.searchInput3)){
+                    this.searchDate.orderId=this.searchInput3;
                 }else {
                     alert("输入错误");
                 }
             }
-            else if(this.selected==='abnormalState'){
+            else if(this.selected==='receiverName'){
                 this.initialize();
-                this.searchDate.abnormalState=this.searchInput;
+                this.searchDate.receiverName=this.searchInput3;
             }
-            else if(this.selected==='abnormalType'){
+            else if(this.selected==='orderState'){
                 this.initialize();
-                this.searchDate.abnormalType=this.searchInput;
+                this.searchDate.orderState=this.searchInput3;
             }
-            else {
+            else if(this.selected==='deliveryCode'){
                 this.initialize();
-                this.searchDate.modifiedUser=this.searchInput;
+                this.searchDate.deliveryCode=this.searchInput3;
             }
+
 
             //查询条件
             this.page.currentPage=1;
-            this.page.orderId=this.searchDate.orderId;
-            this.page.abnormalState=this.searchDate.abnormalState;
-            this.page.abnormalType=this.searchDate.abnormalType;
-            this.page.modifiedUser=this.searchDate.modifiedUser;
+            this.page.receiverName=this.searchDate.receiverName;
+            this.page.orderState=this.searchDate.orderState;
+            this.page.deliveryCode=this.searchDate.deliveryCode;
             //初始化表格
             this.initTable();
         },
@@ -249,7 +242,6 @@ let orderList = new Vue({
             }else if ("exchange" === eventName){
                 toRequestForGoods.returnType = "exchange";
             }
-            console.log(toRequestForGoods.checkedNames[0]);
             if (toRequestForGoods.checkedNames.length === 0) {
                 alert("请选择一条订单！");
                 return false;
@@ -261,9 +253,7 @@ let orderList = new Vue({
             toRequestForGoods.orderId = toRequestForGoods.checkedNames[0];
             axios.get(url,{params: {orderId : toRequestForGoods.orderId}}).then(function(response) {
                 toRequestForGoods.orderGoodsInfo=response.data.data;
-                console.log(toRequestForGoods.orderGoodsInfo);
                 for (var t = 0;t<toRequestForGoods.orderGoodsInfo.length;t++) {
-                    console.log(toRequestForGoods.orderGoodsInfo[t][0]);
                     toRequestForGoods.$set(toRequestForGoods.orderGoodsInfo[t][0],"goodNum","0");
                 }
             }).catch(function (err) {
@@ -282,36 +272,47 @@ let orderList = new Vue({
             this.orderId=this.checkedNames[0];
             var url = null;
             var data = null;
-            console.log(exchangeReturn.returnType);
             if(!exchangeReturn.checkExchangeReturnIsNull(exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo))){
-                alert("既不退货又不换货，你是测试来找bug的吗！");
+                alert("没有选择任何商品！");
                 return false;
             }
             if(!exchangeReturn.checkExchangeReturnIsOverFlow(exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo))){
                 return false;
             }
+            var goodIds = [];
+            var goodNums = [];
+            for (var i in exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)) {
+                if (exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)[i] > 0) {
+                    goodIds [i] = exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo)[i];
+                    goodNums [i] = exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)[i];
+                }
+            }
+            console.log(goodIds);
+            console.log(goodNums);
             if ("return" === exchangeReturn.returnType){
                 url = 'return/addReturnOrder';
-                console.log("orderId为:"+exchangeReturn.orderId);
-                console.log("goodsId为:"+exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo));
-                console.log("number为:"+exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo));
                 data = {
                     orderId : exchangeReturn.orderId,
-                    goodsId : exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo)+"",
-                    number : exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)+""
+                    goodsId : goodIds+"",
+                    number : goodNums+""
                 };
             }else if ("exchange" === exchangeReturn.returnType){
                 url = 'exchange/toGenerateExchangeOrder';
-                console.log("orderId为:"+exchangeReturn.orderId);
-                console.log("goodsId为:"+exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo));
-                console.log("number为:"+exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo));
                 data = {
                     orderId : exchangeReturn.orderId,
-                    goodId : exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo)+"",
-                    num : exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)+""
+                    goodId : goodIds+"",
+                    num : goodNums+""
                 };
             }
             axios.get(url,{params: data}).then(function(response) {
+                if (response.data.status == "401"){
+                    alert("订单已经有过退换货记录，不能进行退换操作!");
+                    return false;
+                }
+                if (response.data.status == "402"){
+                    alert("只能对已完成的订单操作!");
+                    return false;
+                }
                 alert("操作成功！");
             }).catch(function (err) {
                 alert("操作失败！");
@@ -356,15 +357,13 @@ let orderList = new Vue({
                 return false;
             });
             for (var p = 0; p<checkExchangeReturnIsOverFlow.beforeGoodsNum.length;p++){
-                console.log("原来的："+checkExchangeReturnIsOverFlow.beforeGoodsNum[p]);
-                console.log("现在的："+goodsNum[p]);
                 if (checkExchangeReturnIsOverFlow.beforeGoodsNum[p]<goodsNum[p]){
-                    alert("别太过分，Overflow了哦！");
+                    alert("异常！商品数量已超过原订单数量！");
                     return false;
                 }
             }
             return true;
-        }
+        },
 }
 });
 

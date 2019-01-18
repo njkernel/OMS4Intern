@@ -44,4 +44,30 @@
     <select id="fuzzySearch" parameterType="String" resultType="cn.com.connext.oms.entity.TbGoods">
         SELECT * FROM tb_goods WHERE  CONCAT(goods_name,goods_price,goods_code,goods_id) LIKE CONCAT('%',#{mark},'%');
     </select>
+    <!--分类模糊查询-->
+    <select id="selectAllGoods" resultType="cn.com.connext.oms.commons.dto.GoodsStockDto">
+        SELECT
+        g.goods_id,
+        goods_name,
+        goods_price,
+        goods_code,
+        available_stock,
+        locked_stock,
+        total_stock,
+        stock_id
+        FROM
+        tb_goods g
+        INNER JOIN tb_stock s on s.goods_id=g.goods_id
+        <choose>
+            <when test="goodsStockDto.goodsCode !=null and goodsStockDto.goodsCode != ''">
+                WHERE goods_code LIKE "%"#{goodsStockDto.goodsCode}"%"
+            </when>
+            <when test="goodsStockDto.goodsName !=null and goodsStockDto.goodsName != ''">
+                WHERE goods_name LIKE "%"#{goodsStockDto.goodsName}"%"
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
 </mapper>

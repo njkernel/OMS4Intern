@@ -37,7 +37,7 @@ public interface TbReturnService {
      * @param orderId
      * @param goodsIdList
      * @param numberList
-     * @return TbRetur
+     * @return TbReturn
      */
     TbReturn createReturnOrder(int orderId, List<Integer> goodsIdList,List<Integer> numberList);
 
@@ -53,7 +53,7 @@ public interface TbReturnService {
     /**
      * 退货单审核
      * @param returnIds
-     * @return
+     * @return List
      */
     List<Integer> returnOrdersAudit (List<Integer> returnIds);
 
@@ -74,41 +74,41 @@ public interface TbReturnService {
     /**
      * 根据id查找相对应的退货/换货单
      * @param returnId
-     * @return
+     * @return TbReturn
      */
     TbReturn getTbReturnById(int returnId);
 
     /**
      * 根据wms反馈更新入库单及退货单状态
      * @param inputFeedback
-     * @return
+     * @return int
      */
     int updateStateByFeedback(InputFeedback inputFeedback);
 
     /**
      * 查找所有的入库单详情
-     * @return
+     * @return PageInfo
      */
-    PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize);
+    PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize,TbInput tbInput);
 
     /**
      * 根据订单id查找退货单
      * @param orderId
-     * @return
+     * @return TbInput
      */
     TbInput getInputByOrderId(int orderId);
 
     /**
      * 根据订单id查找退货单商品信息
      * @param orderId
-     * @return
+     * @return List
      */
     List<TbReturnGoods> getTbReturnGoodsById(int orderId);
 
     /**
      * 根据商品id查询商品信息
      * @param goodsId
-     * @return
+     * @return TbGoods
      */
     TbGoods  getGoodsById(int goodsId);
 }

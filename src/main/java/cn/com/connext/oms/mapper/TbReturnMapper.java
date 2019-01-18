@@ -17,56 +17,61 @@ import java.util.List;
  * description: 退货相关的dao
  * create time: 2019/1/8 13:47
  *
- *
- * @return  * @Param: null
+ * @return * @Param: null
  */
 
 @Repository
 public interface TbReturnMapper extends MyMapper<TbReturn> {
     /**
      * 根据退货单增加行营的商品列表
+     *
      * @param orderId
      * @param goodsId
      * @param number
      * @return boolean
      */
-    boolean addReturnOrderGoods(@Param("orderId") int orderId,@Param("goodsId") int goodsId, @Param("number") int number);
+    boolean addReturnOrderGoods(@Param("orderId") int orderId, @Param("goodsId") int goodsId, @Param("number") int number);
 
     /**
      * 退货单取消
+     *
      * @param returnId
      * @param modifiedUser
      * @param updated
-     * @return
+     * @return boolean
      */
     boolean returnOrderCancel(@Param("returnId") int returnId, @Param("modifiedUser") String modifiedUser, @Param("updated") Date updated);
 
     /**
      * 根据退货单id查找退货单
+     *
      * @param returnId
-     * @return
+     * @return String
      */
     String selectReturnOrderStateById(@Param("returnId") int returnId);
 
     /**
      * 更具退货单id查找退货单状态
+     *
      * @param returnId
      * @param state
      * @param user
      * @param updated
-     * @return
+     * @return boolean
      */
-    boolean updateReturnOrderStateById(@Param("returnId") int returnId,@Param("state") String state,@Param("user") String user, @Param("updated") Date updated);
+    boolean updateReturnOrderStateById(@Param("returnId") int returnId, @Param("state") String state, @Param("user") String user, @Param("updated") Date updated);
 
     /**
      * 更具退货单查找订单完成时间
+     *
      * @param goodId
-     * @return
+     * @return double
      */
     double getPriceByGoodId(@Param("goodId") int goodId);
 
     /**
      * 添加退货单
+     *
      * @param returnCode
      * @param returnState
      * @param orderId
@@ -75,67 +80,75 @@ public interface TbReturnMapper extends MyMapper<TbReturn> {
      * @param modifiedUser
      * @param updated
      * @param returnType
-     * @return
+     * @return boolean
      */
-    boolean addReturnOrder( @Param("returnCode") String returnCode,@Param("returnState") String returnState,@Param("orderId") int orderId,@Param("returnPrice") double returnPrice,@Param("created") Date created,@Param("modifiedUser") String modifiedUser,@Param("updated") Date updated,@Param("returnType") String returnType);
+    boolean addReturnOrder(@Param("returnCode") String returnCode, @Param("returnState") String returnState, @Param("orderId") int orderId, @Param("returnPrice") double returnPrice, @Param("created") Date created, @Param("modifiedUser") String modifiedUser, @Param("updated") Date updated, @Param("returnType") String returnType);
 
     /**
      * 根据订单id查找退货单id
+     *
      * @param returnId
-     * @return
+     * @return int
      */
     int selectOrderIdByReturnId(@Param("returnId") int returnId);
 
     /**
      * 生成入库单
+     *
      * @param inputCode
      * @param orderId
      * @param inputState
      * @param created
      * @param updated
      * @param synchronizeState
-     * @return
+     * @return boolean
      */
-    boolean createInputOrder(@Param("inputCode") String inputCode,@Param("orderId") int orderId,@Param("inputState") String inputState,@Param("created") Date created,@Param("updated") Date updated,@Param("synchronizeState") String synchronizeState );
+    boolean createInputOrder(@Param("inputCode") String inputCode, @Param("orderId") int orderId, @Param("inputState") String inputState, @Param("created") Date created, @Param("updated") Date updated, @Param("synchronizeState") String synchronizeState);
 
     /**
      * 根据退货单id1取退货单
+     *
      * @param returnId
-     * @return
+     * @return TbReturn
      */
     TbReturn getTbReturnById(@Param("returnId") int returnId);
 
     /**
      * 根据订单id查找退货/换货
+     *
      * @param orderId
-     * @return
+     * @return String
      */
-    String getTypeByorderId (@Param("orderId") int orderId);
+    String getTypeByOrderId(@Param("orderId") int orderId);
 
     /**
      * 查找所有的入库单详情
-     * @return
+     *
+     * @return List
      */
-    List<InputDTO> getAllInputOrders();
+    List<InputDTO> getAllInputOrders(@Param("tbInput")TbInput tbInput);
 
-    /**
+   /***
      * 根据订单id获取入库单
+     *
      * @param orderId
-     * @return
+     * @return TbInput
      */
     TbInput getInputByOrderId(@Param("orderId") int orderId);
 
     /**
      * 根据订单id查找退货单商品信息
+     *
      * @param orderId
-     * @return
+     * @return List
      */
-    List<TbReturnGoods> getTbReturnGoodsById(@Param("orderId")int orderId);
+    List<TbReturnGoods> getTbReturnGoodsById(@Param("orderId") int orderId);
 
     /**
      * 根据商品id查询商品信息
+     *
      * @param goodsId
-     * @return
+     * @return TbGoods
      */
     TbGoods getGoodsById(@Param("goodsId") int goodsId);
 }

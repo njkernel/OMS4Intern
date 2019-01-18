@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,12 +66,19 @@ public class UserController {
 
     @PostMapping("/index/editUser")
     @ApiOperation(value = "编辑用户")
-    public String  updateUser(TbUser user){
-        boolean b=tbUserService.updateUser(user);
-        if(b){
+    public String  updateUser(TbUser user, HttpServletRequest request){
+        Integer b=tbUserService.updateUser(user);
+        HttpSession session=request.getSession();
+        if(b==1){
             return "success";
         }
+        else if(b==2){
+            session.removeAttribute("OMSUSER");
+            return "mySelf";
+
+        }
         return "fail";
+
     }
 
 
@@ -79,7 +88,7 @@ public class UserController {
         Map map=new HashMap();//保存返回信息
        TbUser user=tbUserService.getUserById(userId);
        map.put("user",user);
-       map.put("roleName",user.getTbRole().getRoleName());
+      /* map.put("roleName",user.getTbRole().getRoleName());*/
        return map;
     }
 

@@ -9,18 +9,16 @@ import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDetailDTO;
 import cn.com.connext.oms.commons.utils.AES;
 import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
 import cn.com.connext.oms.entity.*;
-import cn.com.connext.oms.mapper.TbExchangeMapper;
-import cn.com.connext.oms.mapper.TbInputMapper;
-import cn.com.connext.oms.mapper.TbOrderMapper;
-import cn.com.connext.oms.mapper.TbReturnMapper;
+import cn.com.connext.oms.mapper.*;
 import cn.com.connext.oms.service.TbReturnService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +40,10 @@ public class TbReturnServiceImpl implements TbReturnService {
     private static final String GET_FAILED = "fail";
     private static final String GET_SUCCESS = "success";
     private static final String GET_FEEDBACK_OUTTIME = "over";
-    private static final String URL = "http://10.129.100.35:8080/api/inRepertoryOrder";
+    private static final String URL = "http://127.0.0.1:8080/api/inRepertoryOrder";
+    private static final String AUDIT_SUCESS = "审核通过";
+    private static final String AUDIT_FAILED = "审核失败";
+    private static final Logger log = LoggerFactory.getLogger(TbReturnServiceImpl.class);
     @Autowired
     RestTemplate restTemplate;
 
@@ -57,6 +58,9 @@ public class TbReturnServiceImpl implements TbReturnService {
 
     @Autowired
     private TbExchangeMapper tbExchangeMapper;
+
+    @Autowired
+    private TbRefundMapper tbRefundMapper;
 
     /**
      * 生成退货单对应的商品表
@@ -117,19 +121,18 @@ public class TbReturnServiceImpl implements TbReturnService {
         for (int i = 0; i < returnIdsList.size(); i++) {
             int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(i));
             String state = tbReturnMapper.selectReturnOrderStateById(returnIdsList.get(i));
-            Date created = tbReturnMapper.getTbReturnById(returnIdsList.get(i)).getCreated();
+            Date created = tbReturnMapper.getTbReturnById(returnIdsList.get(i)).getUpdated();
 
             Date now = new Date();
             Long time = now.getTime() - created.getTime();
             String user = "oms";
-            Date updated = new Date();
+
             if (UNCHECKED.equals(state)){
                 if (MISTIMING > time ) {
-//                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "等待收货", user, updated);
                     returnOrderList.add(returnIdsList.get(i));
-                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i),"审核通过",user,updated);
+                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i),AUDIT_SUCESS,user,now);
                 }else {
-                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), "审核失败", user, updated);
+                    tbReturnMapper.updateReturnOrderStateById(returnIdsList.get(i), AUDIT_FAILED, user, now);
                     BaseResult.fail("审核失败，退货单状态已变为审核失败");
 
                 }
@@ -172,7 +175,7 @@ public class TbReturnServiceImpl implements TbReturnService {
         Date time = new Date();
         TbInput tbInput = new TbInput();
         TbInput tbInput1 = new TbInput();
-//        boolean flag = false;
+
         for (int i = 0; i < returnIdsList.size(); i++) {
             int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(i));
 
@@ -190,32 +193,31 @@ public class TbReturnServiceImpl implements TbReturnService {
             for (TbReturnGoods t : tbReturnGoodsList) {
                 TbGoods tbGoods = tbExchangeMapper.toSelectGoodById(t.getGoodsId());
                 detailDTOS.add(new InRepertoryDetailDTO(tbGoods.getGoodsCode(), t.getNumber()));
+            }
 
-                String token = AES.AESEncode(TOKENS, String.valueOf(tbInput1.getInputId()));
-                InRepertoryDTO inRepertoryDTO = new InRepertoryDTO(token,
-                        String.valueOf(tbInput1.getInputId()), String.valueOf(orderId),
-                        tbOrder.get(0).getChannelCode(), tbOrder.get(0).getDeliveryCompany(),
-                        tbOrder.get(0).getDeliveryCode(), detailDTOS);
+            String token = AES.AESEncode(TOKENS, String.valueOf(tbInput1.getInputId()));
+            InRepertoryDTO inRepertoryDTO = new InRepertoryDTO(token,
+                    String.valueOf(tbInput1.getInputId()), String.valueOf(orderId),
+                    tbOrder.get(0).getChannelCode(), tbOrder.get(0).getDeliveryCompany(),
+                    tbOrder.get(0).getDeliveryCode(), detailDTOS);
 
-                try {
-                    restTemplate.postForEntity(URL, inRepertoryDTO.toMap(), String.class);
-                    TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
-                    List<TbReturn> tbReturnsList = new ArrayList<>();
-                    tbReturn.setOrderId(orderId);
-                    tbReturn.setReturnState("等待收货");
-                    tbReturn.setUpdated(new Date());
-                    tbReturnsList.add(tbReturn);
+            try {
+                restTemplate.postForEntity(URL, inRepertoryDTO.toMap(), String.class);
+                TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
+                List<TbReturn> tbReturnsList = new ArrayList<>();
+                tbReturn.setOrderId(orderId);
+                tbReturn.setReturnState("等待收货");
+                tbReturn.setUpdated(new Date());
+                tbReturnsList.add(tbReturn);
 
-                    tbInput1.setInputState("接收成功");
-                    tbInput1.setUpdated(new Date());
-                    tbInput1.setSynchronizeState("已同步");
-                    tbExchangeMapper.updateTbInput(tbInput1);
-                    tbExchangeMapper.updateTbReturn(tbReturnsList);
-                } catch (Exception e1) {
-                    //logs
-                    return false;
-                }
-
+                tbInput1.setInputState("接收成功");
+                tbInput1.setUpdated(new Date());
+                tbInput1.setSynchronizeState("已同步");
+                tbExchangeMapper.updateTbInput(tbInput1);
+                tbExchangeMapper.updateTbReturn(tbReturnsList);
+            } catch (Exception e1) {
+                log.error(e1.getMessage());
+                return false;
             }
         }
         return false;
@@ -226,7 +228,7 @@ public class TbReturnServiceImpl implements TbReturnService {
      * 根据id查找退货/换货单
      *
      * @param returnId
-     * @return
+     * @return TbReturn
      */
     @Override
     public TbReturn getTbReturnById(int returnId) {
@@ -243,6 +245,7 @@ public class TbReturnServiceImpl implements TbReturnService {
         TbReturn tbReturn = new TbReturn();
         TbInput tbInput = new TbInput();
         List<TbReturn> tbReturnsList = new ArrayList<>();
+        List<TbRefund> refundList = new ArrayList<>();
 
         int orderId = inputFeedback.getOrderId();
 
@@ -250,6 +253,7 @@ public class TbReturnServiceImpl implements TbReturnService {
             tbReturn = tbExchangeMapper.selectTbReturnByOrderId(inputFeedback.getOrderId());
             tbInput = tbExchangeMapper.selectTbInputByOrderId(inputFeedback.getOrderId());
         } catch (Exception e) {
+            log.error(e.getMessage());
             return 1;
         }
 
@@ -280,13 +284,31 @@ public class TbReturnServiceImpl implements TbReturnService {
             tbReturn.setModifiedUser(inputFeedback.getModifiedUser());
             tbReturn.setUpdated(new Date());
             tbReturnsList.add(tbReturn);
+
+            TbRefund tbRefund =new TbRefund();
+            String refundCode = CodeGenerateUtils.creatUUID();
+            double refundPrice = tbReturn.getReturnPrice();
+            String refundState = "待退款";
+            int returnId = tbReturn.getReturnId();
+            String modifiedUser = "oms";
+            Date time = new Date();
+            tbRefund.setRefundCode(refundCode);
+            tbRefund.setRefundPrice(refundPrice);
+            tbRefund.setRefundState(refundState);
+            tbRefund.setReturnId(returnId+"");
+            tbRefund.setCreatetd(time);
+            tbRefund.setModifiedUser(modifiedUser);
+            tbRefund.setUpdated(time);
+            tbRefund.setOrderId(orderId);
+            refundList.add(tbRefund);
         }
 
         try {
             tbExchangeMapper.updateTbInput(tbInput);
             tbExchangeMapper.updateTbReturn(tbReturnsList);
-
+            tbRefundMapper.batchAddRefund(refundList);
         } catch (Exception e) {
+            log.error(e.getMessage());
             return 1;
         }
 
@@ -303,10 +325,10 @@ public class TbReturnServiceImpl implements TbReturnService {
      * @return PageInfo
      */
     @Override
-    public PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize) {
+    public PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize,TbInput tbInput) {
         PageHelper.startPage(currentPage,pageSize);
 
-        List<InputDTO> tbReturnList = tbReturnMapper.getAllInputOrders();
+        List<InputDTO> tbReturnList = tbReturnMapper.getAllInputOrders(tbInput);
         PageInfo<InputDTO> pageInfo = new PageInfo<InputDTO>(tbReturnList);
 
         return pageInfo;
@@ -315,7 +337,7 @@ public class TbReturnServiceImpl implements TbReturnService {
     /**
      * 根据订单id查找退货单
      * @param orderId
-     * @return
+     * @return TbInput
      */
     @Override
     public TbInput getInputByOrderId(int orderId) {
@@ -325,13 +347,18 @@ public class TbReturnServiceImpl implements TbReturnService {
     /**
      * 根据订单id查退货单商品信息
      * @param orderId
-     * @return
+     * @return List
      */
     @Override
     public List<TbReturnGoods> getTbReturnGoodsById(int orderId) {
         return tbReturnMapper.getTbReturnGoodsById(orderId);
     }
 
+    /**
+     * 根据商品id查询商品信息
+     * @param goodsId
+     * @return TbGoods
+     */
     @Override
     public TbGoods getGoodsById(int goodsId) {
         return tbReturnMapper.getGoodsById(goodsId);
