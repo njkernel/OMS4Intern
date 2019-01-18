@@ -3,6 +3,7 @@ package cn.com.connext.oms.web.Controller;
 import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.commons.dto.GoodsGoodsOrderDto;
 import cn.com.connext.oms.commons.dto.exchange.ReturnDetails;
+import cn.com.connext.oms.commons.utils.ExchangeUtils;
 import cn.com.connext.oms.commons.utils.ListToArray;
 import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.entity.TbOrder;
@@ -41,6 +42,8 @@ public class TbExchangeController {
     @Autowired
     TbGoodsListService tbGoodsListService;
 
+    @Autowired
+    private ExchangeUtils exchangeUtils;
 
     /**
      * create by: yonyong
@@ -103,6 +106,14 @@ public class TbExchangeController {
     public BaseResult toGenerateExchangeOrder(@RequestParam("orderId")int orderId,
                                               @RequestParam("goodId")List<Integer> goodIds,
                                               @RequestParam("num")List<Integer> nums){
+        //判断是否为换货单
+        if (exchangeUtils.checkOrderIsReturn(orderId)){
+            return BaseResult.fail(401,"订单为换货单!");
+        }
+        //判断订单状态是否为已完成
+        if (!exchangeUtils.checkOrderStatus(orderId)){
+            return BaseResult.fail(402,"只能对已完成的订单操作!");
+        }
         TbGoods tbGoods=new TbGoods();
         int []goodId = ListToArray.listToArray(goodIds);
         int []num = ListToArray.listToArray(nums);

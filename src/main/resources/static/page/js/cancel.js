@@ -11,8 +11,8 @@ function cancel() {
                 data:{"orderIdList":arr.join(",")},
                 success:function (msg) {
                     if(msg=="success"){
-                        alert("取消成功")
                         location.reload() ;
+                        alert("取消成功")
                     }else {
                         alert("取消失败");
                     }

@@ -36,7 +36,10 @@ import java.util.List;
 public class TbExchangeServiceImpl implements TbExchangeService {
   private final String TOKENS = "yonyong";
   private static long MISTIMING;
-  public static String IP="10.129.100.35";
+  private static final String GET_FAILED = "fail";
+  private static final String GET_SUCCESS = "success";
+  private static final String GET_FEEDBACK_OUTTIME = "over";
+  public static String IP="127.0.0.1";
   public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
 
   @Autowired RestTemplate restTemplate;
@@ -345,11 +348,11 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       return 1;
     }
 
-    if ("收货失败".equals(inputFeedback.getInputState())) {
+    if (GET_FAILED.equals(inputFeedback.getInputState())) {
       //如果WMS上一次操作失误，进行回滚操作并及时更新
-      if (rs){
-        exchangeUtils.delOrder(inputFeedback.getGoodDetails(),inputFeedback.getOrderId());
-      }
+//      if (rs){
+//        exchangeUtils.delOrder(inputFeedback.getGoodDetails(),inputFeedback.getOrderId());
+//      }
       tbInput.setInputState("收货失败");
       tbInput.setUpdated(new Date());
       tbInput.setSynchronizeState("已同步");
@@ -358,11 +361,11 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       tbReturn.setModifiedUser(inputFeedback.getModifiedUser());
       tbReturn.setUpdated(new Date());
       tbReturns.add(tbReturn);
-    } else if ("超15天未收货".equals(inputFeedback.getInputState())) {
+    } else if (GET_FEEDBACK_OUTTIME.equals(inputFeedback.getInputState())) {
       //如果WMS上一次操作失误，进行回滚操作并及时更新
-      if (rs){
-        exchangeUtils.delOrder(inputFeedback.getGoodDetails(),inputFeedback.getOrderId());
-      }
+//      if (rs){
+//        exchangeUtils.delOrder(inputFeedback.getGoodDetails(),inputFeedback.getOrderId());
+//      }
       tbInput.setInputState("超15天未收货");
       tbInput.setUpdated(new Date());
       tbInput.setSynchronizeState("已同步");
@@ -371,7 +374,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       tbReturn.setModifiedUser(inputFeedback.getModifiedUser());
       tbReturn.setUpdated(new Date());
       tbReturns.add(tbReturn);
-    } else if ("收货成功".equals(inputFeedback.getInputState())) {
+    } else if (GET_SUCCESS.equals(inputFeedback.getInputState())) {
       tbInput.setInputState("收货成功");
       tbInput.setUpdated(new Date());
       tbInput.setSynchronizeState("已同步");
@@ -391,9 +394,9 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       return 1;
     }
 
-    if ("收货失败".equals(inputFeedback.getInputState())) {
+    if (GET_FAILED.equals(inputFeedback.getInputState())) {
       return 2;
-    } else if ("超15天未收货".equals(inputFeedback.getInputState())) {
+    } else if (GET_FEEDBACK_OUTTIME.equals(inputFeedback.getInputState())) {
       return 3;
     }
 

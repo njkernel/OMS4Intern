@@ -39,8 +39,8 @@ public class OutputController {
      * @auther: Jay
      * @date: 2019/1/7
      */
-    @GetMapping("/UpdateOrderIntoWaitOutPut")
-    public BaseResult UpdateOrderIntoWaitOutPut(@RequestParam(value = "id") int[] id) {
+    @PostMapping("/UpdateOrderIntoWaitOutPut")
+    public BaseResult UpdateOrderIntoWaitOutPut(@RequestParam(value = "id") int id[]) {
         return outputService.UpdateOrderIntoWaitOutPut(id);
     }
 
@@ -65,8 +65,8 @@ public class OutputController {
      * @date: 2019/1/8
      */
     @GetMapping("OutputDetails")
-    public BaseResult OutputDetails(int currentPage,int pageSize) {
-        PageInfo<TbOrderDetails> allOrderByStatus = outputService.getAllOrderByStatus(STATUS4, currentPage, pageSize);
+    public BaseResult OutputDetails(int currentPage,int pageSize, TbOrderDetails tbOrderDetails) {
+        PageInfo<TbOrderDetails> allOrderByStatus = outputService.getAllOrderByStatus(currentPage, pageSize, tbOrderDetails);
         // 需要和前端页面绑定
         return BaseResult.success("成功", allOrderByStatus);
     }

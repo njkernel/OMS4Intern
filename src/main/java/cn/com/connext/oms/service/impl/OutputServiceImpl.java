@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -56,22 +57,22 @@ public class OutputServiceImpl implements OutputService {
      */
     @Override
     public BaseResult UpdateOrderIntoWaitOutPut(int[] id) {
+        for (int id2:id){
+            String orderState = tbOrderMapper.selectByPrimaryKey(id2).getOrderState();
+            if (!orderState.equals(STATUS2)){
+                return BaseResult.fail("其中有不符合条件订单状态，请选择待路由的订单！");
+            }
+        }
         // 遍历数组 id
         for (int id1:id){
             // 根据订单id查询整个订单数据
-        TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(id1);
-             // 判断订单状态是否是待路由
-        if(tbOrder.getOrderState().equals(STATUS2)){
+            TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(id1);
             // 设置订单状态为待出库
             tbOrder.setOrderState(STATUS3);
             //更改订单状态
             tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
-            return BaseResult.success("成功！");
-          } else {
-            return BaseResult.fail("请选择状态为待路由的订单！");
-             }
         }
-        return BaseResult.fail("异常！");
+        return BaseResult.success("成功！");
     }
 
     /**
@@ -151,7 +152,7 @@ public class OutputServiceImpl implements OutputService {
      * @date: 2019/1/13
      */
     @Override
-    public PageInfo<TbOrderDetails> getAllOrderByStatus(String status,int currentPage,int pageSize) {
+    public PageInfo<TbOrderDetails> getAllOrderByStatus(int currentPage,int pageSize,TbOrderDetails tbOrderDetails) {
 //        Integer orderId = tbOrderDetails.getOrderId();
 //        String outputCode = tbOrderDetails.getOutputCode();
 //        String deliveryCode = tbOrderDetails.getDeliveryCode();
@@ -161,12 +162,17 @@ public class OutputServiceImpl implements OutputService {
 //                .andLike("outputCode",outputCode!=null?"%"+outputCode+"%":null)
 //                .andLike("deliveryCode",deliveryCode!=null?"%"+deliveryCode+"%":null);
 //        List<TbOrderDetails> tbOrderAll= tbOutputMapper.selectByExample(example);
-
-        // 从第一页开始，每一页显示5条数据
-        PageHelper.startPage(currentPage,pageSize);
-        List<TbOrderDetails> allOrder = tbOutputMapper.getAllOrderByStatus(status);
-        PageInfo<TbOrderDetails> pageInfo =new PageInfo<>(allOrder);
+        PageHelper.startPage(currentPage, pageSize);
+//        List<TbOrderDetails> tbOrderDetail = tbOutputMapper.getOutputOrdersBySearch(STATUS4,tbOrderDetails);
+        List<TbOrderDetails> allOrder = tbOutputMapper.getAllOrderByStatus(STATUS4);
+        PageInfo<TbOrderDetails> pageInfo = new PageInfo<>(allOrder);
         return pageInfo;
+
+//        // 从第一页开始，每一页显示5条数据
+//        PageHelper.startPage(currentPage,pageSize);
+//        List<TbOrderDetails> allOrder = tbOutputMapper.getAllOrderByStatus(status);
+//        PageInfo<TbOrderDetails> pageInfo =new PageInfo<>(allOrder);
+//        return pageInfo;
     }
     @Override
     public TbOrder getOrderById(Integer orderId) {
