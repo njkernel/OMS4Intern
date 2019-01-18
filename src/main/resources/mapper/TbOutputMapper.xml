@@ -101,7 +101,7 @@
   <select id="getOutputByOutputCode" parameterType="String" resultMap="outputMap">
         select * from tb_output where output_code=#{outputCode}
     </select>
-  <select id="orderDetails" parameterType="integer" resultType="cn.com.connext.oms.entity.TbOrderDetails">
+  <select id="orderDetails" parameterType="Integer" resultType="cn.com.connext.oms.entity.TbOrderDetails">
       SELECT
       a.order_id,
       a.order_code,
@@ -120,7 +120,6 @@
       a.delivery_code,
       a.delivery_time,
       a.sum_price,
-      a.remark,
       b.receiver_address,
       b.receiver_city,
       b.receiver_district,
@@ -128,12 +127,9 @@
       b.receiver_name,
       b.receiver_phone,
       b.receiver_state,
-      b.receiver_zip,
-      c.goods_id,
       c.goods_code,
       c.goods_name,
       c.goods_price,
-      d.goods_order_id,
       d.num,
       d.total_price,
       e.output_code,
@@ -160,47 +156,6 @@
     select tb_goods.goods_code,tb_goods_order.num from tb_goods, tb_goods_order
     where tb_goods.goods_id=tb_goods_order.goods_id and tb_goods_order.order_id = #{id}
   </select>
-  <select id="getAllOrderByStatus" resultType="cn.com.connext.oms.entity.TbOrderDetails">
-        SELECT
-      a.order_id,
-      a.order_code,
-      a.channel_code,
-      a.order_state,
-      a.order_source,
-      a.purchase_time,
-      a.basic_state,
-      a.modified_user,
-      a.updated,
-      a.payment_state,
-      a.payment_way,
-      a.payment_time,
-      a.delivery_warehouse,
-      a.delivery_company,
-      a.delivery_code,
-      a.delivery_time,
-      a.sum_price,
-      a.remark,
-      b.receiver_address,
-      b.receiver_city,
-      b.receiver_district,
-      b.receiver_mobile,
-      b.receiver_name,
-      b.receiver_phone,
-      b.receiver_state,
-      b.receiver_zip,
-      e.output_code,
-      e.output_state,
-      e.created,
-      e.synchronize_state
-  FROM
-      tb_order a,
-      tb_receiver b,
-      tb_output e
-  WHERE
-      a.order_id = b.order_id
-  AND a.order_id = e.order_id
-  AND a.order_state=#{state}
-    </select>
     <select id="getOutputOrdersBySearch" resultType="cn.com.connext.oms.entity.TbOrderDetails">
         SELECT
         a.order_id,
@@ -213,27 +168,21 @@
         b.receiver_district,
         b.receiver_city,
         b.receiver_address,
+        b.receiver_name,
         e.created
         FROM
         tb_order a
         inner join  tb_receiver b on a.order_id = b.order_id
         inner join  tb_output e on a.order_id = e.order_id
         WHERE a.order_state=#{state}
-        <!--<choose>-->
-            <!--&lt;!&ndash;<when test="status !=null and status != ''">&ndash;&gt;-->
-                <!--&lt;!&ndash;&ndash;&gt;-->
-            <!--&lt;!&ndash;</when>&ndash;&gt;-->
-            <!--<when test="tbOrderDetails.outputCode !=null and tbOrderDetails.outputCode != ''">-->
-                <!--WHERE e.output_code LIKE "%"#{tbOrderDetails.outputCode}"%"-->
-            <!--</when>-->
-            <!--<when test="tbOrderDetails.orderId !=null and tbOrderDetails.orderId != ''">-->
-                <!--WHERE a.order_id LIKE "%"#{tbOrderDetails.orderId}"%"-->
-            <!--</when>-->
-            <!--<when test="tbOrderDetails.deliveryCode !=null and tbOrderDetails.deliveryCode != ''">-->
-                <!--WHERE a.delivery_company LIKE "%"#{tbOrderDetails.deliveryCode}"%"-->
-            <!--</when>-->
-            <!--<otherwise>-->
-            <!--</otherwise>-->
-        <!--</choose>-->
+        <if test="orderId!=null and orderId!= ''">
+            AND a.order_id LIKE "%"#{orderId}"%"
+        </if>
+        <if test="outputCode!=null and outputCode!= ''">
+            AND e.output_code LIKE "%"#{outputCode}"%"
+        </if>
+        <if test="deliveryCode!=null and deliveryCode!= ''">
+            AND a.delivery_code LIKE "%"#{deliveryCode}"%"
+        </if>
     </select>
 </mapper>
