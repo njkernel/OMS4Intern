@@ -36,22 +36,22 @@
                 targetProject="src/main/java"
                 type="XMLMAPPER"/>
 
-        <!-- 配置需要生成的表，% 代表所有 -->
+      <!--  &lt;!&ndash; 配置需要生成的表，% 代表所有 &ndash;&gt;
         <table catalog="oms" tableName="tb_permission">
-            <!-- mysql 配置 -->
+            &lt;!&ndash; mysql 配置 &ndash;&gt;
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
         <table catalog="oms" tableName="tb_user">
-            <!-- mysql 配置 -->
+            &lt;!&ndash; mysql 配置 &ndash;&gt;
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
         <table catalog="oms" tableName="tb_role">
-            <!-- mysql 配置 -->
+            &lt;!&ndash; mysql 配置 &ndash;&gt;
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
         <table catalog="oms" tableName="tb_role_permission">
-            <!-- mysql 配置 -->
+            &lt;!&ndash; mysql 配置 &ndash;&gt;
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+        </table>-->
     </context>
 </generatorConfiguration>

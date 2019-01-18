@@ -34,7 +34,7 @@ let loginPage = new Vue({
         Suc(res){
             if(res.status===200){
                 alert(res.message);
-                window.location.href = "/logout";
+                window.location.href = "/index";
             }else{
                 alert(res.message);
             }

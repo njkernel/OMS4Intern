@@ -175,16 +175,16 @@ public class TbOrderServiceImpl implements TbOrderService {
 
                 }
 
-                TbRefund refund=new TbRefund();
+                TbRefund refund=new TbRefund();//创建退款的对象
                 refund.setCreatetd(date);
                 refund.setModifiedUser(userName);
-                refund.setRefundCode(CodeGenerateUtils.creatUUID());
+                refund.setRefundCode(CodeGenerateUtils.creatUUID());//用工具类生成退款编号
                 refund.setRefundPrice(tbOrder.getSumPrice());
                 refund.setOrderId(tbOrder.getOrderId());
                 refund.setRefundState("待退款");
                 refund.setReturnId(null);
                 refund.setUpdated(null);
-                tbRefundList.add(refund);
+                tbRefundList.add(refund);//添加到退款的集合
 
             }
             if(count==tbOrderList.size()){//如果要取消的订单集合中没有与之相关的已发货的出库单
@@ -274,7 +274,7 @@ public class TbOrderServiceImpl implements TbOrderService {
             if(!outputList.isEmpty()){//要更改的出库单不为空
                 for(TbOutput tbOutput:outputList){
                     tbOrder=tbOrderMapper.getOrderById(tbOutput.getOrderId());//根据订单id获取订单对象
-                    if("已取消".equals(tbOrder.getOrderState())||"已完成".equals(tbOrder.getOrderState())){
+                    if("已取消".equals(tbOrder.getOrderState())||"已完成".equals(tbOrder.getOrderState())||"wms请求取消".equals(tbOrder.getBasicState())){
                         return false;
                     }
                     else if(!"已完成".equals(tbOrder.getOrderState())){
