@@ -1,5 +1,10 @@
 jQuery(document).ready(function () {
     // 弹窗验证逻辑
+    window.onload=function () {
+        var imgWidtn=$(window).innerWidth()-256;
+        var imgHeight=0.6*imgWidtn;
+        $("#img").height(imgHeight);
+    };
     $(".list_dt").on("click", function () {
         // $('.list_li').removeClass("selected");
         $('.list_dd').stop();

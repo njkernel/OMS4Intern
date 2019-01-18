@@ -101,7 +101,6 @@
 
    WHERE
        a.order_id = b.order_id
-       and
   </select>
 <!--根据订单id查找退货单信息-->
   <select id="getInputByOrderId" resultType="TbInput">
