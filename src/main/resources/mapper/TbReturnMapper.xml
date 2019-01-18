@@ -83,24 +83,29 @@
     WHERE return_id = #{returnId}
   </select>
 
-  <!--查找所有的入库单-->
+  <!--查找所有符合查询条件的入库单-->
   <select id="getAllInputOrders" resultType="cn.com.connext.oms.commons.dto.InputDTO">
-   SELECT
-      a.input_code,
-      a.order_id,
-      a.input_state,
-      a.created,
-      a.updated,
-      a.synchronize_state,
-      b.return_code,
-      b.modified_user
+     SELECT
+        a.input_code,
+        a.order_id,
+        a.input_state,
+        a.created,
+        a.updated,
+        a.synchronize_state,
+        b.return_code,
+        b.modified_user
 
-   FROM
-       tb_input a,
-       tb_return b
-
-   WHERE
-       a.order_id = b.order_id
+         FROM tb_input a INNER JOIN  tb_return b ON a.order_id = b.order_id
+            <choose>
+                <when test="tbInput.inputCode !=null and tbInput.inputCode != ''">
+                    WHERE input_code LIKE "%"#{tbInput.inputCode}"%"
+                </when>
+                <when test="tbInput.inputState !=null and tbInput.inputState != ''">
+                    WHERE input_state LIKE "%"#{tbInput.inputState}"%"
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
   </select>
 <!--根据订单id查找退货单信息-->
   <select id="getInputByOrderId" resultType="TbInput">

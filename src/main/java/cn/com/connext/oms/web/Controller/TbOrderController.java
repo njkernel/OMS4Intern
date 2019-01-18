@@ -1,6 +1,7 @@
 package cn.com.connext.oms.web.Controller;
 
 import cn.com.connext.oms.commons.dto.BaseResult;
+import cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOutput;
 import cn.com.connext.oms.mapper.TbOutputMapper;
@@ -38,7 +39,7 @@ public class TbOrderController {
     * @Return: cn.com.connext.oms.commons.dto.BaseResult
     * @Create: 2019/1/6 10:24
     */
-    @GetMapping("/getAllOrder")
+   /* @GetMapping("/getAllOrder")
     @ApiOperation(value = "订单数据接口")
     public BaseResult getAllOrder(int pageNum,int pageSize){
         try {
@@ -50,7 +51,7 @@ public class TbOrderController {
             e.printStackTrace();
             return BaseResult.fail("服务器内部错误");
         }
-    }
+    }*/
 
     @PostMapping(value = "/cancelOrderOfWms",produces = "text/json;charset=UTF-8")
     @ApiOperation(value = "wms取消订单的接口")
@@ -96,6 +97,24 @@ public class TbOrderController {
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResult.fail("服务器内部错误");
+        }
+    }
+    /**
+     * 功能描述:显示所有商品和模糊查询
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/18 11:13
+     */
+    @RequestMapping("/getAllOrder")
+    @ApiOperation(value = "显示所有订单并模糊查询")
+    public  BaseResult showAllOrders(Integer currentPage, Integer pageSize, OrderGoodsReceiverDto orderGoodsReceiverDto){
+        try {
+            PageInfo<OrderGoodsReceiverDto> pageInfo=tbOrderService.selectAllOrders(currentPage,pageSize,orderGoodsReceiverDto);
+            return BaseResult.success("查询成功！",pageInfo);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return BaseResult.fail("服务器内部错误！");
         }
     }
 

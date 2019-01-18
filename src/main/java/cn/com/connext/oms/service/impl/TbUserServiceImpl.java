@@ -9,10 +9,13 @@ import cn.com.connext.oms.mapper.TbUserMapper;
 import cn.com.connext.oms.service.TbUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.catalina.Session;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -29,6 +32,10 @@ public class TbUserServiceImpl implements TbUserService {
 
     @Autowired
     private TbRoleMapper tbRoleMapper;
+
+
+    @Autowired
+    private HttpSession session;
 
 
     /**
@@ -82,25 +89,33 @@ public class TbUserServiceImpl implements TbUserService {
      * @Date: 2019/1/13
      */
     @Override
-    public boolean updateUser(TbUser user) {
+    public Integer updateUser(TbUser user) {
         Date date=new Date();
         int result=0;//保存更改记录
+        String userName="";//保存浏览器中登录的用户名
         if(user!=null){//传过来的用户不为空
-            TbUser tbUser=tbUserMapper.getUserById(user.getUserId());
+            TbUser tbUser=tbUserMapper.getUserById(user.getUserId());//通过用户id获取用户
             if(tbUser!=null){//如果存在该用户
-                TbRole role=tbRoleMapper.getRoleById(user.getRoleId());
+                TbRole role=tbRoleMapper.getRoleById(user.getRoleId());//根据角色id获取角色
                 if(role!=null&&user.getUserPassword()!=""){
-                    tbUser.setUpdated(date);//保存更改时间
-                    result=tbUserMapper.updateUser(user);
-                    if(result==1){
-                        return true;
+                    user.setUpdated(date);//保存更改时间
+                    result=tbUserMapper.updateUser(user);//更新用户信息
+                    if(result==1){//更新成功
+                        if(session.getAttribute("OMSUSER")!=null){//用户已经登录
+                            userName=session.getAttribute("OMSUSER").toString();//得到登录名
+                            if(userName.equals(tbUser.getUserName())){//登录名和此时修改的用户的原名相同
+                                return 2;
+                            }
+                        }
+
+                        return 1;
                     }
                 }
 
             }
         }
 
-        return false;
+        return 0;
     }
 
 

@@ -261,5 +261,51 @@
             #{item.orderId}
         </foreach>
     </update>
+    <!--订单模糊查询加列表-->
+    <select id="selectAllOrders" resultType="cn.com.connext.oms.commons.dto.OrderGoodsReceiverDto">
+        SELECT
+        a.order_id,
+        order_code,
+        channel_code,
+        order_state,
+        order_source,
+        purchase_time,
+        basic_state,
+        modified_user,
+        customer_id,
+        a.updated,
+        payment_state,
+        payment_way,
+        payment_time,
+        delivery_warehouse,
+        delivery_company,
+        delivery_code,
+        delivery_time,
+        sum_price,
+        a.receiver_id,
+        remark,
+        receiver_name,
+        receiver_state,
+        receiver_city,
+        receiver_district,
+        receiver_address
+        FROM
+        tb_order a
+        INNER JOIN tb_receiver b on a.order_id=b.order_id
+        <choose>
+            <when test="orderGoodsReceiverDto.deliveryCode !=null and orderGoodsReceiverDto.deliveryCode != ''">
+                WHERE delivery_code LIKE "%"#{orderGoodsReceiverDto.deliveryCode}"%"
+            </when>
+            <when test="orderGoodsReceiverDto.orderState !=null and orderGoodsReceiverDto.orderState != ''">
+                WHERE order_state LIKE "%"#{orderGoodsReceiverDto.orderState}"%"
+            </when>
+            <when test="orderGoodsReceiverDto.receiverName !=null and orderGoodsReceiverDto.receiverName != ''">
+                WHERE receiver_name LIKE "%"#{orderGoodsReceiverDto.receiverName}"%"
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
 
 </mapper>

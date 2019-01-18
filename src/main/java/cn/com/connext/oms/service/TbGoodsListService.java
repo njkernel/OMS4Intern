@@ -3,6 +3,7 @@ package cn.com.connext.oms.service;
 import cn.com.connext.oms.commons.dto.GoodsGoodsOrderDto;
 import cn.com.connext.oms.commons.dto.GoodsStockDto;
 import cn.com.connext.oms.entity.TbGoods;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -27,8 +28,8 @@ public interface TbGoodsListService {
      * @Description: 查询库存所有商品
      * @Param: []
      * @Create: 2019/1/7 16:54
-     */
-    List<GoodsStockDto> getAllGoods();
+     *//*
+    List<GoodsStockDto> getAllGoods();*/
     /**
      * @Author: zhaojun
      * @Description: 根据goods_code查询Good_ID
@@ -60,6 +61,14 @@ public interface TbGoodsListService {
      * @Create: 2019/1/10 11:49
      */
     public List<TbGoods> fuzzySearch(String mark);
+    /**
+     * 功能描述:分类模糊查询
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/18 10:48
+     */
+    public PageInfo<GoodsStockDto> getAllGoods(Integer currentPage, Integer pageSize, GoodsStockDto goodsStockDto);
 
 
 }

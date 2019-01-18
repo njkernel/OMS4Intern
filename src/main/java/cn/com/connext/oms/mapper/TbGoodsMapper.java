@@ -2,6 +2,7 @@ package cn.com.connext.oms.mapper;
 
 import cn.com.connext.oms.commons.dto.GoodsStockDto;
 import cn.com.connext.oms.entity.TbGoods;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
 
@@ -49,5 +50,13 @@ public interface TbGoodsMapper extends MyMapper<TbGoods> {
      * @Create: 2018/1/10 15:40
      */
     public List<TbGoods> fuzzySearch(String mark);
+    /**
+     * 功能描述:分类模糊查询
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/18 10:46
+     */
+    public List<GoodsStockDto> selectAllGoods(@Param("goodsStockDto")GoodsStockDto goodsStockDto);
 
 }
