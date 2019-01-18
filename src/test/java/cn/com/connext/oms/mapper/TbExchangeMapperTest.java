@@ -23,7 +23,7 @@ import java.util.List;
  * @version: 1.0.0
  * @date: 2019/1/18
  * @time: 14:02
- * @describe: ******生成数据工具类，不要删掉这个test类，需要更改，后期update******
+ * @describe: ******生成数据工具类，不要删掉这个test类，不许删掉这个test类******
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OmsApplication.class)
@@ -38,9 +38,7 @@ public class TbExchangeMapperTest {
         int orderId=1901060132;
         //插入receiver表时的起始receiverId
         int insertReceiverId=1121;
-        //插入receiver表时的起始接受人id，不需要改动
-        int receiverId=1001;
-        //插入receiver表时的起始接受人订单id，不需要改动
+        //插入receiver表时的起始接受人订单id
         int receiverOrderId=1234567891;
         Date date = new Date();
         for (int t=0;t<5;t++){
@@ -96,11 +94,10 @@ public class TbExchangeMapperTest {
                 tbReceiver.setCreated(date);
                 tbReceiver.setOrderId(orderId);
                 tbExchangeMapper.insertReciver(tbReceiver);
-                receiverId++;
                 orderId++;
+                insertReceiverId++;
             }
             receiverOrderId++;
-            insertReceiverId++;
         }
 
     }

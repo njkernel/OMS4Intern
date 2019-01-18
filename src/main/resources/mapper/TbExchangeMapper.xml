@@ -230,9 +230,9 @@
     </select>
 
     <insert id="insertReciver">
-        insert into tb_receiver (receiver_name,receiver_phone,receiver_mobile,receiver_state,
+        insert into tb_receiver (receiver_id,receiver_name,receiver_phone,receiver_mobile,receiver_state,
         receiver_city,receiver_district,receiver_address,receiver_zip,created,updated,order_id)
-        values (#{tbReceiver.receiverName},#{tbReceiver.receiverPhone},#{tbReceiver.receiverMobile},
+        values (#{tbReceiver.receiverId},#{tbReceiver.receiverName},#{tbReceiver.receiverPhone},#{tbReceiver.receiverMobile},
         #{tbReceiver.receiverState},#{tbReceiver.receiverCity},#{tbReceiver.receiverDistrict},
         #{tbReceiver.receiverAddress},#{tbReceiver.receiverZip},#{tbReceiver.created},
         #{tbReceiver.updated},#{tbReceiver.orderId})
