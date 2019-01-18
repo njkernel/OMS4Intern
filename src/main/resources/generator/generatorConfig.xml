@@ -36,7 +36,8 @@
                 targetProject="src/main/java"
                 type="XMLMAPPER"/>
 
-      <!--  &lt;!&ndash; 配置需要生成的表，% 代表所有 &ndash;&gt;
+
+      <!-- &lt;!&ndash; 配置需要生成的表，% 代表所有 &ndash;&gt;
         <table catalog="oms" tableName="tb_permission">
             &lt;!&ndash; mysql 配置 &ndash;&gt;
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>

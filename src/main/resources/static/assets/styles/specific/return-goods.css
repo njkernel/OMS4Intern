@@ -70,10 +70,6 @@ body{
 input{
     display: none;
 }
-.main-content2{
-    height: 640px;
-    /* background-color: gold; */
-}
 .main-content2-title{
     height: 40px;
     /* border: 1px solid #000; */
