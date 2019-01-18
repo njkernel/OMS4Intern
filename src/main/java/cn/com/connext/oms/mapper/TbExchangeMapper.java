@@ -260,4 +260,5 @@ public interface TbExchangeMapper {
      * @return int
      */
     public int insertReciver(@Param("tbReceiver")TbReceiver tbReceiver);
+    public void updateReceiver(@Param("receiverId")int receiverId,@Param("orderId") int orderId);
 }
