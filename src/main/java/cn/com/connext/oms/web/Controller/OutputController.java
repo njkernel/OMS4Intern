@@ -9,7 +9,6 @@ import cn.com.connext.oms.service.TbOrderService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
@@ -29,7 +28,10 @@ public class OutputController {
     private OutputService outputService;
     @Autowired
     private TbOrderService tbOrderService;
-    private static String STATUS4 = "已出库";
+    private static String STATE1 = "haveShipped";
+    private static String STATE2 = "waittingChecked";
+    private static String STATE3 = "waittingPackaged";
+    private static String STATE4 = "waittingShipped";
 
     /**
      * 功能描述:根据传入的数组id修改订单的状态
@@ -58,16 +60,16 @@ public class OutputController {
     }
 
     /**
-     * 功能描述: 点击出库单列表，显示所有已出库的订单
+     * 功能描述: 点击出库单列表，显示所有已出库的订单,以及模糊查询选择符合条件的订单,默认显示所有已出库的订单
      *
-     * @return: 返回所有状态是已出库的订单
+     * @return: 返回所有状态是已出库的订单，以及模糊查询选择符合条件的订单
+     * @param: currentPage: 当前页， pageSize： 总页数, orderId： 订单id，outputCode ：出库单号, deliveryCode ：快递单号
      * @auther: Jay
      * @date: 2019/1/8
      */
-    @GetMapping("OutputDetails")
-    public BaseResult OutputDetails(int currentPage,int pageSize, TbOrderDetails tbOrderDetails) {
-        PageInfo<TbOrderDetails> allOrderByStatus = outputService.getAllOrderByStatus(currentPage, pageSize, tbOrderDetails);
-        // 需要和前端页面绑定
+    @GetMapping("/OutputDetails")
+    public BaseResult OutputDetails(int currentPage,int pageSize, String orderId, String outputCode, String deliveryCode) {
+        PageInfo<TbOrderDetails> allOrderByStatus = outputService.getAllOrderByStatusAndSeacrch(currentPage, pageSize, orderId, outputCode, deliveryCode);
         return BaseResult.success("成功", allOrderByStatus);
     }
 
@@ -82,7 +84,8 @@ public class OutputController {
     @PostMapping(value = "/synchronizeState")
     @ResponseBody
     public String synchronizeState(@RequestBody Map map) {
-        String STATUS = (String) map.get("status");
+        String status = (String) map.get("status");
+        String STATUS = this.changeStatusIntoChinese(status);
         List<String> orderList = (List<String>) map.get("orderIdList");
         List<String> receivcerDetails = (List<String>) map.get("shippingInfo");
         // 遍历订单id集合，批量修改状态
@@ -108,5 +111,22 @@ public class OutputController {
             return "error";}
         }
         return "200";
+    }
+
+    /**
+     *
+     * 功能描述: 转换 WMS 传过来的状态为中文
+     *
+     * @param: WMS状态
+     * @return: 返回中文状态
+     * @auther: Jay
+     * @date: 2019/1/18
+     */
+    public String changeStatusIntoChinese(String status){
+        if (status.equals(STATE2)){return "待检货";}
+        if (status.equals(STATE3)){return "待包装";}
+        if (status.equals(STATE4)){return "待发货";}
+        if (status.equals(STATE1)){return "已发货";}
+        return null;
     }
 }

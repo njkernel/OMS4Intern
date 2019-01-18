@@ -1,5 +1,6 @@
 package cn.com.connext.oms.web.Controller;
 
+import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.service.TbGoodsListService;
 import cn.com.connext.oms.service.TbGoodsOrderService;
@@ -314,6 +315,15 @@ public class PageController {
         List<TbOrderDetails> outStockDetails = outputService.orderDetails(orderId);
         mv.addObject("outStockDetails",outStockDetails);
         return mv;
+    }
+    @GetMapping("orderDetailsAll2")
+    public BaseResult outStockDetails2(int orderId){
+        List<TbOrderDetails> outStockDetails = outputService.orderDetails(orderId);
+        for (int i = 0;i<outStockDetails.size();i++){
+            TbOrderDetails  tbOrderDetails = outStockDetails.get(i);
+            return BaseResult.success("121212",outStockDetails);
+        }
+        return BaseResult.success("1787878");
     }
 
 

@@ -134,45 +134,21 @@ public class OutputServiceImpl implements OutputService {
         return tbOutputMapper.orderDetails(orderId);
     }
     /**
+     * 功能描述: 点击出库单列表，显示所有已出库的订单,以及模糊查询选择符合条件的订单,默认显示所有已出库的订单
      *
-     * 功能描述: 根据订单id查询所有的订单详情
-     *
-     * @param: 订单id
-     * @return: 返回选择的订单
-     * @auther: Jay
-     * @date: 2019/1/8
-     */
-    /**
-     *
-     * 功能描述: 根据订单状态查询所需要的订单
-     *
-     * @param: 订单状态
-     * @return: 返回根据订单状态查询的订单
+     * @return: 返回所有状态是已出库的订单，以及模糊查询选择符合条件的订单
+     * @param: currentPage: 当前页， pageSize： 总页数, orderId： 订单id，outputCode ：出库单号, deliveryCode ：快递单号
      * @auther: Jay
      * @date: 2019/1/13
      */
     @Override
-    public PageInfo<TbOrderDetails> getAllOrderByStatus(int currentPage,int pageSize,TbOrderDetails tbOrderDetails) {
-//        Integer orderId = tbOrderDetails.getOrderId();
-//        String outputCode = tbOrderDetails.getOutputCode();
-//        String deliveryCode = tbOrderDetails.getDeliveryCode();
-//        Example example=new Example(TbOrderDetails.class);
-//        example.createCriteria()
-//                .andLike("orderId",orderId!=null?"%"+orderId+"%":null)
-//                .andLike("outputCode",outputCode!=null?"%"+outputCode+"%":null)
-//                .andLike("deliveryCode",deliveryCode!=null?"%"+deliveryCode+"%":null);
-//        List<TbOrderDetails> tbOrderAll= tbOutputMapper.selectByExample(example);
+    public PageInfo<TbOrderDetails> getAllOrderByStatusAndSeacrch(int currentPage,int pageSize,String orderId, String outputCode, String deliveryCode) {
+        // 从第 1 页开始，每一页 5 条数据
         PageHelper.startPage(currentPage, pageSize);
-//        List<TbOrderDetails> tbOrderDetail = tbOutputMapper.getOutputOrdersBySearch(STATUS4,tbOrderDetails);
-        List<TbOrderDetails> allOrder = tbOutputMapper.getAllOrderByStatus(STATUS4);
+        // 返回所有状态是已出库的订单，模糊查询选择符合条件的订单，默认显示所有已出库订单
+        List<TbOrderDetails> allOrder = tbOutputMapper.getOutputOrdersBySearch(STATUS4, orderId,outputCode,deliveryCode);
         PageInfo<TbOrderDetails> pageInfo = new PageInfo<>(allOrder);
         return pageInfo;
-
-//        // 从第一页开始，每一页显示5条数据
-//        PageHelper.startPage(currentPage,pageSize);
-//        List<TbOrderDetails> allOrder = tbOutputMapper.getAllOrderByStatus(status);
-//        PageInfo<TbOrderDetails> pageInfo =new PageInfo<>(allOrder);
-//        return pageInfo;
     }
     @Override
     public TbOrder getOrderById(Integer orderId) {
@@ -238,7 +214,6 @@ public class OutputServiceImpl implements OutputService {
      * */
 
     public TbOutput getOneTbOutput(int id){
-        System.out.println("3267467236746283687"+id);
         TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(id);
         if (tbOrder.getOrderState().equals(STATUS5)){
             TbOutput tbOutput = tbOutputMapper.getOutputByOrderId(id);
