@@ -33,7 +33,6 @@
     <table class="table table-condensed">
         <thead>
         <tr>
-            <th>序号</th>
             <th>用户账号</th>
             <th>用户密码</th>
             <th>用户角色</th>
@@ -42,7 +41,6 @@
         </thead>
         <tbody id="tbody" th:each="user,iterStat : ${map.get('userList')}">
         <tr th:id="'tr_'+${user.userId}">
-            <td th:text="${iterStat.index}"></td>
             <td th:text="${user.userName}"></td>
             <td th:text="${user.userPassword}"></td>
             <td th:text="${user.tbRole.roleName}"></td>
@@ -154,7 +152,7 @@
                     <div class="form-group">
                         <label for="myPassword" class="col-sm-2 control-label">用户密码</label>
                         <div class="col-sm-10">
-                            <input type="text" readonly name="myPassword" class="form-control" id="myPassword" value="用户密码">
+                            <input type="text"  name="myPassword" class="form-control" id="myPassword" value="用户密码">
                         </div>
                     </div>
                    <!-- <div class="form-group">
@@ -178,7 +176,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary save"  data-dismiss="modal" id="save1">保存</button>
+                <button type="button" class="btn btn-primary save"  data-dismiss="modal" id="save1" onclick="save()">保存</button>
             </div>
         </div>
 
