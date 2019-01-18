@@ -6,6 +6,8 @@ import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.mapper.TbGoodsMapper;
 import cn.com.connext.oms.mapper.TbGoodsOrderMapper;
 import cn.com.connext.oms.service.TbGoodsListService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.LinkedList;
@@ -43,17 +45,17 @@ public class TbGoodsListServiceImpl implements TbGoodsListService {
         }
         return tbGoods;
     }
-    /**
+ /*   *//**
      * @Author: zhaojun
      * @Description: 查询库存所有商品
      * @Param: []
      * @Create: 2019/1/8 16:54
-     */
+     *//*
 
     @Override
     public List<GoodsStockDto> getAllGoods() {
         return this.tbGoodsMapper.getAllGoods();
-    }
+    }*/
 
     /**
      * @Author: zhaojun
@@ -83,6 +85,20 @@ public class TbGoodsListServiceImpl implements TbGoodsListService {
     public List<TbGoods> fuzzySearch(String mark) {
         return this.tbGoodsMapper.fuzzySearch(mark);
     }
+    /**
+     * 功能描述:分类模糊查询
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/18 10:50
+     */
+    @Override
+    public PageInfo<GoodsStockDto>getAllGoods(Integer currentPage, Integer pageSize, GoodsStockDto goodsStockDto) {
+        PageHelper.startPage(currentPage, pageSize);
+        List<GoodsStockDto> goodsStockDtos = tbGoodsMapper.selectAllGoods(goodsStockDto);
+        PageInfo<GoodsStockDto> pageInfo = new PageInfo<>(goodsStockDtos);
+        return pageInfo;
+        }
 
     /**
      * @Author: zhaojun

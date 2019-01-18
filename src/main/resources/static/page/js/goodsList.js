@@ -5,29 +5,27 @@ let goodsList = new Vue({
             //分页数据
             page:{
                 pageSize:5,
-                pageNum:1,
+                currentPage:1,
+                goodsName : '',
+                goodsCode : ''
             },
             //选中行的记录id
             checkedDate:"",
             //搜索输入框
-            searchInput:"",
+            searchInput2:"",
             //异常单数据
             goodsListDate:[],
             //默认选中
             selected: 'orderId',
             //下拉框选项
-            options: [
-                { text: '订单id', value: 'orderId' },
-                { text: '异常类型', value: 'abnormalType' },
-                { text: '异常状态', value: 'abnormalState' },
-                { text: '修改人', value: 'modifiedUser' }
+            options2: [
+                { text: '商品名称', value: 'goodsName' },
+                { text: '商品编码', value: 'goodsCode' },
             ],
             //搜索条件
             searchDate:{
-                abnormalState:'',
-                orderId:'',
-                abnormalType:'',
-                modifiedUser:''
+                goodsName:'',
+                goodsCode:''
             },
 
          /*   //模态框数据
@@ -56,14 +54,10 @@ let goodsList = new Vue({
         },
         //清空搜索条件
         initialize(){
-            this.page.abnormalState='';
-            this.page.orderId='';
-            this.page.abnormalType='';
-            this.page.modifiedUser='';
-            this.searchDate.abnormalState='';
-            this.searchDate.orderId='';
-            this.searchDate.abnormalType='';
-            this.searchDate.modifiedUser='';
+            this.page.goodsName='';
+            this.page.goodsCode='';
+            this.searchDate.goodsName='';
+            this.searchDate.goodsCode='';
         },
 
         /*根据页码，查询到要显示的数据*/
@@ -71,8 +65,10 @@ let goodsList = new Vue({
             let that=this;
             axios.get('/getAllGoods', {
                 params: {
-                    pageNum:pn,
-                    pageSize: that.page.pageSize
+                    currentPage:pn,
+                    pageSize: that.page.pageSize,
+                    goodsName : this.searchDate.goodsName,
+                    goodsCode :this.searchDate.goodsCode
                 }
             }).then(res => {
                 console.log(res);
@@ -82,36 +78,32 @@ let goodsList = new Vue({
                 console(err);
             })
         },
+
+
         //查询事件
-        searchBtn(){
+        searchBtn2(){
             if(this.selected==='orderId'){
                 let reg = /^\d{1,10}$/;
                 this.initialize();
-                if (reg.test(this.searchInput)){
-                    this.searchDate.orderId=this.searchInput;
+                if (reg.test(this.searchInput2)){
+                    this.searchDate.orderId=this.searchInput2;
                 }else {
                     alert("输入错误");
                 }
             }
-            else if(this.selected==='abnormalState'){
+            else if(this.selected==='goodsCode'){
                 this.initialize();
-                this.searchDate.abnormalState=this.searchInput;
+                this.searchDate.goodsCode=this.searchInput2;
             }
-            else if(this.selected==='abnormalType'){
+            else if(this.selected==='goodsName'){
                 this.initialize();
-                this.searchDate.abnormalType=this.searchInput;
-            }
-            else {
-                this.initialize();
-                this.searchDate.modifiedUser=this.searchInput;
+                this.searchDate.goodsName=this.searchInput2;
             }
 
             //查询条件
             this.page.currentPage=1;
-            this.page.orderId=this.searchDate.orderId;
-            this.page.abnormalState=this.searchDate.abnormalState;
-            this.page.abnormalType=this.searchDate.abnormalType;
-            this.page.modifiedUser=this.searchDate.modifiedUser;
+            this.page.goodsName=this.searchDate.goodsName;
+            this.page.goodsCode=this.searchDate.goodsCode;
             //初始化表格
             this.initTable();
         },

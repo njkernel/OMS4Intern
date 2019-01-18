@@ -304,4 +304,12 @@ public class TbOrderServiceImpl implements TbOrderService {
     public OrderGoodsReceiverDto getAllById(int orderId) {
         return tbOrderMapper.getAllById(orderId);
     }
+
+    @Override
+    public PageInfo<OrderGoodsReceiverDto> selectAllOrders(Integer currentPage, Integer pageSize, OrderGoodsReceiverDto orderGoodsReceiverDto) {
+        PageHelper.startPage(currentPage, pageSize);
+        List<OrderGoodsReceiverDto> orderGoodsReceiverDtos = tbOrderMapper.selectAllOrders(orderGoodsReceiverDto);
+        PageInfo<OrderGoodsReceiverDto> pageInfo = new PageInfo<>(orderGoodsReceiverDtos);
+        return pageInfo;
+    }
 }
