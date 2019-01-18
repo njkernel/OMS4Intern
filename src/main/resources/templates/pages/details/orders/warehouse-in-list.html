@@ -17,15 +17,17 @@
     <div id="mask_shadow"></div>
     <div class="btn-div">
         <button type="button" class="btn btn-primary" id="MyAbnormalModel" @click="checkInputOrder">查看订单</button>
-        <button type="button" class="btn btn-primary">刷新</button>
+        <button type="button" class="btn btn-primary" @click ="refresh">刷新</button>
         <div class="search-box">
             <form action="">
-                <select name="" id="">
-                    <option value=""></option>
-                    <option value=""></option>
+                <select v-model="selected" >
+                    <option v-for="option in optionsIO" :value="option.value">
+                        {{ option.text }}
+                    </option>
                 </select>
-                <input type="text">
-                <button type="button" class="btn btn-success">搜索</button>
+                        <input v-model.trim="searchInputIO">
+
+                <button type="button" class="btn btn-success" @click="searchIO">搜索</button>
             </form>
         </div>
     </div>

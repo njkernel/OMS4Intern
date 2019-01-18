@@ -194,11 +194,13 @@ public class TbReturnServiceImpl implements TbReturnService {
                 TbGoods tbGoods = tbExchangeMapper.toSelectGoodById(t.getGoodsId());
                 detailDTOS.add(new InRepertoryDetailDTO(tbGoods.getGoodsCode(), t.getNumber()));
             }
+
             String token = AES.AESEncode(TOKENS, String.valueOf(tbInput1.getInputId()));
             InRepertoryDTO inRepertoryDTO = new InRepertoryDTO(token,
                     String.valueOf(tbInput1.getInputId()), String.valueOf(orderId),
                     tbOrder.get(0).getChannelCode(), tbOrder.get(0).getDeliveryCompany(),
                     tbOrder.get(0).getDeliveryCode(), detailDTOS);
+
             try {
                 restTemplate.postForEntity(URL, inRepertoryDTO.toMap(), String.class);
                 TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
@@ -323,10 +325,10 @@ public class TbReturnServiceImpl implements TbReturnService {
      * @return PageInfo
      */
     @Override
-    public PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize) {
+    public PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize,TbInput tbInput) {
         PageHelper.startPage(currentPage,pageSize);
 
-        List<InputDTO> tbReturnList = tbReturnMapper.getAllInputOrders();
+        List<InputDTO> tbReturnList = tbReturnMapper.getAllInputOrders(tbInput);
         PageInfo<InputDTO> pageInfo = new PageInfo<InputDTO>(tbReturnList);
 
         return pageInfo;
