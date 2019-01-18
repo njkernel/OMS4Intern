@@ -47,16 +47,16 @@
                         <p class="password"><input type="password" class="table2" placeholder="请输入密码" id="password-001"
                                 style="outline:none;" v-model.trim="tb_password"></p>
                         <div class="freeload">
-                            <select v-model="roleId">
+                            <select id="sel" display="none" v-model="roleId">
                                 <option v-for="option in options" :value="option.roleId">
                                     {{ option.roleName }}
                                 </option>
                             </select>
-                            <a href="javascript:void(0)" title="*" class="forget"> 忘记密码？</a>
+                            <!--<a href="javascript:void(0)" title="*" class="forget"> 忘记密码？</a>-->
                         </div>
-                        <div class="load-01"  @click="doLogin">登&nbsp&nbsp陆</div>
-                        <div class="insert-01"><a target="_blank" href="registerOrder.html" title="注册页面">注&nbsp&nbsp册</a></div>
-                        <div class="book">你&nbsp的&nbsp青&nbsp春&nbsp不&nbsp该&nbsp只&nbsp有&nbsp书&nbsp籍<br>也&nbsp不&nbsp该&nbsp只&nbsp有&nbsp游&nbsp戏</div>
+                        <div class="load-02"  @click="doLogin">登&nbsp&nbsp陆</div>
+                        <!--<div class="insert-01"><a target="_blank" href="registerOrder.html" title="注册页面">注&nbsp&nbsp册</a></div>-->
+                        <div class="book1">你&nbsp的&nbsp青&nbsp春&nbsp不&nbsp该&nbsp只&nbsp有&nbsp书&nbsp籍<br>也&nbsp不&nbsp该&nbsp只&nbsp有&nbsp游&nbsp戏</div>
                 </div>
                 <div class="box-bottom">
                     <a href="javascript:void(0)" title="*" class="box-bottom-01">欢迎你回来</a><br>

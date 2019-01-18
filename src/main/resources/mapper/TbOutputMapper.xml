@@ -98,7 +98,7 @@
         select * from tb_output where output_id=#{outputId}
     </select>
 
-  <select id="getOutputByOutputCode" parameterType="String" resultMap="BaseResultMap">
+  <select id="getOutputByOutputCode" parameterType="String" resultMap="outputMap">
         select * from tb_output where output_code=#{outputCode}
     </select>
   <select id="orderDetails" parameterType="integer" resultType="cn.com.connext.oms.entity.TbOrderDetails">
@@ -200,5 +200,40 @@
       a.order_id = b.order_id
   AND a.order_id = e.order_id
   AND a.order_state=#{state}
+    </select>
+    <select id="getOutputOrdersBySearch" resultType="cn.com.connext.oms.entity.TbOrderDetails">
+        SELECT
+        a.order_id,
+        a.order_state,
+        e.output_code,
+        e.synchronize_state,
+        b.receiver_name,
+        a.delivery_company,
+        a.delivery_code,
+        b.receiver_district,
+        b.receiver_city,
+        b.receiver_address,
+        e.created
+        FROM
+        tb_order a
+        inner join  tb_receiver b on a.order_id = b.order_id
+        inner join  tb_output e on a.order_id = e.order_id
+        WHERE a.order_state=#{state}
+        <!--<choose>-->
+            <!--&lt;!&ndash;<when test="status !=null and status != ''">&ndash;&gt;-->
+                <!--&lt;!&ndash;&ndash;&gt;-->
+            <!--&lt;!&ndash;</when>&ndash;&gt;-->
+            <!--<when test="tbOrderDetails.outputCode !=null and tbOrderDetails.outputCode != ''">-->
+                <!--WHERE e.output_code LIKE "%"#{tbOrderDetails.outputCode}"%"-->
+            <!--</when>-->
+            <!--<when test="tbOrderDetails.orderId !=null and tbOrderDetails.orderId != ''">-->
+                <!--WHERE a.order_id LIKE "%"#{tbOrderDetails.orderId}"%"-->
+            <!--</when>-->
+            <!--<when test="tbOrderDetails.deliveryCode !=null and tbOrderDetails.deliveryCode != ''">-->
+                <!--WHERE a.delivery_company LIKE "%"#{tbOrderDetails.deliveryCode}"%"-->
+            <!--</when>-->
+            <!--<otherwise>-->
+            <!--</otherwise>-->
+        <!--</choose>-->
     </select>
 </mapper>

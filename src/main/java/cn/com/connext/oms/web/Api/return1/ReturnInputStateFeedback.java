@@ -79,13 +79,13 @@ public class ReturnInputStateFeedback {
 
             int result = tbReturnService.updateStateByFeedback(inputFeedback);
             if (0 == result) {
-                return BaseResult.success("退货单与入库单的状态已经更新完毕");
+                BaseResult.success("退货单与入库单的状态已经更新完毕");
             } else if (1 == result) {
-                return BaseResult.fail("内部数据获取失败");
+                BaseResult.fail("内部数据获取失败");
             } else if (2 == result) {
-                return BaseResult.fail("收货失败");
+                BaseResult.fail("收货失败");
             } else if (3 == result) {
-                return BaseResult.fail("超15天未收货");
+                BaseResult.fail("超15天未收货");
             }
         }
 

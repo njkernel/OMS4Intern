@@ -2,7 +2,9 @@ package cn.com.connext.oms.service.impl;
 
 import cn.com.connext.oms.entity.TbAbnormal;
 import cn.com.connext.oms.entity.TbRefund;
+import cn.com.connext.oms.entity.TbRole;
 import cn.com.connext.oms.entity.TbUser;
+import cn.com.connext.oms.mapper.TbRoleMapper;
 import cn.com.connext.oms.mapper.TbUserMapper;
 import cn.com.connext.oms.service.TbUserService;
 import com.github.pagehelper.PageHelper;
@@ -15,14 +17,18 @@ import java.util.*;
 
 /**
  * @program: oms
- * @description: 对用户的操作
+ * @description: 用户的业务逻辑层
  * @author: Lili.Chen
  * @create: 2019-01-13 18:53
  **/
 @Service
 public class TbUserServiceImpl implements TbUserService {
-    @Autowired
+   @Autowired
     private TbUserMapper tbUserMapper;
+
+
+    @Autowired
+    private TbRoleMapper tbRoleMapper;
 
 
     /**
@@ -37,10 +43,8 @@ public class TbUserServiceImpl implements TbUserService {
         Date date=new Date();
         int result=0;//保存更新用户表条数
         TbUser tbUser=tbUserMapper.getUserByName(user.getUserName());//根据用户名查看用户
-        //
-        //判断角色表是否有相应的角色（根据角色id查看）
-        //
-        if(tbUser==null){//如果该用户名不存在
+        TbRole role=tbRoleMapper.getRoleById(user.getRoleId());//判断角色表是否有相应的角色（根据角色id查看）
+        if(tbUser==null&&role!=null){//如果该用户名不存在,且数据库存在该角色
             user.setCreated(date);//保存创建时间
             result= tbUserMapper.addUser(user);
             if(result==1){//添加成功
@@ -61,7 +65,7 @@ public class TbUserServiceImpl implements TbUserService {
     public boolean deleteUser(Integer userId) {
         int result=0;//保存删除的记录数
         TbUser user=tbUserMapper.getUserById(userId);
-        if(user!=null){
+        if(user!=null){//数据库存在该用户
             result=tbUserMapper.deleteUser(userId);
             if(result==1){
                 return true;
@@ -81,14 +85,21 @@ public class TbUserServiceImpl implements TbUserService {
     public boolean updateUser(TbUser user) {
         Date date=new Date();
         int result=0;//保存更改记录
-        TbUser tbUser=tbUserMapper.getUserById(user.getUserId());
-        if(tbUser!=null){//如果存在该用户
-            tbUser.setUpdated(date);//保存更改时间
-            result=tbUserMapper.updateUser(user);
-            if(result==1){
-                return true;
+        if(user!=null){//传过来的用户不为空
+            TbUser tbUser=tbUserMapper.getUserById(user.getUserId());
+            if(tbUser!=null){//如果存在该用户
+                TbRole role=tbRoleMapper.getRoleById(user.getRoleId());
+                if(role!=null&&user.getUserPassword()!=""){
+                    tbUser.setUpdated(date);//保存更改时间
+                    result=tbUserMapper.updateUser(user);
+                    if(result==1){
+                        return true;
+                    }
+                }
+
             }
         }
+
         return false;
     }
 
@@ -144,5 +155,36 @@ public class TbUserServiceImpl implements TbUserService {
         map2.put("pageSize",pageSize);
         map2.put("dataSize",users.size());
         return map2;
+    }
+
+    /**
+    * @Description: 验证用户名字
+    * @Param: [userName]
+    * @return: java.lang.String
+    * @Author: Lili Chen
+    * @Date: 2019/1/17
+    */
+    @Override
+    public String validateName(String userName) {
+        TbUser user= null;//存查看到的用户
+        user=tbUserMapper.getUserByName(userName);//根据名字查看用户
+        if(user!=null){
+            return "isExit";
+        }
+        return "isNotExit";
+
+    }
+
+
+    /**
+    * @Description: 根据用户id查看用户
+    * @Param: [userId]
+    * @return: cn.com.connext.oms.entity.TbUser
+    * @Author: Lili Chen
+    * @Date: 2019/1/17
+    */
+    @Override
+    public TbUser getUserById(Integer userId) {
+        return tbUserMapper.getUserById(userId);
     }
 }

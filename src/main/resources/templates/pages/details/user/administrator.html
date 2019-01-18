@@ -41,14 +41,14 @@
         </tr>
         </thead>
         <tbody id="tbody" th:each="user,iterStat : ${map.get('userList')}">
-        <tr>
+        <tr th:id="'tr_'+${user.userId}">
             <td th:text="${iterStat.index}"></td>
             <td th:text="${user.userName}"></td>
             <td th:text="${user.userPassword}"></td>
             <td th:text="${user.tbRole.roleName}"></td>
             <td class="operation">
-                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal-1">修改</button>
-                <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal-2">删除</button>
+                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#demoModal-1" th:onclick="'javascript:updateUserId('+${user.userId}+')'">修改</button>
+                <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#demoModal-2" th:onclick="'javascript:Values('+${user.userId}+')'">删除</button>
             </td>
         </tr>
         </tbody>
@@ -59,17 +59,17 @@
     <span>共<span id="pageCount" th:text="${map.get('pageCount')}"></span>页，当前第<span id="page" th:text="${map.get('page')}"></span>页，总共<span  th:text="${map.get('dataSize')}"></span>条数据</span>
 
     <ul class="pagination">
-        <li><a th:href="@{/getAllUser(page=1,size=4)}">&laquo;</a></li>
+        <li><a th:href="@{/index/getAllUser(page=1,size=4)}">&laquo;</a></li>
         <th:block th:each="pageSize,iterStat : ${map.get('pageSize')}">
             <th:block th:if="${map.get('page')==iterStat.index+1}">
-                <li class="active"><a th:href="@{/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+                <li class="active"><a th:href="@{/index/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
             </th:block>
             <th:block th:if="${map.get('page')!=iterStat.index+1}">
-                <li ><a th:href="@{/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+                <li ><a th:href="@{/index/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
             </th:block>
         </th:block>
 
-        <li><a th:href="@{/getAllUser(page=${map.get('pageCount')},size=4)}">&raquo;</a></li>
+        <li><a th:href="@{/index/getAllUser(page=${map.get('pageCount')},size=4)}">&raquo;</a></li>
     </ul>
 </div>
 <!-- 弹出框 -->
@@ -100,39 +100,34 @@
                 <h4 class="modal-title" id="myModalLabel">新增用户</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal add" role="form">
+                <form class="form-horizontal add" role="form" id="frm">
                     <div class="form-group ">
-                        <label for="firstname" class="col-sm-2 control-label">用户名称</label>
+                        <label for="userName" class="col-sm-2 control-label">用户名称</label>
                         <div class="col-sm-10">
-                            <input type="text" name="firstname" class="form-control" id="firstname" placeholder="请输入用户名称">
+                            <input type="text" name="userName" class="form-control" id="userName" placeholder="请输入用户名称">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="secondname" class="col-sm-2 control-label">用户密码</label>
+                        <label for="userPassword" class="col-sm-2 control-label">用户密码</label>
                         <div class="col-sm-10">
-                            <input type="text" name="secondname" class="form-control" id="secondname" placeholder="请输入用户密码">
+                            <input type="text" name="userPassword" class="form-control" id="userPassword" placeholder="请输入用户密码">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="lastname"  class="col-sm-2 control-label">用户权限</label>
+                        <label for="roleId"  class="col-sm-2 control-label">用户角色</label>
                         <div class="col-sm-10">
-                            <select id="lastname" style="outline:none;" class="form-control">
-                                <option value="review">商品预检员</option>
-                                <option value="manage" selected="selected">库存管理员</option>
+                            <select id="roleId" name="roleId" style="outline:none;" class="form-control">
+                                <th:block th:each="role,iterStat : ${roleList}">
+                                    <option th:text="${role.roleName}" th:value="${role.roleId}"></option>
+                                </th:block>
                             </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastname-2"  class="col-sm-2 control-label">用户权限</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="lastname" class="form-control" id="lastname-2" placeholder="请输入用户密码">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary save"  data-dismiss="modal" id="save">保存</button>
+                <button type="button" class="btn btn-primary save"  data-dismiss="modal" id="save" onclick="addUser()">保存</button>
             </div>
         </div>
 
@@ -146,33 +141,36 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel-1">编辑用户</h4>
+                <input hidden id="updateUserId" value="" name="updateUserId">
             </div>
             <div class="modal-body">
                 <form class="form-horizontal compile" role="form">
                     <div class="form-group">
-                        <label for="firstname-1" class="col-sm-2 control-label">用户名称</label>
+                        <label for="myName" class="col-sm-2 control-label">用户名称</label>
                         <div class="col-sm-10">
-                            <input type="text" name="firstname" class="form-control" id="firstname-1" value="用户名称">
+                            <input type="text" readonly name="myName" class="form-control" id="myName" value="用户名称">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="secondname-1" class="col-sm-2 control-label">用户密码</label>
+                        <label for="myPassword" class="col-sm-2 control-label">用户密码</label>
                         <div class="col-sm-10">
-                            <input type="text" name="secondname" class="form-control" id="secondname-1" value="用户密码">
+                            <input type="text" readonly name="myPassword" class="form-control" id="myPassword" value="用户密码">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="lastname-1"  class="col-sm-2 control-label">用户权限</label>
+                   <!-- <div class="form-group">
+                        <label for="myRole"  class="col-sm-2 control-label">用户角色</label>
                         <div class="col-sm-10">
-                            <input type="text" name="lastname" class="form-control" id="lastname-1" value="用户权限">
+                            <input type="text" name="myRole" class="form-control" id="myRole" value="用户角色">
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
-                        <label for="lastname-3"  class="col-sm-2 control-label">用户权限</label>
+                        <label for="myRole"  class="col-sm-2 control-label">用户角色</label>
                         <div class="col-sm-10">
-                            <select id="lastname-3" style="outline:none;" class="form-control">
-                                <option value="review">商品预检员</option>
-                                <option value="manage" selected="selected">库存管理员</option>
+                            <select id="myRole" style="outline:none;" class="form-control">
+                                <option id="userRole" value="" ></option>
+                                <th:block th:each="role,iterStat : ${roleList}">
+                                    <option th:text="${role.roleName}" th:value="${role.roleId}"></option>
+                                </th:block>
                             </select>
                         </div>
                     </div>
@@ -194,13 +192,14 @@
             <div class="modal-header" style="border: 0">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel-2">确认要删除当前用户吗</h4>
+                <input hidden id="deleteUserId" value="" name="deleteUserId">
             </div>
             <div class="modal-body">
 
             </div>
             <div class="modal-footer" style="border: 0">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary"  data-dismiss="modal" onclick="">确认删除</button>
+                <button type="button" class="btn btn-primary"  data-dismiss="modal" onclick="deleteUser()">确认删除</button>
             </div>
         </div>
 
@@ -208,6 +207,7 @@
 </div>
 </div>
 </body>
+
 <script>
     $('.table tbody tr').mouseover(function () {
         var number = $(this).index();
@@ -232,16 +232,13 @@
         }
         alert("保存成功！");
     }
-    $("#save").click(function (){
+   /* $("#save").click(function (){
         saveJudge($(".form-horizontal.add"));
     });
     $("#save1").click(function (){
         saveJudge($(".form-horizontal.compile"));
-    });
+    });*/
 </script>
-<script>
-    function deleteUser(uId) {
 
-    }
-</script>
+<script type="text/javascript" src="/page/js/user.js"></script>
 </html>
