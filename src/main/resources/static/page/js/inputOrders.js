@@ -10,24 +10,21 @@ var inputOrders = new Vue({
             //选中行的记录id
             checkedDate:"",
             //搜索输入框
-            searchInput:"",
+            searchInputIO:"",
             //异常单数据
             inputOrdersDate:[],
             //默认选中
             selected: 'orderId',
             //下拉框选项
-            options: [
-                { text: '订单id', value: 'orderId' },
-                { text: '异常类型', value: 'abnormalType' },
-                { text: '异常状态', value: 'abnormalState' },
-                { text: '修改人', value: 'modifiedUser' }
+            optionsIO: [
+                { text: '入库单号', value: 'inputCode' },
+                { text: '入库单状态', value: 'inputState' },
+
             ],
             //搜索条件
             searchDate:{
-                abnormalState:'',
-                orderId:'',
-                abnormalType:'',
-                modifiedUser:''
+                inputCode:'',
+                inputState:''
             },
 
 
@@ -36,6 +33,8 @@ var inputOrders = new Vue({
     created: function () {
         this.initTable();
     },
+
+
 
 
 
@@ -49,18 +48,49 @@ var inputOrders = new Vue({
         refresh(){
             this.initialize();
             this.initTable();
+
         },
         //清空搜索条件
         initialize(){
-            this.page.abnormalState='';
-            this.page.orderId='';
-            this.page.abnormalType='';
-            this.page.modifiedUser='';
-            this.searchDate.abnormalState='';
-            this.searchDate.orderId='';
-            this.searchDate.abnormalType='';
-            this.searchDate.modifiedUser='';
+            this.page.inputCode='';
+            this.page.inputState='';
+
+            this.searchDate.inputCode='';
+            this.searchDate.inputState='';
+
         },
+        //查询事件
+        searchIO(){
+            if(this.selected==='orderId'){
+                let reg = /^\d{1,10}$/;
+                this.initialize();
+                if (reg.test(this.searchInput2)){
+                    this.searchDate.orderId=this.searchInput2;
+                }else {
+                    alert("输入错误");
+                }
+            }
+            else if(this.selected==='inputCode'){
+                this.initialize();
+                this.searchDate.inputCode=this.searchInputIO;
+            }
+            else if(this.selected==='inputState'){
+                this.initialize();
+                this.searchDate.inputState=this.searchInputIO;
+            }
+            /*else {
+                this.initialize();
+                this.searchDate.modifiedUser=this.searchInput;
+            }*/
+            //查询条件
+            this.page.currentPage=1;
+            this.page.inputCode = this.searchDate.inputCode;
+            this.page.inputState = this.searchDate.inputState;
+            //初始化表格
+            this.initTable();
+        },
+
+
 
         detailSuc(res){
             let that=this;
@@ -72,6 +102,8 @@ var inputOrders = new Vue({
                 alert(res.message);
             }
         },
+
+
 
         //异常订单详情
         checkInputOrder(){
@@ -97,13 +129,17 @@ var inputOrders = new Vue({
         },
 
 
+
+
         /*根据页码，查询到要显示的数据*/
         to_page(pn) {
             let that=this;
             axios.get('/return/toInput', {
                 params: {
                     currentPage:pn,
-                    pageSize: that.page.pageSize
+                    pageSize: that.page.pageSize,
+                    inputCode :this.searchDate.inputCode='',
+                    inputState : this.searchDate.inputState=''
                 }
             }).then(res => {
                 console.log(res);

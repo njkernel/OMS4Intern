@@ -89,7 +89,7 @@ public interface TbReturnService {
      * 查找所有的入库单详情
      * @return PageInfo
      */
-    PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize);
+    PageInfo<InputDTO> getAllInputOrders(Integer currentPage, Integer pageSize,TbInput tbInput);
 
     /**
      * 根据订单id查找退货单
