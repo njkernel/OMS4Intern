@@ -47,12 +47,14 @@ public interface OutputService {
      */
     List<TbOrderDetails> orderDetails(int orderId);
     /**
-     * @Author: Jay
-     * @Param: 订单状态
-     * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
-     * @Create: 2019/1/13
+     * 功能描述: 点击出库单列表，显示所有已出库的订单,以及模糊查询选择符合条件的订单,默认显示所有已出库的订单
+     *
+     * @return: 返回所有状态是已出库的订单，以及模糊查询选择符合条件的订单
+     * @param: currentPage: 当前页， pageSize： 总页数, orderId： 订单id，outputCode ：出库单号, deliveryCode ：快递单号
+     * @auther: Jay
+     * @date: 2019/1/13
      */
-    PageInfo<TbOrderDetails> getAllOrderByStatus(int currentPage,int pageSize, TbOrderDetails tbOrderDetails);
+    PageInfo<TbOrderDetails> getAllOrderByStatusAndSeacrch(int currentPage,int pageSize, String orderId, String outputCode, String deliveryCode);
 
     /**
      *

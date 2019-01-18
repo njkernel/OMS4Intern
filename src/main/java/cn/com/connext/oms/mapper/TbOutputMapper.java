@@ -4,6 +4,7 @@ import cn.com.connext.oms.commons.dto.output.OutRepoOrderDetailDto;
 import cn.com.connext.oms.entity.TbOrderDetails;
 import cn.com.connext.oms.entity.TbOutput;
 import cn.com.connext.oms.entity.TbReceiver;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
 
@@ -78,20 +79,12 @@ public interface TbOutputMapper extends MyMapper<TbOutput> {
     List<OutRepoOrderDetailDto> getOutRepoOrderDetailDto(int id);
 
     /**
-     * @Author: Jay
-     * @Param: 订单状态
-     * @Return: java.util.List<cn.com.connext.oms.entity.TbOrder>
-     * @Create: 2019/1/13
-     */
-    List<TbOrderDetails> getAllOrderByStatus(String status);
-    /**
+     * 功能描述: 点击出库单列表，显示所有已出库的订单,以及模糊查询选择符合条件的订单,默认显示所有已出库的订单
      *
-     * 功能描述:
-     *
-     * @param:
-     * @return:
+     * @return: 返回所有状态是已出库的订单，以及模糊查询选择符合条件的订单
+     * @param: currentPage: 当前页， pageSize： 总页数, orderId： 订单id，outputCode ：出库单号, deliveryCode ：快递单号
      * @auther: Jay
-     * @date: ${DATE}
+     * @date: 2019/1/13
      */
-    List<TbOrderDetails> getOutputOrdersBySearch(String state, TbOrderDetails tbOrderDetails);
+    List<TbOrderDetails> getOutputOrdersBySearch(@Param("state") String state, @Param("orderId") String orderId, @Param("outputCode") String outputCode, @Param("deliveryCode") String deliveryCode);
 }

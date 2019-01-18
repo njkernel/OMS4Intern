@@ -75,6 +75,13 @@ public interface TbOrderService {
      * @Create: 2019/1/7 19:19
      */
     public OrderGoodsReceiverDto getAllById(int orderId);
-
+    /**
+     * 功能描述:查看所有订单 和模糊查询订单
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/18 14:22
+     */
+    public PageInfo<OrderGoodsReceiverDto> selectAllOrders(Integer currentPage, Integer pageSize, OrderGoodsReceiverDto orderGoodsReceiverDto);
 
 }

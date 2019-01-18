@@ -104,4 +104,12 @@ public interface TbOrderMapper extends MyMapper<TbOrder> {
      * @Create: 2019/1/7 19:16z
      */
     public  OrderGoodsReceiverDto getAllById(int orderId);
+    /**
+     * 功能描述:模糊查询加商品列表
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/18 14:20
+     */
+    public List<OrderGoodsReceiverDto> selectAllOrders(@Param("orderGoodsReceiverDto") OrderGoodsReceiverDto orderGoodsReceiverDto);
 }

@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * <p>Title: TbOrderDetails</p>
- * <p>Description:出库单所有商品详情字段 </p>
+ * <p>Description:出库单所有商品详情字段，此处结合商品表，商品订单关联表，出库表，订单表，收货人信息表 5 张</p>
  *
  * @author Jay
  * @version 1.0.0
