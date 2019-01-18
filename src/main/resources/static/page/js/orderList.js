@@ -4,7 +4,7 @@ let orderList = new Vue({
         return {
             //分页数据
             page:{
-                pageSize:3,
+                pageSize:8,
                 pageNum:1,
             },
             orderId:"",
