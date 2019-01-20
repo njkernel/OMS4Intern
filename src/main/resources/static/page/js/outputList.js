@@ -68,9 +68,9 @@ let outputList = new Vue({
                 params: {
                     currentPage:pn,
                     pageSize: that.page.pageSize,
-                    orderId : this.searchDate.orderId,
-                    outputCode :this.searchDate.outputCode,
-                    deliveryCode :this.searchDate.deliveryCode
+                    // orderId : this.searchDate.orderId,
+                    // outputCode :this.searchDate.outputCode,
+                    // deliveryCode :this.searchDate.deliveryCode
                 }
             }).then(res => {
                 console.log(res);
