@@ -3,7 +3,7 @@ package cn.com.connext.oms.entity;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "oms.tb_return")
+@Table(name = "tb_return")
 public class TbReturn {
     /**
      * 退货id

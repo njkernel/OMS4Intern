@@ -2,7 +2,7 @@ package cn.com.connext.oms.entity;
 
 import javax.persistence.*;
 
-@Table(name = "oms.tb_stock")
+@Table(name = "tb_stock")
 public class TbStock {
     /**
      * 库存id
