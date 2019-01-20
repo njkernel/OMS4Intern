@@ -135,10 +135,10 @@
                 WHERE return_type LIKE "%"#{tbReturn.returnType}"%"
             </when>
             <when test="tbReturn.returnId !=null and tbReturn.returnId != ''">
-                WHERE return_id LIKE "%"#{tbReturn.returnId}"%"
+                WHERE cast(return_id as char) LIKE concat('%', '${tbReturn.returnId}', '%')
             </when>
             <when test="tbReturn.orderId !=null and tbReturn.orderId != ''">
-                WHERE order_id LIKE "%"#{tbReturn.orderId}"%"
+                WHERE cast(order_id as char) LIKE concat('%', '${tbReturn.orderId}', '%')
             </when>
             <when test="tbReturn.returnState !=null and tbReturn.returnState != ''">
                 WHERE return_state LIKE "%"#{tbReturn.returnState}"%"
@@ -230,11 +230,15 @@
     </select>
 
     <insert id="insertReciver">
-        insert into tb_receiver (receiver_name,receiver_phone,receiver_mobile,receiver_state,
+        insert into tb_receiver (receiver_id,receiver_name,receiver_phone,receiver_mobile,receiver_state,
         receiver_city,receiver_district,receiver_address,receiver_zip,created,updated,order_id)
-        values (#{tbReceiver.receiverName},#{tbReceiver.receiverName},#{tbReceiver.receiverMobile},
+        values (#{tbReceiver.receiverId},#{tbReceiver.receiverName},#{tbReceiver.receiverPhone},#{tbReceiver.receiverMobile},
         #{tbReceiver.receiverState},#{tbReceiver.receiverCity},#{tbReceiver.receiverDistrict},
         #{tbReceiver.receiverAddress},#{tbReceiver.receiverZip},#{tbReceiver.created},
         #{tbReceiver.updated},#{tbReceiver.orderId})
     </insert>
+    <update id="updateReceiver">
+        update tb_order set  receiver_id=#{receiverId}
+        where order_id=#{orderId}
+    </update>
 </mapper>

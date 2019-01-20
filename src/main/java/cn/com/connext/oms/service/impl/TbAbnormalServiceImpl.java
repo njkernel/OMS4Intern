@@ -154,7 +154,6 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         String abnormalState = tbAbnormal.getAbnormalState();
         Integer orderId = tbAbnormal.getOrderId();
         String abnormalType = tbAbnormal.getAbnormalType();
-        String modifiedUser = tbAbnormal.getModifiedUser();
 
         PageHelper.startPage(currentPage,pageSize);
         Example example=new Example(TbAbnormal.class);
