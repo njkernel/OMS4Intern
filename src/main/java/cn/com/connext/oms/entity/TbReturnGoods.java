@@ -2,7 +2,7 @@ package cn.com.connext.oms.entity;
 
 import javax.persistence.*;
 
-@Table(name = "oms.tb_return_goods")
+@Table(name = "tb_return_goods")
 public class TbReturnGoods {
     /**
      * 退货商品id

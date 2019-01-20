@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * @time: 23:35
  **/
 
-@Table(name = "oms.tb_exchange_order_relations")
+@Table(name = "tb_exchange_order_relations")
 public class TbExchangeOrderRelations {
 
     /**
