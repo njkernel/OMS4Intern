@@ -4,7 +4,7 @@ let orderList = new Vue({
         return {
             //分页数据
             page:{
-                pageSize:8,
+                pageSize:5,
                 currentPage:1,
                 receiverName:'',
                 orderState:'',
