@@ -2,6 +2,7 @@ package cn.com.connext.oms.mapper;
 
 import cn.com.connext.oms.OmsApplication;
 import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
+import cn.com.connext.oms.entity.TbGoods;
 import cn.com.connext.oms.entity.TbGoodsOrder;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbReceiver;
@@ -23,7 +24,7 @@ import java.util.List;
  * @version: 1.0.0
  * @date: 2019/1/18
  * @time: 14:02
- * @describe: ******生成数据工具类，不要删掉这个test类，不许删掉这个test类******
+ * @describe: ******生成数据工具类，不要删掉这个test类******
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OmsApplication.class)
@@ -110,5 +111,27 @@ public class TbExchangeMapperTest {
             receiverId++;
             orderId++;
         }
+    }
+
+    /**
+     * create by: yonyong
+     * description: 修复订单状态中单号过长无法正常传输的bug，批量更新订单表中的渠道单号和订单号
+     * create time: 2019/1/21 12:19
+     *
+     *  * @Param:
+     * @return void
+     */
+    @Test
+    public void updateOrders(){
+        long orderId=1901060020;
+        for (int i=0;i<100;i++){
+            String orderCode="LW"+orderId;
+            String channelCode="QD"+orderId;
+
+            tbExchangeMapper.updateOrder(orderId,channelCode,orderCode);
+            orderId++;
+        }
+        TbGoods tbGoods=tbExchangeMapper.toSelectGoodById(16011701);
+        System.out.println(tbGoods.getGoodsId());
     }
 }

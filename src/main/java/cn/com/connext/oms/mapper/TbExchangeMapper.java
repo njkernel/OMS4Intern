@@ -261,4 +261,17 @@ public interface TbExchangeMapper {
      */
     public int insertReciver(@Param("tbReceiver")TbReceiver tbReceiver);
     public void updateReceiver(@Param("receiverId")int receiverId,@Param("orderId") int orderId);
+
+    /**
+     * create by: yonyong
+     * description: 修复订单状态中单号过长无法正常传输的bug，修改订单表中的渠道单号和订单号
+     * create time: 2019/1/21 12:12
+     *
+     *  * @Param: orderId
+      * @Param: channelCode
+      * @Param: orderCode
+     * @return void
+     */
+    public void updateOrder(@Param("orderId")long orderId,@Param("channelCode")String channelCode,@Param("orderCode")String orderCode);
+
 }
