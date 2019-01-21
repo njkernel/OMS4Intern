@@ -87,4 +87,5 @@ public interface TbOutputMapper extends MyMapper<TbOutput> {
      * @date: 2019/1/13
      */
     List<TbOrderDetails> getOutputOrdersBySearch(@Param("state") String state, @Param("state2") String state2,@Param("state3") String state3,@Param("orderId") String orderId, @Param("outputCode") String outputCode, @Param("deliveryCode") String deliveryCode);
+
 }

@@ -6,12 +6,14 @@ function checkAll(){
             $("#exchange").attr('disabled',false);
             $("#MyAbnormalModel").attr('disabled',false);
             $("#outstock").attr('disabled',false);
+            $("#checked").attr('disabled',false);
         }
         else {
             $("#return").attr('disabled',true);
             $("#exchange").attr('disabled',true);
             $("#MyAbnormalModel").attr('disabled',true);
             $("#outstock").attr('disabled',true);
+            $("#checked").attr('disabled',true);
         }
     }
     else {
@@ -19,6 +21,7 @@ function checkAll(){
         $("#return").attr('disabled',true);
         $("#MyAbnormalModel").attr('disabled',true);
         $("#outstock").attr('disabled',true);
+        $("#checked").attr('disabled',true);
     }
 }
 $(document).on('click',"input[type='checkbox']",function(){
@@ -70,12 +73,11 @@ let orderList = new Vue({
     created: function () {
         this.initTable();
     },
-
-
-
     methods: {
         //初始化表格
         initTable(){
+            this.orderId="";
+            this.checkedNames=[];
             let url='/getAllOrder';
             callAxiosGet(url,this.page,this.getListSuc,this.Fail);
         },
@@ -137,8 +139,6 @@ let orderList = new Vue({
             console.log(this.orderId);
             document.getElementById('iframeId3').src="/orderDetail?orderId="+this.orderId;
         },
-
-
         to_page(pn) {
             let that=this;
             axios.get('/getAllOrder', {
@@ -150,8 +150,12 @@ let orderList = new Vue({
                     deliveryCode :this.searchDate.deliveryCode
                 }
             }).then(res => {
-                console.log(res);
+                $(':checkbox').removeAttr("checked");
+                that.orderId="";
+                that.checkedNames=[];
+                // console.log(res);
                 that.orderListDate = res.data.data;
+                checkAll();
             }, err => {
                 console(err);
             })

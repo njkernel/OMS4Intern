@@ -51,9 +51,6 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
      */
 
     public BaseResult checkGoods(int orderId,HttpSession session){
-
-
-
         List<String> list=new LinkedList<>();
         //判断有无备注或者金额异常
         Example example=new Example(TbOrder.class);
