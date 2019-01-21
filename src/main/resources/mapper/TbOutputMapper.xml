@@ -179,10 +179,11 @@
             and a.order_id like CONCAT('%',#{orderId},'%')
         </if>
         <if test="outputCode != null and outputCode != ''">
-            and e.output_code like CONCAT('%',#{outputCode},'%')
+            and e.output_code like CONCAT('%',#{outpu  tCode},'%')
         </if>
         <if test="deliveryCode != null and deliveryCode !=''">
             and a.delivery_code like CONCAT('%',#{deliveryCode},'%')
         </if>
+        order by order_id
     </select>
 </mapper>
