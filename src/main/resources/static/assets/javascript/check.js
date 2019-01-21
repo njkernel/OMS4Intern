@@ -6,21 +6,25 @@ $(document).ready(function(){
            $("#return").attr('disabled',false);
             $("#exchange").attr('disabled',false);
             $("#MyAbnormalModel").attr('disabled',false);
+            $("#checked").attr('disabled',false);
             }
         else {
             $("#return").attr('disabled',true);
             $("#exchange").attr('disabled',true);
-            $("#MyAbnormalModel").attr('disabled',true);}
+            $("#MyAbnormalModel").attr('disabled',true);
+            $("#checked").attr('disabled',true);
+        }
       }
       else {
           $("#exchange").attr('disabled',true);
           $("#return").attr('disabled',true);
           $("#MyAbnormalModel").attr('disabled',true);
+          $("#checked").attr('disabled',true);
       }
    }
    $(document).on('click',"input[type='checkbox']",function(){
        checkAll(this);
-   });
+});
    // $("input[type='checkbox']").click(function(){
    //     checkAll(this);
     //    var flag = $(this).prop("checked"); //先记录下点击后应该的状态

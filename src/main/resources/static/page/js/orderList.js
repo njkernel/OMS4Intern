@@ -1,10 +1,35 @@
+function checkAll(){
+    if ($(':checkbox').is(':checked')) {
+        if($("input:checked").length === 1){
+            //选中一个，启用相应按钮
+            $("#return").attr('disabled',false);
+            $("#exchange").attr('disabled',false);
+            $("#MyAbnormalModel").attr('disabled',false);
+            $("#checked").attr('disabled',false);
+        }
+        else {
+            $("#return").attr('disabled',true);
+            $("#exchange").attr('disabled',true);
+            $("#MyAbnormalModel").attr('disabled',true);}
+            $("#checked").attr('disabled',true);
+        }
+        else {
+            $("#exchange").attr('disabled',true);
+            $("#return").attr('disabled',true);
+            $("#MyAbnormalModel").attr('disabled',true);
+            $("#checked").attr('disabled',true);
+        }
+    }
+$(document).on('click',"input[type='checkbox']",function(){
+    checkAll(this);
+});
 let orderList = new Vue({
     el: '#orderList',
     data: function () {
         return {
             //分页数据
             page:{
-                pageSize:8,
+                pageSize:5,
                 currentPage:1,
                 receiverName:'',
                 orderState:'',
@@ -44,12 +69,11 @@ let orderList = new Vue({
     created: function () {
         this.initTable();
     },
-
-
-
     methods: {
         //初始化表格
         initTable(){
+            this.orderId="";
+            this.checkedNames=[];
             let url='/getAllOrder';
             callAxiosGet(url,this.page,this.getListSuc,this.Fail);
         },
@@ -116,8 +140,6 @@ let orderList = new Vue({
             console.log(this.orderId);
             document.getElementById('iframeId3').src="/orderDetail?orderId="+this.orderId;
         },
-
-
         to_page(pn) {
             let that=this;
             axios.get('/getAllOrder', {
@@ -129,8 +151,12 @@ let orderList = new Vue({
                     deliveryCode :this.searchDate.deliveryCode
                 }
             }).then(res => {
-                console.log(res);
+                $(':checkbox').removeAttr("checked");
+                that.orderId="";
+                that.checkedNames=[];
+                // console.log(res);
                 that.orderListDate = res.data.data;
+                checkAll();
             }, err => {
                 console(err);
             })
