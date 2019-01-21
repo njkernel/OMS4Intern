@@ -1,3 +1,29 @@
+function checkAll(){
+    if ($(':checkbox').is(':checked')) {
+        if($("input:checked").length === 1){
+            //选中一个，启用相应按钮
+            $("#return").attr('disabled',false);
+            $("#exchange").attr('disabled',false);
+            $("#MyAbnormalModel").attr('disabled',false);
+            $("#outstock").attr('disabled',false);
+        }
+        else {
+            $("#return").attr('disabled',true);
+            $("#exchange").attr('disabled',true);
+            $("#MyAbnormalModel").attr('disabled',true);
+            $("#outstock").attr('disabled',true);
+        }
+    }
+    else {
+        $("#exchange").attr('disabled',true);
+        $("#return").attr('disabled',true);
+        $("#MyAbnormalModel").attr('disabled',true);
+        $("#outstock").attr('disabled',true);
+    }
+}
+$(document).on('click',"input[type='checkbox']",function(){
+    checkAll(this);
+});
 let orderList = new Vue({
     el: '#orderList',
     data: function () {
@@ -96,18 +122,13 @@ let orderList = new Vue({
             let url='/abnormalHandle';
             callAxiosGet(url,{abnormalId:this.checkedNames[0]},this.Suc,this.Fail)
         },
-
         // 出库操作，将订单出库 Jay新增 2019/1/16
         outputOrder(){
-            if (this.checkedNames.length===0){
-                alert("请先选择订单");
-                return null
-            }
-            else {
+            $(":checkbox").removeAttr("checked");
                 this.orderId = this.checkedNames[0];
                 let url = '/Output';
                 callAxiosGet(url, {id: this.orderId}, this.Suc, this.Fail)
-            }
+            checkAll();
         },
 
         //订单详情
