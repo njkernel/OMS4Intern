@@ -110,8 +110,8 @@ function save() {
             data:{"userName":userName,"userPassword":userPassword,"roleId":roleId,"userId":userId},
             success:function (msg) {
                 if(msg=="success"){
+                    location.reload() ;
                     alert("修改成功");
-
                 }
                 else if(msg="mySelf"){
                     alert("修改成功，请重新登录");
