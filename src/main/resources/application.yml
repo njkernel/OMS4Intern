@@ -5,6 +5,7 @@ spring:
   datasource:
     druid:
       url: jdbc:mysql://139.224.119.184:3306/oms?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true      username: root
+      username: root
       password: 123456
       initial-size: 1
       min-idle: 1
