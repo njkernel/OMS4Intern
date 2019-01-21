@@ -11,10 +11,7 @@ import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: OMS4Intern
@@ -40,6 +37,7 @@ public class TbRefundServiceImpl implements TbRefundService {
     */
     @Override
     public boolean updateRefundListStatue(Integer[] refundIdList) {
+        Date date=new Date();//退款单修改时间
         List<TbRefund> refundList=new ArrayList<TbRefund>();//保存需要修改的退款单
         int refundResult=0;//保存修改退款单的条数
         for(Integer refundId:refundIdList){
@@ -47,6 +45,7 @@ public class TbRefundServiceImpl implements TbRefundService {
             if(refund!=null){//如果存在这张退款单
                 if("待退款".equals(refund.getRefundState())){
                     refund.setRefundState("退款成功");
+                    refund.setUpdated(date);
                     refundList.add(refund);
                 }else{
                     return false;
@@ -184,29 +183,7 @@ public class TbRefundServiceImpl implements TbRefundService {
         map2.put("pageSize",pageSize);
         map2.put("dataSize",refunds.size());
         return map2;
-       /* Map map=new HashMap<>();//存查看退款单分页的参数
-        Integer pageCount=1;//总页数
-        PageHelper.startPage(page,size);
-        List<TbRefund> tbRefundList = tbRefundMapper.getListRefundByState(refundState);//根据退款状态查看退款单
-        PageInfo<TbRefund> pageInfo=new PageInfo<>(tbRefundList);
-        pageCount=pageInfo.getPages();//获取总页数
-        if(pageCount==0){
-            pageCount=1;
-        }
-        if(page>pageCount){//如果目的页面大于总页数
-            page=pageCount;
-            PageHelper.startPage(page,size);
-            tbRefundList = tbRefundMapper.getListRefundByState(refundState);
-        }else if(page==0){//如果目的页面等于0
-            page=1;
-            PageHelper.startPage(page,size);
-            tbRefundList = tbRefundMapper.getListRefundByState(refundState);
-        }
-        map.put("refundList",tbRefundList);
-        map.put("page",page);
-        map.put("pageCount",pageCount);
-        return map;
-*/
+
     }
 
     /**
