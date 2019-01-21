@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "oms.tb_refund")
+@Table(name = "tb_refund")
 public class TbRefund implements Serializable {
     /**
      * 退款id

@@ -14,15 +14,16 @@
 <body style="overflow-x:hidden;background:#f3f3f3;">
     <div id="goodsList">
     <div class="btn-div clearfix">
-       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#demoModal-1">编辑</button>
+       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#demoModal-1"@click="refresh">返回商品列表</button>
         <div class="search-box">
             <form action="">
-                <select name="" id="">
-                    <option value=""></option>
-                    <option value=""></option>
+                <select v-model="selected" >
+                    <option v-for="option in options2" :value="option.value">
+                        {{ option.text }}
+                    </option>
                 </select>
-                <input type="text">
-                <button type="button" class="btn btn-success">搜索</button>
+                <input  placeholder="编辑我……" v-model.trim="searchInput2">
+                <button type="button" class="btn btn-success" @click="searchBtn2">搜索</button>
             </form>
         </div>
     </div>
@@ -45,7 +46,7 @@
                 <tr>
                     <td>
                         <input type="radio" :value="list.goodsId" v-model="checkedDate" >
-                        <label>{{checkedDate}}</label>
+                        <!--<label>{{checkedDate}}</label>-->
                     </td>
                     <td>{{list.goodsId}}</td>
                     <td>{{list.goodsCode}}</td>

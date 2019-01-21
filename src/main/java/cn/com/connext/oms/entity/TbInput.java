@@ -3,7 +3,7 @@ package cn.com.connext.oms.entity;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "oms.tb_input")
+@Table(name = "tb_input")
 public class TbInput {
     /**
      * 入库id

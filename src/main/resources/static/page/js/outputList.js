@@ -6,7 +6,7 @@ let outputList = new Vue({
             page:{
                 pageSize:5,
                 currentPage:1,
-                outputCode:'', orderId:'',  deliveryCode:''
+                orderId:'', outputCode:'', deliveryCode:''
             },
             //选中行的记录id
             checkedDate:"",
@@ -67,7 +67,10 @@ let outputList = new Vue({
             axios.get('/OutputDetails', {
                 params: {
                     currentPage:pn,
-                    pageSize: that.page.pageSize
+                    pageSize: that.page.pageSize,
+                    // orderId : this.searchDate.orderId,
+                    // outputCode :this.searchDate.outputCode,
+                    // deliveryCode :this.searchDate.deliveryCode
                 }
             }).then(res => {
                 console.log(res);
@@ -98,6 +101,7 @@ let outputList = new Vue({
             else if(this.selected==='deliveryCode'){
                 this.initialize();
                 this.searchData.deliveryCode=this.searchInput;
+                console.log(this.searchData.deliveryCode);
             }
             else {
                 this.initialize();
@@ -118,7 +122,7 @@ let outputList = new Vue({
             if(res.status===200){
                 that.outputDate=res.data;
                 //默认选中第一条数据
-                that.checkedDate=res.data.list[0].abnormalId;
+                that.checkedDate=res.data.list[0].orderId;
             }else{
                 alert(res.message);
             }

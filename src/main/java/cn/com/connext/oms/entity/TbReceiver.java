@@ -3,7 +3,7 @@ package cn.com.connext.oms.entity;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "oms.tb_receiver")
+@Table(name = "tb_receiver")
 public class TbReceiver {
     /**
      * 收货id

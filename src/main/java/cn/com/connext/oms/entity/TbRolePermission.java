@@ -3,7 +3,7 @@ package cn.com.connext.oms.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Table(name = "oms.tb_role_permission")
+@Table(name = "tb_role_permission")
 public class TbRolePermission implements Serializable {
 
     private static final long serialVersionUID = 6793518460264119398L;
