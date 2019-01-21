@@ -225,7 +225,24 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
                 return BaseResult.success("异常处理成功");
             }
             if(StringUtils.equals(tbAbnormal.getAbnormalType(),"库存异常")){
-                return BaseResult.fail("库存不足，请通知管理员进货先进货");
+                //判断库存
+                //根据订单id获取相关商品id集合
+                List<Integer> goodsIdByOrder = getGoodsIdByOrder(orderId);
+                //判断库存
+                for (Integer goodId:goodsIdByOrder){
+                    TbStock tbStock = tbAbnormalMapper.selectStockByGoodsId(goodId);
+                    if(tbStock.getAvailableStock()<=0){
+                        return BaseResult.fail("库存不足，请通知管理员进货先进货");
+                    }
+                }
+                //更改订单状态为待路由
+                TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(orderId);
+                tbOrder.setOrderState("待路由");
+                tbOrderMapper.updateByPrimaryKey(tbOrder);
+                //更改异常单状态为已处理
+                tbAbnormal.setAbnormalState("已处理");
+                tbAbnormalMapper.updateByPrimaryKey(tbAbnormal);
+                return BaseResult.success("异常处理成功");
             }
         }
         return BaseResult.fail("当前异常已处理");

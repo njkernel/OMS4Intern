@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "oms.tb_permission")
+@Table(name = "tb_permission")
 public class TbPermission implements Serializable {
 
     private static final long serialVersionUID = 6810155476208170842L;

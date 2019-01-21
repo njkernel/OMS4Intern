@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "oms.tb_output")
+@Table(name = "tb_output")
 public class TbOutput implements Serializable {
     /**
      * 出库id

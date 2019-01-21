@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "oms.tb_order")
+@Table(name = "tb_order")
 public class TbOrder implements Serializable {
     /**
      * 订单id

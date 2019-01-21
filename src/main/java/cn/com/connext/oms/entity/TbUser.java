@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "oms.tb_user")
+@Table(name = "tb_user")
 public class TbUser implements Serializable {
 
     private static final long serialVersionUID = 6034686650245371617L;
