@@ -9,4 +9,16 @@
     <result column="permission_id" jdbcType="INTEGER" property="permissionId" />
     <result column="role_id" jdbcType="INTEGER" property="roleId" />
   </resultMap>
+  <select id="getPermissionsByRole" resultType="cn.com.connext.oms.entity.TbPermission">
+    SELECT
+      P.*
+    FROM
+      tb_permission AS P,
+      tb_role AS R,
+      tb_role_permission AS RP
+    WHERE
+      P.permission_id = RP.permission_id
+      AND R.role_id = RP.role_id
+      AND R.role_id = #{roleId}
+  </select>
 </mapper>

@@ -15,9 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -43,8 +41,11 @@ public class OutputServiceImpl implements OutputService {
     private static String STATUS2="待路由";
     private static String STATUS3="待出库";
     private static String STATUS4="已出库";
-    private static String STATUS6="处理中";
-    private static String STATUS5="出库异常";
+    private static String STATUS5="已发货";
+    private static String STATUS6="出库异常";
+    private static String STATUS7="处理中";
+    private static String STATUS8="已完成";
+
 
     /**
      *
@@ -89,7 +90,7 @@ public class OutputServiceImpl implements OutputService {
         //根据id查询出所有的订单信息
         TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(id);
         List<OutRepoOrderDetailDto> repoOrderDetailDto = tbOutputMapper.getOutRepoOrderDetailDto(id);
-        if (tbOrder.getOrderState().equals(STATUS3)||tbOrder.getOrderState().equals(STATUS5)){
+        if (tbOrder.getOrderState().equals(STATUS3)||tbOrder.getOrderState().equals(STATUS6)){
         //根据收获人信息查询收获人信息
         TbReceiver tbReceiver = tbReceiverMapper.selectByPrimaryKey(tbOrder.getReceiverId());
         TbOutput tbOutput = this.getOneTbOutput(id);
@@ -103,16 +104,16 @@ public class OutputServiceImpl implements OutputService {
 
             // 判断接收的结果 200 表示接收成功
         if ("200".equals(s)){
-            tbOutput.setOutputState(STATUS6);
+            tbOutput.setOutputState(STATUS7);
             tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
             tbOrder.setOrderState(STATUS4);
             tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
             return BaseResult.success("出库成功！");
         } else {
                 // 状态不是200的一切情况
-            tbOrder.setOrderState(STATUS5);
+            tbOrder.setOrderState(STATUS6);
             tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
-            tbOutput.setOutputState(STATUS5);
+            tbOutput.setOutputState(STATUS6);
             tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
          }
         }else {
@@ -145,8 +146,9 @@ public class OutputServiceImpl implements OutputService {
     public PageInfo<TbOrderDetails> getAllOrderByStatusAndSeacrch(int currentPage,int pageSize,String orderId, String outputCode, String deliveryCode) {
         // 从第 1 页开始，每一页 5 条数据
         PageHelper.startPage(currentPage, pageSize);
+
         // 返回所有状态是已出库的订单，模糊查询选择符合条件的订单，默认显示所有已出库订单
-        List<TbOrderDetails> allOrder = tbOutputMapper.getOutputOrdersBySearch(STATUS4, orderId,outputCode,deliveryCode);
+        List<TbOrderDetails> allOrder = tbOutputMapper.getOutputOrdersBySearch(STATUS4,STATUS5,STATUS8, orderId,outputCode,deliveryCode);
         PageInfo<TbOrderDetails> pageInfo = new PageInfo<>(allOrder);
         return pageInfo;
     }
@@ -203,6 +205,26 @@ public class OutputServiceImpl implements OutputService {
         }
         return "error";
     }
+
+    /**
+     * 功能描述: 确认收货后将订单状态修改为已完成
+     *
+     * @param: 订单id
+     * @return: 修改成功或者修改失败
+     * @auther: Jay
+     * @date: 2019/1/21
+     */
+    @Override
+    public BaseResult confirmReceiptUpdateOrderState(int orderId) {
+        TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(orderId);
+        String state = tbOrder.getOrderState();
+        if (state.equals(STATUS5)){
+            tbOrder.setOrderState(STATUS8);
+            tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+            return BaseResult.success("确认收货成功！");
+        }
+        return BaseResult.fail("订单状态必须为已发货，请重新选择！");
+    }
     /*
      *
      * 功能描述: 判断是否生成新的出库单，当订单异常时，不生成新的出库单
@@ -215,7 +237,7 @@ public class OutputServiceImpl implements OutputService {
 
     public TbOutput getOneTbOutput(int id){
         TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(id);
-        if (tbOrder.getOrderState().equals(STATUS5)){
+        if (tbOrder.getOrderState().equals(STATUS6)){
             TbOutput tbOutput = tbOutputMapper.getOutputByOrderId(id);
             return tbOutput;
         } else {
