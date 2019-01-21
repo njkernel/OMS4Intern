@@ -74,6 +74,18 @@ public class OutputController {
     }
 
     /**
+     * 功能描述: 确认收货后将订单状态修改为已完成
+     *
+     * @param: 订单id
+     * @return: 修改成功或者修改失败
+     * @auther: Jay
+     * @date: 2019/1/21
+     */
+    @GetMapping("/confirmReceiptUpdateOrderState")
+    public BaseResult confirmReceiptUpdateOrderState(int orderId){
+        return outputService.confirmReceiptUpdateOrderState(orderId);
+    }
+    /**
      * 功能描述: WMS调用此接口同步状态
      *
      * @param: 待打包，待发货,发货状态同步并更新出库单信息
