@@ -253,7 +253,7 @@ public class TbReturnController {
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());
-                return BaseResult.fail("跟wms的连接中断");
+                BaseResult.fail("跟wms的连接中断");
             }
 
 

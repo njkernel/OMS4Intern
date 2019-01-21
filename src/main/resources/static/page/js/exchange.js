@@ -65,6 +65,7 @@ var Exchange = new Vue({
         initInfo(){
             var showAllExchanges=this;
             var url="/exchange/showAllExchanges";
+            this.ids = [];
             axios.get(url,{params: this.page}).then(function(response) {
                 console.log(response.data.data);
                 showAllExchanges.returnOrderInfo=response.data.data;
@@ -92,7 +93,7 @@ var Exchange = new Vue({
                     returnId : toAudit.ids + ''
                 }}).then(function(response) {
                 if (response.status === 200) {
-                    alert("操作成功!");
+                    alert("批量审核操作成功!不符合状态的将不会进行审核！");
                     toAudit.refresh();
                 } else if (response.status === 500) {
                     alert("操作失败!");
@@ -112,7 +113,7 @@ var Exchange = new Vue({
                     returnId : toCancel.ids + ''
                 }}).then(function (response) {
                 if (response.status === 200) {
-                    alert("操作成功!");
+                    alert("批量操作成功，不符合状态的将不会被取消!");
                     toCancel.refresh();
                 } else if (response.status === 500) {
                     alert("操作失败!");
@@ -174,6 +175,8 @@ var Exchange = new Vue({
             }).then(function (response) {
                 if (response.status === 200) {
                     that.returnOrderInfo = response.data.data;
+                    that.ids = [];
+                    $("#MyAbnormalModel").attr('disabled',true);
                 } else if (response.status === 500) {
                     alert("操作失败!");
                 }

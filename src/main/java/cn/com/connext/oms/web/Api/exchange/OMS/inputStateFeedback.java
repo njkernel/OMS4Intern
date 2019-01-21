@@ -30,7 +30,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/Api")
-public class inputStateFeedback {
+public class
+inputStateFeedback {
     @Autowired
     private TbExchangeService tbExchangeService;
 
