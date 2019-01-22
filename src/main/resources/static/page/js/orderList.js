@@ -5,15 +5,17 @@ function checkAll(){
             $("#return").attr('disabled',false);
             $("#exchange").attr('disabled',false);
             $("#MyAbnormalModel").attr('disabled',false);
-            $("#outstock").attr('disabled',false);
             $("#checked").attr('disabled',false);
+            $("#outstock").attr('disabled',false);
+            $("#route").attr('disabled',false);
         }
         else {
             $("#return").attr('disabled',true);
             $("#exchange").attr('disabled',true);
             $("#MyAbnormalModel").attr('disabled',true);
-            $("#outstock").attr('disabled',true);
             $("#checked").attr('disabled',true);
+            $("#outstock").attr('disabled',false);
+            $("#route").attr('disabled',false);
         }
     }
     else {
@@ -21,6 +23,7 @@ function checkAll(){
         $("#return").attr('disabled',true);
         $("#MyAbnormalModel").attr('disabled',true);
         $("#outstock").attr('disabled',true);
+        $("#route").attr('disabled',true);
         $("#checked").attr('disabled',true);
     }
 }
@@ -107,10 +110,10 @@ let orderList = new Vue({
 
         // 路由操作接口 Jay新增 2019/1/16
         updateRoute(){
+            $(":checkbox").removeAttr("checked");
             var confirm_ = confirm('确认？');
             var arr=[];
             arr=this.checkedNames;
-            if(arr.length>0){
                 if(confirm_){
                     $.ajax({
                         type:'post',
@@ -119,13 +122,12 @@ let orderList = new Vue({
                             "id":arr.join(",")},
                         dataType:'JSON',
                         success:function (data) {
-                            alert(data.message);
+                            alert("成功"+data.data[0]+"条"+","+"异常"+data.data[1]+"条"+","+"不符合条件"+data.data[2]+"条");
                         }
                     })
                 }
-            }else {
-                alert("请先选择订单");
-            }
+                checkAll();
+                this.initTable();
         },
 
         // 异常处理
@@ -133,13 +135,24 @@ let orderList = new Vue({
             let url='/abnormalHandle';
             callAxiosGet(url,{abnormalId:this.checkedNames[0]},this.Suc,this.Fail)
         },
+
         // 出库操作，将订单出库 Jay新增 2019/1/16
         outputOrder(){
             $(":checkbox").removeAttr("checked");
-            this.orderId = this.checkedNames[0];
-            let url = '/Output';
-            callAxiosGet(url, {id: this.orderId}, this.Suc, this.Fail)
-            checkAll();
+                var id = [];
+                id = this.checkedNames;
+                $.ajax({
+                    type:'Get',
+                    url:'/Output',
+                    data:{
+                        "id":id.join(",")},
+                    dataType:'JSON',
+                    success:function (data) {
+                        alert("成功"+data.data[0]+"条"+","+"出库异常"+data.data[1]+"条"+","+"不符合条件"+data.data[2]+"条");
+                    }
+                })
+                checkAll();
+                this.initTable();
         },
 
         //订单详情
