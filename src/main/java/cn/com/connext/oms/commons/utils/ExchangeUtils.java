@@ -123,7 +123,6 @@ public class ExchangeUtils {
     public int delOrder(List<GoodDetails> goodDetails, int oldOrderId) {
         int orderId = 1901060000 + tbExchangeMapper.selectCountOfOrder();
         List<TbGoodsOrder> tbGoodsOrders = new ArrayList<>();
-
         try {
             tbExchangeMapper.deleteOrder(orderId);
             tbExchangeMapper.deleteGoodsOrders(orderId);
