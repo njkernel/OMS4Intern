@@ -5,7 +5,6 @@ import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOrderDetails;
 import cn.com.connext.oms.entity.TbOutput;
 import cn.com.connext.oms.service.OutputService;
-import cn.com.connext.oms.service.TbOrderService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +25,7 @@ import java.util.Map;
 public class OutputController {
     @Autowired
     private OutputService outputService;
-    @Autowired
-    private TbOrderService tbOrderService;
+
     private static String STATE1 = "haveShipped";
     private static String STATE2 = "waittingChecked";
     private static String STATE3 = "waittingPackaged";
@@ -55,7 +53,7 @@ public class OutputController {
      * @date: 2019/1/7
      */
     @GetMapping("/Output")
-    public BaseResult Output(int id) throws Exception {
+    public BaseResult Output(int[] id) throws Exception {
         return outputService.Output(id);
     }
 
