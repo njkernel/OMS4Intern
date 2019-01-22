@@ -37,7 +37,7 @@
         <table class="table table-condensed">
             <thead>
             <tr>
-                <th>序号</th>
+                <!--<th>序号</th>-->
                 <th>批量</th>
                 <th>退货单号</th>
                 <th>退货/换货</th>
@@ -52,8 +52,8 @@
             <tbody>
             <template v-for="tbReturn in returnOrderInfo.list">
                 <tr>
-                    <td>{{tbReturn.returnId}}</td>
-                    <td><input type="checkbox" class="checkbox" :value="tbReturn.returnId" v-model="ids"></td>
+                    <!--<td>{{tbReturn.returnId}}</td>-->
+                    <td><input type="checkbox" :value="tbReturn.returnId" v-model="ids"></td>
                     <td>{{tbReturn.returnId}}</td>
                     <td>{{tbReturn.returnType}}</td>
                     <td>{{tbReturn.returnState}}</td>

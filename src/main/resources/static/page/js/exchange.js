@@ -89,10 +89,18 @@ var Exchange = new Vue({
                 alert("您还未选择！");
                 return false;
             }
+            if (!toAudit.checkEXchangeLegal(toAudit.ids)){
+                return false;
+            }
             axios.get(url,{params: {
                     returnId : toAudit.ids + ''
                 }}).then(function(response) {
                 if (response.status === 200) {
+                    if (toAudit.ids.length === 1){
+                        alert("审核成功！");
+                        location.reload();
+                        return false;
+                    }
                     alert("批量审核操作成功!不符合状态的将不会进行审核！");
                     toAudit.refresh();
                 } else if (response.status === 500) {
@@ -109,10 +117,18 @@ var Exchange = new Vue({
                 alert("您还未选择！");
                 return false;
             }
+            if (!toCancel.checkEXchangeLegal(toCancel.ids)){
+                return false;
+            }
             axios.get(url,{params: {
                     returnId : toCancel.ids + ''
                 }}).then(function (response) {
                 if (response.status === 200) {
+                    if (toCancel.ids.length === 1){
+                        alert("取消成功！");
+                        location.reload();
+                        return false;
+                    }
                     alert("批量操作成功，不符合状态的将不会被取消!");
                     toCancel.refresh();
                 } else if (response.status === 500) {
@@ -144,12 +160,6 @@ var Exchange = new Vue({
             }
             $("#iframe").css({"width":"100%","height":"100%","border":"0px"});
             $("#iframe").attr("src","/index/returnDetails?orderId="+exchangeDetails.detailsData.orderId);
-            // console.log("orderId为"+exchangeDetails.detailsData.orderId);
-            // axios.get(url,{params: exchangeDetails.detailsData}).then(function (response) {
-            //     exchangeDetails.detailsInfo = response.data.data;
-            // }).catch(function (err) {
-            //     console.log(err)
-            // });
         },
         //批量处理
         batch(){
@@ -221,6 +231,22 @@ var Exchange = new Vue({
             this.page.modifiedUser=this.searchData.modifiedUser;
             //初始化
             this.initInfo();
-        }
+        },
+        //审核取消前校验
+         checkEXchangeLegal(res){
+            if (1 < res.length){
+                return true;
+            }
+            var result = res[0];
+            for (let i in this.returnOrderInfo.list){
+                if(result === this.returnOrderInfo.list[i].returnId){
+                    if ("待审核" !== this.returnOrderInfo.list[i].returnState){
+                        alert("只有在待审核状态下才能进行该操作!( 当前状态："+this.returnOrderInfo.list[i].returnState+")");
+                        return false;
+                    }
+                }
+            }
+            return true;
+         }
     }
 });

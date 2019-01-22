@@ -115,8 +115,8 @@ public class TbExchangeController {
             return BaseResult.fail(402,"只能对已完成的订单操作!");
         }
         TbGoods tbGoods=new TbGoods();
-        int []goodId = ListToArray.listToArray(goodIds);
-        int []num = ListToArray.listToArray(nums);
+        int []goodId = ListToArray.ListFormat(ListToArray.listToArray(goodIds));
+        int []num = ListToArray.ListFormat(ListToArray.listToArray(nums));
         try {
             tbExchangeService.toGenerateExchangeOrderGoods(orderId,goodId,num);
             TbReturn tbReturn=tbExchangeService.setTbReturn(orderId,goodId,num);
