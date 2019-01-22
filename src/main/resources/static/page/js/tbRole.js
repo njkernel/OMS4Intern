@@ -149,8 +149,9 @@ function deletRole (roleId) {
         type:"GET",
         contentType:'application/json',
         success:function (result) {
+            console.log(result)
             if (result.status ==200){
-                alert("删除成功")
+                alert(result.message)
                 roleManagement.initTable();
             } else
                 alert("删除失败")

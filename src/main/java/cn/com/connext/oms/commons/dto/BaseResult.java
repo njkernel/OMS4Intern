@@ -1,6 +1,7 @@
 package cn.com.connext.oms.commons.dto;
 
 import java.io.Serializable;
+//cn/com/connext/oms/commons/dto/BaseResult.java
 
 /**
  * 自定义返回结果
