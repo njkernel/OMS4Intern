@@ -38,6 +38,7 @@ let orderList = new Vue({
             page:{
                 pageSize:5,
                 currentPage:1,
+                orderCode:'',
                 receiverName:'',
                 orderState:'',
                 deliveryCode:'',
@@ -57,12 +58,15 @@ let orderList = new Vue({
                 { text: '收货人', value: 'receiverName' },
                 { text: '订单状态', value: 'orderState' },
                 { text: '物流单号', value: 'deliveryCode' },
+                { text: '订单编码', value: 'orderCode' },
             ],
             //搜索条件
             searchDate:{
+
                 receiverName:'',
                 orderState:'',
                 deliveryCode:'',
+                orderCode:'',
             },
             //yonyongi添加
             //订单商品详情，用于退换货选择数量信息
@@ -92,12 +96,16 @@ let orderList = new Vue({
         },
         //清空搜索条件
         initialize(){
+
             this.page.receiverName='';
             this.page.orderState='';
             this.page.deliveryCode='';
+            this.page.orderCode='';
+          /*  */
             this.searchDate.receiverName='';
             this.searchDate.orderState='';
             this.searchDate.deliveryCode='';
+            this.searchDate.orderCode='';
         },
 
         // 路由操作接口 Jay新增 2019/1/16
@@ -159,9 +167,11 @@ let orderList = new Vue({
                 params: {
                     currentPage:pn,
                     pageSize: that.page.pageSize,
+
                     receiverName : this.searchDate. receiverName,
                     orderState :this.searchDate.orderState,
-                    deliveryCode :this.searchDate.deliveryCode
+                    deliveryCode :this.searchDate.deliveryCode,
+                    orderCode : this.searchDate.orderCode
                 }
             }).then(res => {
                 $(':checkbox').removeAttr("checked");
@@ -185,6 +195,7 @@ let orderList = new Vue({
                     alert("输入错误");
                 }
             }
+
             else if(this.selected==='receiverName'){
                 this.initialize();
                 this.searchDate.receiverName=this.searchInput3;
@@ -197,13 +208,19 @@ let orderList = new Vue({
                 this.initialize();
                 this.searchDate.deliveryCode=this.searchInput3;
             }
+            else if(this.selected==='orderCode'){
+                this.initialize();
+                this.searchDate.orderCode=this.searchInput3;
+            }
 
 
             //查询条件
             this.page.currentPage=1;
+
             this.page.receiverName=this.searchDate.receiverName;
             this.page.orderState=this.searchDate.orderState;
             this.page.deliveryCode=this.searchDate.deliveryCode;
+            this.page.orderCode=this.searchDate.orderCode;
             //初始化表格
             this.initTable();
         },
