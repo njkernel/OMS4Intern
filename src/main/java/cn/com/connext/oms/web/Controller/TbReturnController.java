@@ -114,6 +114,8 @@ public class TbReturnController {
         public BaseResult addReturnOrder(@RequestParam("orderId") int orderId, @RequestParam("goodsId") List<Integer> goodsIdsList, @RequestParam("number") List<Integer> numberList) {
             boolean flag = false;
             boolean flag1 = false;
+            goodsIdsList = ListToArray.ListFormat(goodsIdsList);
+            numberList = ListToArray.ListFormat(numberList);
             //判断是否为换货单
             if (exchangeUtils.checkOrderIsReturn(orderId)){
                 return BaseResult.fail(401,"订单为退货单!");
@@ -253,7 +255,7 @@ public class TbReturnController {
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());
-                return BaseResult.fail("跟wms的连接中断");
+                BaseResult.fail("跟wms的连接中断");
             }
 
 

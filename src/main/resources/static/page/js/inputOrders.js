@@ -8,7 +8,7 @@ var inputOrders = new Vue({
                 currentPage:1,
             },
             //选中行的记录id
-            checkedDate:"",
+            checkedDate: 0,
             //搜索输入框
             searchInputIO:"",
             //异常单数据
@@ -105,7 +105,7 @@ var inputOrders = new Vue({
 
 
 
-        //异常订单详情
+        //入库订单详情
         checkInputOrder(){
             /* let url='/abnormalDetail';
              callAxiosGet(url,{abnormalId:this.checkedDate},this.detailSuc,this.Fail)*/
@@ -116,13 +116,11 @@ var inputOrders = new Vue({
 
         //入库单单列表接口反馈
         getListSuc(res){
-            console.log(res);
             let that=this;
             if(res.status===200){
                 that.inputOrdersDate=res.data;
-                console.log(this.inputOrdersDate)
                 //默认选中第一条数据
-
+                that.checkedDate=res.data.list[0].orderId;
             }else{
                 alert(res.message);
             }
