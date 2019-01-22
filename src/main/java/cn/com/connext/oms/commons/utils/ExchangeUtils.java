@@ -81,6 +81,7 @@ public class ExchangeUtils {
         tbOrder.setDeliveryTime(date);
         tbOrder.setRemark("换货");
         tbOrder.setSumPrice(sum);
+        tbOrder.setReceiverId(orderId);
 
         try {
             tbReturn=tbExchangeMapper.selectTbReturnByOrderId(oldOrderId);
@@ -94,6 +95,7 @@ public class ExchangeUtils {
 
         //向receiver表中添加用户订单关联信息，先给要插入的记录信息赋值，表结构设计的的是一对一
         tbReceiver = tbExchangeMapper.selectTbReceiverByOrderId(oldOrderId);
+        tbReceiver.setReceiverId(orderId);
         tbReceiver.setUpdated(new Date());
         tbReceiver.setCreated(new Date());
         tbReceiver.setOrderId(orderId);
@@ -121,7 +123,6 @@ public class ExchangeUtils {
     public int delOrder(List<GoodDetails> goodDetails, int oldOrderId) {
         int orderId = 1901060000 + tbExchangeMapper.selectCountOfOrder();
         List<TbGoodsOrder> tbGoodsOrders = new ArrayList<>();
-
         try {
             tbExchangeMapper.deleteOrder(orderId);
             tbExchangeMapper.deleteGoodsOrders(orderId);

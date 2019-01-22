@@ -67,7 +67,8 @@ let orderList = new Vue({
             //用于判断按钮点击事件为退货还是换货
             returnType : '',
             //用于存放订单商品原本的商品数量,用于验证退换货数量异常
-            beforeGoodsNum : []
+            beforeGoodsNum : [],
+            flag : true
         }
     },
     created: function () {
@@ -127,9 +128,9 @@ let orderList = new Vue({
         // 出库操作，将订单出库 Jay新增 2019/1/16
         outputOrder(){
             $(":checkbox").removeAttr("checked");
-                this.orderId = this.checkedNames[0];
-                let url = '/Output';
-                callAxiosGet(url, {id: this.orderId}, this.Suc, this.Fail)
+            this.orderId = this.checkedNames[0];
+            let url = '/Output';
+            callAxiosGet(url, {id: this.orderId}, this.Suc, this.Fail)
             checkAll();
         },
 
@@ -262,6 +263,7 @@ let orderList = new Vue({
             var e = window.event;
             var target = e.target||e.srcElement;
             var eventName = target.getAttribute("id");
+            toRequestForGoods.beforeGoodsNum=[];
             if ("return" === eventName){
                 toRequestForGoods.returnType = "return";
             }else if ("exchange" === eventName){
@@ -279,7 +281,7 @@ let orderList = new Vue({
             axios.get(url,{params: {orderId : toRequestForGoods.orderId}}).then(function(response) {
                 toRequestForGoods.orderGoodsInfo=response.data.data;
                 for (var t = 0;t<toRequestForGoods.orderGoodsInfo.length;t++) {
-                    toRequestForGoods.$set(toRequestForGoods.orderGoodsInfo[t][0],"goodNum","0");
+                    toRequestForGoods.$set(toRequestForGoods.orderGoodsInfo[t][0],"goodNum",0);
                 }
             }).catch(function (err) {
                 console.log(err);
@@ -297,51 +299,57 @@ let orderList = new Vue({
             this.orderId=this.checkedNames[0];
             var url = null;
             var data = null;
+            exchangeReturn.flag = true;
             if(!exchangeReturn.checkExchangeReturnIsNull(exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo))){
                 alert("没有选择任何商品！");
                 return false;
             }
-            if(!exchangeReturn.checkExchangeReturnIsOverFlow(exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo))){
-                return false;
-            }
-            var goodIds = [];
-            var goodNums = [];
-            for (var i in exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)) {
-                if (exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)[i] > 0) {
-                    goodIds [i] = exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo)[i];
-                    goodNums [i] = exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)[i];
-                }
-            }
-            console.log(goodIds);
-            console.log(goodNums);
-            if ("return" === exchangeReturn.returnType){
-                url = 'return/addReturnOrder';
-                data = {
-                    orderId : exchangeReturn.orderId,
-                    goodsId : goodIds+"",
-                    number : goodNums+""
-                };
-            }else if ("exchange" === exchangeReturn.returnType){
-                url = 'exchange/toGenerateExchangeOrder';
-                data = {
-                    orderId : exchangeReturn.orderId,
-                    goodId : goodIds+"",
-                    num : goodNums+""
-                };
-            }
-            axios.get(url,{params: data}).then(function(response) {
-                if (response.data.status == "401"){
-                    alert("订单已经有过退换货记录，不能进行退换操作!");
+            exchangeReturn.checkExchangeReturnIsOverFlow(exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo));
+
+            setTimeout(function () {
+                console.log(!exchangeReturn.flag);
+                if (!exchangeReturn.flag){
                     return false;
                 }
-                if (response.data.status == "402"){
-                    alert("只能对已完成的订单操作!");
-                    return false;
+                var goodIds = [];
+                var goodNums = [];
+                for (var i in exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)) {
+                    if (exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)[i] > 0) {
+                        goodIds [i] = exchangeReturn.getExchangeReturnGoodsId(exchangeReturn.orderGoodsInfo)[i];
+                        goodNums [i] = exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)[i];
+                    }
                 }
-                alert("操作成功！");
-            }).catch(function (err) {
-                alert("操作失败！");
-            });
+                console.log(exchangeReturn.ArrayFormat(goodIds));
+                console.log(exchangeReturn.ArrayFormat(goodNums));
+                if ("return" === exchangeReturn.returnType){
+                    url = 'return/addReturnOrder';
+                    data = {
+                        orderId : exchangeReturn.orderId,
+                        goodsId : exchangeReturn.ArrayFormat(goodIds)+"",
+                        number : exchangeReturn.ArrayFormat(goodNums)+""
+                    };
+                }else if ("exchange" === exchangeReturn.returnType){
+                    url = 'exchange/toGenerateExchangeOrder';
+                    data = {
+                        orderId : exchangeReturn.orderId,
+                        goodId : goodIds+"",
+                        num : goodNums+""
+                    };
+                }
+                axios.get(url,{params: data}).then(function(response) {
+                    if (response.data.status == "401"){
+                        alert("订单已经有过退换货记录，不能进行退换操作!");
+                        return false;
+                    }
+                    if (response.data.status == "402"){
+                        alert("只能对已完成的订单操作!");
+                        return false;
+                    }
+                    alert("操作成功！");
+                }).catch(function (err) {
+                    alert("操作失败！");
+                });
+            },3000)
         },
         //获取退换货的商品id
         getExchangeReturnGoodsId(res) {
@@ -377,18 +385,33 @@ let orderList = new Vue({
                 for (var i = 0;i<temp.length;i++){
                     checkExchangeReturnIsOverFlow.beforeGoodsNum[i] = temp[i].num;
                 }
-            }).catch(function (err) {
-                alert("获取后台原本订单商品数量时出现接口异常！");
-                return false;
-            });
-            for (var p = 0; p<checkExchangeReturnIsOverFlow.beforeGoodsNum.length;p++){
-                if (checkExchangeReturnIsOverFlow.beforeGoodsNum[p]<goodsNum[p]){
-                    alert("异常！商品数量已超过原订单数量！");
-                    return false;
+                for (var p = 0; p<checkExchangeReturnIsOverFlow.beforeGoodsNum.length;p++){
+                    console.log("原来的"+checkExchangeReturnIsOverFlow.beforeGoodsNum[p]);
+                    console.log("现在的"+goodsNum[p]);
+                    if (checkExchangeReturnIsOverFlow.beforeGoodsNum[p]<goodsNum[p]){
+                        alert("异常！商品数量已超过原订单数量！");
+                        checkExchangeReturnIsOverFlow.flag = false;
+                    }
                 }
-            }
+                return true;
+            }).catch(function (err) {
+                checkExchangeReturnIsOverFlow.flag = false;
+            });
             return true;
         },
-}
+        //退换货商品数组格式化
+        ArrayFormat(res){
+            for (var t = 0;t < res.length;t++){
+                if (res[t]==null){
+                    res[t] = 0;
+                }
+            }
+            return res;
+        },
+        //刷新页面
+        refreshPage(){
+            location.reload();
+        }
+    }
 });
 
