@@ -29,7 +29,7 @@ public class OutputApi {
                 tbOrder.getDeliveryCompany(),
                 repoOrderDetailDto
         );
-        String result= new RestTemplate().postForObject("http://10.129.100.71:8080/api/pushOutRepoOrder",outputDTO.toMap(),String.class);
+        String result= new RestTemplate().postForObject("http://10.129.100.59:8080/api/pushOutRepoOrder",outputDTO.toMap(),String.class);
         return result;
     }
     }

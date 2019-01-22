@@ -184,5 +184,6 @@
         <if test="deliveryCode != null and deliveryCode !=''">
             and a.delivery_code like CONCAT('%',#{deliveryCode},'%')
         </if>
+        order by order_id
     </select>
 </mapper>

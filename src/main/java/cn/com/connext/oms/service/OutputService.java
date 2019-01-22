@@ -36,7 +36,7 @@ public interface OutputService {
      * @auther: Jay
      * @date: 2019/1/7
      */
-    BaseResult Output(int id) throws HttpProcessException;
+    BaseResult Output(int[] id1) throws HttpProcessException;
     /**
      *
      * 功能描述: 根据订单id查询出所有出库单的详情

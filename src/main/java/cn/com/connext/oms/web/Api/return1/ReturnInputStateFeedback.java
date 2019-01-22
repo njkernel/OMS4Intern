@@ -89,7 +89,7 @@ public class ReturnInputStateFeedback {
             }
         }
 
-        //换货部分的状态反馈及更新  crated by yonyong
+        //换货部分的状态反馈及更新  created by yonyong
         if (EXCHANGE_TYPE.equals(type)) {
             try {
                 details = objectMapper.readValue(goodDetails,new TypeReference<List<GoodDetails>>() {});
