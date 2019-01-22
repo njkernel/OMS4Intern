@@ -63,6 +63,7 @@ var Exchange = new Vue({
         },
         //展示所有换货/退货单
         initInfo(){
+            this.ids=[];
             var showAllExchanges=this;
             var url="/exchange/showAllExchanges";
             axios.get(url,{params: this.page}).then(function(response) {
