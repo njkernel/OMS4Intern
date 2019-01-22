@@ -8,10 +8,12 @@ import cn.com.connext.oms.commons.dto.exchange.WMS.InRepertoryDetailDTO;
 import cn.com.connext.oms.commons.utils.AES;
 import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
 import cn.com.connext.oms.commons.utils.ExchangeUtils;
+import cn.com.connext.oms.commons.utils.ListToArray;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.mapper.TbExchangeMapper;
 import cn.com.connext.oms.mapper.TbOrderMapper;
 import cn.com.connext.oms.service.TbExchangeService;
+import cn.com.connext.oms.web.Api.API;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +34,17 @@ import java.util.List;
  * @describe: 换货模块Service实现类
  */
 @Service
-@Transactional
+//@Transactional
 public class TbExchangeServiceImpl implements TbExchangeService {
   private final String TOKENS = "yonyong";
   private static long MISTIMING;
   private static final String GET_FAILED = "fail";
   private static final String GET_SUCCESS = "success";
   private static final String GET_FEEDBACK_OUTTIME = "over";
-  public static String IP="10.129.100.32";
-  public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
+
+//  public static String IP="127.0.0.1";
+//  public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
+
 
   @Autowired RestTemplate restTemplate;
 
@@ -149,6 +153,8 @@ public class TbExchangeServiceImpl implements TbExchangeService {
   @Override
   public TbReturn setTbReturn(int orderId, int[] goodId, int[] num) {
     double price = 0;
+    goodId = ListToArray.ListFormat(goodId);
+    num = ListToArray.ListFormat(num);
     for (int i = 0; i < goodId.length; i++) {
       TbGoods tbGoods = tbExchangeMapper.toSelectGoodById(goodId[i]);
       price = price + num[i] * tbGoods.getGoodsPrice();
@@ -252,25 +258,31 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     // 批量生成入库单并推送至WMS
     for (int i = 0; i < ids.length; i++) {
 
+      TbReturn tbReturn1 = tbExchangeMapper.selectTbReturnById(ids[i]);
+      int orderId = tbReturn1.getOrderId();
+
+      if ("审核失败".equals(tbReturn1.getReturnState())) {
+        continue;
+      }
+      // 生成入库单
+      TbInput tbInput = new TbInput();
+      tbInput.setInputCode(CodeGenerateUtils.creatUUID());
+      tbInput.setOrderId(orderId);
+      tbInput.setInputState("传输中");
+      tbInput.setCreated(new Date());
+      tbInput.setUpdated(new Date());
+      tbInput.setSynchronizeState("未同步");
+      try {
+        tbExchangeMapper.insertInput(tbInput);
+      } catch (Exception e) {
+        return -1;
+      }
+    }
+    //发送入库单
+    for (int i = 0; i < ids.length; i++) {
+
         TbReturn tbReturn1 = tbExchangeMapper.selectTbReturnById(ids[i]);
         int orderId = tbReturn1.getOrderId();
-
-        if ("审核失败".equals(tbReturn1.getReturnState())) {
-          continue;
-        }
-        // 生成入库单
-        TbInput tbInput = new TbInput();
-        tbInput.setInputCode(CodeGenerateUtils.creatUUID());
-        tbInput.setOrderId(orderId);
-        tbInput.setInputState("传输中");
-        tbInput.setCreated(new Date());
-        tbInput.setUpdated(new Date());
-        tbInput.setSynchronizeState("未同步");
-        try {
-          tbExchangeMapper.insertInput(tbInput);
-        } catch (Exception e) {
-          return -1;
-        }
         // 发送入库单
         TbInput tbInput1 = tbExchangeMapper.selectTbInputByOrderId(orderId);
         List<TbReturnGoods> tbReturnGoods = tbExchangeMapper.selectTbReturnGoodsByOrderId(orderId);
@@ -308,7 +320,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
           tbInput1.setUpdated(new Date());
           tbInput1.setSynchronizeState("已同步");
           restTemplate.postForEntity(
-                  URL,
+                  API.API_RETURN,
                   inRepertoryDTO.toMap(),
                   String.class);
           tbExchangeMapper.updateTbInput(tbInput1);

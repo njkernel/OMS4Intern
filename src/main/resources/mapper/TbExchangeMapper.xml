@@ -241,4 +241,9 @@
         update tb_order set  receiver_id=#{receiverId}
         where order_id=#{orderId}
     </update>
+
+    <update id="updateOrder">
+        UPDATE tb_order set channel_code=#{channelCode},order_code=#{orderCode}
+        WHERE order_id=#{orderId}
+    </update>
 </mapper>

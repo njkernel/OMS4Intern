@@ -4,9 +4,11 @@ spring:
     time-zone: GMT+8
   datasource:
     druid:
-      url: jdbc:mysql://localhost:3306/oms?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+
+      url: jdbc:mysql://47.101.193.185:3306/omsTEST?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
       username: root
-      password: 1234
+      password: 433193da9f88
+
       initial-size: 1
       min-idle: 1
       max-active: 20

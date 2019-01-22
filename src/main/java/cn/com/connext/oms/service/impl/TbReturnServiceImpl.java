@@ -11,6 +11,7 @@ import cn.com.connext.oms.commons.utils.CodeGenerateUtils;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.mapper.*;
 import cn.com.connext.oms.service.TbReturnService;
+import cn.com.connext.oms.web.Api.API;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ import java.util.List;
  * @time: 15:49
  **/
 
-@Transactional
+//@Transactional
 @Service
 public class TbReturnServiceImpl implements TbReturnService {
     private static long MISTIMING = 1296000000;
@@ -40,7 +41,9 @@ public class TbReturnServiceImpl implements TbReturnService {
     private static final String GET_FAILED = "fail";
     private static final String GET_SUCCESS = "success";
     private static final String GET_FEEDBACK_OUTTIME = "over";
-    private static final String URL = "http://10.129.100.32:8080/api/inRepertoryOrder";
+
+//    private static final String URL = "http://127.0.0.1:8080/api/inRepertoryOrder";
+
     private static final String AUDIT_SUCESS = "审核通过";
     private static final String AUDIT_FAILED = "审核失败";
     private static final Logger log = LoggerFactory.getLogger(TbReturnServiceImpl.class);
@@ -176,15 +179,17 @@ public class TbReturnServiceImpl implements TbReturnService {
         TbInput tbInput = new TbInput();
         TbInput tbInput1 = new TbInput();
 
-        for (int i = 0; i < returnIdsList.size(); i++) {
-            int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(i));
+        for (int j = 0; j< returnIdsList.size(); j++){
+            int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(j));
 
             String inputCode = CodeGenerateUtils.creatUUID();
             Date created = time;
             Date updated = time;
 
             tbReturnMapper.createInputOrder(inputCode, orderId,inputState,created, updated, synchronizeState);
-
+        }
+        for (int i = 0; i < returnIdsList.size(); i++) {
+            int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(i));
             tbInput1 = tbExchangeMapper.selectTbInputByOrderId(orderId);
             List<TbReturnGoods> tbReturnGoodsList = tbExchangeMapper.selectTbReturnGoodsByOrderId(orderId);
             List<TbOrder> tbOrder = tbOrderMapper.getOrderByOrderId(orderId);
@@ -198,11 +203,12 @@ public class TbReturnServiceImpl implements TbReturnService {
             String token = AES.AESEncode(TOKENS, String.valueOf(tbInput1.getInputId()));
             InRepertoryDTO inRepertoryDTO = new InRepertoryDTO(token,
                     String.valueOf(tbInput1.getInputId()), String.valueOf(orderId),
-                    tbOrder.get(0).getChannelCode(), tbOrder.get(0).getDeliveryCompany(),
+                    tbOrder.get(0).getChannelCode(),
+                    tbOrder.get(0).getDeliveryCompany(),
                     tbOrder.get(0).getDeliveryCode(), detailDTOS);
 
             try {
-                restTemplate.postForEntity(URL, inRepertoryDTO.toMap(), String.class);
+                restTemplate.postForEntity(API.API_RETURN, inRepertoryDTO.toMap(), String.class);
                 TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
                 List<TbReturn> tbReturnsList = new ArrayList<>();
                 tbReturn.setOrderId(orderId);
@@ -217,6 +223,7 @@ public class TbReturnServiceImpl implements TbReturnService {
                 tbExchangeMapper.updateTbReturn(tbReturnsList);
 
             } catch (Exception e1) {
+                e1.printStackTrace();
                 log.error(e1.getMessage());
                 return false;
             }
