@@ -106,6 +106,7 @@
                 <otherwise>
                 </otherwise>
             </choose>
+     ORDER BY a.updated DESC
   </select>
 <!--根据订单id查找退货单信息-->
   <select id="getInputByOrderId" resultType="TbInput">
