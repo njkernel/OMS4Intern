@@ -37,7 +37,6 @@ function paging(page) {
 function mySearch() {
     var select=$("#select").val();
     var mySelect=$("#mySelect").val();
-    alert(mySelect);
     if(select=="--请选择--"||select==""||mySelect==null||mySelect==""){
         alert("选择条件不可为空");
     }
