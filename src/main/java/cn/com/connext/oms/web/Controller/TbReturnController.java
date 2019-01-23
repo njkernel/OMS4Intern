@@ -47,24 +47,20 @@ public class TbReturnController {
     private TbExchangeService tbExchangeService;
     @Autowired
     private ExchangeUtils exchangeUtils;
-    private static final Logger log = LoggerFactory.getLogger(TbReturnServiceImpl.class);
 
+    private static final Logger log = LoggerFactory.getLogger(TbReturnServiceImpl.class);
     private static final String RETURN_TYPE = "退货";
     private static final String EXCHANGE_TYPE = "换货";
     private static final String COMPLETED = "已完成";
-    private static final int ZERO =0;
+    private static final int ZERO = 0;
+
 
 
         /**
-         * 入库单页面
-         *
-         * @return
-         */
-        /**
-         *
+         *入库单页面
          * @param currentPage
          * @param pageSize
-         * @return
+         * @return BaseResult
          */
         @GetMapping("/toInput")
         public BaseResult allInputOrders(Integer currentPage, Integer pageSize , TbInput tbInput) {

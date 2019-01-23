@@ -43,6 +43,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
   private static final String GET_FEEDBACK_OUTTIME = "over";
 
   private static final String RETURN_STATE_UNCHECKED = "待审核";
+  private static final String RETURN_STATE_AUDIT_UNCHECKED = "审核通过";
 
 //  public static String IP="127.0.0.1";
 //  public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
@@ -221,7 +222,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       int orderId=tbReturn.getOrderId();
       ExchangeUtils exchangeUtils =new ExchangeUtils();
       //如果状态不是待审核，说明已经有过审核记录，则当前换货单不需要进入下面的审核流程，跳过继续执行下一个换货单审核流程
-      if (!RETURN_STATE_UNCHECKED.equals(tbReturn.getReturnState())){
+      if (!RETURN_STATE_AUDIT_UNCHECKED.equals(tbReturn.getReturnState())){
         continue;
       }
       if (MISTIMING < date.getTime() - tbReturn.getUpdated().getTime()&&!exchangeUtils.checkOrderIsExchange(orderId)) {

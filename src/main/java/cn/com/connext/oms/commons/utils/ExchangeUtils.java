@@ -73,15 +73,17 @@ public class ExchangeUtils {
             return 0;
         }
         tbOrder.setUpdated(new Date());
-        tbOrder.setDeliveryCode(CodeGenerateUtils.creatUUID());
+        tbOrder.setDeliveryCode("");
         tbOrder.setOrderId(orderId);
         tbOrder.setOrderCode(orderCode);
         tbOrder.setChannelCode(channelCode);
         tbOrder.setOrderState("待预检");
-        tbOrder.setDeliveryTime(date);
+        tbOrder.setDeliveryTime(null);
         tbOrder.setRemark("换货");
         tbOrder.setSumPrice(sum);
         tbOrder.setReceiverId(orderId);
+        tbOrder.setDeliveryCompany("");
+        tbOrder.setDeliveryWarehouse("");
 
         try {
             tbReturn=tbExchangeMapper.selectTbReturnByOrderId(oldOrderId);

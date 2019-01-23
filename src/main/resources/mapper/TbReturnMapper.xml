@@ -49,7 +49,6 @@
     WHERE return_id = #{returnId}
   </update>
 
-
   <!--根据商品id查看商品单价-->
   <select id="getPriceByGoodId" resultType="double">
     SELECT goods_price
@@ -108,16 +107,15 @@
             </choose>
      ORDER BY a.updated DESC
   </select>
-<!--根据订单id查找退货单信息-->
+
+  <!--根据订单id查找退货单信息-->
   <select id="getInputByOrderId" resultType="TbInput">
     SELECT *
     FROM tb_input
     WHERE order_id = #{orderId}
   </select>
 
-
-
-<!--根据订单id查找退货单商品信息-->
+  <!--根据订单id查找退货单商品信息-->
   <select id="getTbReturnGoodsById" resultType="TbReturnGoods">
     SELECT *
     FROM tb_return_goods
