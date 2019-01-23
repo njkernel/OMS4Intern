@@ -23,7 +23,7 @@ VALUES
 <foreach collection="list" item="item" index="index" separator=",">
   (#{item.refundCode,jdbcType=VARCHAR},#{item.refundPrice,jdbcType=DOUBLE},
    #{item.refundState,jdbcType=VARCHAR},#{item.returnId,jdbcType=INTEGER},#{item.createtd},
-   #{item.modifiedUser,jdbcType=VARCHAR},#{item.updated,jdbcType=DATE},#{item.orderId,jdbcType=INTEGER})
+   #{item.modifiedUser,jdbcType=VARCHAR},#{item.updated},#{item.orderId,jdbcType=INTEGER})
 </foreach>
 </insert>
 

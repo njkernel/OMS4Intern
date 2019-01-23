@@ -268,7 +268,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       TbReturn tbReturn1 = tbExchangeMapper.selectTbReturnById(ids[i]);
       int orderId = tbReturn1.getOrderId();
 
-      if (!RETURN_STATE_UNCHECKED.equals(tbReturn1.getReturnState())) {
+      if (!RETURN_STATE_AUDIT_UNCHECKED.equals(tbReturn1.getReturnState())) {
         continue;
       }
       // 生成入库单

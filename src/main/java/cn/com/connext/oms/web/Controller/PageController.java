@@ -83,6 +83,9 @@ public class PageController {
     @Autowired
     private TbRoleService tbRoleService;
 
+    @Autowired
+    private TbReturnGoodsService tbReturnGoodsService;
+
 
     /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
     @GetMapping("/abnormalDetail")
@@ -372,9 +375,13 @@ public class PageController {
     public String refundDetail(Integer refundId,Model model) {
         TbRefund tbRefund=tbRefundService.getRefundById(refundId);
         List<TbGoodsOrder> GoodsOrderList=tbGoodsOrderService.getListGoodsOrderById(tbRefund.getOrderId());
+        if(tbRefund.getRefundId()!=null){
+        List<TbReturnGoods> returnGoodsList=tbReturnGoodsService.getListReturnGoodsByOrderId(tbRefund.getOrderId());
+            model.addAttribute("returnGoodsList",returnGoodsList);
+        }
         model.addAttribute("refund",tbRefund);
         model.addAttribute("GoodsOrderList",GoodsOrderList);
-        
+
         return "pages/specific/refund";
     }
 
