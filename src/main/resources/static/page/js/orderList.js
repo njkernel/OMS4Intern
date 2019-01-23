@@ -142,7 +142,7 @@ let orderList = new Vue({
             $(":checkbox").removeAttr("checked");
                 var id = [];
                 id = this.checkedNames;
-                var that = this;
+                var that=this;
                 $.ajax({
                     type:'Get',
                     url:'/Output',

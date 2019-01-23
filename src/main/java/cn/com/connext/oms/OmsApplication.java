@@ -10,10 +10,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication(scanBasePackages = "cn.com.connext.oms")
 @MapperScan(basePackages = "cn.com.connext.oms.mapper")
 public class OmsApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(OmsApplication.class, args);
     }
-
 }
 

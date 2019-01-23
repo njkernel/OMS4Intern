@@ -2,6 +2,7 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+
   datasource:
     druid:
       url: jdbc:mysql://47.101.193.185:3306/oms?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
@@ -12,6 +13,7 @@ spring:
       max-active: 20
       test-on-borrow: true
       driver-class-name: com.mysql.jdbc.Driver
+
   thymeleaf:
     cache: false # 开发时关闭缓存,不然没法看到实时页面
     mode: LEGACYHTML5 # 用非严格的 HTML
@@ -20,6 +22,7 @@ spring:
       content-type: text/html
   aop:
     proxy-target-class: true
+
   redis:
     lettuce:
       pool:
@@ -30,6 +33,8 @@ spring:
     sentinel:
       master: mymaster
       nodes: 139.224.117.172:26379, 139.224.117.172:26380, 139.224.117.172:26381
+
+
   rabbitmq:
     host: 139.224.117.172
     port: 5672

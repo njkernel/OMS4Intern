@@ -2,12 +2,15 @@ package cn.com.connext.oms.web.Controller;
 import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.entity.TbPermission;
 import cn.com.connext.oms.entity.TbRole;
+import cn.com.connext.oms.entity.TbUser;
+import cn.com.connext.oms.mapper.TbUserMapper;
 import cn.com.connext.oms.service.TbRolePermissionService;
 import cn.com.connext.oms.service.TbRoleService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -19,6 +22,8 @@ import java.util.List;
  **/
 @RestController
 public class TbRoleController {
+    @Autowired
+    private TbUserMapper tbUserMapper;
     @Autowired
     private TbRoleService tbRoleService;
     @Autowired
@@ -90,9 +95,16 @@ public class TbRoleController {
     @GetMapping("/roleDeletById")
     public BaseResult roleDeletById(@RequestParam("roleId") int roleId){
         try {
-            tbRoleService.roleDeletById(roleId);
-            return BaseResult.success("删除成功");
-        } catch (Exception e) {
+            Example example = new Example(TbUser.class);
+            example.createCriteria().andEqualTo("roleId",roleId);
+            List<TbUser> tbUsers = tbUserMapper.selectByExample(example);
+            if (tbUsers.size()==0){
+                tbRoleService.roleDeletById(roleId);
+                return BaseResult.success("删除成功");
+            }
+            return BaseResult.success("该角色已绑定用户，删除失败");
+            }
+        catch (Exception e) {
             e.printStackTrace();
             return  BaseResult.fail("删除角色失败");
         }

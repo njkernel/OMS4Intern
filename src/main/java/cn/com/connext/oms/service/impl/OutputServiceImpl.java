@@ -38,7 +38,7 @@ public class OutputServiceImpl implements OutputService {
     @Autowired
     private TbOutputMapper tbOutputMapper;
     // 定义状态
-    private static String STATUS1="待预检";
+    private static String STATUS1="待处理";
     private static String STATUS2="待路由";
     private static String STATUS3="待出库";
     private static String STATUS4="已出库";
@@ -74,6 +74,8 @@ public class OutputServiceImpl implements OutputService {
             if (orderState.equals(STATUS2)){
                 // 设置订单状态为待出库
                 tbOrder.setOrderState(STATUS3);
+                // 设置更新时间，以便于排序
+                tbOrder.setUpdated(new Date());
                 // 更改订单状态
                 int t = tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
                 if (t==1){
@@ -85,6 +87,7 @@ public class OutputServiceImpl implements OutputService {
                 k++;
             }
         }
+        // 创建集合存放路由成功、路由异常、不符合订单状态的数据
         ArrayList<Integer> list = new ArrayList<>();
         list.add(m);
         list.add(n);
@@ -117,10 +120,12 @@ public class OutputServiceImpl implements OutputService {
             if (tbOrder.getOrderState().equals(STATUS3) || tbOrder.getOrderState().equals(STATUS6)) {
                 // 根据收获人信息查询收获人信息
                 TbReceiver tbReceiver = tbReceiverMapper.selectByPrimaryKey(tbOrder.getReceiverId());
+                // 生成出库单，如果是待出库生成新的出库单，如果是出库异常使用原有的出库单
                 TbOutput tbOutput = this.getOneTbOutput(id);
                 //传送出库单并接受返回值类型判断是否接收成功
                 String s = null;
                 try {
+                    // 调用WMS的接口，推送出库单，成功返回 200
                     s = OutputApi.post(tbOutput, tbOrder, tbReceiver, repoOrderDetailDto);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -128,23 +133,24 @@ public class OutputServiceImpl implements OutputService {
 
                 // 判断接收的结果 200 表示接收成功
                 if ("200".equals(s)) {
-                    tbOutput.setOutputState(STATUS7);
-                    tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
                     tbOrder.setOrderState(STATUS4);
+                    tbOrder.setUpdated(new Date());
                     tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+                    tbOutputMapper.updateOutput(STATUS7,new Date(),tbOutput.getOrderId());
                     m++;
                 } else {
                     // 状态不是200的一切情况
                     tbOrder.setOrderState(STATUS6);
+                    tbOrder.setUpdated(new Date());
                     tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
-                    tbOutput.setOutputState(STATUS6);
-                    tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
+                    tbOutputMapper.updateOutput(STATUS6,new Date(),tbOutput.getOrderId());
                     n++;
                 }
             } else {
                 k++;
             }
         }
+        // 创建集合存放出库成功、出库异常、不符合订单状态的数据
         ArrayList<Integer> list = new ArrayList<>();
         list.add(m);
         list.add(n);
@@ -176,7 +182,6 @@ public class OutputServiceImpl implements OutputService {
     public PageInfo<TbOrderDetails> getAllOrderByStatusAndSeacrch(int currentPage,int pageSize,String orderId, String outputCode, String deliveryCode) {
         // 从第 1 页开始，每一页 5 条数据
         PageHelper.startPage(currentPage, pageSize);
-
         // 返回所有状态是已出库的订单，模糊查询选择符合条件的订单，默认显示所有已出库订单
         List<TbOrderDetails> allOrder = tbOutputMapper.getOutputOrdersBySearch(STATUS4,STATUS5,STATUS8, orderId,outputCode,deliveryCode);
         PageInfo<TbOrderDetails> pageInfo = new PageInfo<>(allOrder);
@@ -207,6 +212,7 @@ public class OutputServiceImpl implements OutputService {
     @Override
     public String updateOrder(TbOrder tbOrder) {
         int t = tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+        // 判断是否更新成功 200表示更新成功
         if (t==1){
         return "200";
         }
@@ -247,10 +253,16 @@ public class OutputServiceImpl implements OutputService {
     @Override
     public BaseResult confirmReceiptUpdateOrderState(int orderId) {
         TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(orderId);
+        // 获取订单状态
         String state = tbOrder.getOrderState();
+        // 判断订单状态是否是已发货
         if (state.equals(STATUS5)){
+            // 设置订单状态为已完成
             tbOrder.setOrderState(STATUS8);
+            tbOrder.setUpdated(new Date());
             tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+            // 设置出库单状态为已完成
+            tbOutputMapper.updateOutput(STATUS8,new Date(),orderId);
             return BaseResult.success("确认收货成功！");
         }
         return BaseResult.fail("订单状态必须为已发货，请重新选择！");
@@ -267,6 +279,7 @@ public class OutputServiceImpl implements OutputService {
 
     public TbOutput getOneTbOutput(int id){
         TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(id);
+        // 判断订单状态是否是出库异常，如果是返回出库单，如果不是生成新的出库单
         if (tbOrder.getOrderState().equals(STATUS6)){
             TbOutput tbOutput = tbOutputMapper.getOutputByOrderId(id);
             return tbOutput;
@@ -274,13 +287,12 @@ public class OutputServiceImpl implements OutputService {
             // 生成出库单，设置出库单属性
             TbOutput tbOutput = new TbOutput();
             String outputCode = id+""+UUID.randomUUID().toString().substring(1,8);
-            Date date = new Date();
             //生成出库单
             tbOutput.setOutputCode(outputCode);
             tbOutput.setOrderId(id);
-            tbOutput.setOutputState(STATUS3);
-            tbOutput.setCreated(date);
-            tbOutput.setUpdated(date);
+            tbOutput.setOutputState(STATUS1);
+            tbOutput.setCreated(new Date());
+            tbOutput.setUpdated(new Date());
             tbOutputMapper.insertSelective(tbOutput);
             return tbOutput;
         }
