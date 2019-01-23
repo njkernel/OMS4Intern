@@ -113,6 +113,7 @@ let orderList = new Vue({
             $(":checkbox").removeAttr("checked");
             var confirm_ = confirm('确认？');
             var arr=[];
+            var that = this;
             arr=this.checkedNames;
                 if(confirm_){
                     $.ajax({
@@ -123,11 +124,11 @@ let orderList = new Vue({
                         dataType:'JSON',
                         success:function (data) {
                             alert("成功"+data.data[0]+"条"+","+"异常"+data.data[1]+"条"+","+"不符合条件"+data.data[2]+"条");
+                            that.initTable();
                         }
                     })
                 }
                 checkAll();
-                this.initTable();
         },
 
         // 异常处理
@@ -141,6 +142,7 @@ let orderList = new Vue({
             $(":checkbox").removeAttr("checked");
                 var id = [];
                 id = this.checkedNames;
+                var that = this;
                 $.ajax({
                     type:'Get',
                     url:'/Output',
@@ -149,10 +151,10 @@ let orderList = new Vue({
                     dataType:'JSON',
                     success:function (data) {
                         alert("成功"+data.data[0]+"条"+","+"出库异常"+data.data[1]+"条"+","+"不符合条件"+data.data[2]+"条");
+                        that.initTable();
                     }
-                })
+                });
                 checkAll();
-                this.initTable();
         },
 
         //订单详情
