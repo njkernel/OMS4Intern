@@ -115,6 +115,7 @@ let orderList = new Vue({
             var arr=[];
             var that = this;
             arr=this.checkedNames;
+            var that=this;
                 if(confirm_){
                     $.ajax({
                         type:'post',
@@ -129,7 +130,6 @@ let orderList = new Vue({
                     })
                 }
                 checkAll();
-                this.initTable();
         },
 
         // 异常处理
@@ -156,7 +156,6 @@ let orderList = new Vue({
                     }
                 });
                 checkAll();
-                this.initTable();
         },
 
         //订单详情
