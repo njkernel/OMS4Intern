@@ -372,9 +372,12 @@ public class PageController {
     public String refundDetail(Integer refundId,Model model) {
         TbRefund tbRefund=tbRefundService.getRefundById(refundId);
         List<TbGoodsOrder> GoodsOrderList=tbGoodsOrderService.getListGoodsOrderById(tbRefund.getOrderId());
+       /* if(tbRefund.getRefundId()!=null){
+        List<TbReturnGoods> returnGoodsList=
+        }*/
         model.addAttribute("refund",tbRefund);
         model.addAttribute("GoodsOrderList",GoodsOrderList);
-        
+
         return "pages/specific/refund";
     }
 
