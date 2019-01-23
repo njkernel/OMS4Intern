@@ -1,16 +1,13 @@
-package cn.com.connext.oms.mapper;
+package cn.com.connext.oms.service;
 
 import cn.com.connext.oms.entity.TbReturnGoods;
-import org.springframework.stereotype.Repository;
-import tk.mybatis.mapper.MyMapper;
 
 import java.util.List;
 
-@Repository
-public interface TbReturnGoodsMapper extends MyMapper<TbReturnGoods> {
+public interface TbReturnGoodsService {
 
     /**
-    * @Description: 根据商品ID查看退货商品表
+    * @Description: 根据订单id查看退货商品表
     * @Param: [orderId]
     * @return: java.util.List<cn.com.connext.oms.entity.TbReturnGoods>
     * @Author: Lili Chen
