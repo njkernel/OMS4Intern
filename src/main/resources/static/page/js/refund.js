@@ -41,7 +41,7 @@ function mySearch() {
         alert("选择条件不可为空");
     }
     else if(select=="refundState"&&mySelect!="退款成功"&&mySelect!="待退款"){
-        alert("退款单的状态为‘退款refundState成功’或者‘待退款’");
+        alert("退款单的状态为‘退款成功’或者‘待退款’");
     }
     else{
         $("#frm").submit();
