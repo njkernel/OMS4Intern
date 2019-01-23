@@ -129,6 +129,7 @@ let orderList = new Vue({
                     })
                 }
                 checkAll();
+                this.initTable();
         },
 
         // 异常处理
@@ -142,7 +143,7 @@ let orderList = new Vue({
             $(":checkbox").removeAttr("checked");
                 var id = [];
                 id = this.checkedNames;
-                var that=this;
+                var that = this;
                 $.ajax({
                     type:'Get',
                     url:'/Output',
@@ -155,6 +156,7 @@ let orderList = new Vue({
                     }
                 });
                 checkAll();
+                this.initTable();
         },
 
         //订单详情
