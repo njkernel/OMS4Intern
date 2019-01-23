@@ -42,6 +42,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
   private static final String GET_SUCCESS = "success";
   private static final String GET_FEEDBACK_OUTTIME = "over";
   private static final String RETURN_STATE_UNCHECKED = "待审核";
+  private static final String RETURN_STATE_AUDIT_UNCHECKED = "审核通过";
 //  public static String IP="127.0.0.1";
 //  public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
 
@@ -264,7 +265,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       TbReturn tbReturn1 = tbExchangeMapper.selectTbReturnById(ids[i]);
       int orderId = tbReturn1.getOrderId();
 
-      if (!RETURN_STATE_UNCHECKED.equals(tbReturn1.getReturnState())) {
+      if (!RETURN_STATE_AUDIT_UNCHECKED.equals(tbReturn1.getReturnState())) {
         continue;
       }
       // 生成入库单

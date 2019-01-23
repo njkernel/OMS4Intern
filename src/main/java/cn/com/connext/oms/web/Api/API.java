@@ -19,6 +19,6 @@ public class API {
     public static final String API_ORDER = HOST + "/getAllOrder";
 
     //退换货模块交互接口
-    public static final String API_RETURN=WMS_HOST+"api/inRepertoryOrder";
+    public static final String API_RETURN=WMS_HOST+"/api/inRepertoryOrder";
 
 }
