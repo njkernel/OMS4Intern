@@ -220,17 +220,24 @@ public class TbOrderServiceImpl implements TbOrderService {
                                 output.setModifiedUser("仓库请求修改");
                             }else{
                                 order.setModifiedUser(userName);
-                                output.setModifiedUser(userName);
+                                if(output!=null){//如果有生成出库单（待预检，待路由，待出库状态都没有出库单）
+                                    output.setModifiedUser(userName);
+                                }
                             }
                             order.setOrderState("已取消");
                             order.setUpdated(date);
+                            if(output!=null){
+                                output.setOutputState("已取消");
+                                output.setCreated(date);
+                                outputs.add(output);//保存需要取消的出库单
+                            }
 
-                            output.setOutputState("已取消");
-                            output.setCreated(date);
-                            outputs.add(output);//保存需要取消的出库单
                         }
                         orderResult=tbOrderMapper.updateOrderListStatue(tbOrderList);
-                        outputResult=tbOutputMapper.updateOutputListStatue(outputs);//OMS出库单取消
+                        if(!outputs.isEmpty()){//如果出库单不为空
+                            outputResult=tbOutputMapper.updateOutputListStatue(outputs);//OMS出库单取消
+                        }
+
                     }
 
             }

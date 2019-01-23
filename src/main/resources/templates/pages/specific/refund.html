@@ -39,15 +39,30 @@
                                     <th>商品数量</th>
                                     <th>商品总价</th>
                                 </tr>
-                                <tbody th:each="goodOrder,iterStat : ${GoodsOrderList}">
-                                <tr>
-                                    <td th:text="${goodOrder.getTbGoods().getGoodsCode()}"></td>
-                                    <td th:text="${goodOrder.getTbGoods().getGoodsName()}"></td>
-                                    <td th:text="${goodOrder.getTbGoods().getGoodsPrice()}"></td>
-                                    <td th:text="${goodOrder.getNum()}"></td>
-                                    <td th:text="${goodOrder.getTotalPrice()}"></td>
-                                </tr>
-                                </tbody>
+                                <th:block th:if="${returnGoodsList!=null}">
+                                    <tbody th:each="returnGoods,iterStat : ${returnGoodsList}">
+                                    <tr>
+                                        <td th:text="${returnGoods.getTbGoods().getGoodsCode()}"></td>
+                                        <td th:text="${returnGoods.getTbGoods().getGoodsName()}"></td>
+                                        <td th:text="${returnGoods.getTbGoods().getGoodsPrice()}"></td>
+                                        <td th:text="${returnGoods.getNumber()}"></td>
+                                        <td th:text="${returnGoods.getNumber()*returnGoods.getTbGoods().getGoodsPrice()}"></td>
+                                    </tr>
+                                    </tbody>
+
+                                </th:block>
+                                <th:block th:if="${returnGoodsList==null}">
+                                    <tbody th:each="goodOrder,iterStat : ${GoodsOrderList}">
+                                    <tr>
+                                        <td th:text="${goodOrder.getTbGoods().getGoodsCode()}"></td>
+                                        <td th:text="${goodOrder.getTbGoods().getGoodsName()}"></td>
+                                        <td th:text="${goodOrder.getTbGoods().getGoodsPrice()}"></td>
+                                        <td th:text="${goodOrder.getNum()}"></td>
+                                        <td th:text="${goodOrder.getTotalPrice()}"></td>
+                                    </tr>
+                                    </tbody>
+                                </th:block>
+
                             </table>
                         </div>
                     </div>
