@@ -129,7 +129,6 @@ let orderList = new Vue({
                 checkAll();
                 this.initTable();
         },
-
         // 异常处理
         abnormalHandle(){
             let url='/abnormalHandle';
