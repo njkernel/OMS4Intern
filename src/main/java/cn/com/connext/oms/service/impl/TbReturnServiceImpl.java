@@ -188,6 +188,7 @@ public class TbReturnServiceImpl implements TbReturnService {
 
             tbReturnMapper.createInputOrder(inputCode, orderId,inputState,created, updated, synchronizeState);
         }
+
         for (int i = 0; i < returnIdsList.size(); i++) {
             int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(i));
             tbInput1 = tbExchangeMapper.selectTbInputByOrderId(orderId);
