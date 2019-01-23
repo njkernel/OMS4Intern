@@ -1,9 +1,11 @@
 package cn.com.connext.oms.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
-
+@Data
 @Table(name = "tb_role")
 public class TbRole implements Serializable {
 
@@ -31,75 +33,4 @@ public class TbRole implements Serializable {
      */
     private Date created;
 
-    /**
-     * 获取id
-     *
-     * @return role_id - id
-     */
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    /**
-     * 设置id
-     *
-     * @param roleId id
-     */
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    /**
-     * 获取角色名
-     *
-     * @return role_name - 角色名
-     */
-    public String getRoleName() {
-        return roleName;
-    }
-
-    /**
-     * 设置角色名
-     *
-     * @param roleName 角色名
-     */
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    /**
-     * 获取更新时间
-     *
-     * @return updated - 更新时间
-     */
-    public Date getUpdated() {
-        return updated;
-    }
-
-    /**
-     * 设置更新时间
-     *
-     * @param updated 更新时间
-     */
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-
-    /**
-     * 获取创建时间
-     *
-     * @return created - 创建时间
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param created 创建时间
-     */
-    public void setCreated(Date created) {
-        this.created = created;
-    }
 }

@@ -115,6 +115,7 @@ let orderList = new Vue({
             var arr=[];
             var that = this;
             arr=this.checkedNames;
+            var that=this;
                 if(confirm_){
                     $.ajax({
                         type:'post',
