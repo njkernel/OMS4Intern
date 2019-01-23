@@ -120,11 +120,11 @@
                 <li class="active"><a th:href="@{/index/getRefundIndex(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
             </th:block>
             <th:block th:if="${map.get('page')!=iterStat.index+1}">
-                <th:block th:if="(${map.get('page')<=5 and iterStat.index+1>5}) or (${map.get('page')>5} and (${iterStat.index+1<map.get('page')-4 or iterStat.index+1>map.get('page')}))">
+                <th:block th:if="(${map.get('page')<=8 and iterStat.index+1>8}) or (${map.get('page')>8} and (${iterStat.index+1<map.get('page')-7 or iterStat.index+1>map.get('page')}))">
                     <li ><a hidden th:href="@{/index/getRefundIndex(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
 
                 </th:block>
-                <th:block th:if="!((${map.get('page')<=5 and iterStat.index+1>5}) or (${map.get('page')>5} and (${iterStat.index+1<map.get('page')-4 or iterStat.index+1>map.get('page')})))">
+                <th:block th:if="!((${map.get('page')<=8 and iterStat.index+1>8}) or (${map.get('page')>8} and (${iterStat.index+1<map.get('page')-7 or iterStat.index+1>map.get('page')})))">
                     <li ><a th:href="@{/index/getRefundIndex(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
 
                 </th:block>
