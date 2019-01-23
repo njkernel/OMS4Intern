@@ -309,7 +309,7 @@
             <otherwise>
             </otherwise>
         </choose>
-        ORDER BY updated ASC
+        ORDER BY updated DESC
     </select>
 
 
