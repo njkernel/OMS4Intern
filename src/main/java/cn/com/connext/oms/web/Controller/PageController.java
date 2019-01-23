@@ -395,4 +395,13 @@ public class PageController {
         model.addAttribute("roleList",roleList);
         return "pages/details/user/administrator";
     }
+    /**
+     * created By Stephanie
+     * 角色页面
+     * @return
+     */
+    @GetMapping({"/tbRole"})
+    public String tbRole(){
+        return "pages/details/user/roleManagement";
+    }
 }

@@ -161,7 +161,7 @@
         a.order_id,
         a.order_state,
         e.output_code,
-        e.synchronize_state,
+        e.output_state,
         b.receiver_name,
         a.delivery_company,
         a.delivery_code,
@@ -174,7 +174,7 @@
         tb_order a
         inner join tb_receiver b on a.order_id = b.order_id
         inner join tb_output e on a.order_id = e.order_id
-        WHERE a.order_state=#{state}
+        WHERE a.order_state in (#{state},#{state2},#{state3})
         <if test="orderId != null and orderId != ''">
             and a.order_id like CONCAT('%',#{orderId},'%')
         </if>
@@ -184,5 +184,6 @@
         <if test="deliveryCode != null and deliveryCode !=''">
             and a.delivery_code like CONCAT('%',#{deliveryCode},'%')
         </if>
+        order by order_id
     </select>
 </mapper>

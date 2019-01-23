@@ -61,6 +61,13 @@ let outputList = new Vue({
             document.getElementById('iframeId2').src="/orderDetailsAll?orderId="+this.checkedDate;
         },
 
+        // 确认收货，将已发货状态改为已完成
+        confirmReceipt(){
+            let url='/confirmReceiptUpdateOrderState';
+            callAxiosGet(url,{orderId:this.checkedDate},this.Suc,this.Fail);
+            this.initTable()
+        },
+
         // 根据页码，查询到要显示的数据
         to_page(pn) {
             let that=this;
@@ -68,9 +75,6 @@ let outputList = new Vue({
                 params: {
                     currentPage:pn,
                     pageSize: that.page.pageSize,
-                    // orderId : this.searchDate.orderId,
-                    // outputCode :this.searchDate.outputCode,
-                    // deliveryCode :this.searchDate.deliveryCode
                 }
             }).then(res => {
                 console.log(res);
@@ -136,7 +140,7 @@ let outputList = new Vue({
         },
         //接口未连通
         Fail(err){
-            console.log("网络连接错误")
+            alert(res.message);
         },
     }
 });

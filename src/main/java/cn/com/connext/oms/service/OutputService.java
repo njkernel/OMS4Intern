@@ -36,7 +36,7 @@ public interface OutputService {
      * @auther: Jay
      * @date: 2019/1/7
      */
-    BaseResult Output(int id) throws HttpProcessException;
+    BaseResult Output(int[] id1) throws HttpProcessException;
     /**
      *
      * 功能描述: 根据订单id查询出所有出库单的详情
@@ -93,4 +93,13 @@ public interface OutputService {
      * @date: 2019/1/9
      */
     String updateOutput(TbOutput tbOutput);
+    /**
+     * 功能描述: 确认收货后将订单状态修改为已完成
+     *
+     * @param: 订单id
+     * @return: 修改成功或者修改失败
+     * @auther: Jay
+     * @date: 2019/1/21
+     */
+    BaseResult confirmReceiptUpdateOrderState(int orderId);
 }

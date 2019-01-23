@@ -5,7 +5,6 @@ import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOrderDetails;
 import cn.com.connext.oms.entity.TbOutput;
 import cn.com.connext.oms.service.OutputService;
-import cn.com.connext.oms.service.TbOrderService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +25,7 @@ import java.util.Map;
 public class OutputController {
     @Autowired
     private OutputService outputService;
-    @Autowired
-    private TbOrderService tbOrderService;
+
     private static String STATE1 = "haveShipped";
     private static String STATE2 = "waittingChecked";
     private static String STATE3 = "waittingPackaged";
@@ -55,7 +53,7 @@ public class OutputController {
      * @date: 2019/1/7
      */
     @GetMapping("/Output")
-    public BaseResult Output(int id) throws Exception {
+    public BaseResult Output(int[] id) throws Exception {
         return outputService.Output(id);
     }
 
@@ -73,6 +71,18 @@ public class OutputController {
         return BaseResult.success("成功", allOrderByStatus);
     }
 
+    /**
+     * 功能描述: 确认收货后将订单状态修改为已完成
+     *
+     * @param: 订单id
+     * @return: 修改成功或者修改失败
+     * @auther: Jay
+     * @date: 2019/1/21
+     */
+    @GetMapping("/confirmReceiptUpdateOrderState")
+    public BaseResult confirmReceiptUpdateOrderState(int orderId){
+        return outputService.confirmReceiptUpdateOrderState(orderId);
+    }
     /**
      * 功能描述: WMS调用此接口同步状态
      *
