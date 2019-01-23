@@ -64,7 +64,8 @@ let outputList = new Vue({
         // 确认收货，将已发货状态改为已完成
         confirmReceipt(){
             let url='/confirmReceiptUpdateOrderState';
-            callAxiosGet(url,{orderId:this.checkedDate},this.Suc,this.Fail)
+            callAxiosGet(url,{orderId:this.checkedDate},this.Suc,this.Fail);
+            this.initTable()
         },
 
         // 根据页码，查询到要显示的数据

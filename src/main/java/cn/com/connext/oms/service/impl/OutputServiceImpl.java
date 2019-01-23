@@ -16,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -58,22 +59,37 @@ public class OutputServiceImpl implements OutputService {
      */
     @Override
     public BaseResult UpdateOrderIntoWaitOutPut(int[] id) {
-        for (int id2:id){
-            String orderState = tbOrderMapper.selectByPrimaryKey(id2).getOrderState();
-            if (!orderState.equals(STATUS2)){
-                return BaseResult.fail("其中有不符合条件订单状态，请选择待路由的订单！");
-            }
-        }
+        // 定义 m 作为统计返回"路由成功"的条数
+        int m = 0;
+        // 定义 n 作为统计返回"路由异常"的条数
+        int n = 0;
+        // 定义 k 作为统计返回"不符合状态"的条数
+        int k = 0;
         // 遍历数组 id
         for (int id1:id){
             // 根据订单id查询整个订单数据
             TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(id1);
-            // 设置订单状态为待出库
-            tbOrder.setOrderState(STATUS3);
-            //更改订单状态
-            tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+            // 获取订单状态
+            String orderState = tbOrder.getOrderState();
+            if (orderState.equals(STATUS2)){
+                // 设置订单状态为待出库
+                tbOrder.setOrderState(STATUS3);
+                // 更改订单状态
+                int t = tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+                if (t==1){
+                    m++;
+                } else {
+                    n++;
+                }
+            } else {
+                k++;
+            }
         }
-        return BaseResult.success("成功！");
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(m);
+        list.add(n);
+        list.add(k);
+        return BaseResult.success("mes",list);
     }
 
     /**
@@ -86,40 +102,54 @@ public class OutputServiceImpl implements OutputService {
      * @date: 2019/1/7
      */
     @Override
-    public BaseResult Output(int id) {
-        //根据id查询出所有的订单信息
-        TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(id);
-        List<OutRepoOrderDetailDto> repoOrderDetailDto = tbOutputMapper.getOutRepoOrderDetailDto(id);
-        if (tbOrder.getOrderState().equals(STATUS3)||tbOrder.getOrderState().equals(STATUS6)){
-        //根据收获人信息查询收获人信息
-        TbReceiver tbReceiver = tbReceiverMapper.selectByPrimaryKey(tbOrder.getReceiverId());
-        TbOutput tbOutput = this.getOneTbOutput(id);
-        //传送出库单并接受返回值类型判断是否接收成功
-        String s = null;
-            try {
-                s = OutputApi.post(tbOutput,tbOrder,tbReceiver,repoOrderDetailDto);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public BaseResult Output(int[] id1) {
+        // 定义 m 作为统计返回"出库成功"的条数
+        int m = 0;
+        // 定义 n 作为统计返回"出库异常"的条数
+        int n = 0;
+        // 定义 k 作为统计返回"不符合状态"的条数
+        int k = 0;
+        // 遍历前台选中的id数组
+        for (int id:id1) {
+            // 根据id查询出所有的订单信息
+            TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(id);
+            List<OutRepoOrderDetailDto> repoOrderDetailDto = tbOutputMapper.getOutRepoOrderDetailDto(id);
+            if (tbOrder.getOrderState().equals(STATUS3) || tbOrder.getOrderState().equals(STATUS6)) {
+                // 根据收获人信息查询收获人信息
+                TbReceiver tbReceiver = tbReceiverMapper.selectByPrimaryKey(tbOrder.getReceiverId());
+                TbOutput tbOutput = this.getOneTbOutput(id);
+                //传送出库单并接受返回值类型判断是否接收成功
+                String s = null;
+                try {
+                    s = OutputApi.post(tbOutput, tbOrder, tbReceiver, repoOrderDetailDto);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            // 判断接收的结果 200 表示接收成功
-        if ("200".equals(s)){
-            tbOutput.setOutputState(STATUS7);
-            tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
-            tbOrder.setOrderState(STATUS4);
-            tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
-            return BaseResult.success("出库成功！");
-        } else {
-                // 状态不是200的一切情况
-            tbOrder.setOrderState(STATUS6);
-            tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
-            tbOutput.setOutputState(STATUS6);
-            tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
-         }
-        }else {
-        return BaseResult.fail("请选择待出库的订单！");
+                // 判断接收的结果 200 表示接收成功
+                if ("200".equals(s)) {
+                    tbOutput.setOutputState(STATUS7);
+                    tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
+                    tbOrder.setOrderState(STATUS4);
+                    tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+                    m++;
+                } else {
+                    // 状态不是200的一切情况
+                    tbOrder.setOrderState(STATUS6);
+                    tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+                    tbOutput.setOutputState(STATUS6);
+                    tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
+                    n++;
+                }
+            } else {
+                k++;
+            }
         }
-        return BaseResult.fail("出库异常！");
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(m);
+        list.add(n);
+        list.add(k);
+        return BaseResult.success("mes",list);
     }
     /**
      *

@@ -167,7 +167,7 @@
         select * from tb_order o
        /* inner join tb_goods_order go on go.order_id=o.order_id
         inner join tb_goods g on g.goods_id=go.goods_id*/
-        INNER JOIN tb_receiver r on r.receiver_id=o.receiver_id
+        INNER JOIN tb_receiver r on r.order_id=o.order_id
         WHERE o.order_id=#{orderId}
     </select>
 
@@ -299,12 +299,17 @@
             <when test="orderGoodsReceiverDto.orderState !=null and orderGoodsReceiverDto.orderState != ''">
                 WHERE order_state LIKE "%"#{orderGoodsReceiverDto.orderState}"%"
             </when>
+            <when test="orderGoodsReceiverDto.orderCode !=null and orderGoodsReceiverDto.orderCode != ''">
+                WHERE order_code LIKE "%"#{orderGoodsReceiverDto.orderCode}"%"
+            </when>
             <when test="orderGoodsReceiverDto.receiverName !=null and orderGoodsReceiverDto.receiverName != ''">
                 WHERE receiver_name LIKE "%"#{orderGoodsReceiverDto.receiverName}"%"
             </when>
+
             <otherwise>
             </otherwise>
         </choose>
+        ORDER BY updated DESC
     </select>
 
 

@@ -5,15 +5,17 @@ function checkAll(){
             $("#return").attr('disabled',false);
             $("#exchange").attr('disabled',false);
             $("#MyAbnormalModel").attr('disabled',false);
-            $("#outstock").attr('disabled',false);
             $("#checked").attr('disabled',false);
+            $("#outstock").attr('disabled',false);
+            $("#route").attr('disabled',false);
         }
         else {
             $("#return").attr('disabled',true);
             $("#exchange").attr('disabled',true);
             $("#MyAbnormalModel").attr('disabled',true);
-            $("#outstock").attr('disabled',true);
             $("#checked").attr('disabled',true);
+            $("#outstock").attr('disabled',false);
+            $("#route").attr('disabled',false);
         }
     }
     else {
@@ -21,6 +23,7 @@ function checkAll(){
         $("#return").attr('disabled',true);
         $("#MyAbnormalModel").attr('disabled',true);
         $("#outstock").attr('disabled',true);
+        $("#route").attr('disabled',true);
         $("#checked").attr('disabled',true);
     }
 }
@@ -35,6 +38,7 @@ let orderList = new Vue({
             page:{
                 pageSize:5,
                 currentPage:1,
+                orderCode:'',
                 receiverName:'',
                 orderState:'',
                 deliveryCode:'',
@@ -54,12 +58,15 @@ let orderList = new Vue({
                 { text: '收货人', value: 'receiverName' },
                 { text: '订单状态', value: 'orderState' },
                 { text: '物流单号', value: 'deliveryCode' },
+                { text: '订单编码', value: 'orderCode' },
             ],
             //搜索条件
             searchDate:{
+
                 receiverName:'',
                 orderState:'',
                 deliveryCode:'',
+                orderCode:'',
             },
             //yonyongi添加
             //订单商品详情，用于退换货选择数量信息
@@ -89,20 +96,26 @@ let orderList = new Vue({
         },
         //清空搜索条件
         initialize(){
+
             this.page.receiverName='';
             this.page.orderState='';
             this.page.deliveryCode='';
+            this.page.orderCode='';
+          /*  */
             this.searchDate.receiverName='';
             this.searchDate.orderState='';
             this.searchDate.deliveryCode='';
+            this.searchDate.orderCode='';
         },
 
         // 路由操作接口 Jay新增 2019/1/16
         updateRoute(){
+            $(":checkbox").removeAttr("checked");
             var confirm_ = confirm('确认？');
             var arr=[];
+            var that = this;
             arr=this.checkedNames;
-            if(arr.length>0){
+            var that=this;
                 if(confirm_){
                     $.ajax({
                         type:'post',
@@ -111,13 +124,12 @@ let orderList = new Vue({
                             "id":arr.join(",")},
                         dataType:'JSON',
                         success:function (data) {
-                            alert(data.message);
+                            alert("成功"+data.data[0]+"条"+","+"异常"+data.data[1]+"条"+","+"不符合条件"+data.data[2]+"条");
+                            that.initTable();
                         }
                     })
                 }
-            }else {
-                alert("请先选择订单");
-            }
+                checkAll();
         },
 
         // 异常处理
@@ -125,13 +137,25 @@ let orderList = new Vue({
             let url='/abnormalHandle';
             callAxiosGet(url,{abnormalId:this.checkedNames[0]},this.Suc,this.Fail)
         },
+
         // 出库操作，将订单出库 Jay新增 2019/1/16
         outputOrder(){
             $(":checkbox").removeAttr("checked");
-            this.orderId = this.checkedNames[0];
-            let url = '/Output';
-            callAxiosGet(url, {id: this.orderId}, this.Suc, this.Fail)
-            checkAll();
+                var id = [];
+                id = this.checkedNames;
+                var that = this;
+                $.ajax({
+                    type:'Get',
+                    url:'/Output',
+                    data:{
+                        "id":id.join(",")},
+                    dataType:'JSON',
+                    success:function (data) {
+                        alert("成功"+data.data[0]+"条"+","+"出库异常"+data.data[1]+"条"+","+"不符合条件"+data.data[2]+"条");
+                        that.initTable();
+                    }
+                });
+                checkAll();
         },
 
         //订单详情
@@ -146,9 +170,11 @@ let orderList = new Vue({
                 params: {
                     currentPage:pn,
                     pageSize: that.page.pageSize,
+
                     receiverName : this.searchDate. receiverName,
                     orderState :this.searchDate.orderState,
-                    deliveryCode :this.searchDate.deliveryCode
+                    deliveryCode :this.searchDate.deliveryCode,
+                    orderCode : this.searchDate.orderCode
                 }
             }).then(res => {
                 $(':checkbox').removeAttr("checked");
@@ -172,6 +198,7 @@ let orderList = new Vue({
                     alert("输入错误");
                 }
             }
+
             else if(this.selected==='receiverName'){
                 this.initialize();
                 this.searchDate.receiverName=this.searchInput3;
@@ -184,13 +211,19 @@ let orderList = new Vue({
                 this.initialize();
                 this.searchDate.deliveryCode=this.searchInput3;
             }
+            else if(this.selected==='orderCode'){
+                this.initialize();
+                this.searchDate.orderCode=this.searchInput3;
+            }
 
 
             //查询条件
             this.page.currentPage=1;
+
             this.page.receiverName=this.searchDate.receiverName;
             this.page.orderState=this.searchDate.orderState;
             this.page.deliveryCode=this.searchDate.deliveryCode;
+            this.page.orderCode=this.searchDate.orderCode;
             //初始化表格
             this.initTable();
         },

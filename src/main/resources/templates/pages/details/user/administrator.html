@@ -68,7 +68,14 @@
                 <li class="active"><a th:href="@{/index/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
             </th:block>
             <th:block th:if="${map.get('page')!=iterStat.index+1}">
-                <li ><a th:href="@{/index/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+                <th:block th:if="(${map.get('page')<=8 and iterStat.index+1>8}) or (${map.get('page')>8} and (${iterStat.index+1<map.get('page')-7 or iterStat.index+1>map.get('page')}))">
+                    <li ><a hidden th:href="@{/index/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+                </th:block>
+                <th:block th:if="!((${map.get('page')<=8 and iterStat.index+1>8}) or (${map.get('page')>8} and (${iterStat.index+1<map.get('page')-7 or iterStat.index+1>map.get('page')})))">
+                    <li ><a th:href="@{/index/getAllUser(page=${iterStat.index+1},size=4)}" th:text="${iterStat.index+1}"></a></li>
+
+                </th:block>
+
             </th:block>
         </th:block>
         <th:block th:if="${map.get('nextPage')==1}">
