@@ -168,6 +168,7 @@
         a.delivery_company,
         a.delivery_code,
         b.receiver_district,
+        b.receiver_state,
         b.receiver_city,
         b.receiver_address,
         b.receiver_name,
