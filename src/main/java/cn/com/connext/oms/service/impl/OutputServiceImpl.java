@@ -5,7 +5,6 @@ import cn.com.connext.oms.commons.dto.output.OutRepoOrderDetailDto;
 import cn.com.connext.oms.entity.*;
 import cn.com.connext.oms.mapper.*;
 import cn.com.connext.oms.service.OutputService;
-import cn.com.connext.oms.service.TbUpdateStockService;
 import cn.com.connext.oms.web.Api.output.OutputApi;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -81,6 +80,7 @@ public class OutputServiceImpl implements OutputService {
                 // 更改订单状态
                 int t = tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
                 if (t==1){
+                    // 路由成功，设置发货仓库为南京仓
                     tbOrder.setDeliveryWarehouse(STATUS0);
                     tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
                     m++;
@@ -139,23 +139,32 @@ public class OutputServiceImpl implements OutputService {
                 if ("200".equals(s)) {
                     List<TbGoodsOrder> goodsDetailByOrderId = tbGoodsOrderMapper.getGoodsDetailByOrderId(id);
                     for (int i = 0;i<goodsDetailByOrderId.size();i++){
+                        // 更新锁定库存
                         tbStockMapper.updateLockdAndAvailable(goodsDetailByOrderId.get(i).getGoodsId(),(-goodsDetailByOrderId.get(i).getNum()));
+                        // 获取总库存
                         int totalStock = tbStockMapper.getLocked(goodsDetailByOrderId.get(i).getGoodsId()).getTotalStock()-goodsDetailByOrderId.get(i).getNum();
+                        // 更新总库存
                         tbStockMapper.updateStock(goodsDetailByOrderId.get(i).getGoodsId(),totalStock);
+                        // 获取锁定库存
                         int lockStock = tbStockMapper.getLocked(goodsDetailByOrderId.get(i).getGoodsId()).getLockedStock();
+                        // 计算可使用库存
                         int availabeStock = totalStock-lockStock;
+                        // 更新可使用的库存
                         tbStockMapper.updateAvailable(goodsDetailByOrderId.get(i).getGoodsId(),availabeStock);
                     }
+                    // 更新订单状态为已完成，并更新时间
                     tbOrder.setOrderState(STATUS4);
                     tbOrder.setUpdated(new Date());
                     tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+                    // 根据id更新出库单为处理中，并更新时间
                     tbOutputMapper.updateOutput(STATUS7,new Date(),tbOutput.getOrderId());
                     m++;
                 } else {
-                    // 状态不是200的一切情况
+                    // 状态不是200的一切情况,设置订单状态为出库异常和更新最新时间
                     tbOrder.setOrderState(STATUS6);
                     tbOrder.setUpdated(new Date());
                     tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+                    // 根据订单id更新出库单状态为出库异常和更新最新时间
                     tbOutputMapper.updateOutput(STATUS6,new Date(),tbOutput.getOrderId());
                     n++;
                 }
@@ -241,17 +250,20 @@ public class OutputServiceImpl implements OutputService {
      *
      * 功能描述: 更改出库单的状态
      *
-     * @param:
-     * @return:
+     * @param: 出库单
+     * @return: 200 修改成功  error 修改失败
      * @auther: Jay
      * @date: 2019/1/9
      */
     @Override
     public String updateOutput(TbOutput tbOutput) {
+        // 更改出库单的状态
         int t = tbOutputMapper.updateByPrimaryKeySelective(tbOutput);
         if (t==1){
+            // 修改成功
             return "200";
         }
+        // 修改失败
         return "error";
     }
 
@@ -265,6 +277,7 @@ public class OutputServiceImpl implements OutputService {
      */
     @Override
     public BaseResult confirmReceiptUpdateOrderState(int orderId) {
+        // 根据订单id获取订单
         TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(orderId);
         // 获取订单状态
         String state = tbOrder.getOrderState();

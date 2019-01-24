@@ -161,6 +161,7 @@
     <select id="getOutputOrdersBySearch" resultType="cn.com.connext.oms.entity.TbOrderDetails">
         SELECT
         a.order_id,
+        a.order_code,
         a.order_state,
         e.output_code,
         e.output_state,
