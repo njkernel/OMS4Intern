@@ -24,4 +24,7 @@ public class API {
     //退换货模块交互接口
     public static final String API_RETURN=WMS_HOST+"/api/inRepertoryOrder";
 
+    // token里面验证
+    public static final String GET_TOKEN_URL ="http://10.129.100.94:8080/api/getToken";
+
 }
