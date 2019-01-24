@@ -9,6 +9,12 @@
     <result column="order_id" jdbcType="INTEGER" property="orderId" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
     <result column="number" jdbcType="INTEGER" property="number" />
+    <association property="tbGoods" javaType="cn.com.connext.oms.entity.TbGoods">
+      <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+      <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+      <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+      <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
+    </association>
   </resultMap>
 
   <!--生成退货单对应的商品单-->
@@ -17,4 +23,8 @@
      (order_id,goods_id,number) VALUES (#{orderId},#{goodsId},#{number})
 
   </insert>
+
+  <select id="getListReturnGoodsByOrderId" parameterType="Integer" resultMap="BaseResultMap">
+    SELECT tb_return_goods.*,tb_goods.goods_code,tb_goods.goods_name,tb_goods.goods_price  FROM tb_return_goods,tb_goods WHERE tb_return_goods.order_id=#{orderId} and tb_return_goods.goods_id=tb_goods.goods_id
+  </select>
 </mapper>

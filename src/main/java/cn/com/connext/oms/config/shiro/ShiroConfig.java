@@ -2,10 +2,14 @@ package cn.com.connext.oms.config.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,9 +66,64 @@ public class ShiroConfig {
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
 
-
-
         return shiroFilterFactoryBean;
+    }
+
+    @Bean(name = "sessionIdGenerator")
+    public JavaUuidSessionIdGenerator sessionIdGenerator() {
+        return new JavaUuidSessionIdGenerator();
+    }
+
+    @Bean(name = "sessionIdCookie")
+    public SimpleCookie sessionIdCookie() {
+        SimpleCookie cookie = new SimpleCookie();
+        cookie.setName("WEBSID");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(18000);
+        return cookie;
+    }
+
+    @Bean(name = "sessionDao")
+    public EnterpriseCacheSessionDAO sessionDao() {
+        EnterpriseCacheSessionDAO sessionDao = new EnterpriseCacheSessionDAO();
+        sessionDao.setActiveSessionsCacheName("shiro-activeSessionCache");
+        sessionDao.setSessionIdGenerator(new JavaUuidSessionIdGenerator());
+        return sessionDao;
+    }
+
+    @Bean(name = "sessionManager")
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setGlobalSessionTimeout(1800000);
+        sessionManager.setDeleteInvalidSessions(true);
+        sessionManager.setSessionValidationSchedulerEnabled(true);
+        // sessionManager.setSessionValidationScheduler(new QuartzSessionValidationScheduler());
+        sessionManager.setSessionDAO(sessionDao());
+        sessionManager.setSessionIdCookieEnabled(true);
+        sessionManager.setSessionIdCookie(sessionIdCookie());
+        return sessionManager;
+    }
+
+    @Bean(name = "lifecycleBeanPostProcessor")
+    public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
+
+    @Bean
+    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
+        daap.setProxyTargetClass(true);
+        return daap;
+    }
+
+    @Bean(name = "securityManager")
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(MyRealm myShiroRealm, DefaultWebSessionManager sessionManager) {
+        DefaultWebSecurityManager dwsm = new DefaultWebSecurityManager();
+        dwsm.setRealm(myShiroRealm);
+        dwsm.setSessionManager(sessionManager);
+        // 用户授权/认证信息Cache, 采用EhCache 缓存
+        // dwsm.setCacheManager(getEhCacheManager());
+        return dwsm;
     }
 
     @Bean

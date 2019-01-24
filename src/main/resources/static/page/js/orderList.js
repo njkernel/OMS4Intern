@@ -131,7 +131,6 @@ let orderList = new Vue({
                 }
                 checkAll();
         },
-
         // 异常处理
         abnormalHandle(){
             let url='/abnormalHandle';

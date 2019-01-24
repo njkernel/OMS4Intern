@@ -25,8 +25,9 @@
                         </div>
                         <div class="title-content3">
                             <div class="title-content1-top1">出库单状态：<input disabled="disabled" th:text="${outStockDetails[0].outputState}"></div>
-                            <div class="title-content1-top2">收货地址：<input disabled="disabled" th:text="${outStockDetails[0].receiverDistrict
-                            +'省'+outStockDetails[0].receiverCity+'市'+outStockDetails[0].receiverAddress}"></div>
+                            <div class="title-content1-top2">收货地址：<input disabled="disabled" th:text="${outStockDetails[0].receiverState
+                            +'省'+outStockDetails[0].receiverCity+'市'+outStockDetails[0].receiverDistrict
+                            +'区'+outStockDetails[0].receiverAddress}"></div>
                             <div class="title-content1-top3">创建时间：<input disabled="disabled" th:text="${#dates.format(outStockDetails[0].created,'yyyy-MM-dd HH:mm:ss')}"></div>
                         </div>
                     </div>

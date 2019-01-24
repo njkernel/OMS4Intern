@@ -44,7 +44,14 @@ public interface TbGoodsOrderMapper extends MyMapper<TbGoodsOrder> {
     * @Date: 2019/1/15 
     */
     public List<TbGoodsOrder> getListGoodsOrderById(Integer orderId);
-
+    /**
+     * 功能描述:根据order_id查询goods_order_id
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/24 11:44
+     */
+    public List<TbGoodsOrder> getGoodsDetailByOrderId (Integer orderId);
 
 
 }

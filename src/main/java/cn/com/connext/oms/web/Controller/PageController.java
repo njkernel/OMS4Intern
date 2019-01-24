@@ -83,6 +83,9 @@ public class PageController {
     @Autowired
     private TbRoleService tbRoleService;
 
+    @Autowired
+    private TbReturnGoodsService tbReturnGoodsService;
+
 
     /*@RequiresPermissions({"checked"})//没有的话 AuthorizationException*/
     @GetMapping("/abnormalDetail")
@@ -277,15 +280,19 @@ public class PageController {
         OrderGoodsReceiverDto orderGoodsReceiverDto =tbOrderService.getAllById(orderId);
         model.addAttribute("orderDetail",orderGoodsReceiverDto);
         List<GoodsGoodsOrderDto> goodsGoodsOrderDtos=tbGoodsListService.goodsListFromOrder(orderId);
-        model.addAttribute("orderGoodsDetails",goodsGoodsOrderDtos);
+
         int sum1 = 0;
         double sum2 = 0;
+        String unitPriceForOrder = "";
         for (int i =0;i<goodsGoodsOrderDtos.size();i++){
             sum1+=goodsGoodsOrderDtos.get(i).getNum();
             sum2+=goodsGoodsOrderDtos.get(i).getTotalPrice();
+            unitPriceForOrder = String.valueOf(goodsGoodsOrderDtos.get(i).getTotalPrice()/goodsGoodsOrderDtos.get(i).getNum());
+            goodsGoodsOrderDtos.get(i).setUnitPriceForOrder(unitPriceForOrder);
         }
         model.addAttribute("sumNum",sum1);
         model.addAttribute("sumTotalPrice",sum2);
+        model.addAttribute("orderGoodsDetails",goodsGoodsOrderDtos);
         return "pages/specific/order-detail";
     }
 
@@ -372,9 +379,13 @@ public class PageController {
     public String refundDetail(Integer refundId,Model model) {
         TbRefund tbRefund=tbRefundService.getRefundById(refundId);
         List<TbGoodsOrder> GoodsOrderList=tbGoodsOrderService.getListGoodsOrderById(tbRefund.getOrderId());
+        if(tbRefund.getRefundId()!=null){
+        List<TbReturnGoods> returnGoodsList=tbReturnGoodsService.getListReturnGoodsByOrderId(tbRefund.getOrderId());
+            model.addAttribute("returnGoodsList",returnGoodsList);
+        }
         model.addAttribute("refund",tbRefund);
         model.addAttribute("GoodsOrderList",GoodsOrderList);
-        
+
         return "pages/specific/refund";
     }
 
