@@ -26,7 +26,7 @@ public class OutputAPI {
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("outRepoOrderNo",outputCode);
         String s = HttpClientUtil.post(HttpConfig.custom().client(),
-                API.HOST+"/api/getOutRepoOrderStatus",
+                "http://192.168.43.64:8080/api/getOutRepoOrderStatus",
                 HttpConfig.custom().headers(),
                 map, HttpConfig.custom().context(),
                 HttpConfig.custom().encoding());
@@ -39,7 +39,7 @@ public class OutputAPI {
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("outRepoOrderNo",outputCodeArray);
         String s = HttpClientUtil.post(HttpConfig.custom().client(),
-                API.HOST+"/api/cancelResult",
+                "http://192.168.43.64:8080/api/cancelResult",
                 HttpConfig.custom().headers(),
                 map, HttpConfig.custom().context(),
                 HttpConfig.custom().encoding());
