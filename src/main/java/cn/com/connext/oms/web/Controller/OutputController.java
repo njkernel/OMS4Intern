@@ -112,7 +112,6 @@ public class OutputController {
                  if (receivcerDetails != null && "200".equals(s)) {
                      // 设置订单的信息
                      TbOrder tbOrder = outputService.getOrderById(orderId);
-                     tbOrder.setDeliveryWarehouse("南京仓");
                      tbOrder.setDeliveryCompany(receivcerDetails.get(0));
                      tbOrder.setDeliveryCode(receivcerDetails.get(1));
                      tbOrder.setOrderState(STATUS);
