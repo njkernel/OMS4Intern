@@ -46,6 +46,7 @@ public class OutputServiceImpl implements OutputService {
     private static String STATUS6="出库异常";
     private static String STATUS7="处理中";
     private static String STATUS8="已完成";
+    private static String STATUS9="已取消";
 
 
     /**
@@ -183,7 +184,7 @@ public class OutputServiceImpl implements OutputService {
         // 从第 1 页开始，每一页 5 条数据
         PageHelper.startPage(currentPage, pageSize);
         // 返回所有状态是已出库的订单，模糊查询选择符合条件的订单，默认显示所有已出库订单
-        List<TbOrderDetails> allOrder = tbOutputMapper.getOutputOrdersBySearch(STATUS4,STATUS5,STATUS8, orderId,outputCode,deliveryCode);
+        List<TbOrderDetails> allOrder = tbOutputMapper.getOutputOrdersBySearch(STATUS4,STATUS5,STATUS8,STATUS9,orderId,outputCode,deliveryCode);
         PageInfo<TbOrderDetails> pageInfo = new PageInfo<>(allOrder);
         return pageInfo;
     }
