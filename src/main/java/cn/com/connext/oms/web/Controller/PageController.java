@@ -283,10 +283,12 @@ public class PageController {
         model.addAttribute("orderGoodsDetails",goodsGoodsOrderDtos);
         int sum1 = 0;
         double sum2 = 0;
+        ArrayList<Double> list = new ArrayList<>();
         for (int i =0;i<goodsGoodsOrderDtos.size();i++){
             sum1+=goodsGoodsOrderDtos.get(i).getNum();
             sum2+=goodsGoodsOrderDtos.get(i).getTotalPrice();
         }
+        model.addAttribute("tbOrderService",tbOrderService);
         model.addAttribute("sumNum",sum1);
         model.addAttribute("sumTotalPrice",sum2);
         return "pages/specific/order-detail";

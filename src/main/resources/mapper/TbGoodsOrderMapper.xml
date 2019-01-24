@@ -49,6 +49,9 @@
       AND
       order_id=#{orderId}
   </select>
+  <select id="getGoodsDetailByOrderId" resultType="cn.com.connext.oms.entity.TbGoodsOrder">
+    SELECT goods_id,num FROM tb_goods_order WHERE order_id=#{orderId}
+  </select>
 
 
 </mapper>

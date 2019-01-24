@@ -2,14 +2,10 @@ package cn.com.connext.oms.service.impl;
 
 import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.commons.dto.output.OutRepoOrderDetailDto;
-import cn.com.connext.oms.entity.TbOrder;
-import cn.com.connext.oms.entity.TbOrderDetails;
-import cn.com.connext.oms.entity.TbOutput;
-import cn.com.connext.oms.entity.TbReceiver;
-import cn.com.connext.oms.mapper.TbOrderMapper;
-import cn.com.connext.oms.mapper.TbOutputMapper;
-import cn.com.connext.oms.mapper.TbReceiverMapper;
+import cn.com.connext.oms.entity.*;
+import cn.com.connext.oms.mapper.*;
 import cn.com.connext.oms.service.OutputService;
+import cn.com.connext.oms.service.TbUpdateStockService;
 import cn.com.connext.oms.web.Api.output.OutputApi;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -37,7 +33,12 @@ public class OutputServiceImpl implements OutputService {
     private TbReceiverMapper tbReceiverMapper;
     @Autowired
     private TbOutputMapper tbOutputMapper;
+    @Autowired
+    private TbGoodsOrderMapper tbGoodsOrderMapper;
+    @Autowired
+    private TbStockMapper tbStockMapper;
     // 定义状态
+    private static String STATUS0="南京仓";
     private static String STATUS1="待处理";
     private static String STATUS2="待路由";
     private static String STATUS3="待出库";
@@ -80,6 +81,8 @@ public class OutputServiceImpl implements OutputService {
                 // 更改订单状态
                 int t = tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
                 if (t==1){
+                    tbOrder.setDeliveryWarehouse(STATUS0);
+                    tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
                     m++;
                 } else {
                     n++;
@@ -134,6 +137,15 @@ public class OutputServiceImpl implements OutputService {
 
                 // 判断接收的结果 200 表示接收成功
                 if ("200".equals(s)) {
+                    List<TbGoodsOrder> goodsDetailByOrderId = tbGoodsOrderMapper.getGoodsDetailByOrderId(id);
+                    for (int i = 0;i<goodsDetailByOrderId.size();i++){
+                        tbStockMapper.updateLockdAndAvailable(goodsDetailByOrderId.get(i).getGoodsId(),(-goodsDetailByOrderId.get(i).getNum()));
+                        int totalStock = tbStockMapper.getLocked(goodsDetailByOrderId.get(i).getGoodsId()).getTotalStock()-goodsDetailByOrderId.get(i).getNum();
+                        tbStockMapper.updateStock(goodsDetailByOrderId.get(i).getGoodsId(),totalStock);
+                        int lockStock = tbStockMapper.getLocked(goodsDetailByOrderId.get(i).getGoodsId()).getLockedStock();
+                        int availabeStock = totalStock-lockStock;
+                        tbStockMapper.updateAvailable(goodsDetailByOrderId.get(i).getGoodsId(),availabeStock);
+                    }
                     tbOrder.setOrderState(STATUS4);
                     tbOrder.setUpdated(new Date());
                     tbOrderMapper.updateByPrimaryKeySelective(tbOrder);

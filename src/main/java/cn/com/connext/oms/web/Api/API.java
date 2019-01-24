@@ -19,7 +19,7 @@ public class API {
     public static final String API_ORDER = HOST + "/getAllOrder";
 
     // 出库调用WMS接口
-    public static final String API_OUTPUT = "http://127.0.0.1:8080/api/pushOutRepoOrder";
+    public static final String API_OUTPUT = "http://10.129.100.88:8080/api/pushOutRepoOrder";
 
     //退换货模块交互接口
     public static final String API_RETURN=WMS_HOST+"/api/inRepertoryOrder";
