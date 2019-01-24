@@ -24,6 +24,17 @@ public class GoodsGoodsOrderDto extends TbGoodsOrder {
     public void setTbGoods(TbGoods tbGoods) {
         this.tbGoods = tbGoods;
     }
+
+    private String unitPriceForOrder;
+
+    public String getUnitPriceForOrder() {
+        return unitPriceForOrder;
+    }
+
+    public void setUnitPriceForOrder(String unitPriceForOrder) {
+        this.unitPriceForOrder = unitPriceForOrder;
+    }
+
     /**
      * 商品id
      */
