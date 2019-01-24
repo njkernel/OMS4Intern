@@ -6,10 +6,12 @@ import cn.com.connext.oms.entity.TbPermission;
 import cn.com.connext.oms.entity.TbStock;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
 
 import java.util.List;
 
+@Repository
 public interface TbAbnormalMapper extends MyMapper<TbAbnormal> {
     /**
     * @Author: caps

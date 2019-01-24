@@ -27,12 +27,14 @@
 
   <select id="selectStockByGoodsId" resultMap="orderBaseResultMap">
   SELECT
-      a.locked_stock,
-      a.total_stock,
-      a.available_stock
+	a.locked_stock,
+	a.total_stock,
+	a.available_stock,
+	a.goods_id,
+	a.stock_id
   FROM
-      tb_stock AS a
+    tb_stock AS a
   WHERE
-      a.goods_id=#{goodsId}
+    a.goods_id=#{goodsId}
   </select>
 </mapper>

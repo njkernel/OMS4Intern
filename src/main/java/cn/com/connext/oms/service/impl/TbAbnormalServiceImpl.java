@@ -41,6 +41,9 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
     @Autowired
     private TbAbnormalMapper tbAbnormalMapper;
 
+    @Autowired
+    private TbExchangeMapper tbExchangeMapper;
+
 
     /**
      * @Author: caps
@@ -91,12 +94,13 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
             return BaseResult.fail("订单存在异常，请先进行处理", list);
         }
         else {
+            //更改库存信息
+            this.lockStock(orderId);
             tbOrder.setOrderState("待路由");
             tbOrder.setUpdated(new Date());
             tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
             return BaseResult.success("预检通过");
         }
-
     }
 
     /**
@@ -212,6 +216,8 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         String abnormalState = tbAbnormal.getAbnormalState();
         if (StringUtils.equals(abnormalState,"待处理")) {
             if(StringUtils.equals(tbAbnormal.getAbnormalType(),"备注异常")||StringUtils.equals(tbAbnormal.getAbnormalType(),"金额异常")){
+                //更改库存信息
+                this.lockStock(orderId);
                 //更改订单状态为待路由
                 TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(orderId);
                 tbOrder.setOrderState("待路由");
@@ -232,6 +238,8 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
                         return BaseResult.fail("库存不足，请通知管理员进货先进货");
                     }
                 }
+                //更改库存信息
+                this.lockStock(orderId);
                 //更改订单状态为待路由
                 TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(orderId);
                 tbOrder.setOrderState("待路由");
@@ -244,6 +252,35 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         }
         return BaseResult.fail("当前异常已处理");
     }
+
+    /**
+    * @Author: caps
+    * @Description:锁定对应的商品库存
+    * @Param: [orderId]
+    * @Return: void
+    * @Create: 2019/1/24 10:24
+    */
+    public void lockStock(Integer orderId){
+
+        List<Integer> goodsIdByOrder = getGoodsIdByOrder(orderId);
+        for (Integer goodsId : goodsIdByOrder) {
+            Example example=new Example(TbGoodsOrder.class);
+            example.createCriteria().andEqualTo("goodsId",goodsId)
+                                    .andEqualTo("orderId",orderId);
+            TbGoodsOrder tbGoodsOrder = tbGoodsOrderMapper.selectOneByExample(example);
+            //更改锁定库存
+            Integer num = tbGoodsOrder.getNum();
+            TbStock tbStock = tbAbnormalMapper.selectStockByGoodsId(goodsId);
+            tbStock.setLockedStock(num);
+            //更改可用库存
+            Integer availableStock = tbStock.getAvailableStock();
+            availableStock-=num;
+            tbStock.setAvailableStock(availableStock);
+            tbStockMapper.updateByPrimaryKeySelective(tbStock);
+        }
+
+    }
+
 
 
 }
