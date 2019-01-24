@@ -83,5 +83,12 @@ public interface TbOrderService {
      * @date: 2019/1/18 14:22
      */
     public PageInfo<OrderGoodsReceiverDto> selectAllOrders(Integer currentPage, Integer pageSize, OrderGoodsReceiverDto orderGoodsReceiverDto);
-
+    /**
+     * 功能描述: 计算单价
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/24 16:36
+     */
+     Double getPrice(int num, double totalPrice);
 }

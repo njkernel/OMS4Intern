@@ -319,4 +319,10 @@ public class TbOrderServiceImpl implements TbOrderService {
         PageInfo<OrderGoodsReceiverDto> pageInfo = new PageInfo<>(orderGoodsReceiverDtos);
         return pageInfo;
     }
+
+    @Override
+    public Double getPrice(int num, double totalPrice) {
+        double price = totalPrice/num;
+        return price;
+    }
 }
