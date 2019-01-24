@@ -94,31 +94,39 @@ public class OutputController {
     @PostMapping(value = "/synchronizeState")
     @ResponseBody
     public String synchronizeState(@RequestBody Map map) {
-        String status = (String) map.get("status");
-        String STATUS = this.changeStatusIntoChinese(status);
-        List<String> orderList = (List<String>) map.get("orderIdList");
-        List<String> receivcerDetails = (List<String>) map.get("shippingInfo");
-        // 遍历订单id集合，批量修改状态
-       for (String orderIds : orderList) {
-            // 获取遍历的集合并转换为Int类型
-            int orderId = Integer.valueOf(orderIds).intValue();
-            TbOutput tbOutput = outputService.getOutputOrder(orderId);
-            tbOutput.setOutputState(STATUS);
-            String s = outputService.updateOutput(tbOutput);
-            // 判断是否是发货状态，如果是则会携带数据
-            if (receivcerDetails != null && "200".equals(s)) {
-                TbOrder tbOrder = outputService.getOrderById(orderId);
-                tbOrder.setDeliveryWarehouse("南京仓");
-                tbOrder.setDeliveryCompany(receivcerDetails.get(0));
-                tbOrder.setDeliveryCode(receivcerDetails.get(1));
-                tbOrder.setOrderState(STATUS);
-                Date deliveryTime = new Date(receivcerDetails.get(2));
-                tbOrder.setDeliveryTime(deliveryTime);
-                return outputService.updateOrder(tbOrder);
-            }
-            // 判断是否发货状态，状态没有更改成功
-            if (receivcerDetails != null && s!="200"){
-            return "error";}
+        try {
+            String status = (String) map.get("status");
+            String STATUS = this.changeStatusIntoChinese(status);
+            List<String> orderList = (List<String>) map.get("orderIdList");
+            List<String> receivcerDetails = (List<String>) map.get("shippingInfo");
+            // 遍历订单id集合，批量修改状态
+            for (String orderIds : orderList) {
+                 // 获取遍历的集合并转换为Int类型
+                 int orderId = Integer.valueOf(orderIds).intValue();
+                 TbOutput tbOutput = outputService.getOutputOrder(orderId);
+                 // 同步状态
+                 tbOutput.setOutputState(STATUS);
+                 tbOutput.setUpdated(new Date());
+                 String s = outputService.updateOutput(tbOutput);
+                 // 判断是否是发货状态，如果是则会携带数据
+                 if (receivcerDetails != null && "200".equals(s)) {
+                     // 设置订单的信息
+                     TbOrder tbOrder = outputService.getOrderById(orderId);
+                     tbOrder.setDeliveryWarehouse("南京仓");
+                     tbOrder.setDeliveryCompany(receivcerDetails.get(0));
+                     tbOrder.setDeliveryCode(receivcerDetails.get(1));
+                     tbOrder.setOrderState(STATUS);
+                     Date deliveryTime = new Date(receivcerDetails.get(2));
+                     tbOrder.setDeliveryTime(deliveryTime);
+                     tbOrder.setUpdated(new Date());
+                     return outputService.updateOrder(tbOrder);
+                 }
+                 // 判断是否发货状态，状态没有更改成功
+                 if (receivcerDetails != null && s!="200"){
+                 return "error";}
+             }
+        } catch (NumberFormatException e) {
+            return "201";
         }
         return "200";
     }

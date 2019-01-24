@@ -5,6 +5,7 @@ import cn.com.connext.oms.commons.dto.output.OutputDTO;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOutput;
 import cn.com.connext.oms.entity.TbReceiver;
+import cn.com.connext.oms.web.Api.API;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class OutputApi {
                 tbOrder.getDeliveryCompany(),
                 repoOrderDetailDto
         );
-        String result= new RestTemplate().postForObject("http://127.0.0.1:8080/api/pushOutRepoOrder",outputDTO.toMap(),String.class);
+        String result= new RestTemplate().postForObject(API.API_OUTPUT,outputDTO.toMap(),String.class);
         return result;
     }
     }

@@ -51,6 +51,9 @@ public class TbUpdateStockController {
                     System.out.println(id);
                     System.out.println(codeTotalStockDtos.get(i).getTotalStock());
                     this.tbUpdateStockService.updateStock(id, codeTotalStockDtos.get(i).getTotalStock());
+                    /*获取可用库存*/
+                    int availableStock=(this.tbUpdateStockService.getLocked(id).getTotalStock()-this.tbUpdateStockService.getLocked(id).getLockedStock());
+                    this.tbUpdateStockService.updateAvailable(id,availableStock);
                 }
 
             }
