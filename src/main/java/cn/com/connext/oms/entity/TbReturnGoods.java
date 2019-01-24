@@ -29,6 +29,17 @@ public class TbReturnGoods {
     @Column(name = "number")
     private Integer number;
 
+
+    private TbGoods tbGoods;
+
+    public TbGoods getTbGoods() {
+        return tbGoods;
+    }
+
+    public void setTbGoods(TbGoods tbGoods) {
+        this.tbGoods = tbGoods;
+    }
+
     /**
      * 获取退货商品id
      *

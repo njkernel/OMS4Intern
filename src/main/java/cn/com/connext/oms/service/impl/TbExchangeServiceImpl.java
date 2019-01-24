@@ -41,6 +41,8 @@ public class TbExchangeServiceImpl implements TbExchangeService {
   private static final String GET_FAILED = "fail";
   private static final String GET_SUCCESS = "success";
   private static final String GET_FEEDBACK_OUTTIME = "over";
+  private static final String RETURN_STATE_UNCHECKED = "待审核";
+  private static final String RETURN_STATE_AUDIT_UNCHECKED = "审核通过";
 //  public static String IP="127.0.0.1";
 //  public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
 
@@ -160,7 +162,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     TbReturn tbReturn = new TbReturn();
     tbReturn.setOrderId(orderId);
     tbReturn.setReturnCode(CodeGenerateUtils.creatUUID());
-    tbReturn.setReturnState("待审核");
+    tbReturn.setReturnState(RETURN_STATE_UNCHECKED);
     tbReturn.setReturnPrice(price);
     tbReturn.setCreated(new Date());
     tbReturn.setModifiedUser("yonyong");
@@ -181,7 +183,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     List<TbReturn> tbReturns = new ArrayList<>();
     for (int i = 0; i < ids.length; i++) {
       TbReturn tbReturn = new TbReturn();
-      if (!"待审核".equals(tbExchangeMapper.selectTbReturnById(ids[0]).getReturnState())){
+      if (!RETURN_STATE_UNCHECKED.equals(tbExchangeMapper.selectTbReturnById(ids[0]).getReturnState())){
         continue;
       }
       tbReturn.setReturnId(ids[i]);
@@ -216,6 +218,10 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       // 判断数据库订单时间与当前时间相差是否超过15天，超过15天，审核不予通过
       int orderId=tbReturn.getOrderId();
       ExchangeUtils exchangeUtils =new ExchangeUtils();
+      //如果状态不是待审核，说明已经有过审核记录，则当前换货单不需要进入下面的审核流程，跳过继续执行下一个换货单审核流程
+      if (!RETURN_STATE_UNCHECKED.equals(tbReturn.getReturnState())){
+        continue;
+      }
       if (MISTIMING < date.getTime() - tbReturn.getUpdated().getTime()&&!exchangeUtils.checkOrderIsExchange(orderId)) {
         tbReturn.setReturnState("审核通过");
 
@@ -259,7 +265,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       TbReturn tbReturn1 = tbExchangeMapper.selectTbReturnById(ids[i]);
       int orderId = tbReturn1.getOrderId();
 
-      if ("审核失败".equals(tbReturn1.getReturnState())) {
+      if (!RETURN_STATE_AUDIT_UNCHECKED.equals(tbReturn1.getReturnState())) {
         continue;
       }
       // 生成入库单
