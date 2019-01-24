@@ -280,17 +280,19 @@ public class PageController {
         OrderGoodsReceiverDto orderGoodsReceiverDto =tbOrderService.getAllById(orderId);
         model.addAttribute("orderDetail",orderGoodsReceiverDto);
         List<GoodsGoodsOrderDto> goodsGoodsOrderDtos=tbGoodsListService.goodsListFromOrder(orderId);
-        model.addAttribute("orderGoodsDetails",goodsGoodsOrderDtos);
+
         int sum1 = 0;
         double sum2 = 0;
-        ArrayList<Double> list = new ArrayList<>();
+        String unitPriceForOrder = "";
         for (int i =0;i<goodsGoodsOrderDtos.size();i++){
             sum1+=goodsGoodsOrderDtos.get(i).getNum();
             sum2+=goodsGoodsOrderDtos.get(i).getTotalPrice();
+            unitPriceForOrder = String.valueOf(goodsGoodsOrderDtos.get(i).getTotalPrice()/goodsGoodsOrderDtos.get(i).getNum());
+            goodsGoodsOrderDtos.get(i).setUnitPriceForOrder(unitPriceForOrder);
         }
-        model.addAttribute("tbOrderService",tbOrderService);
         model.addAttribute("sumNum",sum1);
         model.addAttribute("sumTotalPrice",sum2);
+        model.addAttribute("orderGoodsDetails",goodsGoodsOrderDtos);
         return "pages/specific/order-detail";
     }
 
