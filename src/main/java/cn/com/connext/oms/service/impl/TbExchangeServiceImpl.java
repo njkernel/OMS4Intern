@@ -48,8 +48,10 @@ public class TbExchangeServiceImpl implements TbExchangeService {
   private static final String RETURN_STATE_AUDIT_UNCHECKED = "审核通过";
   private static final String RETURN_STATE_AUDIT_FAIL = "审核成功";
   private static final String RETURN_STATE_AUDIT_OVER = "超15天未收货";
+
 //  public static String IP="127.0.0.1";
 //  public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
+
 
   @Autowired RestTemplate restTemplate;
 
