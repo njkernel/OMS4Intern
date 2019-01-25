@@ -14,6 +14,8 @@ import cn.com.connext.oms.service.TbOrderService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,11 @@ import java.util.List;
 @RequestMapping("/exchange")
 @RestController
 public class TbExchangeController {
+    //打印日志
+    private Logger logger = LoggerFactory.getLogger(TbExchangeController.class);
+
+    //非空判断
+    private static final int ZERO = 0;
 
     @Autowired
     private TbExchangeService tbExchangeService;
@@ -58,6 +65,10 @@ public class TbExchangeController {
     @RequestMapping("/showAllExchanges")
     @ApiOperation(value = "显示所有换货单接口")
     public  BaseResult showAllReturns(Integer currentPage,Integer pageSize,TbReturn tbReturn){
+        if (ZERO > currentPage || ZERO >= pageSize) {
+            logger.error("分页出现故障,参数不能为0！currentPage:"+currentPage+",pageSize:"+pageSize);
+            return BaseResult.fail("分页出现故障,参数不能为0！");
+        }
         try {
             PageInfo<TbReturn> pageInfo=tbExchangeService.showAllReturns(currentPage,pageSize,tbReturn);
             return BaseResult.success("查询成功！",pageInfo);
@@ -78,6 +89,10 @@ public class TbExchangeController {
     @RequestMapping("/toRequest")
     @ApiOperation(value = "获取订单所有信息接口")
     public BaseResult toRequest(@RequestParam("orderId")int orderId){
+        if (ZERO == orderId){
+            logger.error("orderId为空值！orderId"+orderId);
+            return BaseResult.fail("orderId为空值！");
+        }
         try {
             List<TbOrder> tbOrder = tbOrderService.getOrderByOrderId(orderId);
             if (null != tbOrder){
@@ -106,6 +121,10 @@ public class TbExchangeController {
     public BaseResult toGenerateExchangeOrder(@RequestParam("orderId")int orderId,
                                               @RequestParam("goodId")List<Integer> goodIds,
                                               @RequestParam("num")List<Integer> nums){
+        if (ZERO > orderId || ZERO == goodIds.size() || ZERO == nums.size()){
+            logger.error("参数异常！orderId:"+orderId+",goodIds长度:"+goodIds.size()+",nums长度:"+nums.size());
+            return BaseResult.fail("参数异常！");
+        }
         //判断是否为换货单
         if (exchangeUtils.checkOrderIsReturn(orderId)){
             return BaseResult.fail(401,"订单为换货单!");
@@ -138,6 +157,10 @@ public class TbExchangeController {
     @RequestMapping("/exchangeDetails")
     @ApiOperation(value = "换货单详情接口")
     public BaseResult exchangeDetails(@RequestParam("orderId")int orderId){
+        if (ZERO > orderId){
+            logger.error("orderId接收参数异常:orderId:"+orderId);
+            return BaseResult.fail("orderId接收参数异常:orderId:"+orderId);
+        }
         try {
             ReturnDetails returnDetails=tbExchangeService.selectReturnDetailsByOrderId(orderId);
             return BaseResult.success("查询成功！",returnDetails);
@@ -158,6 +181,10 @@ public class TbExchangeController {
     @RequestMapping("/toCancel")
     @ApiOperation(value = "取消换货接口")
     public BaseResult toCancel(@RequestParam("ids")int [] ids){
+        if (ZERO == ids.length){
+            logger.error("前台传参异常！ids长度:"+ids.length);
+            return BaseResult.fail("前台传参异常！ids长度:"+ids.length);
+        }
         int t=tbExchangeService.updateTbReturn(ids,"换货取消","yonyong",new Date());
         if (t==-1){
             return BaseResult.fail("系统错误！");
@@ -181,6 +208,10 @@ public class TbExchangeController {
      @RequestMapping("/toAudit ")
      @ApiOperation(value = "审核换货单接口")
      public BaseResult toAudit(@RequestParam("ids")int [] ids){
+         if (ZERO == ids.length){
+             logger.error("前台传参异常！ids长度:"+ids.length);
+             return BaseResult.fail("前台传参异常！ids长度:"+ids.length);
+         }
          Date date=new Date();
          int rs=tbExchangeService.AuditTbReturn(ids,"yonyong",date);
          if (rs!=1){
@@ -193,6 +224,10 @@ public class TbExchangeController {
 
     @RequestMapping("/getOrderGoodsNumsDetails")
     public BaseResult getOrderGoodsNum(@Param("orderId") int orderId){
+        if (ZERO > orderId){
+            logger.error("orderId接收参数异常:orderId:"+orderId);
+            return BaseResult.fail("orderId接收参数异常:orderId:"+orderId);
+        }
          try {
              List<GoodsGoodsOrderDto> goodsGoodsOrderDtos=tbGoodsListService.goodsListFromOrder(orderId);
              return BaseResult.success("success",goodsGoodsOrderDtos);

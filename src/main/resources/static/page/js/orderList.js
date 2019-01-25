@@ -310,6 +310,7 @@ let orderList = new Vue({
                 return false;
             }
             toRequestForGoods.orderId = toRequestForGoods.checkedNames[0];
+
             axios.get(url,{params: {orderId : toRequestForGoods.orderId}}).then(function(response) {
                 toRequestForGoods.orderGoodsInfo=response.data.data;
                 for (var t = 0;t<toRequestForGoods.orderGoodsInfo.length;t++) {
@@ -332,8 +333,16 @@ let orderList = new Vue({
             var url = null;
             var data = null;
             exchangeReturn.flag = true;
+            for (var t in exchangeReturn.orderListDate.list){
+                if (exchangeReturn.orderId === exchangeReturn.orderListDate.list[t].orderId) {
+                    if (exchangeReturn.orderListDate.list[t].orderCode.indexOf("Huan")>-1) {
+                        alert("该订单为换货单不可以进行退换货操作！");
+                        return false;
+                    }
+                }
+            }
             if(!exchangeReturn.checkExchangeReturnIsNull(exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo))){
-                alert("没有选择任何商品！");
+                alert("请选择正确的数量！");
                 return false;
             }
             exchangeReturn.checkExchangeReturnIsOverFlow(exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo));
@@ -402,7 +411,12 @@ let orderList = new Vue({
         //选择换货退货时退货换货数量为0
         checkExchangeReturnIsNull(goodsNum){
             for (var i = 0; i<goodsNum.length;i++){
-                if (goodsNum[i] != 0){
+                if (goodsNum[i] < 0){
+                    return false;
+                }
+            }
+            for (var m = 0;m<goodsNum.length;m++){
+                if (goodsNum[m] > 0) {
                     return true;
                 }
             }
