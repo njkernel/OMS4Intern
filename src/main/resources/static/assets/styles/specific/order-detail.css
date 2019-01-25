@@ -39,7 +39,7 @@ input{
 }
 .main-content1{
     /* background-color: aquamarine; */
-    height: 132px;
+    height: auto;
     /* border: 1px solid #000; */
 }
 .title{
