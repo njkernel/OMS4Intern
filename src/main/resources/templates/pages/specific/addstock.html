@@ -22,7 +22,7 @@
                         <div class="title-content2">
                             <div class="title-content1-top1">入库单号：<input th:text="${tbInput.inputCode}"></div>
                             <div class="title-content1-top2">入库单状态：<input th:text="${tbInput.inputState}"></div>
-                            <div class="title-content1-top3">快递单号：<input th:text="${'KD'+returnDetails.orderId}"></div>
+                            <div class="title-content1-top3">快递单号：<input th:text="${'KD'+(returnDetails.orderId-1010109)}"></div>
                         </div>
                         <div class="title-content3">
                             <div class="title-content1-top1">创建时间：<input th:text="${returnDetails.created}"></div>
