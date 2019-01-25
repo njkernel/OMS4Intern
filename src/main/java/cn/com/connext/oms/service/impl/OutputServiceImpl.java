@@ -217,15 +217,6 @@ public class OutputServiceImpl implements OutputService {
     }
     /**
      *
-     * 功能描述: 根据传过来的状态更改状态
-     *
-     * @param: 出库状态
-     * @return: 返回200表示修改成功
-     * @auther: Jay
-     * @date: 2019/1/9
-     */
-    /**
-     *
      * 功能描述: 根据传过来的发货信息更新订单数据
      *
      * @param: 订单发货信息
