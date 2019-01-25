@@ -41,7 +41,9 @@ public class TbReturnServiceImpl implements TbReturnService {
     private static final String GET_FAILED = "fail";
     private static final String GET_SUCCESS = "success";
     private static final String GET_FEEDBACK_OUTTIME = "over";
+
 //    private static final String URL = "http://127.0.0.1:8080/api/inRepertoryOrder";
+
     private static final String AUDIT_SUCESS = "审核通过";
     private static final String AUDIT_FAILED = "审核失败";
     private static final Logger log = LoggerFactory.getLogger(TbReturnServiceImpl.class);
@@ -186,6 +188,7 @@ public class TbReturnServiceImpl implements TbReturnService {
 
             tbReturnMapper.createInputOrder(inputCode, orderId,inputState,created, updated, synchronizeState);
         }
+
         for (int i = 0; i < returnIdsList.size(); i++) {
             int orderId = tbReturnMapper.selectOrderIdByReturnId(returnIdsList.get(i));
             tbInput1 = tbExchangeMapper.selectTbInputByOrderId(orderId);
@@ -219,6 +222,7 @@ public class TbReturnServiceImpl implements TbReturnService {
                 tbInput1.setSynchronizeState("已同步");
                 tbExchangeMapper.updateTbInput(tbInput1);
                 tbExchangeMapper.updateTbReturn(tbReturnsList);
+
             } catch (Exception e1) {
                 e1.printStackTrace();
                 log.error(e1.getMessage());
@@ -383,7 +387,8 @@ public class TbReturnServiceImpl implements TbReturnService {
     public TbReturn createReturnOrder(int orderId, List<Integer> goodsIdList, List<Integer> numberList) {
         double sum = 0;
         for (int i = 0; i < goodsIdList.size(); i++) {
-            double price = tbReturnMapper.getPriceByGoodId(goodsIdList.get(i));
+            TbGoodsOrder tbGoodsOrder = tbExchangeMapper.getTbGoodsOrder(orderId,goodsIdList.get(i));
+            double price = tbGoodsOrder.getTotalPrice()/tbGoodsOrder.getNum();
             sum += price * numberList.get(i);
         }
 

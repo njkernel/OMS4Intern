@@ -274,4 +274,15 @@ public interface TbExchangeMapper {
      */
     public void updateOrder(@Param("orderId")long orderId,@Param("channelCode")String channelCode,@Param("orderCode")String orderCode);
 
+    /**
+     * create by: yonyong
+     * description: 查询订单商品表，主要用于确认详细的原订单商品价格
+     * create time: 2019/1/25 10:04
+     *
+     *  * @Param: orderId
+      * @Param: goodsId
+     * @return cn.com.connext.oms.entity.TbGoodsOrder
+     */
+    public TbGoodsOrder getTbGoodsOrder(@Param("orderId") int orderId,@Param("goodsId") int goodsId);
+
 }
