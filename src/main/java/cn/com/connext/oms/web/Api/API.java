@@ -13,18 +13,18 @@ public class API {
     public static final String HOST = "http://127.0.0.1:8502";
 
     //WMS主机地址
-    public static final String WMS_HOST="http://10.129.100.33:8080";
+    public static final String WMS_HOST="http://10.129.100.45:8080";
 
     // 消息列表数据接口
     public static final String API_ORDER = HOST + "/getAllOrder";
 
     // 出库调用WMS接口
-    public static final String API_OUTPUT = "http://10.129.100.94:8080/api/pushOutRepoOrder";
+    public static final String API_OUTPUT = "http://10.129.100.110:8080/api/pushOutRepoOrder";
 
     //退换货模块交互接口
     public static final String API_RETURN=WMS_HOST+"/api/inRepertoryOrder";
 
     // token里面验证
-    public static final String GET_TOKEN_URL ="http://10.129.100.94:8080/api/getToken";
+    public static final String GET_TOKEN_URL ="http://10.129.100.110:8080/api/getToken";
 
 }

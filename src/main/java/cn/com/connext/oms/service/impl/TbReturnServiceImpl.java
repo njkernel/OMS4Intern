@@ -1,6 +1,5 @@
 package cn.com.connext.oms.service.impl;
 
-import afu.org.checkerframework.checker.igj.qual.I;
 import cn.com.connext.oms.commons.dto.BaseResult;
 import cn.com.connext.oms.commons.dto.InputDTO;
 import cn.com.connext.oms.commons.dto.exchange.OMS.InputFeedback;
@@ -17,8 +16,9 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -204,12 +204,13 @@ public class TbReturnServiceImpl implements TbReturnService {
             String token = AES.AESEncode(TOKENS, String.valueOf(tbInput1.getInputId()));
             InRepertoryDTO inRepertoryDTO = new InRepertoryDTO(token,
                     String.valueOf(tbInput1.getInputId()), String.valueOf(orderId),
-                    tbOrder.get(0).getChannelCode(),
+                    "QD"+(orderId-101010109),
                     tbOrder.get(0).getDeliveryCompany(),
-                    tbOrder.get(0).getDeliveryCode(), detailDTOS);
+                    "KD"+(orderId-101010109), detailDTOS);
 
             try {
-                restTemplate.postForEntity(API.API_RETURN, inRepertoryDTO.toMap(), String.class);
+                HttpStatus httpStatus = restTemplate.postForObject(API.API_RETURN, inRepertoryDTO.toMap(), HttpStatus.class);
+                log.info(httpStatus.toString());
                 TbReturn tbReturn = tbExchangeMapper.selectTbReturnByOrderId(orderId);
                 List<TbReturn> tbReturnsList = new ArrayList<>();
                 tbReturn.setOrderId(orderId);
