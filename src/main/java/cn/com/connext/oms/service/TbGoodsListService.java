@@ -70,5 +70,13 @@ public interface TbGoodsListService {
      */
     public PageInfo<GoodsStockDto> getAllGoods(Integer currentPage, Integer pageSize, GoodsStockDto goodsStockDto);
 
+    /**
+     * 功能描述:新增商品
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/25 11:31
+     */
+    public void addGoods(String goodsCode,String goodsName,Double goodsPrice);
 
 }

@@ -14,6 +14,10 @@
     <select id="getGoodsImformation" parameterType="Integer" resultMap="BaseResultMap">
         SELECT * FROM tb_goods WHERE goods_id=#{goodsId}
     </select>
+    <!--新增商品-->
+    <insert id="addGoods" parameterType="cn.com.connext.oms.commons.dto.GoodsStockDto">
+        insert into tb_goods (goods_code,goods_name,goods_price) values(#{goodsCode},#{goodsName},#{goodsPrice})
+    </insert>
     <!--获取所有的商品和其对应的商品属性-->
     <select id="getAllGoods" resultType="cn.com.connext.oms.commons.dto.GoodsStockDto">
         SELECT

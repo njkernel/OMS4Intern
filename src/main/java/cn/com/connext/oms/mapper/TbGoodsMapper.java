@@ -59,4 +59,13 @@ public interface TbGoodsMapper extends MyMapper<TbGoods> {
      */
     public List<GoodsStockDto> selectAllGoods(@Param("goodsStockDto")GoodsStockDto goodsStockDto);
 
+
+    /**
+     * 功能描述:新增商品
+     * @param:
+     * @return:
+     * @auther: Jun.Zhao
+     * @date: 2019/1/25 11:26
+     */
+    public void addGoods (String goodsCode,String goodsName,Double goodsPrice);
 }

@@ -53,5 +53,9 @@
     <select id="getLocked" parameterType="integer" resultType="cn.com.connext.oms.entity.TbStock">
         select * from tb_stock where goods_id=#{goodsId}
     </select>
+    <!--新增商品的库存信息-->
+  <insert id="addStock" parameterType="cn.com.connext.oms.commons.dto.GoodsStockDto">
+    insert into tb_stock (locked_stock,goods_id) values(#{lockedStock},#{goodsId})
+  </insert>
 
 </mapper>

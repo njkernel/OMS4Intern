@@ -388,7 +388,8 @@ public class TbReturnServiceImpl implements TbReturnService {
     public TbReturn createReturnOrder(int orderId, List<Integer> goodsIdList, List<Integer> numberList) {
         double sum = 0;
         for (int i = 0; i < goodsIdList.size(); i++) {
-            double price = tbReturnMapper.getPriceByGoodId(goodsIdList.get(i));
+            TbGoodsOrder tbGoodsOrder = tbExchangeMapper.getTbGoodsOrder(orderId,goodsIdList.get(i));
+            double price = tbGoodsOrder.getTotalPrice()/tbGoodsOrder.getNum();
             sum += price * numberList.get(i);
         }
 
