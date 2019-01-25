@@ -141,11 +141,8 @@ public class OutputServiceImpl implements OutputService {
                     for (int i = 0;i<goodsDetailByOrderId.size();i++){
                         int goodsId = goodsDetailByOrderId.get(i).getGoodsId();
                         int goodsNum = -goodsDetailByOrderId.get(i).getNum();
-                        System.out.println("id噢噢噢噢"+goodsId+"num哦哦哦"+goodsNum);
-                         // 更新锁定库存的数量
-                        tbStockMapper.updateLockedStockNum(goodsId,goodsNum);
-//                        // 更新锁定库存
-//                        tbStockMapper.updateLockdAndAvailable(goodsId,goodsNum);
+                        // 更新锁定库存
+                        tbStockMapper.updateLockdAndAvailable(goodsId,goodsNum);
                         // 获取总库存
                         int totalStock = tbStockMapper.getLocked(goodsId).getTotalStock()+goodsNum;
                         // 更新总库存
