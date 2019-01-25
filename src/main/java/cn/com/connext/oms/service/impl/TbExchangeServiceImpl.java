@@ -317,9 +317,9 @@ public class TbExchangeServiceImpl implements TbExchangeService {
                         token,
                         String.valueOf(tbInput1.getInputId()),
                         String.valueOf(orderId),
-                        tbOrder.get(0).getChannelCode(),
+                        "QD"+(orderId-101010109),
                         tbOrder.get(0).getDeliveryCompany(),
-                        tbOrder.get(0).getDeliveryCode(),
+                        "KD"+(orderId-101010109),
                         detailDTOS);
 
   //      try {
