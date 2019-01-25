@@ -222,7 +222,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       int orderId=tbReturn.getOrderId();
       ExchangeUtils exchangeUtils =new ExchangeUtils();
       //如果状态不是待审核，说明已经有过审核记录，则当前换货单不需要进入下面的审核流程，跳过继续执行下一个换货单审核流程
-      if (!RETURN_STATE_AUDIT_UNCHECKED.equals(tbReturn.getReturnState())){
+      if (!RETURN_STATE_UNCHECKED.equals(tbReturn.getReturnState())){
         continue;
       }
       if (MISTIMING < date.getTime() - tbReturn.getUpdated().getTime()&&!exchangeUtils.checkOrderIsExchange(orderId)) {
