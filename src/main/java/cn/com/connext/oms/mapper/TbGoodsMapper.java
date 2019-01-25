@@ -41,7 +41,7 @@ public interface TbGoodsMapper extends MyMapper<TbGoods> {
      * @Return: cn.com.connext.oms.commons.dto.BaseResult
      * @Create: 2018/1/9 16:03
      */
-    public void updateGoods(String goodsCode,String goodsName,Double goodsPrice);
+    public void updateGoods(@Param("goodsCode") String goodsCode,@Param("goodsName") String goodsName,@Param("goodsPrice") Double goodsPrice);
     /**
      * @Author: zhaojun
      * @Description: 商品列表的模糊查询
@@ -67,5 +67,5 @@ public interface TbGoodsMapper extends MyMapper<TbGoods> {
      * @auther: Jun.Zhao
      * @date: 2019/1/25 11:26
      */
-    public void addGoods (String goodsCode,String goodsName,Double goodsPrice);
+    public void addGoods (@Param("goodsCode") String goodsCode,@Param("goodsName") String goodsName,@Param("goodsPrice") Double goodsPrice);
 }

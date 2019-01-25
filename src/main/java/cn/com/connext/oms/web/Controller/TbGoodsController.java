@@ -68,19 +68,18 @@ public class TbGoodsController {
                 if(tbGoods.get(i).getSku()==null||tbGoods.get(i).getGoodsName()==null||tbGoods.get(i).getGoodsPrice()==null) {
                     return BaseResult.fail("商品信息有缺失");
                 }else{
-
                     /*查询数据库中是否有该商品*/
                     if (this.tbGoodsListService.findIdByCode(tbGoods.get(i).getSku())==null){
                         /*无该商品，在商品表插入新商品*/
                         this.tbGoodsListService.addGoods(tbGoods.get(i).getSku(),tbGoods.get(i).getGoodsName(),tbGoods.get(i).getGoodsPrice());
                         /*无该商品 创建库存表信息，并等待库存同步*/
                         Integer id =this.tbGoodsListService.findIdByCode(tbGoods.get(i).getSku());
+                        /*设置商品对应的锁定库存（不设置后面更新库存时会报空指针异常），和商品对应的id*/
                         this.tbStockMapper.addStock(0,id);
                     }else{
                         /*有该商品直接更新*/
                         this.tbGoodsListService.updateGoods(tbGoods.get(i).getSku(), tbGoods.get(i).getGoodsName(), tbGoods.get(i).getGoodsPrice());
                     }
-
                 }
             }
             return BaseResult.success("成功");
@@ -89,7 +88,6 @@ public class TbGoodsController {
             return BaseResult.fail("系统内部错误");
         }
     }
-
     /**
      * @Author: ZhaoJun
      * @Description: 根据订单编号查询该订单的商品编号
