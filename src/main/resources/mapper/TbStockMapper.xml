@@ -11,7 +11,7 @@
     <result column="total_stock" jdbcType="INTEGER" property="totalStock" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
   </resultMap>
-  <select id="getStockByGoodsId" parameterType="Integer" resultMap="BaseResultMap">
+  <select id="getStockByGoodsId" resultMap="BaseResultMap">
         select * from tb_stock where goods_id=#{goodsId}
     </select>
   <update id="updateStockList" parameterType="java.util.List">
@@ -37,24 +37,24 @@
   </update>
 
     <!--根据商品编号修改商品总库存-->
-    <update id="updateStock" parameterType="cn.com.connext.oms.entity.TbStock">
+    <update id="updateStock">
         update tb_stock set total_stock=#{totalStock} where goods_id=#{goodsId}
     </update>
 
     <!--根据商品编码修改商品的锁定库存-->
-    <update id="updateLockdAndAvailable" parameterType="cn.com.connext.oms.entity.TbStock">
+    <update id="updateLockdAndAvailable">
         update tb_stock set locked_stock=locked_stock+#{num} where goods_id=#{goodsId}
     </update>
     <!--根据锁定库存，计算商品的可用库存-->
-    <update id="updateAvailable" parameterType="cn.com.connext.oms.entity.TbStock">
+    <update id="updateAvailable">
         update tb_stock set available_stock=#{availableStock} where goods_id=#{goodsId}
     </update>
     <!--根据商品编码查询商品的全部信息-->
-    <select id="getLocked" parameterType="integer" resultType="cn.com.connext.oms.entity.TbStock">
+    <select id="getLocked" resultType="cn.com.connext.oms.entity.TbStock">
         select * from tb_stock where goods_id=#{goodsId}
     </select>
     <!--新增商品的库存信息-->
-  <insert id="addStock" parameterType="cn.com.connext.oms.commons.dto.GoodsStockDto">
+  <insert id="addStock">
     insert into tb_stock (locked_stock,goods_id) values(#{lockedStock},#{goodsId})
   </insert>
 

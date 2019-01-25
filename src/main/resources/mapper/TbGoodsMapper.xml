@@ -11,11 +11,11 @@
         <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
     </resultMap>
     <!--根据商品编号查询对应商品的信息-->
-    <select id="getGoodsImformation" parameterType="Integer" resultMap="BaseResultMap">
+    <select id="getGoodsImformation"  resultMap="BaseResultMap">
         SELECT * FROM tb_goods WHERE goods_id=#{goodsId}
     </select>
     <!--新增商品-->
-    <insert id="addGoods" parameterType="cn.com.connext.oms.commons.dto.GoodsStockDto">
+    <insert id="addGoods">
         insert into tb_goods (goods_code,goods_name,goods_price) values(#{goodsCode},#{goodsName},#{goodsPrice})
     </insert>
     <!--获取所有的商品和其对应的商品属性-->
@@ -37,15 +37,15 @@
             a.goods_id = b.goods_id
     </select>
     <!--根据查询GoodId-->
-    <select id="findIdByCode" parameterType="String" resultType="Integer" >
+    <select id="findIdByCode" resultType="Integer" >
         SELECT goods_id FROM tb_goods WHERE goods_code=#{goodsCode}
     </select>
     <!--更改商品信息-->
-    <update id="updateGoods" parameterType="cn.com.connext.oms.entity.TbGoods">
+    <update id="updateGoods" >
         UPDATE tb_goods SET goods_name=#{goodsName},goods_price=#{goodsPrice} where goods_code=#{goodsCode};
     </update>
     <!--模糊查询-->
-    <select id="fuzzySearch" parameterType="String" resultType="cn.com.connext.oms.entity.TbGoods">
+    <select id="fuzzySearch" resultType="cn.com.connext.oms.entity.TbGoods">
         SELECT * FROM tb_goods WHERE  CONCAT(goods_name,goods_price,goods_code,goods_id) LIKE CONCAT('%',#{mark},'%');
     </select>
     <!--分类模糊查询-->
