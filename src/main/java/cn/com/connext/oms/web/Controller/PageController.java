@@ -267,7 +267,6 @@ public class PageController {
     public String returnOrederList() {
         return "pages/details/orders/order-list";
     }
-
    /* *
      * 功能描述:订单详情跳转
      * @param:
@@ -280,7 +279,6 @@ public class PageController {
         OrderGoodsReceiverDto orderGoodsReceiverDto =tbOrderService.getAllById(orderId);
         model.addAttribute("orderDetail",orderGoodsReceiverDto);
         List<GoodsGoodsOrderDto> goodsGoodsOrderDtos=tbGoodsListService.goodsListFromOrder(orderId);
-
         int sum1 = 0;
         double sum2 = 0;
         String unitPriceForOrder = "";

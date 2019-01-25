@@ -71,6 +71,14 @@ public interface TbStockMapper extends MyMapper<TbStock> {
    * @date: 2019/1/11 10:13
    */
   public TbStock getLocked(int goodsId);
+  /**
+   * 功能描述:新增商品库存信息
+   * @param:
+   * @return:
+   * @auther: Jun.Zhao
+   * @date: 2019/1/25 11:44
+   */
+  public void addStock(int lockedStock,int goodsId);
 
 
 }
