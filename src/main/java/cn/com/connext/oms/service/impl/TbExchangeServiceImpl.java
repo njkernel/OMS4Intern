@@ -48,8 +48,10 @@ public class TbExchangeServiceImpl implements TbExchangeService {
   private static final String RETURN_STATE_AUDIT_UNCHECKED = "审核通过";
   private static final String RETURN_STATE_AUDIT_FAIL = "审核成功";
   private static final String RETURN_STATE_AUDIT_OVER = "超15天未收货";
+
 //  public static String IP="127.0.0.1";
 //  public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
+
 
   @Autowired RestTemplate restTemplate;
 
@@ -161,8 +163,9 @@ public class TbExchangeServiceImpl implements TbExchangeService {
     goodId = ListToArray.ListFormat(goodId);
     num = ListToArray.ListFormat(num);
     for (int i = 0; i < goodId.length; i++) {
+      TbGoodsOrder tbGoodsOrder = tbExchangeMapper.getTbGoodsOrder(orderId,goodId[i]);
       TbGoods tbGoods = tbExchangeMapper.toSelectGoodById(goodId[i]);
-      price = price + num[i] * tbGoods.getGoodsPrice();
+      price = price + num[i] * (tbGoodsOrder.getTotalPrice()/tbGoodsOrder.getNum());
     }
     TbReturn tbReturn = new TbReturn();
     tbReturn.setOrderId(orderId);
@@ -486,7 +489,10 @@ public class TbExchangeServiceImpl implements TbExchangeService {
           returnGoods.setGoodId(t.getGoodsId());
           returnGoods.setOrderId(t.getOrderId());
           returnGoods.setReturnNum(t.getNumber());
-          returnGoods.setReturnPrice(t.getNumber()*tbGoods.getGoodsPrice());
+          //修改商品价格为原价格
+          TbGoodsOrder tbGoodsOrder = tbExchangeMapper.getTbGoodsOrder(t.getOrderId(),t.getGoodsId());
+          double price = tbGoodsOrder.getTotalPrice()/tbGoodsOrder.getNum();
+          returnGoods.setReturnPrice(t.getNumber()*price);
           returnGoods.setGoodCode(tbGoods.getGoodsCode());
           returnGoods.setGoodName(tbGoods.getGoodsName());
           list.add(returnGoods);

@@ -46,8 +46,7 @@ var inputOrders = new Vue({
         },
         //初始化
         refresh(){
-            this.initialize();
-            this.initTable();
+            location.reload();
 
         },
         //清空搜索条件
@@ -67,7 +66,7 @@ var inputOrders = new Vue({
                 if (reg.test(this.searchInput2)){
                     this.searchDate.orderId=this.searchInput2;
                 }else {
-                    alert("输入错误");
+                    alert("请选择搜索条件");
                 }
             }
             else if(this.selected==='inputCode'){

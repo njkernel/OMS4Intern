@@ -100,6 +100,18 @@ public class TbGoodsListServiceImpl implements TbGoodsListService {
         return pageInfo;
         }
 
+        /**
+         * 功能描述:新增商品
+         * @param:
+         * @return:
+         * @auther: Jun.Zhao
+         * @date: 2019/1/25 11:35
+         */
+    @Override
+    public void addGoods(String goodsCode,String goodsName,Double goodsPrice) {
+        this.tbGoodsMapper.addGoods(goodsCode,goodsName,goodsPrice);
+    }
+
     /**
      * @Author: zhaojun
      * @Description:
