@@ -11,7 +11,7 @@
     <result column="total_stock" jdbcType="INTEGER" property="totalStock" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
   </resultMap>
-  <select id="getStockByGoodsId" parameterType="Integer" resultMap="BaseResultMap">
+  <select id="getStockByGoodsId" resultMap="BaseResultMap">
         select * from tb_stock where goods_id=#{goodsId}
     </select>
   <update id="updateStockList" parameterType="java.util.List">
@@ -37,7 +37,7 @@
   </update>
 
     <!--根据商品编号修改商品总库存-->
-    <update id="updateStock" parameterType="cn.com.connext.oms.entity.TbStock">
+    <update id="updateStock">
         update tb_stock set total_stock=#{totalStock} where goods_id=#{goodsId}
     </update>
 
@@ -49,8 +49,8 @@
     <update id="updateAvailable" parameterType="cn.com.connext.oms.entity.TbStock">
         update tb_stock set available_stock=#{availableStock} where goods_id=#{goodsId}
     </update>
-  <!--根据商品编码查询商品的全部信息-->
-    <select id="getLocked" parameterType="integer" resultType="cn.com.connext.oms.entity.TbStock">
+    <!--根据商品编码查询商品的全部信息-->
+    <select id="getLocked" resultType="cn.com.connext.oms.entity.TbStock">
         select * from tb_stock where goods_id=#{goodsId}
     </select>
     <!--新增商品的库存信息-->
