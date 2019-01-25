@@ -73,4 +73,5 @@ public interface TbStockMapper extends MyMapper<TbStock> {
   public TbStock getLocked(int goodsId);
 
 
+    void updateLockedStockNum(int goodsId, int goodsNum);
 }

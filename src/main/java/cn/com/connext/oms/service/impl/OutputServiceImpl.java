@@ -139,18 +139,23 @@ public class OutputServiceImpl implements OutputService {
                 if ("200".equals(s)) {
                     List<TbGoodsOrder> goodsDetailByOrderId = tbGoodsOrderMapper.getGoodsDetailByOrderId(id);
                     for (int i = 0;i<goodsDetailByOrderId.size();i++){
-                        // 更新锁定库存
-                        tbStockMapper.updateLockdAndAvailable(goodsDetailByOrderId.get(i).getGoodsId(),(-goodsDetailByOrderId.get(i).getNum()));
+                        int goodsId = goodsDetailByOrderId.get(i).getGoodsId();
+                        int goodsNum = -goodsDetailByOrderId.get(i).getNum();
+                        System.out.println("id噢噢噢噢"+goodsId+"num哦哦哦"+goodsNum);
+                         // 更新锁定库存的数量
+                        tbStockMapper.updateLockedStockNum(goodsId,goodsNum);
+//                        // 更新锁定库存
+//                        tbStockMapper.updateLockdAndAvailable(goodsId,goodsNum);
                         // 获取总库存
-                        int totalStock = tbStockMapper.getLocked(goodsDetailByOrderId.get(i).getGoodsId()).getTotalStock()-goodsDetailByOrderId.get(i).getNum();
+                        int totalStock = tbStockMapper.getLocked(goodsId).getTotalStock()+goodsNum;
                         // 更新总库存
-                        tbStockMapper.updateStock(goodsDetailByOrderId.get(i).getGoodsId(),totalStock);
+                        tbStockMapper.updateStock(goodsId,totalStock);
                         // 获取锁定库存
-                        int lockStock = tbStockMapper.getLocked(goodsDetailByOrderId.get(i).getGoodsId()).getLockedStock();
+                        int lockStock = tbStockMapper.getLocked(goodsId).getLockedStock();
                         // 计算可使用库存
                         int availabeStock = totalStock-lockStock;
                         // 更新可使用的库存
-                        tbStockMapper.updateAvailable(goodsDetailByOrderId.get(i).getGoodsId(),availabeStock);
+                        tbStockMapper.updateAvailable(goodsId,availabeStock);
                     }
                     // 更新订单状态为已完成，并更新时间
                     tbOrder.setOrderState(STATUS4);

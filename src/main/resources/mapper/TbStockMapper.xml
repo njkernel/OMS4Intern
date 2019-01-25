@@ -49,7 +49,10 @@
     <update id="updateAvailable" parameterType="cn.com.connext.oms.entity.TbStock">
         update tb_stock set available_stock=#{availableStock} where goods_id=#{goodsId}
     </update>
-    <!--根据商品编码查询商品的全部信息-->
+  <update id="updateLockedStockNum">
+        update tb_stock set locked_stock=lock_stock-#{goodsNum} where goods_id=#{goodsId}
+  </update>
+  <!--根据商品编码查询商品的全部信息-->
     <select id="getLocked" parameterType="integer" resultType="cn.com.connext.oms.entity.TbStock">
         select * from tb_stock where goods_id=#{goodsId}
     </select>
