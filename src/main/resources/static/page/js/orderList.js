@@ -341,6 +341,7 @@ let orderList = new Vue({
                     }
                 }
             }
+            console.log(exchangeReturn.checkExchangeReturnIsNull(exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo)));
             if(!exchangeReturn.checkExchangeReturnIsNull(exchangeReturn.getExchangeReturnGoodsNum(exchangeReturn.orderGoodsInfo))){
                 alert("请选择正确的数量！");
                 return false;

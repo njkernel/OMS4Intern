@@ -38,18 +38,18 @@
                             <th>商品编号</th>
                             <th>商品名称</th>
                             <th>商品条码</th>
-                            <th>单价</th>
+                            <!--<th>单价</th>-->
                             <th>数量</th>
-                            <th>金额</th>
+                            <!--<th>金额</th>-->
                         </tr>
 
                         <tr th:each="temp:${tbReturnGoodsList}">
                             <td th:text="${temp.goodsId}"></td>
                             <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsName()}"></td>
                             <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsCode()}"></td>
-                            <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsPrice()}"></td>
+                            <!--<td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsPrice()}"></td>-->
                             <td th:text="${temp.number}"></td>
-                            <td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsPrice()*temp.number}"></td>
+                            <!--<td th:text="${tbReturnService.getGoodsById(temp.goodsId).getGoodsPrice()*temp.number}"></td>-->
                         </tr>
 
                     </table>
