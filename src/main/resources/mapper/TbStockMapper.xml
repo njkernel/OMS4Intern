@@ -42,11 +42,11 @@
     </update>
 
     <!--根据商品编码修改商品的锁定库存-->
-    <update id="updateLockdAndAvailable">
+    <update id="updateLockdAndAvailable" parameterType="cn.com.connext.oms.entity.TbStock">
         update tb_stock set locked_stock=locked_stock+#{num} where goods_id=#{goodsId}
     </update>
     <!--根据锁定库存，计算商品的可用库存-->
-    <update id="updateAvailable">
+    <update id="updateAvailable" parameterType="cn.com.connext.oms.entity.TbStock">
         update tb_stock set available_stock=#{availableStock} where goods_id=#{goodsId}
     </update>
     <!--根据商品编码查询商品的全部信息-->
@@ -54,7 +54,7 @@
         select * from tb_stock where goods_id=#{goodsId}
     </select>
     <!--新增商品的库存信息-->
-  <insert id="addStock">
+  <insert id="addStock" parameterType="cn.com.connext.oms.commons.dto.GoodsStockDto">
     insert into tb_stock (locked_stock,goods_id) values(#{lockedStock},#{goodsId})
   </insert>
 

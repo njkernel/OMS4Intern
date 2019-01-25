@@ -80,6 +80,4 @@ public interface TbStockMapper extends MyMapper<TbStock> {
    * @date: 2019/1/25 11:44
    */
   public void addStock(@Param("lockedStock") int lockedStock,@Param("goodsId") int goodsId);
-
-
 }
