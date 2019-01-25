@@ -89,8 +89,10 @@
       #{item.outputId}
     </foreach>
   </update>
-
-  <select id="getOutputByOrderId" parameterType="Integer" resultMap="outputMap">
+    <update id="updateOutput">
+        update tb_output set output_state=#{state}, updated=#{date} where order_id=#{orderId}
+    </update>
+    <select id="getOutputByOrderId" parameterType="Integer" resultMap="outputMap">
         select * from tb_output where order_id=#{orderId}
     </select>
 
@@ -159,6 +161,7 @@
     <select id="getOutputOrdersBySearch" resultType="cn.com.connext.oms.entity.TbOrderDetails">
         SELECT
         a.order_id,
+        a.order_code,
         a.order_state,
         e.output_code,
         e.output_state,
@@ -166,6 +169,7 @@
         a.delivery_company,
         a.delivery_code,
         b.receiver_district,
+        b.receiver_state,
         b.receiver_city,
         b.receiver_address,
         b.receiver_name,
@@ -174,7 +178,7 @@
         tb_order a
         inner join tb_receiver b on a.order_id = b.order_id
         inner join tb_output e on a.order_id = e.order_id
-        WHERE a.order_state in (#{state},#{state2},#{state3})
+        WHERE (a.order_state in (#{state},#{state2},#{state3}) or e.output_state in (#{state4}))
         <if test="orderId != null and orderId != ''">
             and a.order_id like CONCAT('%',#{orderId},'%')
         </if>
@@ -184,6 +188,6 @@
         <if test="deliveryCode != null and deliveryCode !=''">
             and a.delivery_code like CONCAT('%',#{deliveryCode},'%')
         </if>
-        order by order_id
+        order by e.updated desc
     </select>
 </mapper>

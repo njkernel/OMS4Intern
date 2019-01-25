@@ -42,7 +42,7 @@
             <thead>
             <tr>
                 <th>批量</th>
-                <th>订单号</th>
+                <th>订单编码</th>
                 <th>订单状态</th>
                 <th>订单来源</th>
                 <th>支付方式</th>
@@ -71,8 +71,7 @@
                     <td>{{list.deliveryCompany}}</td>
                     <td>{{list.deliveryCode}}</td>
                     <td>{{list.receiverName}}</td>
-                    <td>{{list.receiverDistrict+"省"+list.receiverCity+"市"+list.receiverAddress}}</td>
-
+                    <td>{{list.receiverState+"省"+list.receiverCity+"市"+list.receiverDistrict+"区"+list.receiverAddress}}</td>
                 </tr>
             </template>
             </tbody>

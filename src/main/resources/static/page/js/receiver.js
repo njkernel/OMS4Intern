@@ -88,6 +88,7 @@ function editReceiver() {
                          not();
                         alert("编辑成功");
                     }else {
+                        notEdit();
                         alert("编辑失败");
                     }
                 }

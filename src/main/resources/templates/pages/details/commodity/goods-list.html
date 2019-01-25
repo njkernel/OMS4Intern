@@ -31,7 +31,7 @@
         <table class="table table-condensed">
             <thead>
                 <tr>
-                    <th>序号</th>
+                  <!--  <th>序号</th>-->
                     <th>商品Id</th>
                     <th>商品编号</th>
                     <th>商品名称</th>
@@ -44,10 +44,10 @@
             <tbody>
             <template v-for="list in goodsListDate.list" v-cloak>
                 <tr>
-                    <td>
+                   <!-- <td>
                         <input type="radio" :value="list.goodsId" v-model="checkedDate" >
-                        <!--<label>{{checkedDate}}</label>-->
-                    </td>
+                        &lt;!&ndash;<label>{{checkedDate}}</label>&ndash;&gt;
+                    </td>-->
                     <td>{{list.goodsId}}</td>
                     <td>{{list.goodsCode}}</td>
                     <td>{{list.goodsName}}</td>

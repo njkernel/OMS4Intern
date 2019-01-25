@@ -5,9 +5,13 @@ import cn.com.connext.oms.commons.dto.output.OutputDTO;
 import cn.com.connext.oms.entity.TbOrder;
 import cn.com.connext.oms.entity.TbOutput;
 import cn.com.connext.oms.entity.TbReceiver;
+import cn.com.connext.oms.web.Api.API;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -20,7 +24,7 @@ import java.util.List;
  */
 public class OutputApi {
     public static String post(TbOutput tbOutput, TbOrder tbOrder, TbReceiver tbReceiver, List<OutRepoOrderDetailDto> repoOrderDetailDto) throws Exception {
-        OutputDTO outputDTO=new OutputDTO(
+        OutputDTO outputDTO = new OutputDTO(
                 tbOutput.getOutputCode(),
                 tbOutput.getOrderId(),
                 tbOrder.getChannelCode(),
@@ -29,29 +33,13 @@ public class OutputApi {
                 tbOrder.getDeliveryCompany(),
                 repoOrderDetailDto
         );
-        String result= new RestTemplate().postForObject("http://127.0.0.1:8080/api/pushOutRepoOrder",outputDTO.toMap(),String.class);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("token",new TokenService().getToken());
+        HttpEntity<Map> httpEntity = new HttpEntity<Map>(outputDTO.toMap(),httpHeaders);
+        String result = new RestTemplate().postForObject(API.API_OUTPUT, httpEntity, String.class);
         return result;
     }
-    }
-//        Map<String,Object> map=new HashMap<String, Object>();
-//        // 存入所需要的字段和数据
-//        map.put("outRepoId",tbOutput.getOutputCode());
-//        map.put("orderId",tbOutput.getOrderId());
-//        map.put("channelId",tbOrder.getChannelCode());
-//        map.put("receiverName",tbReceiver.getReceiverName());
-//        map.put("receiverAddress",tbReceiver.getReceiverAddress());
-//        map.put("expressCompany",tbOrder.getDeliveryCompany());
-//        map.put("outRepoOrderDetailDto",);
-//        // 传送是否成功接收返回值
-//        String s = HttpClientUtil.post(HttpConfig.custom().client(),
-//                 // 连接到WMS的地址er
-//                "http://10.129.100.131:8080/api/pushOutRepoOrder",
-//                HttpConfig.custom().headers(),
-//                map, HttpConfig.custom().context(),
-//                HttpConfig.custom().encoding());
-//        return s;
-//   }
-//
+}
 //    /**
 //     * 调用WMS接口，获取返回值
 //     * @return

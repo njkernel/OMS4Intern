@@ -7,6 +7,7 @@ spring:
     druid:
 
 
+
       url: jdbc:mysql://47.101.193.185:3306/omsTEST?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
       username: root
       password: 433193da9f88
@@ -56,11 +57,11 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: true
-#logging:
-#  level:
-#    org.caps.website: trace
-#  file: log/springboot.log
-#  pattern:
-#    file: .%d{yyyy-MM-dd} [%thread]  %-5level  %logger{50}  %msg%n
-#    console: .%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} ==== %msg%n
+logging:
+  level:
+    org.caps.website: trace
+  file: log/springboot.log
+  pattern:
+    file: .%d{yyyy-MM-dd} [%thread]  %-5level  %logger{50}  %msg%n
+    console: .%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} ==== %msg%n
 

@@ -257,6 +257,10 @@ public class TbReturnController {
 
             //updated by yonyong
             //TODO
+            if (ZERO == tbExchangeList.size()) {
+                log.error("tbExchangeList的size为"+tbExchangeList.size());
+                return BaseResult.fail("tbExchangeList的size为0!");
+            }
             int[] tids = ListToArray.listToArray(tbExchangeList);
             try {
 
@@ -268,7 +272,7 @@ public class TbReturnController {
                 return BaseResult.success("入库单生成成功");
 
             } catch (Exception e) {
-                //TODO
+                log.error(e.getMessage());
                 return BaseResult.fail("服务器内部错误！");
             }
 

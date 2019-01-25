@@ -27,7 +27,7 @@
     SELECT tb_goods_order.*,tb_goods.goods_code,tb_goods.goods_name,tb_goods.goods_price  FROM tb_goods_order,tb_goods WHERE tb_goods_order.order_id=#{orderId} and tb_goods_order.goods_id=tb_goods.goods_id
   </select>
   <!--根据订单编号查询该订单下所有的商品编号-->
-  <select id="getGoodsOrderById" parameterType="Integer" resultType="Integer">
+  <select id="getGoodsOrderById" parameterType="Integer" resultType="java.lang.Integer">
     SELECT GOODS_ID FROM tb_goods_order WHERE order_id=#{orderId}
   </select>
   <!--根据订单ID查询商品的名称单价个数总价：-->
@@ -48,6 +48,9 @@
       a.goods_id = b.goods_id
       AND
       order_id=#{orderId}
+  </select>
+  <select id="getGoodsDetailByOrderId" resultType="cn.com.connext.oms.entity.TbGoodsOrder">
+    SELECT goods_id,num FROM tb_goods_order WHERE order_id=#{orderId}
   </select>
 
 

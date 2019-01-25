@@ -16,6 +16,8 @@ import cn.com.connext.oms.service.TbExchangeService;
 import cn.com.connext.oms.web.Api.API;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,16 +36,18 @@ import java.util.List;
  * @describe: 换货模块Service实现类
  */
 @Service
-//@Transactional
+@Transactional
 public class TbExchangeServiceImpl implements TbExchangeService {
+  private static final Logger log = LoggerFactory.getLogger(TbReturnServiceImpl.class);
   private final String TOKENS = "yonyong";
   private static long MISTIMING;
   private static final String GET_FAILED = "fail";
   private static final String GET_SUCCESS = "success";
   private static final String GET_FEEDBACK_OUTTIME = "over";
-
   private static final String RETURN_STATE_UNCHECKED = "待审核";
   private static final String RETURN_STATE_AUDIT_UNCHECKED = "审核通过";
+  private static final String RETURN_STATE_AUDIT_FAIL = "审核成功";
+  private static final String RETURN_STATE_AUDIT_OVER = "超15天未收货";
 
 //  public static String IP="127.0.0.1";
 //  public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
@@ -198,6 +202,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       try {
         tbExchangeMapper.updateTbReturn(tbReturns);
       } catch (Exception e) {
+        log.error(e.getMessage());
         return -1;
       }
       return 0;
@@ -248,6 +253,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       }
       return 1;
     } catch (Exception e) {
+      log.error(e.getMessage());
       return 0;
     }
   }
@@ -268,7 +274,10 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       TbReturn tbReturn1 = tbExchangeMapper.selectTbReturnById(ids[i]);
       int orderId = tbReturn1.getOrderId();
 
-      if (!RETURN_STATE_AUDIT_UNCHECKED.equals(tbReturn1.getReturnState())) {
+      //如果状态
+      if (!RETURN_STATE_AUDIT_UNCHECKED.equals(tbReturn1.getReturnState()) &&
+          !RETURN_STATE_AUDIT_FAIL.equals(tbReturn1.getReturnState()) &&
+          !RETURN_STATE_AUDIT_OVER.equals(tbReturn1.getReturnState())) {
         continue;
       }
       // 生成入库单
@@ -282,6 +291,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       try {
         tbExchangeMapper.insertInput(tbInput);
       } catch (Exception e) {
+        log.error(e.getMessage());
         return -1;
       }
     }
@@ -333,6 +343,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
           tbExchangeMapper.updateTbInput(tbInput1);
           tbExchangeMapper.updateTbReturn(tbReturns);
         } catch (Exception e1) {
+          log.error(e1.getMessage());
           return -1;
       }
     }
@@ -364,6 +375,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       tbReturn = tbExchangeMapper.selectTbReturnByOrderId(inputFeedback.getOrderId());
       tbInput = tbExchangeMapper.selectTbInputByOrderId(inputFeedback.getOrderId());
     } catch (Exception e) {
+      log.error(e.getMessage());
       return 1;
     }
 
@@ -409,7 +421,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       tbExchangeMapper.updateTbReturn(tbReturns);
 
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e.getMessage());
       return 1;
     }
 
@@ -423,6 +435,7 @@ public class TbExchangeServiceImpl implements TbExchangeService {
       exchangeUtils.newOrder(inputFeedback.getGoodDetails(),inputFeedback.getOrderId());
       return 0;
     }catch (Exception e){
+      log.error(e.getMessage());
       return 1;
     }
 
