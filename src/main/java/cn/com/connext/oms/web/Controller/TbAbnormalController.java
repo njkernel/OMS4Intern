@@ -34,7 +34,7 @@ public class TbAbnormalController {
             return tbAbnormalService.checkGoods(orderId,session);
         } catch (Exception e) {
             e.printStackTrace();
-            return BaseResult.fail("服务器内部错误");
+            return BaseResult.fail("订单数据存在异常");
         }
     }
 
