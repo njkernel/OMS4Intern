@@ -284,14 +284,14 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
                                     .andEqualTo("orderId",orderId);
             List<TbGoodsOrder> tbGoodsOrders = tbGoodsOrderMapper.selectByExample(example);
             //更改锁定库存
-            Integer num = 0;
+            TbStock tbStock = tbAbnormalMapper.selectStockByGoodsId(goodsId);
+            Integer num = tbStock.getLockedStock();
             for (TbGoodsOrder tbGoodsOrder:tbGoodsOrders){
                 num+=tbGoodsOrder.getNum();
             }
-            TbStock tbStock = tbAbnormalMapper.selectStockByGoodsId(goodsId);
             tbStock.setLockedStock(num);
             //更改可用库存
-            Integer availableStock = tbStock.getAvailableStock();
+            Integer availableStock = tbStock.getTotalStock();
             availableStock-=num;
             tbStock.setAvailableStock(availableStock);
             tbStockMapper.updateByPrimaryKeySelective(tbStock);
