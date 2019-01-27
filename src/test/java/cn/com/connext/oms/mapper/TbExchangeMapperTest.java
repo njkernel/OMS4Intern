@@ -134,4 +134,11 @@ public class TbExchangeMapperTest {
         TbGoods tbGoods=tbExchangeMapper.toSelectGoodById(16011701);
         System.out.println(tbGoods.getGoodsId());
     }
+
+
+
+    @Test
+    public void sum(){
+        System.out.println(	5399.97+3996.0);
+    }
 }
