@@ -182,23 +182,32 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         //获取异常订单详情
         TbAbnormal tbAbnormal = tbAbnormalMapper.selectByPrimaryKey(abnormalId);
         abnormals.add(tbAbnormal);
-        //获取异常订单对应商品详情
-        List<AbnormalGoodsOrderDTO> goods=null;
         Integer orderId = tbAbnormal.getOrderId();
         List<Integer> goodsIdByOrder = getGoodsIdByOrder(orderId);
+        //获取异常订单对应的订单的备注信息
+        TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(orderId);
+        String remark = tbOrder.getRemark();
         double orderTotleprice=0;
         double goodsTotleprice=0;
-        for (Integer id:goodsIdByOrder){
-            goods = tbAbnormalMapper.getAbnormalGoodsOrderDTOByOrderId(orderId);
-        }
+        //获取异常订单对应商品详情
+        List<AbnormalGoodsOrderDTO> goods = tbAbnormalMapper.getAbnormalGoodsOrderDTOByOrderId(orderId);
+        List<Double> univalences=new LinkedList<>();
         for (AbnormalGoodsOrderDTO abnormalGoodsOrderDTO:goods){
-            goodsTotleprice=abnormalGoodsOrderDTO.getTotalPrice()*abnormalGoodsOrderDTO.getNum();
-            orderTotleprice+=goodsTotleprice;
+            Double goodsPrice = abnormalGoodsOrderDTO.getTotalPrice();
+            Integer num = abnormalGoodsOrderDTO.getNum();
+            Double univalence=goodsPrice/num;
+            univalences.add(univalence);
+            orderTotleprice+=abnormalGoodsOrderDTO.getTotalPrice();
+        }
+        //反推出商品的原价
+        for (int i=0;i<goods.size();i++){
+            goods.get(i).setGoodsPrice(univalences.get(i));
         }
         Map<String,Object> map=new HashMap<>();
         map.put("abnormalInfo",abnormals);
         map.put("goodsInfo",goods);
         map.put("totleprice",orderTotleprice);
+        map.put("remark",remark);
         return map;
     }
 

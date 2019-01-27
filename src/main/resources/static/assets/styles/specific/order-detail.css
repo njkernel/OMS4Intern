@@ -138,7 +138,7 @@ button.focus, button:focus, button:hover {
     margin-left: 50px;
     border-radius: 4px;
     width: 70px;
-    height: 30px;  
+    height: 30px;
     cursor:pointer;
 }
 .btn2{
@@ -148,8 +148,8 @@ button.focus, button:focus, button:hover {
     border-radius: 4px;
     margin-left: 50px;
     width: 80px;
-    height: 30px; 
-    cursor:pointer; 
+    height: 30px;
+    cursor:pointer;
 }
 .btn3{
     color: #fff;
@@ -158,7 +158,7 @@ button.focus, button:focus, button:hover {
     border-radius: 4px;
     margin-left: 50px;
     width: 70px;
-    height: 30px;  
+    height: 30px;
     cursor:pointer;
 }
 .address-information{
@@ -170,7 +170,7 @@ button.focus, button:focus, button:hover {
 .title-content4{
     float: left;
     margin-left: 20px;
-    position: relative; 
+    position: relative;
 }
 /* .main-content2{
     height: 640px;
@@ -183,8 +183,8 @@ button.focus, button:focus, button:hover {
     position: relative;
     height: 100%;
     width:100%;
-    text-align: center;  
-    margin: 0 auto; 
+    text-align: center;
+    margin: 0 auto;
     background-color: rgb(243,243,243);
 }
 th{

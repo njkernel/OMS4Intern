@@ -1,6 +1,7 @@
 package cn.com.connext.oms.mapper;
 
 import cn.com.connext.oms.entity.TbStock;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.MyMapper;
 
@@ -46,7 +47,7 @@ public interface TbStockMapper extends MyMapper<TbStock> {
    * @Create: 2019/1/8 11:14
    */
   /*List<TbStock> updateStock(int goodsId);*/
-  public void updateStock(int goodsId,int totalStock);
+  public void updateStock(@Param("goodsId") int goodsId,@Param("totalStock") int totalStock);
   /**
    * @Author: zhaojun
    * @Description:
@@ -54,7 +55,7 @@ public interface TbStockMapper extends MyMapper<TbStock> {
    * @Return:
    * @Create: ${DATE}
    */
-  public void updateLockdAndAvailable(int goodsId,int num);
+  public void updateLockdAndAvailable(@Param("goodsId") int goodsId,@Param("num") int num);
   /**
    * 功能描述:更新可用库存
    * @param:
@@ -62,7 +63,7 @@ public interface TbStockMapper extends MyMapper<TbStock> {
    * @auther: Jun.Zhao
    * @date: 2019/1/11 10:08
    */
-  public void updateAvailable(int goodsId,int availableStock);
+  public void updateAvailable(@Param("goodsId") int goodsId,@Param("availableStock") int availableStock);
   /**
    * 功能描述:根据商品编码查询商品信息
    * @param:
@@ -71,6 +72,12 @@ public interface TbStockMapper extends MyMapper<TbStock> {
    * @date: 2019/1/11 10:13
    */
   public TbStock getLocked(int goodsId);
-
-
+  /**
+   * 功能描述:新增商品库存信息
+   * @param:
+   * @return:
+   * @auther: Jun.Zhao
+   * @date: 2019/1/25 11:44
+   */
+  public void addStock(@Param("lockedStock") int lockedStock,@Param("goodsId") int goodsId);
 }

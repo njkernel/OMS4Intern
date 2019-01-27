@@ -19,15 +19,17 @@
                 <div class="title"><text>基本信息</text></div>
                 <div class="title-content">
                     <div class="title-content1">
-                        <div class="title-content1-top1">订单号：<label th:text="${map.abnormalInfo[0].orderId}"/></div>
-                        <div class="title-content1-top2">异常状态：<label th:disabled="disabled" th:text="${map.abnormalInfo[0].abnormalState}"/></div>
-                        <div class="title-content1-top3">异常类型：<label th:disabled="disabled" th:text="${map.abnormalInfo[0].abnormalType}"/></div>
+                        <div class="title-content1-top1">订单号：<input th:text="${map.abnormalInfo[0].orderId}"/></div>
+                        <div class="title-content1-top2">异常状态：<input th:disabled="disabled" th:text="${map.abnormalInfo[0].abnormalState}"/></div>
+                        <div class="title-content1-top3">异常类型：<input th:disabled="disabled" th:text="${map.abnormalInfo[0].abnormalType}"/></div>
                     </div>
                     <div class="title-content2">
-                        <div class="title-content1-top1">异常原因：<label th:text="${map.abnormalInfo[0].abnormalReason}"/></div>
-                        <div class="title-content1-top2">修改人：<label th:text="${map.abnormalInfo[0].modifiedUser}"/></div>
-                        <div class="title-content1-top3">修改时间：<label th:text="${#dates.format(map.abnormalInfo[0].createtime,'yyyy-MM-dd')}"/></div>
-
+                        <div class="title-content1-top1">异常原因：<input th:text="${map.abnormalInfo[0].abnormalReason}"/></div>
+                        <div class="title-content1-top2">修改人：<input th:text="${map.abnormalInfo[0].modifiedUser}"/></div>
+                        <div class="title-content1-top3">修改时间：<input th:text="${#dates.format(map.abnormalInfo[0].createtime,'yyyy-MM-dd')}"/></div>
+                    </div>
+                    <div class="title-content3">
+                        <div class="title-content1-top1">订单备注：<input th:text="${map.remark}"/></div>
                     </div>
                 </div>
             </div>

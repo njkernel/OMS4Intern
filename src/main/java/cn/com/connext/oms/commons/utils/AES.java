@@ -127,5 +127,7 @@ public class AES {
     }
 
     public static void main(String[] args) {
+        System.out.println(AES.AESEncode("yonyong","334"));
+        System.out.println(AES.AESDncode("yonyong","iVEX6hMh0ucmzpuk4C9R5A=="));
     }
 }
