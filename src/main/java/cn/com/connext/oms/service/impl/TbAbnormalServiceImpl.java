@@ -58,7 +58,13 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         //判断有无备注或者金额异常
         Example example=new Example(TbOrder.class);
         example.createCriteria().andEqualTo("orderId",orderId);
-        TbOrder tbOrder = tbOrderMapper.selectOneByExample(example);
+        TbOrder tbOrder = null;
+        //这里防止数据库数据填错，导致同一个订单都对应同一个个商品的记录有两条
+        try {
+            tbOrder = tbOrderMapper.selectOneByExample(example);
+        } catch (Exception e) {
+            return BaseResult.fail("订单数据存在异常");
+        }
 
         if (!StringUtils.equals(tbOrder.getOrderState(),"待预检")&&!StringUtils.equals(tbOrder.getOrderState(),"订单异常")){
             return BaseResult.fail("当前订单状态不可以进行预检操作");
@@ -276,9 +282,12 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
             Example example=new Example(TbGoodsOrder.class);
             example.createCriteria().andEqualTo("goodsId",goodsId)
                                     .andEqualTo("orderId",orderId);
-            TbGoodsOrder tbGoodsOrder = tbGoodsOrderMapper.selectOneByExample(example);
+            List<TbGoodsOrder> tbGoodsOrders = tbGoodsOrderMapper.selectByExample(example);
             //更改锁定库存
-            Integer num = tbGoodsOrder.getNum();
+            Integer num = 0;
+            for (TbGoodsOrder tbGoodsOrder:tbGoodsOrders){
+                num+=tbGoodsOrder.getNum();
+            }
             TbStock tbStock = tbAbnormalMapper.selectStockByGoodsId(goodsId);
             tbStock.setLockedStock(num);
             //更改可用库存
@@ -287,10 +296,7 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
             tbStock.setAvailableStock(availableStock);
             tbStockMapper.updateByPrimaryKeySelective(tbStock);
         }
-
     }
-
-
 
 }
 
