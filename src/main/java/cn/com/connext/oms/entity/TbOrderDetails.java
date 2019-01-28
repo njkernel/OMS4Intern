@@ -308,6 +308,19 @@ public class TbOrderDetails extends TbReceiver {
     private Double totalPrice;
 
     /**
+     * 下单这类产品的单价
+     */
+    private Double unitPrice;
+
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    /**
      * 获取订单商品关系表id
      *
      * @return goods_order_id - 订单商品关系表id
