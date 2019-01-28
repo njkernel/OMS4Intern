@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -140,6 +141,13 @@ public class TbExchangeMapperTest {
 
     @Test
     public void sum(){
-        System.out.println(	5399.97+3996.0);
+
+        Double a=5399.97;
+        Double b=3996.0;
+
+        BigDecimal totalAmount = new BigDecimal(0);
+        totalAmount=totalAmount.add(new BigDecimal(a.toString()));
+        totalAmount=totalAmount.add(new BigDecimal(b.toString()));
+        System.out.println(	totalAmount);
     }
 }
