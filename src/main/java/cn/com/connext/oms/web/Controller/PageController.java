@@ -320,6 +320,17 @@ public class PageController {
     public ModelAndView outStockDetails(Integer orderId){
         ModelAndView mv = new ModelAndView("pages/specific/outstock");
         List<TbOrderDetails> outStockDetails = outputService.orderDetails(orderId);
+        // 根据订单总价计算商品的单价
+        for (int i = 0;i<outStockDetails.size();i++){
+            //  获取订单的总价
+            Double sum = outStockDetails.get(i).getTotalPrice();
+            // 订单的数量
+            int num =outStockDetails.get(i).getNum();
+            // 计算数量
+            Double unitPrice = sum/num;
+            // 设置数量
+            outStockDetails.get(i).setUnitPrice(unitPrice);
+        }
         mv.addObject("outStockDetails",outStockDetails);
         return mv;
     }
