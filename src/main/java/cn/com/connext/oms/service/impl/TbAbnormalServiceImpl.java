@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -198,12 +199,16 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         //获取异常订单对应商品详情
         List<AbnormalGoodsOrderDTO> goods = tbAbnormalMapper.getAbnormalGoodsOrderDTOByOrderId(orderId);
         List<Double> univalences=new LinkedList<>();
+        BigDecimal totalAmount = new BigDecimal(0);
         for (AbnormalGoodsOrderDTO abnormalGoodsOrderDTO:goods){
             Double goodsPrice = abnormalGoodsOrderDTO.getTotalPrice();
             Integer num = abnormalGoodsOrderDTO.getNum();
             Double univalence=goodsPrice/num;
+            //单价
             univalences.add(univalence);
-            orderTotleprice+=abnormalGoodsOrderDTO.getTotalPrice();
+            //订单总价
+            Double totalPrice = abnormalGoodsOrderDTO.getTotalPrice();
+            totalAmount=totalAmount.add(new BigDecimal(totalPrice.toString()));
         }
         //反推出商品的原价
         for (int i=0;i<goods.size();i++){
@@ -212,7 +217,7 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         Map<String,Object> map=new HashMap<>();
         map.put("abnormalInfo",abnormals);
         map.put("goodsInfo",goods);
-        map.put("totleprice",orderTotleprice);
+        map.put("totleprice",totalAmount);
         map.put("remark",remark);
         return map;
     }

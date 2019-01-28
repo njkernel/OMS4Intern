@@ -16,7 +16,7 @@ let loginPage = new Vue({
 
     methods: {
         initRole(){
-            let url='/getAllRole';
+            let url='getAllRole';
             callAxiosGetNoParam(url,this.getRoleSuc,this.Fail)
         },
         getRoleSuc(res){
