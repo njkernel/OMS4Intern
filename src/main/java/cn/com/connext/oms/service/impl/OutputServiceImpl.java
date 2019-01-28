@@ -138,22 +138,6 @@ public class OutputServiceImpl implements OutputService {
                 // 判断接收的结果 200 表示接收成功
                 if ("200".equals(s)) {
                     List<TbGoodsOrder> goodsDetailByOrderId = tbGoodsOrderMapper.getGoodsDetailByOrderId(id);
-                    for (int i = 0;i<goodsDetailByOrderId.size();i++){
-                        int goodsId = goodsDetailByOrderId.get(i).getGoodsId();
-                        int goodsNum = -goodsDetailByOrderId.get(i).getNum();
-                        // 更新锁定库存
-                        tbStockMapper.updateLockdAndAvailable(goodsId,goodsNum);
-                        // 获取总库存
-                        int totalStock = tbStockMapper.getLocked(goodsId).getTotalStock()+goodsNum;
-                        // 更新总库存
-                        tbStockMapper.updateStock(goodsId,totalStock);
-                        // 获取锁定库存
-                        int lockStock = tbStockMapper.getLocked(goodsId).getLockedStock();
-                        // 计算可使用库存
-                        int availabeStock = totalStock-lockStock;
-                        // 更新可使用的库存
-                        tbStockMapper.updateAvailable(goodsId,availabeStock);
-                    }
                     // 更新订单状态为已完成，并更新时间
                     tbOrder.setOrderState(STATUS4);
                     tbOrder.setUpdated(new Date());
