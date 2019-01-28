@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="../../../assets/javascript/popup/popup.js"></script>
-    <script src="../../../assets/javascript/popup/orderpopup.js"></script>
-    <link rel="stylesheet" type="text/css" href="../../assets/styles/specific/order-detail.css"/>
+    <script src="/assets/javascript/popup/popup.js"></script>
+    <script src="/assets/javascript/popup/orderpopup.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/styles/specific/order-detail.css"/>
 </head>
 <body style="overflow-x:hidden;">
         <div class="container" style="top: -380px;">
@@ -37,6 +37,10 @@
                                     <div class="title-content1-top1">基本状态：<input disabled="disabled"  th:value="${orderDetail.basicState}"></div>
                                     <div class="title-content1-top2">修改人：<input disabled="disabled"  th:value="${orderDetail.modifiedUser}"></div>
                                     <div class="title-content1-top3">修改时间：<input disabled="disabled"  th:value="${orderDetail.updated}"></div>
+                                </div>
+                                <div class="title-content3">
+                                    <div class="title-content1-top1">备注：<input disabled="disabled" th:value="${orderDetail.remark}">
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -58,7 +58,13 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         //判断有无备注或者金额异常
         Example example=new Example(TbOrder.class);
         example.createCriteria().andEqualTo("orderId",orderId);
-        TbOrder tbOrder = tbOrderMapper.selectOneByExample(example);
+        TbOrder tbOrder = null;
+        //这里防止数据库数据填错，导致同一个订单都对应同一个个商品的记录有两条
+        try {
+            tbOrder = tbOrderMapper.selectOneByExample(example);
+        } catch (Exception e) {
+            return BaseResult.fail("订单数据存在异常");
+        }
 
         if (!StringUtils.equals(tbOrder.getOrderState(),"待预检")&&!StringUtils.equals(tbOrder.getOrderState(),"订单异常")){
             return BaseResult.fail("当前订单状态不可以进行预检操作");
@@ -182,23 +188,32 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
         //获取异常订单详情
         TbAbnormal tbAbnormal = tbAbnormalMapper.selectByPrimaryKey(abnormalId);
         abnormals.add(tbAbnormal);
-        //获取异常订单对应商品详情
-        List<AbnormalGoodsOrderDTO> goods=null;
         Integer orderId = tbAbnormal.getOrderId();
         List<Integer> goodsIdByOrder = getGoodsIdByOrder(orderId);
+        //获取异常订单对应的订单的备注信息
+        TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(orderId);
+        String remark = tbOrder.getRemark();
         double orderTotleprice=0;
         double goodsTotleprice=0;
-        for (Integer id:goodsIdByOrder){
-            goods = tbAbnormalMapper.getAbnormalGoodsOrderDTOByOrderId(orderId);
-        }
+        //获取异常订单对应商品详情
+        List<AbnormalGoodsOrderDTO> goods = tbAbnormalMapper.getAbnormalGoodsOrderDTOByOrderId(orderId);
+        List<Double> univalences=new LinkedList<>();
         for (AbnormalGoodsOrderDTO abnormalGoodsOrderDTO:goods){
-            goodsTotleprice=abnormalGoodsOrderDTO.getTotalPrice()*abnormalGoodsOrderDTO.getNum();
-            orderTotleprice+=goodsTotleprice;
+            Double goodsPrice = abnormalGoodsOrderDTO.getTotalPrice();
+            Integer num = abnormalGoodsOrderDTO.getNum();
+            Double univalence=goodsPrice/num;
+            univalences.add(univalence);
+            orderTotleprice+=abnormalGoodsOrderDTO.getTotalPrice();
+        }
+        //反推出商品的原价
+        for (int i=0;i<goods.size();i++){
+            goods.get(i).setGoodsPrice(univalences.get(i));
         }
         Map<String,Object> map=new HashMap<>();
         map.put("abnormalInfo",abnormals);
         map.put("goodsInfo",goods);
         map.put("totleprice",orderTotleprice);
+        map.put("remark",remark);
         return map;
     }
 
@@ -267,21 +282,21 @@ public class TbAbnormalServiceImpl implements TbAbnormalService {
             Example example=new Example(TbGoodsOrder.class);
             example.createCriteria().andEqualTo("goodsId",goodsId)
                                     .andEqualTo("orderId",orderId);
-            TbGoodsOrder tbGoodsOrder = tbGoodsOrderMapper.selectOneByExample(example);
+            List<TbGoodsOrder> tbGoodsOrders = tbGoodsOrderMapper.selectByExample(example);
             //更改锁定库存
-            Integer num = tbGoodsOrder.getNum();
             TbStock tbStock = tbAbnormalMapper.selectStockByGoodsId(goodsId);
+            Integer num = tbStock.getLockedStock();
+            for (TbGoodsOrder tbGoodsOrder:tbGoodsOrders){
+                num+=tbGoodsOrder.getNum();
+            }
             tbStock.setLockedStock(num);
             //更改可用库存
-            Integer availableStock = tbStock.getAvailableStock();
+            Integer availableStock = tbStock.getTotalStock();
             availableStock-=num;
             tbStock.setAvailableStock(availableStock);
             tbStockMapper.updateByPrimaryKeySelective(tbStock);
         }
-
     }
-
-
 
 }
 
