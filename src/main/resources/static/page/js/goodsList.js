@@ -16,7 +16,7 @@ let goodsList = new Vue({
             //异常单数据
             goodsListDate:[],
             //默认选中
-            selected: 'orderId',
+            selected: 'goodsCode',
             //下拉框选项
             options2: [
                 { text: '商品名称', value: 'goodsName' },

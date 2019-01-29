@@ -52,7 +52,7 @@ let orderList = new Vue({
             //异常单数据
             goodsInfo:[],
             //默认选中
-            selected: 'orderId',
+            selected: 'orderCode',
             //下拉框选项
             options3: [
                 { text: '收货人', value: 'receiverName' },
