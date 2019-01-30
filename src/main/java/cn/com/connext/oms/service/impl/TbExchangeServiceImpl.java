@@ -19,6 +19,9 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -48,6 +51,8 @@ public class TbExchangeServiceImpl implements TbExchangeService {
   private static final String RETURN_STATE_AUDIT_UNCHECKED = "审核通过";
   private static final String RETURN_STATE_AUDIT_FAIL = "审核成功";
   private static final String RETURN_STATE_AUDIT_OVER = "超15天未收货";
+  @Value("${url.exchange.API_RETURN:#{null}}")
+  private static String RETURN_RXCHANGE_URL;
 
 //  public static String IP="127.0.0.1";
 //  public static String URL="http://"+IP+":8080/api/inRepertoryOrder";
@@ -337,10 +342,19 @@ public class TbExchangeServiceImpl implements TbExchangeService {
           tbInput1.setInputState("接收成功");
           tbInput1.setUpdated(new Date());
           tbInput1.setSynchronizeState("已同步");
-          restTemplate.postForEntity(
-                  API.API_RETURN,
+          HttpStatus httpStatus = restTemplate.postForObject(
+                  RETURN_RXCHANGE_URL,
                   inRepertoryDTO.toMap(),
-                  String.class);
+                  HttpStatus.class);
+          if (httpStatus.equals(HttpStatus.ACCEPTED)) {
+            log.info("WMS接收入库单成功！");
+          } else if (httpStatus.equals(HttpStatus.FORBIDDEN)) {
+            log.error("口令错误！WMS拒绝接收！");
+          } else if (httpStatus.equals(HttpStatus.BAD_REQUEST)) {
+            log.error("参数错误，错误的请求！");
+          } else if (httpStatus.equals(HttpStatus.CONFLICT)) {
+            log.error("入库单已存在！");
+          }
           tbExchangeMapper.updateTbInput(tbInput1);
           tbExchangeMapper.updateTbReturn(tbReturns);
         } catch (Exception e1) {

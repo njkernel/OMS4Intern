@@ -60,3 +60,7 @@ logging:
     file: .%d{yyyy-MM-dd} [%thread]  %-5level  %logger{50}  %msg%n
     console: .%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} ==== %msg%n
 
+url:
+  exchange:
+    API_RETURN: "http://127.0.0.1:8080/api/inRepertoryOrder"
+
