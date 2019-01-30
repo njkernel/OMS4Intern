@@ -5,7 +5,7 @@ spring:
 
   datasource:
     druid:
-      url: jdbc:mysql://localhost:3306/oms?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+      url: jdbc:mysql://139.224.119.184:3306/oms?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
       username: root
       password: 123456
       initial-size: 1
@@ -59,4 +59,8 @@ logging:
   pattern:
     file: .%d{yyyy-MM-dd} [%thread]  %-5level  %logger{50}  %msg%n
     console: .%d{yyyy-MM-dd} === [%thread] === %-5level === %logger{50} ==== %msg%n
+
+url:
+  exchange:
+    API_RETURN: "http://127.0.0.1:8080/api/inRepertoryOrder"
 

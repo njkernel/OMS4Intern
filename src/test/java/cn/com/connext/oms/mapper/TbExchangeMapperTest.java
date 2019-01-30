@@ -46,8 +46,9 @@ public class TbExchangeMapperTest {
         for (int t=0;t<5;t++){
             for (int i=0;i<40;i++){
                 double sum=0;
-                int goodsId[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-                double goodPrice[]={123456,1000000,99999.99,1000000,123,666.77,677.88,1000000,12345,239956.98,1899,849,1499,1899,3399,549,3199,1399,1799.99,799};
+                int goodsId[]={16012019,16012020,16012021,16012022,16012023,16012024,16012025,16012026,16012027,16012028,
+                        16012029,16012030,16012031,16012032,16012033,16012034,16012035,16012036,16012037,16012038};
+                double goodPrice[]={798,2299,1998,1399,1299.01,1549,1549,1599,2599,2399,1899,849,1499,1899,3399,549,3199,1399,1799.99,799};
                 int nums[]={1,2,3,4,5};
                 for (int j=0;j<2;j++){
                     List<TbGoodsOrder> tbGoodss=new ArrayList<>();
@@ -79,9 +80,9 @@ public class TbExchangeMapperTest {
                 tbOrder.setPaymentWay("线上支付");
                 tbOrder.setPaymentTime(date);
                 tbOrder.setDeliveryWarehouse("南京仓");
-                tbOrder.setDeliveryCompany("菜鸟快递");
-                tbOrder.setDeliveryCode("KD"+orderId);
-                tbOrder.setDeliveryTime(date);
+                tbOrder.setDeliveryCompany("");
+                tbOrder.setDeliveryCode("");
+                tbOrder.setDeliveryTime(null);
                 tbOrder.setReceiverId(insertReceiverId);
                 tbOrder.setSumPrice(sum);
                 tbOrder.setRemark("无");
